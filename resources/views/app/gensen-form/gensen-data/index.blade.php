@@ -37,11 +37,11 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <livewire:gensen-form.gensen-data.datatable>
+            <livewire:gensen-form.gensen-data.datatable />
         </div>
     </div>
-    <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-lengkap>
-    <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-verified>
+    <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-lengkap />
+    <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-verified />
 @stop
 
 @push('css')

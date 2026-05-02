@@ -33,7 +33,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <livewire:account.role.detail :objId="$objId">
+            <livewire:account.role.detail :objId="$objId" />
         </div>
     </div>
 @stop

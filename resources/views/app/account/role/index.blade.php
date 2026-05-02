@@ -36,7 +36,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <livewire:account.role.datatable lazy>
+            <livewire:account.role.datatable lazy />
         </div>
     </div>
 @stop

@@ -69,7 +69,7 @@
             Copy Link
             </button>
             <div class="row mt-3">
-                <livewire:gensen-form.gensen-data.datatable :gensenFormLinkId="$objId">
+                <livewire:gensen-form.gensen-data.datatable :gensenFormLinkId="$objId" />
             </div>
         @endif
         

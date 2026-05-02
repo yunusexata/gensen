@@ -7,28 +7,18 @@
     "require": {
         "php": "^8.1",
         "barryvdh/laravel-dompdf": "^3.1",
-        "guzzlehttp/guzzle": "^7.2",
         "iio/libmergepdf": "^4.0",
-        "laravel/framework": "^12.0",
-        "laravel/reverb": "^1.10",
-        "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.8",
-        "livewire/livewire": "^3.4",
+        "laravel/framework": "^13.0",
+        "laravel/sanctum": "^4.3",
+        "livewire/livewire": "^4.0",
         "maatwebsite/excel": "^3.1",
         "mews/captcha": "^3.3",
         "muhammadyunus1072/track-history": "^1.0",
+        "pusher/pusher-php-server": "^7.2",
         "setasign/fpdi": "^2.6",
         "setasign/fpdi-tcpdf": "^2.3",
-        "spatie/laravel-permission": "^6.3",
+        "spatie/laravel-permission": "^6.0",
         "tecnickcom/tcpdf": "^6.11"
-    },
-    "require-dev": {
-        "fakerphp/faker": "^1.9.1",
-        "laravel/pint": "^1.0",
-        "laravel/sail": "^1.18",
-        "mockery/mockery": "^1.4.4",
-        "phpunit/phpunit": "^10.5",
-        "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
         "psr-4": {

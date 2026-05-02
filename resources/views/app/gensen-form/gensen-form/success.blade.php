@@ -35,8 +35,8 @@
                             <p>Informasi Anda telah berhasil disimpan di sistem kami</p>
                         </div>
                     </div>
-                    <livewire:gensen-form.gensen-form.registered-list :token="$objId">
-                    <livewire:gensen-form.gensen-form.whatsapp-pic :token="$objId" :phone="$phone">
+                    <livewire:gensen-form.gensen-form.registered-list :token="$objId" />
+                    <livewire:gensen-form.gensen-form.whatsapp-pic :token="$objId" :phone="$phone" />
                     </div>
                     <div class="success-info">
                     <div class="info-box">

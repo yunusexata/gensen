@@ -34,7 +34,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <livewire:gensen-form.gensen-data.attachment :objId="$objId">
+            <livewire:gensen-form.gensen-data.attachment :objId="$objId" />
         </div>
     </div>
 @stop

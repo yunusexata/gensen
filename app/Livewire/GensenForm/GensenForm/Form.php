@@ -141,7 +141,6 @@ class Form extends Component
             $this->gensenFormId = Crypt::decrypt($this->gensenFormId);
             $this->authorized = true;
             $this->dispatch('onAuthorized');
-            consoleLog($this, 'attach');
             $this->validatationStepper(1);
         } else {
             if ($this->isAdmin) {

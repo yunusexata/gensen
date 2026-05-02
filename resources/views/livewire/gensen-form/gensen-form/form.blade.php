@@ -3,7 +3,7 @@
 
         @if (!$isAdmin)
             <div class="row">
-                <livewire:gensen-form.gensen-form.registered-list :token="$objId">
+                <livewire:gensen-form.gensen-form.registered-list :token="$objId" />
             </div>
         @endif
         <!--begin::Stepper-->

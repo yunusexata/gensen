@@ -21,7 +21,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <livewire:gensen.export-import.index>
+            <livewire:gensen.export-import.index />
         </div>
     </div>
 @stop

@@ -2,7 +2,7 @@
     <div class="row justify-content-between mb-3">
         <div class="col-auto mb-2 {{ !isset($show_filter) || $show_filter == true ? '' : 'd-none' }}">
             <label>Show</label>
-            <select wire:model.change="length" class="form-select">
+            <select wire:model.live.change="length" class="form-select">
                 @foreach ($lengthOptions as $item)
                     <option value="{{ $item }}">{{ $item }}</option>
                 @endforeach

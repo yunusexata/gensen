@@ -36,7 +36,7 @@
 
     <div class="card">
         <div class="card-body">
-            <livewire:gensen-form.gensen-form-link.datatable lazy>
+            <livewire:gensen-form.gensen-form-link.datatable lazy />
         </div>
     </div>
 @stop

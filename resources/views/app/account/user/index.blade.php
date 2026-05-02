@@ -35,10 +35,10 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <livewire:account.user.filter lazy>
+            <livewire:account.user.filter lazy />
         </div>
         <div class="card-body">
-            <livewire:account.user.datatable lazy>
+            <livewire:account.user.datatable lazy />
         </div>
     </div>
 @stop

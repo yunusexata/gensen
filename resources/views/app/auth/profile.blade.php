@@ -21,7 +21,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <livewire:auth.profile>
+            <livewire:auth.profile />
         </div>
     </div>
 @stop

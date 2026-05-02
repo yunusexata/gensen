@@ -33,7 +33,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <livewire:gensen-form.gensen-form-link.detail :objId="$objId">
+            <livewire:gensen-form.gensen-form-link.detail :objId="$objId" />
         </div>
     </div>
 @stop

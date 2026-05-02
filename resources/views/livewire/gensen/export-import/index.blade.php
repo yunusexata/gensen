@@ -93,15 +93,15 @@
     </div>
     <div class="row mt-5">
         <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Riwayat Export Import</h1>
-        <livewire:gensen.export-import.datatable-history>
+        <livewire:gensen.export-import.datatable-history />
     </div>
         
-    <livewire:gensen.export-import.export>
+    <livewire:gensen.export-import.export />
 
-    <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-lengkap>
-    <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-verified>
-    <livewire:gensen-form.gensen-data.bulk-update-gensen-no-input-jepang-modal>
-    <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-gensen-cair>
+    <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-lengkap />
+    <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-verified />
+    <livewire:gensen-form.gensen-data.bulk-update-gensen-no-input-jepang-modal />
+    <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-gensen-cair />
 </div>
 
 @push('css')
