@@ -127,112 +127,9 @@
                             <p class="text-xs text-on-surface-variant">12 items in this collection</p>
                         </div>
                         <div class="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar row d-flex justify-content-between">
-                            {{-- GENSEN --}}
-                            {{-- <h3 class="fw-bold">Gensen</h3>
-                            @if ($kertas_gensen_old && $kertas_gensen_old['groups']->isNotEmpty())
-                                @foreach ($kertas_gensen_old['groups']->first()['files'] as $item)
-                                    @if (!$item['isPdf'] && $item['isImage'] ?? 0)
-                                        <div class="relative group cursor-pointer active:scale-95 transition-all">
-                                            <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
-                                                <div class="col-auto"> 
-                                                    <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$item['filename']}}</span>
-                                                    {!!$item['printStatus']!!}
-                                                </div>
-                                                <div class="col-auto d-flex align-items-center">
-                                                    <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
-                                                        wire:click="showDialogDeleteFile('{{$item['id']}}')">
-                                                        <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
-                                                    </button>
-                                                    
-                                                </div>
-                                            </div>
-                                            <div class="mt-0 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
-                                                <img class="w-full h-full object-cover"  
-                                                wire:click="clickFile('{{$item['id']}}', '{{$item['url']}}', '{{$item['type']?->label()}}')"
-                                                src="{{ $item['url'] }}"/>
-                                            </div>
-                                        </div>
-                                    @elseif($item['isPdf'] && !$item['isImage'] ?? 0)
-                                        <embed src="{{ $item['url'] }}" type="application/pdf" width="100%" style="min-height: 400px;" class="mb-2">
-                                    @else
-                                        <div class="border rounded p-4 text-center bg-light mb-2">
-                                            <i class="bi bi-file-earmark fs-1"></i>
-                                            <div class="mt-2">
-                                                {{$item['id']}}
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            @endif --}}
-                            {{-- REKAP PENGIRMAN --}}
-                            {{-- @if ($rekap_pengiriman_uang_old)
-                                @foreach ($rekap_pengiriman_uang_old['groups'] as $item)
-                                    <h3 class="fw-bold">Remittance {{$item['provider']}}</h3>
-                                    @foreach ($item['files'] as $rekap)
-                                        @if (!$rekap['isPdf'] && $rekap['isImage'])
-                                            <!-- Thumbnail Item 2 -->
-                                            <div class="relative group cursor-pointer active:scale-95 transition-all">
-                                                <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
-                                                <div class="col-auto"> 
-                                                        <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$item['filename']}}</span>
-                                                        {!!$item['printStatus']!!}
-                                                    </div>
-                                                    <div class="col-a2to"></ d-flex align-items-centerdiv>
-                                                </div>
-                                                <div class="mt-0 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
-                                                        <img class="w-full h-full object-cover"  
-                                                        wire:click="clickFile('{{$item['id']}}', '{{$item['url']}}', '{{$item['type']?->label()}}')"
-                                                        
-                                                        src="{{ $rekap['url'] }}"xl
-                                                </div>
-                                            </div>
-                                        @elseif($rekap['isPdf'] && !$rekap['isImage'])
-                                            <embed src="{{ $rekap['url'] }}" type="application/pdf" width="100%" style="min-height: 400px;" class="mb-2">
-                                        @else
-                                            <div class="border rounded p-4 text-center bg-light mb-2">
-                                                <i class="bi bi-file-earmark fs-1"></i>
-                                                <div class="mt-2">
-                                                    {{$rekap['filename']}}
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                @endforeach
-                            @endif --}}
-                            {{-- KARTU KELUARGA --}}
-                            {{-- @if ($kartu_keluarga_old && $kartu_keluarga_old['groups']->isNotEmpty())
-                                @foreach ($kartu_keluarga_old['groups']->first()['files'] as $item)
-                                    @if (!$item['isPdf'] && $item['isImage'] ?? 0)
-                                        <!-- Thumbnail Item 2 -->
-                                        <div class="relative group cursor-pointer active:scale-95 transition-all">
-                                            <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
-                                                <div class="col-auto"> 
-                                                    <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$item['filename']}}</span>
-                                                    {!!$item['printStatus']!!}
-                                                </div>
-                                                <div class="col-a2to"></ d-flex align-items-centerdiv>
-                                            </div>
-                                            <div class="mt-0 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
-                                                    <img class="w-full h-full object-cover"  
-                                                    wire:click="clickFile('{{$item['id']}}', '{{$item['url']}}', '{{$item['type']?->label()}}')"
-                                                    
-                                                    src="{{ $item['url'] }}"xl
-                                            </div>
-                                        </div>
-                                    @elseif($item['isPdf'] && !$item['isImage'] ?? 0)
-                                        <embed src="{{ $item['url'] }}" type="application/pdf" width="100%" style="min-height: 400px;" class="mb-2">
-                                    @else
-                                        <div class="border rounded p-4 text-center bg-light mb-2">
-                                            <i class="bi bi-file-earmark fs-1"></i>
-                                            <div class="mt-2">
-                                                {{$item['id']}}
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            @endif --}}
+                           
+                            {{-- Zaryoy Card Depan --}}
                             <div class="col-md-6">
-                                {{-- Zaryoy Card Depan --}}
                                 <h3 class="fw-bold">Zaryou Card Depan</h3>
                                 
                                 @if ($zairyou_card_front_old['url'])
@@ -350,8 +247,8 @@
                                 
                                 @endif
                             </div>
+                            {{-- Zairyou Card Belakang --}}
                             <div class="col-md-6">
-                                {{-- Zairyou Card Belakang --}}
                                 <h3 class="fw-bold">Zairyou Card Belakang</h3>
                                 @if ($zairyou_card_back_old['url'])
                                     @if (!$zairyou_card_back_old['isPdf'] && $zairyou_card_back_old['isImage'])
@@ -471,8 +368,8 @@
                                 </section>
                                 @endif
                             </div>
+                            {{-- My Number Depan --}}
                             <div class="col-md-6">
-                                {{-- My Number Depan --}}
                                 <h3 class="fw-bold">My Number Depan</h3>
                                 @if ($my_number_front_old['url'])
                                     @if (!$my_number_front_old['isPdf'] && $my_number_front_old['isImage'])
@@ -592,8 +489,8 @@
                                 </section>
                                 @endif
                             </div>
+                            {{-- My Number Back --}}
                             <div class="col-md-6">
-                                {{-- My Number Back --}}
                                 <h3 class="fw-bold">My Number Belakang</h3>
                                 @if ($my_number_back_old['url'])
                                     @if (!$my_number_back_old['isPdf'] && $my_number_back_old['isImage'])
@@ -960,8 +857,8 @@
                             @endif
                         @endforeach
                     @endif
-                    @if ($kertas_gensen_old && $kertas_gensen_old['groups']->isNotEmpty())
-                        @foreach ($kertas_gensen_old['groups']->first()['files'] as $item)
+                    @if (!empty($kertas_gensen_old && $kertas_gensen_old['groups']))
+                        @foreach ($kertas_gensen_old['groups'][0]['files'] as $item)
                             {{-- {!! $kertas_gensen_old_note[$index] !!} --}}
                             @if($item['isImage'] ?? 0)
                                 <div class="relative group/thumb">
@@ -1148,7 +1045,7 @@
                         <div class="grid grid-cols-2 gap-sm">
                             @foreach ($rekap_pengiriman_uang_old['groups'] as $group_index => $group)
                                 {{-- <h3 class="ms-[10px] text-center">{{$rekap_pengiriman_uang_old['groups'][$group_index]['provider']}}</h3> --}}
-                                @if ($group['files']->isNotEmpty())
+                                @if (!empty($group['files']))
                                 @foreach ($group['files'] as $rekap_index => $item)
                                     @if($item['isPdf'])
                                         <div class="relative group/thumb">
@@ -1313,8 +1210,8 @@
                             @endif
                         @endforeach
                     @endif
-                    @if ($kartu_keluarga_old && $kartu_keluarga_old['groups']->isNotEmpty())
-                        @foreach ($kartu_keluarga_old['groups']->first()['files'] as $item)
+                    @if (!empty($kartu_keluarga_old && $kartu_keluarga_old['groups']))
+                        @foreach ($kartu_keluarga_old['groups'][0]['files'] as $item)
                             {{-- {!! $kartu_keluarga_old_note[$index] !!} --}}
                             @if($item['isImage'] ?? 0)
                                 <div class="relative group/thumb">
@@ -1940,8 +1837,8 @@
                             </button>
                             @endif
                             <h3>Kertas Gensen</h3>
-                            @if ($kertas_gensen_old && $kertas_gensen_old['groups']->isNotEmpty())
-                                @foreach ($kertas_gensen_old['groups']->first()['files'] as $item)
+                            @if (!empty($kertas_gensen_old && $kertas_gensen_old['groups']))
+                                @foreach ($kertas_gensen_old['groups'][0]['files'] as $item)
                                     @if ($item['id'] == $showData['id'])
                                         <div class="bg-surface-container-lowest p-3 rounded-xl shadow-[0px_8px_32px_rgba(25,28,30,0.06)] border-l-4 border-primary group cursor-pointer transition-all duration-200"
                                         wire:click="showFile('{{$item['id']}}', '{{$item['url']}}', '{{$item['type']}}', '{{$item['filename']}}', '{{$item['created_at']}}', '{{$item['isImage'] ?? 0}}')">
@@ -1972,7 +1869,7 @@
                             @if ($rekap_pengiriman_uang_old)
                                 @foreach ($rekap_pengiriman_uang_old['groups'] as $group_index => $group)
                                     <h3 class="ms-[10px]">{{$rekap_pengiriman_uang_old['groups'][$group_index]['provider']}}</h3>
-                                    @if ($group['files']->isNotEmpty())
+                                    @if (!empty($group['files']))
                                         @foreach ($group['files'] as $rekap_index => $item)
                                             @if ($item['id'] == $showData['id'])
                                                 <div class="bg-surface-container-lowest p-3 rounded-xl shadow-[0px_8px_32px_rgba(25,28,30,0.06)] border-l-4 border-primary group cursor-pointer transition-all duration-200"
@@ -2004,8 +1901,8 @@
                                 @endforeach
                             @endif
                             <h3>Kartu Keluarga</h3>
-                            @if ($kartu_keluarga_old && $kartu_keluarga_old['groups']->isNotEmpty())
-                                @foreach ($kartu_keluarga_old['groups']->first()['files'] as $item)
+                            @if (!empty($kartu_keluarga_old && $kartu_keluarga_old['groups']))
+                                @foreach ($kartu_keluarga_old['groups'][0]['files'] as $item)
                                     @if ($item['id'] == $showData['id'])
                                         <div class="bg-surface-container-lowest p-3 rounded-xl shadow-[0px_8px_32px_rgba(25,28,30,0.06)] border-l-4 border-primary group cursor-pointer transition-all duration-200"
                                         wire:click="showFile('{{$item['id']}}', '{{$item['url']}}', '{{$item['type']}}', '{{$item['filename']}}', '{{$item['created_at']}}', '{{$item['isImage'] ?? 0}}')">
