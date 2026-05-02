@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Models\Gensen;
+
+use App\Enums\Gensen\JobStatus;
+use App\Jobs\ExportGensenJob;
+use App\Jobs\MergePersyaratanPengurusanGensen;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Muhammadyunus1072\TrackHistory\HasTrackHistory;
+
+class GensenExportImportHistory extends Model
+{
+    // php artisan reverb:start
+    use HasFactory, SoftDeletes, HasTrackHistory;
+
+    protected $fillable = [
+
+        'role',
+        'type',
+        'status',
+
+        'file_name',
+        'disk',
+        'file_path',
+        'error_message',
+
+        'filters',
+        'amount',
+
+        'started_at',
+        'finished_at',
+    ];
+
+    protected $guarded = ['id'];
+
+    protected $casts = [
+        'status' => JobStatus::class,
+    ];
+
+    protected static function onBoot()
+    {
+        self::creating(function ($model) {
+            if (is_null($model->status)) {
+                $model->status = JobStatus::PENDING;
+            }
+        });
+        self::created(function ($model) {
+            if ($model->type === 'export') {
+                ExportGensenJob::dispatch($model->id);
+            }
+        });
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+}

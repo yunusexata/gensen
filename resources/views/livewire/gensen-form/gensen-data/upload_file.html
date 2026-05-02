@@ -1,0 +1,1848 @@
+
+<!DOCTYPE html>
+<!-- saved from url=(0059)https://nenkin.web.id/form-online/customer-form/7035/upload -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Upload Dokumen - Exata Indonesia | Exata Indonesia</title>
+  <link rel="stylesheet" href="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/materialdesignicons.min.css">
+  <link rel="stylesheet" href="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/vendor.bundle.base.css">
+  <link rel="stylesheet" href="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/style.css">
+  <link rel="stylesheet" href="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/material.css">
+  <link rel="shortcut icon" href="https://nenkin.web.id/form-online/resources/images/favicon.png">
+  <link href="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/select2.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/customer-signature-pad.css">
+  <style>
+    body {
+        background: #f3f3f3;
+    }
+    iframe{
+      width: 100%;
+      height: 100%;
+      border: 1px solid transparent;
+    }
+	
+    body .form-control { border: 1px solid #ced4da !important; }
+
+    body select.form-control{ outline: none; }
+
+    .content-wrapper-inner {
+      padding: 2.1rem 1.04rem 0;
+    }
+
+    .input-group.search,
+    .filter.search{
+      width: 30%;
+    }
+
+    .input-group-append .input-group-text, 
+    .input-group-prepend .input-group-text {
+      border-color: transparent;
+    }
+
+    @media(max-width: 575.98px){
+      .col-md-auto.w-50{ width: 100% !important; }
+      .input-group.search{ width: 100%; } 
+    }
+
+    select.form-control{
+      color: #495057;
+    }
+
+    table.table tr td:last-child .btn{
+      padding: .5em 1em;
+    }
+
+    .pincode-input-container {
+        display: flex;
+    }
+
+    .pincode-input-container > input {
+        flex: 0 0 50px;
+        text-align: center;
+        margin: 3px;
+        padding: 0;
+    }
+
+    .card-header {
+        background-color: #ffffff;
+        color: white;
+        border-bottom: 1px solid rgba(0,0,0,.125);
+    }
+
+    .card-header h2 {
+        margin: 0;
+        font-weight: 500;
+    }
+
+  </style>
+  <script src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/vue.js"></script>
+  <script src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/axios.min.js"></script>
+  <script src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/lodash.min.js"></script>
+  <script src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/vue-snotify.min.js"></script>
+</head>
+
+<body class="sidebar-icon-only">
+  <div class="container-scroller">
+    <div class="container-fluid">
+      <div class="main-panel">
+        <div class="content-wrapper p-0">
+          
+
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Dokumen - Exata Indonesia</title>
+    <link rel="stylesheet" href="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/customer-stepper.css">
+    <!-- HEIC to JPEG conversion library -->
+    <script src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/heic2any.min.js"></script>
+    <style>
+        .signature-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .signature-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .signature-header h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .signature-header p {
+            color: #666;
+            font-size: 14px;
+        }
+        .signature-info {
+            background-color: #fff3cd;
+            border: 3px solid #ff9800;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .signature-info strong {
+            color: #e65100;
+            font-size: 24px;
+            display: block;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .signature-info p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Sub-step Progress Indicator */
+        .substep-progress {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #e0e0e0;
+        }
+        .substep-header h4 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .substep-description {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .substep-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .substep-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #666;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .substep-dot.active {
+            background: #007bff;
+            color: white;
+            transform: scale(1.15);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+        }
+        .substep-dot.completed {
+            background: #28a745;
+            color: white;
+        }
+        .substep-dot.completed::after {
+            content: '✓';
+            font-size: 20px;
+            position: absolute;
+        }
+        .progress-bar-container {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            transition: width 0.5s ease;
+        }
+
+        /* Uploaded Files Summary */
+        .uploaded-files-summary {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .uploaded-files-summary h5 {
+            color: #155724;
+            margin-bottom: 10px;
+        }
+        .uploaded-file-item {
+            color: #155724;
+            margin: 5px 0;
+        }
+        .uploaded-file-item::before {
+            content: '✓ ';
+            font-weight: bold;
+        }
+
+        /* Form Groups */
+        .substep-form {
+            display: none;
+        }
+        .substep-form.active {
+            display: block;
+        }
+        .upload-form-group {
+            margin-bottom: 20px;
+        }
+        .upload-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        .upload-form-group label .optional {
+            color: #6c757d;
+            font-weight: normal;
+            font-size: 0.9em;
+        }
+        .upload-form-group input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #007bff;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .upload-form-group input[type="file"]:hover {
+            background-color: #e9ecef;
+            border-color: #0056b3;
+        }
+        .file-preview {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e7f3ff;
+            border-radius: 4px;
+            display: none;
+        }
+        .file-preview.show {
+            display: block;
+        }
+        .file-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .file-name {
+            font-weight: 500;
+            color: #333;
+        }
+        .file-size {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+        }
+        .loading-screen.show {
+            display: flex;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-text {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            color: #856404;
+        }
+        .customer {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        /* Sample Image Styles */
+        .sample-image-container {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        .sample-image-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 13px;
+        }
+        .sample-image-header i {
+            color: #007bff;
+        }
+        .sample-image-wrapper {
+            text-align: center;
+        }
+        .sample-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 4px;
+            border: 2px solid #dee2e6;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .sample-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .sample-image-note {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        /* Modal for enlarged sample image */
+        .sample-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        .sample-modal.show {
+            display: flex;
+        }
+        .sample-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+        .sample-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+        }
+    </style>
+
+<div class="content-wrapper-inner w-100 h-100">
+   <div class="card">
+      <div class="card-header">
+         <div class="customer">
+            <img style="width: 100%" src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/logo.png" alt="EXATA INDONESIA">
+         </div>
+      </div>
+      <div class="card-body">
+         <!-- Stepper Progress Indicator -->
+         <div class="stepper-wrapper">
+            <div class="stepper-item completed" data-step="1">
+               <div class="stepper-circle">1</div>
+               <span class="stepper-label">Form Profile</span>
+            </div>
+            <div class="stepper-item completed" data-step="2">
+               <div class="stepper-circle">2</div>
+               <span class="stepper-label">Form Privacy</span>
+            </div>
+            <div class="stepper-item completed" data-step="3">
+               <div class="stepper-circle">3</div>
+               <span class="stepper-label">Work Experience</span>
+            </div>
+            <div class="stepper-item completed" data-step="4">
+               <div class="stepper-circle">4</div>
+               <span class="stepper-label">Esign</span>
+            </div>
+            <div class="stepper-item active" data-step="5">
+               <div class="stepper-circle">5</div>
+               <span class="stepper-label">Upload Documents</span>
+            </div>
+         </div>
+         <div class="signature-container">
+            <div class="signature-header">
+               <h3>Upload Dokumen Pendukung</h3>
+               <p>Silakan upload dokumen yang diperlukan. Semua dokumen bersifat opsional.</p>
+            </div>
+            <!-- Sub-step Progress -->
+            <div class="substep-progress">
+               <div class="substep-header">
+                  <h4>Langkah <span id="current-substep-number">1</span> dari 4</h4>
+                  <p class="substep-description" id="substep-description">Upload dokumen identitas dan imigrasi (Paspor, Stempel, Buku Nenkin)</p>
+               </div>
+               <div class="substep-indicators">
+                  <div class="substep-dot active" data-substep="1">1</div>
+                  <div class="substep-dot " data-substep="2">2</div>
+                  <div class="substep-dot " data-substep="3">3</div>
+                  <div class="substep-dot " data-substep="4">4</div>
+               </div>
+               <div class="progress-bar-container">
+                  <div class="progress-bar" id="upload-progress-bar" style="width: 0%"></div>
+               </div>
+            </div>
+            <div class="signature-info">
+               <strong>WAJIB BACA</strong>
+               <p>File maksimal 50MB (Format: JPG, PNG, HEIC) <b>Upload Gambar sesuai dengan contohnya, dan pastikan filenya sudah ter crop rapi!</b></p>
+            </div>
+            <!-- Uploaded Files Summary -->
+            <div id="uploaded-summary" style="display: none;"></div>
+            <!-- Substep Forms -->
+            <form id="substep-form-1" class="substep-form active" data-substep="1">
+               <h4>Dokumen Identitas</h4>
+               <div class="upload-form-group">
+                  <label for="file_1">
+                  Paspor Identitas diri
+                  </label>
+                  <div class="sample-image-container">
+                     <div class="sample-image-header">
+                        <span>📷</span> Contoh dokumen:
+                     </div>
+                     <div class="sample-image-wrapper">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/1-PASPOR-IDENTITAS.jpg" alt="Contoh Paspor Identitas" class="sample-image" onclick="showSampleModal(this.src)" style="transform: rotate(90deg);">
+                     </div>
+                     <p class="sample-image-note">Klik gambar untuk memperbesar</p>
+                  </div>
+                  <input type="file" id="file_1" name="file_1" accept="image/jpeg,image/jpg,image/png,image/heic,image/heif" style="opacity: 1; cursor: pointer;">
+                  <div class="file-preview show" id="preview_1">
+                     <div class="file-info">
+                        <span class="file-name">✓ G HENDRA SEPTIAN-4_page-0001.jpg</span>
+                        <span class="file-size" style="color: #28a745;">1089.50 KB</span>
+                     </div>
+                     <div style="margin-top: 10px; text-align: center;">
+                        <img src="blob:https://nenkin.web.id/bcf92dad-5e66-4a2b-b9bf-6b0f55fffbdf" alt="Preview" style="max-width: 100%; max-height: 300px; border-radius: 4px; border: 2px solid #e0e0e0; object-fit: contain;">
+                     </div>
+                     <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ccc; font-size: 0.85em; color: #666;">
+                        <div>✓ Dikompresi dari 15.71 MB (93.2% lebih kecil)</div>
+                     </div>
+                  </div>
+               </div>
+               <div class="upload-form-group">
+                  <label for="file_2">
+                  Paspor Stempel Imigrasi
+                  </label>
+                  <div class="sample-image-container">
+                     <div class="sample-image-header">
+                        <span>📷</span> Contoh dokumen:
+                     </div>
+                     <div class="sample-image-wrapper">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/2-STEMPEL-PASPOR-IMGRASI.jpg" alt="Contoh Stempel Paspor" class="sample-image" onclick="showSampleModal(this.src)">
+                     </div>
+                     <p class="sample-image-note">Klik gambar untuk memperbesar</p>
+                  </div>
+                  <input type="file" id="file_2" name="file_2" accept="image/jpeg,image/jpg,image/png,image/heic,image/heif" style="opacity: 1; cursor: pointer;">
+                  <div class="file-preview show" id="preview_2">
+                     <div class="file-info">
+                        <span class="file-name">✓ G HENDRA SEPTIAN-4_page-0001.jpg</span>
+                        <span class="file-size" style="color: #28a745;">1089.50 KB</span>
+                     </div>
+                     <div style="margin-top: 10px; text-align: center;">
+                        <img src="blob:https://nenkin.web.id/164b0e06-7ce8-4770-9a65-99297891b5fe" alt="Preview" style="max-width: 100%; max-height: 300px; border-radius: 4px; border: 2px solid #e0e0e0; object-fit: contain;">
+                     </div>
+                     <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ccc; font-size: 0.85em; color: #666;">
+                        <div>✓ Dikompresi dari 15.71 MB (93.2% lebih kecil)</div>
+                     </div>
+                  </div>
+               </div>
+               <div class="upload-form-group">
+                  <label for="file_3">
+                  Buku nenkin biru / kuning
+                  </label>
+                  <div class="sample-image-container">
+                     <div class="sample-image-header">
+                        <span>📷</span> Contoh dokumen (Nenkin Kuning / Biru):
+                     </div>
+                     <div class="sample-image-wrapper" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/3A-NENKIN-KUNING.jpg" alt="Contoh Nenkin Kuning" class="sample-image" style="max-height: 150px;" onclick="showSampleModal(this.src)">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/3B-NENKIN-BIRU.jpg" alt="Contoh Nenkin Biru" class="sample-image" style="max-height: 150px; transform: rotate(-90deg);" onclick="showSampleModal(this.src)">
+                     </div>
+                     <p class="sample-image-note">Klik gambar untuk memperbesar</p>
+                  </div>
+                  <input type="file" id="file_3" name="file_3" accept="image/jpeg,image/jpg,image/png,image/heic,image/heif" style="opacity: 1; cursor: pointer;">
+                  <div class="file-preview" id="preview_3"></div>
+               </div>
+               <div class="button-group">
+                  <button type="button" class="btn btn-secondary" onclick="skipSubstep(1)">Lewati</button>
+                  <button type="submit" class="btn btn-primary">Upload &amp; Lanjutkan</button>
+               </div>
+            </form>
+            <form id="substep-form-2" class="substep-form " data-substep="2">
+               <h4>Dokumen Keuangan &amp; Residensi</h4>
+               <div class="upload-form-group">
+                  <label for="file_4">
+                  Buku Rekening / E-statement 
+                  </label>
+                  <div class="sample-image-container">
+                     <div class="sample-image-header">
+                        <span>📷</span> Contoh dokumen:
+                     </div>
+                     <div class="sample-image-wrapper">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/4-BUKU-REK.jpg" alt="Contoh Buku Rekening" class="sample-image" onclick="showSampleModal(this.src)">
+                     </div>
+                     <p class="sample-image-note">Klik gambar untuk memperbesar</p>
+                  </div>
+                  <input type="file" id="file_4" name="file_4" accept="image/jpeg,image/jpg,image/png,image/heic,image/heif" style="opacity: 1; cursor: pointer;">
+                  <div class="file-preview" id="preview_4"></div>
+               </div>
+               <div class="upload-form-group">
+                  <label for="file_5">
+                  Juminhyou / tensetsu todoke (bukti putus izin tinggal) 
+                  </label>
+                  <div class="sample-image-container">
+                     <div class="sample-image-header">
+                        <span>📷</span> Contoh dokumen (Juminhyou / Tensetsu Todoke):
+                     </div>
+                     <div class="sample-image-wrapper" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/5A-JUMINHYO.jpg" alt="Contoh Juminhyou" class="sample-image" style="max-height: 150px;" onclick="showSampleModal(this.src)">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/5B-TENSUTSU-TODOKE.jpg" alt="Contoh Tensetsu Todoke" class="sample-image" style="max-height: 150px; transform: rotate(90deg);" onclick="showSampleModal(this.src)">
+                     </div>
+                     <p class="sample-image-note">Klik gambar untuk memperbesar</p>
+                  </div>
+                  <input type="file" id="file_5" name="file_5" accept="image/jpeg,image/jpg,image/png,image/heic,image/heif" style="opacity: 1; cursor: pointer;">
+                  <div class="file-preview" id="preview_5"></div>
+               </div>
+               <div class="upload-form-group">
+                  <label for="file_6">
+                  Form Pengganti buku nenkin 
+                  </label>
+                  <div class="sample-image-container">
+                     <div class="sample-image-header">
+                        <span>📷</span> Contoh dokumen (Form Pengganti buku nenkin):
+                     </div>
+                     <div class="sample-image-wrapper" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/12-PENGGANTI-BUKU-NENKIN.jpeg" alt="Contoh Form Pengganti buku nenkin" class="sample-image" style="max-height: 150px;" onclick="showSampleModal(this.src)">
+                     </div>
+                     <p class="sample-image-note">Klik gambar untuk memperbesar</p>
+                  </div>
+                  <input type="file" id="file_6" name="file_6" accept="image/jpeg,image/jpg,image/png,image/heic,image/heif" style="opacity: 1; cursor: pointer;">
+                  <div class="file-preview" id="preview_6"></div>
+               </div>
+               <div class="button-group">
+                  <button type="button" class="btn btn-secondary" onclick="skipSubstep(2)">Lewati</button>
+                  <button type="submit" class="btn btn-primary">Upload &amp; Lanjutkan</button>
+               </div>
+            </form>
+            <form id="substep-form-3" class="substep-form " data-substep="3">
+               <h4>Kartu Identitas (Zairyou &amp; My Number)</h4>
+               <div class="upload-form-group">
+                  <label for="file_7">
+                  Zairyou card - Depan
+                  </label>
+                  <div class="sample-image-container">
+                     <div class="sample-image-header">
+                        <span>📷</span> Contoh dokumen:
+                     </div>
+                     <div class="sample-image-wrapper">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/6-ZAIRYU-KAADO-DEPAN.jpg" alt="Contoh Zairyou Card Depan" class="sample-image" onclick="showSampleModal(this.src)">
+                     </div>
+                     <p class="sample-image-note">Klik gambar untuk memperbesar</p>
+                  </div>
+                  <input type="file" id="file_7" name="file_7" accept="image/jpeg,image/jpg,image/png,image/heic,image/heif" style="opacity: 1; cursor: pointer;">
+                  <div class="file-preview" id="preview_7"></div>
+               </div>
+               <div class="upload-form-group">
+                  <label for="file_10">
+                  Zairyou card - Belakang
+                  </label>
+                  <div class="sample-image-container">
+                     <div class="sample-image-header">
+                        <span>📷</span> Contoh dokumen:
+                     </div>
+                     <div class="sample-image-wrapper">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/7-ZAIRYU-KAADO-BELAKANG.png" alt="Contoh Zairyou Card Belakang" class="sample-image" onclick="showSampleModal(this.src)">
+                     </div>
+                     <p class="sample-image-note">Klik gambar untuk memperbesar</p>
+                  </div>
+                  <input type="file" id="file_10" name="file_10" accept="image/jpeg,image/jpg,image/png,image/heic,image/heif" style="opacity: 1; cursor: pointer;">
+                  <div class="file-preview" id="preview_10"></div>
+               </div>
+               <div class="upload-form-group">
+                  <label for="file_8">
+                  My Number - Depan
+                  </label>
+                  <div class="sample-image-container">
+                     <div class="sample-image-header">
+                        <span>📷</span> Contoh dokumen:
+                     </div>
+                     <div class="sample-image-wrapper">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/9-MY-NUMBER-DEPAN.jpg" alt="Contoh My Number Depan" class="sample-image" onclick="showSampleModal(this.src)">
+                     </div>
+                     <p class="sample-image-note">Klik gambar untuk memperbesar</p>
+                  </div>
+                  <input type="file" id="file_8" name="file_8" accept="image/jpeg,image/jpg,image/png,image/heic,image/heif" style="opacity: 1; cursor: pointer;">
+                  <div class="file-preview" id="preview_8"></div>
+               </div>
+               <div class="upload-form-group">
+                  <label for="file_11">
+                  My Number - Belakang
+                  </label>
+                  <div class="sample-image-container">
+                     <div class="sample-image-header">
+                        <span>📷</span> Contoh dokumen:
+                     </div>
+                     <div class="sample-image-wrapper">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/10-MY-NUMBER-BELAKANG.jpg" alt="Contoh My Number Belakang" class="sample-image" onclick="showSampleModal(this.src)">
+                     </div>
+                     <p class="sample-image-note">Klik gambar untuk memperbesar</p>
+                  </div>
+                  <input type="file" id="file_11" name="file_11" accept="image/jpeg,image/jpg,image/png,image/heic,image/heif" style="opacity: 1; cursor: pointer;">
+                  <div class="file-preview" id="preview_11"></div>
+               </div>
+               <div class="button-group">
+                  <button type="button" class="btn btn-secondary" onclick="skipSubstep(3)">Lewati</button>
+                  <button type="submit" class="btn btn-primary">Upload &amp; Lanjutkan</button>
+               </div>
+            </form>
+            <form id="substep-form-4" class="substep-form " data-substep="4">
+               <h4>Dokumen Lainnya</h4>
+               <div class="upload-form-group">
+                  <label for="file_9">
+                  Ichijikin / Form Lumpsum
+                  </label>
+                  <div class="sample-image-container">
+                     <div class="sample-image-header">
+                        <span>📷</span> Contoh dokumen:
+                     </div>
+                     <div class="sample-image-wrapper">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/8-ICHIJIKIN.jpg.jpeg" alt="Contoh Ichijikin Form" class="sample-image" onclick="showSampleModal(this.src)">
+                     </div>
+                     <p class="sample-image-note">Klik gambar untuk memperbesar</p>
+                  </div>
+                  <input type="file" id="file_9" name="file_9" accept="image/jpeg,image/jpg,image/png,image/heic,image/heif" style="opacity: 1; cursor: pointer;">
+                  <div class="file-preview" id="preview_9"></div>
+               </div>
+               <div class="upload-form-group">
+                  <label for="ktp_file">
+                  KTP (Kartu Tanda Penduduk)
+                  </label>
+                  <div class="sample-image-container">
+                     <div class="sample-image-header">
+                        <span>📷</span> Contoh dokumen:
+                     </div>
+                     <div class="sample-image-wrapper">
+                        <img src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/11-KTP.jpg.jpeg" alt="Contoh KTP" class="sample-image" onclick="showSampleModal(this.src)">
+                     </div>
+                     <p class="sample-image-note">Klik gambar untuk memperbesar</p>
+                  </div>
+                  <input type="file" id="ktp_file" name="ktp_file" accept="image/jpeg,image/jpg,image/png,image/heic,image/heif" style="opacity: 1; cursor: pointer;">
+                  <div class="file-preview" id="preview_ktp_file"></div>
+               </div>
+               <div class="button-group">
+                  <button type="button" class="btn btn-secondary" onclick="skipSubstep(4)">Lewati</button>
+                  <button type="submit" class="btn btn-primary">Selesai Upload</button>
+               </div>
+            </form>
+         </div>
+         <div class="loading-screen" id="loadingScreen">
+            <div class="loader"></div>
+            <div class="loading-text" id="loadingText">Mengompresi gambar... (15.71 MB)</div>
+         </div>
+         <!-- Sample Image Modal -->
+         <div class="sample-modal" id="sampleModal" onclick="closeSampleModal()">
+            <span class="sample-modal-close">×</span>
+            <img id="sampleModalImage" src="https://nenkin.web.id/form-online/customer-form/7035/upload" alt="Sample Document">
+         </div>
+      </div>
+   </div>
+</div>
+
+    <script>
+        // Sample image modal functions
+        function showSampleModal(src) {
+            document.getElementById('sampleModalImage').src = src;
+            document.getElementById('sampleModal').classList.add('show');
+        }
+
+        function closeSampleModal() {
+            document.getElementById('sampleModal').classList.remove('show');
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeSampleModal();
+            }
+        });
+        const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB in bytes (before compression)
+        const TARGET_FILE_SIZE = 2 * 1024 * 1024; // Target 2MB after compression
+        const MAX_UPLOAD_SIZE = 3 * 1024 * 1024; // Maximum 3MB after compression
+        const formId = '7035';
+        let currentSubstep = 1;
+        const uploadedFiles = [];
+        const substepCompleted = {"1":0,"2":0,"3":0,"4":0};
+
+        // File labels for display
+        const fileLabels = {
+            'file_1': 'Paspor Identitas diri',
+            'file_2': 'Paspor Stempel Imigrasi',
+            'file_3': 'Buku nenkin biru / kuning',
+            'file_4': 'Buku Rekening / E-statement',
+            'file_5': 'Juminhyou / tensetsu todoke',
+            'file_6': 'Form Pengganti buku nenkin',
+            'file_7': 'Zairyou card - Depan',
+            'file_8': 'My Number - Depan',
+            'file_9': 'Ichijikin / Form Lumpsum',
+            'file_10': 'Zairyou card - Belakang',
+            'file_11': 'My Number - Belakang',
+            'ktp_file': 'KTP (Kartu Tanda Penduduk)'
+        };
+
+        const substepDescriptions = {
+            1: 'Upload dokumen identitas dan imigrasi (Paspor, Stempel, Buku Nenkin)',
+            2: 'Upload dokumen keuangan dan residensi (Rekening, Juminhyou, Form Nenkin)',
+            3: 'Upload kartu identitas (Zairyou Card & My Number)',
+            4: 'Upload dokumen lainnya (Ichijikin & KTP)'
+        };
+
+        // Store processed files for upload
+        const processedFiles = {};
+
+        // HEIC conversion queue to prevent race conditions
+        let heicConversionQueue = Promise.resolve();
+        const previewObjectUrls = {}; // Track object URLs for cleanup
+        let isProcessingFile = false; // Flag to block concurrent uploads
+
+        // Show/Hide loading screen with custom text
+        function showLoadingScreen(text) {
+            document.getElementById('loadingText').textContent = text;
+            document.getElementById('loadingScreen').classList.add('show');
+        }
+
+        function hideLoadingScreen() {
+            document.getElementById('loadingScreen').classList.remove('show');
+        }
+
+        // Disable/Enable all file inputs during processing
+        function setFileInputsDisabled(disabled, excludeId = null) {
+            document.querySelectorAll('input[type="file"]').forEach(input => {
+                if (input.id !== excludeId) {
+                    input.disabled = disabled;
+                    if (disabled) {
+                        input.style.opacity = '0.5';
+                        input.style.cursor = 'not-allowed';
+                    } else {
+                        input.style.opacity = '1';
+                        input.style.cursor = 'pointer';
+                    }
+                }
+            });
+            // Also disable/enable buttons during processing
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.disabled = disabled;
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSubstepDescription();
+            showUploadedFilesSummary();
+            initializeFileInputs();
+            initializeFormSubmits();
+        });
+
+        // Image Compression Function
+        async function compressImage(file, targetSizeBytes = TARGET_FILE_SIZE, maxSizeBytes = MAX_UPLOAD_SIZE) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const img = new Image();
+
+                    img.onload = function() {
+                        let width = img.width;
+                        let height = img.height;
+                        let quality = 0.9;
+
+                        // Calculate initial scaling if image is too large
+                        const maxDimension = 4096; // Maximum dimension for compatibility
+                        if (width > maxDimension || height > maxDimension) {
+                            if (width > height) {
+                                height = (height / width) * maxDimension;
+                                width = maxDimension;
+                            } else {
+                                width = (width / height) * maxDimension;
+                                height = maxDimension;
+                            }
+                        }
+
+                        // Aggressive scaling for very large files
+                        const fileSizeMB = file.size / (1024 * 1024);
+                        if (fileSizeMB > 10) {
+                            // Scale down significantly for files over 10MB
+                            const scaleFactor = Math.sqrt(10 / fileSizeMB);
+                            width = Math.floor(width * scaleFactor);
+                            height = Math.floor(height * scaleFactor);
+                        } else if (fileSizeMB > 5) {
+                            // Moderate scaling for files over 5MB
+                            const scaleFactor = Math.sqrt(5 / fileSizeMB);
+                            width = Math.floor(width * scaleFactor);
+                            height = Math.floor(height * scaleFactor);
+                        }
+
+                        // Function to try compression
+                        const tryCompress = (w, h, q) => {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = w;
+                            canvas.height = h;
+
+                            const ctx = canvas.getContext('2d');
+                            // Use better image smoothing
+                            ctx.imageSmoothingEnabled = true;
+                            ctx.imageSmoothingQuality = 'high';
+                            ctx.drawImage(img, 0, 0, w, h);
+
+                            return new Promise((resolveBlob) => {
+                                canvas.toBlob(
+                                    (blob) => resolveBlob(blob),
+                                    'image/jpeg',
+                                    q
+                                );
+                            });
+                        };
+
+                        // Iterative compression
+                        const compress = async () => {
+                            let blob = await tryCompress(width, height, quality);
+                            let attempts = 0;
+                            const maxAttempts = 10;
+
+                            // First, try adjusting quality
+                            while (blob.size > maxSizeBytes && quality > 0.1 && attempts < maxAttempts) {
+                                quality -= 0.1;
+                                blob = await tryCompress(width, height, quality);
+                                attempts++;
+                            }
+
+                            // If still too large, reduce dimensions
+                            attempts = 0;
+                            while (blob.size > maxSizeBytes && attempts < maxAttempts) {
+                                width = Math.floor(width * 0.9);
+                                height = Math.floor(height * 0.9);
+
+                                // Try with reduced dimensions
+                                blob = await tryCompress(width, height, quality);
+                                attempts++;
+
+                                // If we got below target, try to improve quality slightly
+                                if (blob.size < targetSizeBytes && quality < 0.9) {
+                                    const testQuality = Math.min(0.9, quality + 0.1);
+                                    const testBlob = await tryCompress(width, height, testQuality);
+                                    if (testBlob.size <= maxSizeBytes) {
+                                        blob = testBlob;
+                                        quality = testQuality;
+                                    }
+                                }
+                            }
+
+                            // Create a new File object from the blob
+                            const compressedFile = new File(
+                                [blob],
+                                file.name.replace(/\.[^/.]+$/, '.jpg'), // Change extension to jpg
+                                {
+                                    type: 'image/jpeg',
+                                    lastModified: Date.now()
+                                }
+                            );
+
+                            resolve({
+                                file: compressedFile,
+                                originalSize: file.size,
+                                compressedSize: blob.size,
+                                compressionRatio: ((1 - blob.size / file.size) * 100).toFixed(1)
+                            });
+                        };
+
+                        compress().catch(reject);
+                    };
+
+                    img.onerror = function() {
+                        reject(new Error('Failed to load image'));
+                    };
+
+                    img.src = e.target.result;
+                };
+
+                reader.onerror = function() {
+                    reject(new Error('Failed to read file'));
+                };
+
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // File input change handlers
+        function initializeFileInputs() {
+            document.querySelectorAll('input[type="file"]').forEach(input => {
+                input.addEventListener('change', async function(e) {
+                    // Prevent the generic public.php handler from running
+                    e.stopImmediatePropagation();
+
+                    const file = e.target.files[0];
+                    const fileKey = e.target.id;
+                    // Handle special case for ktp_file
+                    const previewId = fileKey === 'ktp_file' ? 'preview_ktp_file' : 'preview_' + fileKey.split('_')[1];
+                    const preview = document.getElementById(previewId);
+
+                    if (file) {
+                        // Block if another file is being processed
+                        if (isProcessingFile) {
+                            alert('Mohon tunggu proses file sebelumnya selesai.');
+                            e.target.value = '';
+                            return;
+                        }
+
+                        // Check file size before compression
+                        if (file.size > MAX_FILE_SIZE) {
+                            alert(`File "${file.name}" terlalu besar! Maksimal 50MB per file.\n\nUkuran file: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+                            e.target.value = '';
+                            preview.classList.remove('show');
+                            return;
+                        }
+
+                        // Check file type
+                        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/heic', 'image/heif'];
+                        // Also check file extension for HEIC files (some browsers don't recognize the MIME type)
+                        const fileName = file.name.toLowerCase();
+                        const isValidExtension = fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') ||
+                                                fileName.endsWith('.png') || fileName.endsWith('.heic') ||
+                                                fileName.endsWith('.heif');
+
+                        if (!validTypes.includes(file.type) && !isValidExtension) {
+                            alert(`File "${file.name}" format tidak didukung!\n\nHanya JPG, PNG, dan HEIC yang diperbolehkan.`);
+                            e.target.value = '';
+                            preview.classList.remove('show');
+                            return;
+                        }
+
+                        // Set processing flag and disable other inputs
+                        isProcessingFile = true;
+                        setFileInputsDisabled(true, fileKey);
+
+                        // Clear previous preview
+                        preview.innerHTML = '';
+                        preview.classList.add('show');
+
+                        // Show processing message
+                        const originalSizeMB = (file.size / 1024 / 1024).toFixed(2);
+                        const isHeic = fileName.endsWith('.heic') || fileName.endsWith('.heif') ||
+                                      file.type === 'image/heic' || file.type === 'image/heif';
+
+                        // Show full screen loading
+                        const loadingMessage = isHeic
+                            ? `Mengonversi dan mengompresi gambar... (${originalSizeMB} MB)`
+                            : `Mengompresi gambar... (${originalSizeMB} MB)`;
+                        showLoadingScreen(loadingMessage);
+
+                        preview.innerHTML = `
+                            <div class="file-info">
+                                <span class="file-name">⏳ ${isHeic ? 'Mengonversi dan mengompresi gambar...' : 'Mengompresi gambar...'} (${originalSizeMB} MB)</span>
+                                <span class="file-size" style="color: #007bff;">Harap tunggu...</span>
+                            </div>
+                        `;
+
+                        try {
+                            // Convert HEIC to JPEG if needed
+                            let processedFile = file;
+                            if (isHeic) {
+                                try {
+                                    // Queue HEIC conversions to prevent race conditions in libheif
+                                    processedFile = await new Promise((resolve, reject) => {
+                                        heicConversionQueue = heicConversionQueue.then(async () => {
+                                            try {
+                                                // Small delay to ensure previous conversion is fully cleaned up
+                                                await new Promise(r => setTimeout(r, 100));
+
+                                                const convertedBlob = await heic2any({
+                                                    blob: file,
+                                                    toType: 'image/jpeg',
+                                                    quality: 0.9
+                                                });
+                                                // Convert blob to file
+                                                const converted = new File(
+                                                    [convertedBlob],
+                                                    file.name.replace(/\.(heic|heif)$/i, '.jpg'),
+                                                    { type: 'image/jpeg', lastModified: Date.now() }
+                                                );
+                                                resolve(converted);
+                                            } catch (err) {
+                                                reject(err);
+                                            }
+                                        }).catch(err => {
+                                            // Ensure queue continues even if one conversion fails
+                                            reject(err);
+                                        });
+                                    });
+                                } catch (conversionError) {
+                                    console.error('HEIC conversion error:', conversionError);
+                                    let errorMsg = `Gagal mengonversi file HEIC "${file.name}".`;
+
+                                    if (conversionError.code === 'ERR_LIBHEIF') {
+                                        errorMsg += '\n\nFile HEIC mungkin rusak atau dalam format yang tidak didukung.';
+                                    } else {
+                                        errorMsg += `\n\nError: ${conversionError.message}`;
+                                    }
+
+                                    errorMsg += '\n\nSilakan coba:\n1. Gunakan file HEIC lain\n2. Konversi ke JPG/PNG terlebih dahulu\n3. Ambil foto ulang jika memungkinkan';
+
+                                    alert(errorMsg);
+                                    e.target.value = '';
+                                    preview.classList.remove('show');
+                                    // Re-enable inputs after HEIC conversion error
+                                    isProcessingFile = false;
+                                    setFileInputsDisabled(false);
+                                    hideLoadingScreen();
+                                    return;
+                                }
+                            }
+
+                            // Compress the image
+                            const compressionResult = await compressImage(processedFile);
+                            const compressedFile = compressionResult.file;
+
+                            // Check if compressed file is still too large
+                            if (compressedFile.size > MAX_UPLOAD_SIZE) {
+                                alert(`Gagal mengompresi file "${file.name}" ke ukuran yang sesuai.\n\nUkuran asli: ${(file.size / 1024 / 1024).toFixed(2)} MB\nSetelah kompresi: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB\n\nSilakan gunakan gambar dengan ukuran lebih kecil.`);
+                                e.target.value = '';
+                                preview.classList.remove('show');
+                                // Re-enable inputs after compression size error
+                                isProcessingFile = false;
+                                setFileInputsDisabled(false);
+                                hideLoadingScreen();
+                                return;
+                            }
+
+                            // Show compression success
+                            showFilePreviewWithCompression(compressedFile, compressionResult, preview);
+                            processedFiles[fileKey] = compressedFile;
+
+                            // Re-enable inputs after successful processing
+                            isProcessingFile = false;
+                            setFileInputsDisabled(false);
+                            hideLoadingScreen();
+
+                        } catch (error) {
+                            console.error('Compression error:', error);
+                            alert(`Gagal mengompresi file "${file.name}".\n\nError: ${error.message}\n\nSilakan coba file lain.`);
+                            e.target.value = '';
+                            preview.classList.remove('show');
+                            // Re-enable inputs after compression error
+                            isProcessingFile = false;
+                            setFileInputsDisabled(false);
+                            hideLoadingScreen();
+                        }
+                    } else {
+                        preview.classList.remove('show');
+                        delete processedFiles[fileKey];
+                        // Clean up object URL when file is cleared
+                        const previewId = preview.id;
+                        if (previewObjectUrls[previewId]) {
+                            try {
+                                URL.revokeObjectURL(previewObjectUrls[previewId]);
+                            } catch (e) {
+                                // Ignore revoke errors
+                            }
+                            delete previewObjectUrls[previewId];
+                        }
+                    }
+                });
+            });
+        }
+
+        // Form submit handlers
+        function initializeFormSubmits() {
+            for (let i = 1; i <= 4; i++) {
+                const form = document.getElementById('substep-form-' + i);
+                if (form) {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        submitSubstep(i);
+                    });
+                }
+            }
+        }
+
+        // Submit substep
+        async function submitSubstep(substep) {
+            const form = document.getElementById('substep-form-' + substep);
+            const formData = new FormData();
+
+            // Add processed files (including cropped files) to formData
+            const inputs = form.querySelectorAll('input[type="file"]');
+            inputs.forEach(input => {
+                const fileKey = input.id;
+                if (processedFiles[fileKey]) {
+                    formData.append(input.name, processedFiles[fileKey]);
+                }
+            });
+
+            // Show loading screen
+            showLoadingScreen('Sedang mengupload dokumen. Harap tunggu...');
+
+            try {
+                const response = await uploadWithRetry(
+                    'https://nenkin.web.id/form-online/customer-form/' + formId + '/upload_substep/' + substep,
+                    formData,
+                    3
+                );
+
+                const result = await response.json();
+
+                hideLoadingScreen();
+
+                if (response.ok && result.success) {
+                    if (result.is_final) {
+                        // Final substep - redirect to success
+                        alert('Upload berhasil! Semua dokumen telah diterima.\n\nAnda akan diarahkan ke halaman konfirmasi...');
+                        setTimeout(() => {
+                            window.location.href = result.redirect_url;
+                        }, 1500);
+                    } else {
+                        // Move to next substep
+                        currentSubstep = result.next_substep;
+                        markSubstepCompleted(substep);
+                        showSubstep(result.next_substep);
+
+                        // Update uploaded files record
+                        result.files_uploaded.forEach(fileKey => {
+                            uploadedFiles[fileKey] = true;
+                        });
+                        showUploadedFilesSummary();
+                    }
+                } else {
+                    alert('Upload gagal: ' + (result.error || 'Server error') + '\n\nSilakan coba lagi.');
+                }
+            } catch (error) {
+                hideLoadingScreen();
+                console.error('Error:', error);
+                alert('Terjadi kesalahan jaringan.\n\nSilakan periksa koneksi internet dan coba lagi.');
+            }
+        }
+
+        // Skip substep
+        function skipSubstep(substep) {
+            if (substep === 4) {
+                // Final substep - must submit (can be empty)
+                submitSubstep(substep);
+            } else {
+                currentSubstep = substep + 1;
+                showSubstep(currentSubstep);
+            }
+        }
+
+        // Show specific substep
+        function showSubstep(substep) {
+            // Hide all forms
+            document.querySelectorAll('.substep-form').forEach(form => {
+                form.classList.remove('active');
+            });
+
+            // Show target form
+            const targetForm = document.getElementById('substep-form-' + substep);
+            if (targetForm) {
+                targetForm.classList.add('active');
+            }
+
+            // Update indicators
+            updateSubstepIndicators(substep);
+            updateSubstepDescription();
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Update substep indicators
+        function updateSubstepIndicators(substep) {
+            document.querySelectorAll('.substep-dot').forEach(dot => {
+                const dotSubstep = parseInt(dot.getAttribute('data-substep'));
+                dot.classList.remove('active', 'completed');
+
+                if (substepCompleted[dotSubstep]) {
+                    dot.classList.add('completed');
+                    dot.textContent = '';
+                } else if (dotSubstep === substep) {
+                    dot.classList.add('active');
+                    dot.textContent = dotSubstep;
+                } else {
+                    dot.textContent = dotSubstep;
+                }
+            });
+
+            // Update progress bar
+            const progress = ((substep - 1) / 4) * 100;
+            document.getElementById('upload-progress-bar').style.width = progress + '%';
+
+            // Update substep number
+            document.getElementById('current-substep-number').textContent = substep;
+        }
+
+        // Mark substep as completed
+        function markSubstepCompleted(substep) {
+            substepCompleted[substep] = 1;
+            const dot = document.querySelector('.substep-dot[data-substep="' + substep + '"]');
+            if (dot) {
+                dot.classList.remove('active');
+                dot.classList.add('completed');
+                dot.textContent = '';
+            }
+        }
+
+        // Update substep description
+        function updateSubstepDescription() {
+            document.getElementById('substep-description').textContent = substepDescriptions[currentSubstep] || '';
+        }
+
+        // Show uploaded files summary
+        function showUploadedFilesSummary() {
+            const summaryDiv = document.getElementById('uploaded-summary');
+            const uploadedList = [];
+
+            for (const [key, value] of Object.entries(uploadedFiles)) {
+                if (value) {
+                    uploadedList.push(fileLabels[key]);
+                }
+            }
+
+            if (uploadedList.length > 0) {
+                let html = '<div class="uploaded-files-summary"><h5>Dokumen yang Sudah Diupload:</h5>';
+                uploadedList.forEach(label => {
+                    html += '<div class="uploaded-file-item">' + label + '</div>';
+                });
+                html += '</div>';
+                summaryDiv.innerHTML = html;
+                summaryDiv.style.display = 'block';
+            } else {
+                summaryDiv.style.display = 'none';
+            }
+        }
+
+        // Show file preview with compression details
+        function showFilePreviewWithCompression(file, compressionResult, previewElement) {
+            const fileSizeKB = (file.size / 1024).toFixed(2);
+            const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+            const originalSizeMB = (compressionResult.originalSize / 1024 / 1024).toFixed(2);
+            const sizeColor = fileSizeMB > 2 ? '#ffc107' : '#28a745';
+
+            let compressionInfo = '';
+            if (compressionResult.originalSize !== compressionResult.compressedSize) {
+                compressionInfo = `
+                    <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ccc; font-size: 0.85em; color: #666;">
+                        <div>✓ Dikompresi dari ${originalSizeMB} MB (${compressionResult.compressionRatio}% lebih kecil)</div>
+                    </div>
+                `;
+            }
+
+            // Get preview ID from element
+            const previewId = previewElement.id;
+
+            // Revoke previous URL if exists to prevent memory leak
+            if (previewObjectUrls[previewId]) {
+                try {
+                    URL.revokeObjectURL(previewObjectUrls[previewId]);
+                } catch (e) {
+                    // Ignore revoke errors
+                }
+            }
+
+            // Create image preview URL
+            const imageUrl = URL.createObjectURL(file);
+            previewObjectUrls[previewId] = imageUrl;
+
+            previewElement.innerHTML = `
+                <div class="file-info">
+                    <span class="file-name">✓ ${file.name}</span>
+                    <span class="file-size" style="color: ${sizeColor};">${fileSizeKB} KB</span>
+                </div>
+                <div style="margin-top: 10px; text-align: center;">
+                    <img src="${imageUrl}" alt="Preview" style="max-width: 100%; max-height: 300px; border-radius: 4px; border: 2px solid #e0e0e0; object-fit: contain;">
+                </div>
+                ${compressionInfo}
+            `;
+            previewElement.classList.add('show');
+        }
+
+        // Upload with retry (exponential backoff)
+        async function uploadWithRetry(url, formData, maxRetries = 3) {
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    return response;
+                } catch (error) {
+                    if (i === maxRetries - 1) throw error;
+                    await sleep(Math.pow(2, i) * 1000); // 1s, 2s, 4s
+                }
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Prevent back navigation from upload page
+        history.pushState(null, null, window.location.href);
+        window.addEventListener('popstate', function(event) {
+            history.pushState(null, null, window.location.href);
+            alert('Anda tidak dapat kembali ke halaman sebelumnya. Silakan selesaikan proses upload terlebih dahulu.');
+        });
+    </script>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/jquery.min.js"></script>
+  <script type="text/javascript" src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/jquery-ui.min.js"></script>
+  <script src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/bootstrap-pincode-input.js"></script>
+  <script src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/select2.min.js"></script>
+  <script src="./Upload Dokumen - Exata Indonesia _ Exata Indonesia_files/signature_pad.umd.js"></script>
+  <script type="text/javascript">
+  var p = [
+        {
+            "id": "11",
+            "text": "ACEH"
+        },
+        {
+            "id": "51",
+            "text": "BALI"
+        },
+        {
+            "id": "36",
+            "text": "BANTEN"
+        },
+        {
+            "id": "17",
+            "text": "BENGKULU"
+        },
+        {
+            "id": "34",
+            "text": "DI YOGYAKARTA"
+        },
+        {
+            "id": "31",
+            "text": "DKI JAKARTA"
+        },
+        {
+            "id": "75",
+            "text": "GORONTALO"
+        },
+        {
+            "id": "15",
+            "text": "JAMBI"
+        },
+        {
+            "id": "32",
+            "text": "JAWA BARAT"
+        },
+        {
+            "id": "33",
+            "text": "JAWA TENGAH"
+        },
+        {
+            "id": "35",
+            "text": "JAWA TIMUR"
+        },
+        {
+            "id": "61",
+            "text": "KALIMANTAN BARAT"
+        },
+        {
+            "id": "63",
+            "text": "KALIMANTAN SELATAN"
+        },
+        {
+            "id": "62",
+            "text": "KALIMANTAN TENGAH"
+        },
+        {
+            "id": "64",
+            "text": "KALIMANTAN TIMUR"
+        },
+        {
+            "id": "65",
+            "text": "KALIMANTAN UTARA"
+        },
+        {
+            "id": "19",
+            "text": "KEPULAUAN BANGKA BELITUNG"
+        },
+        {
+            "id": "21",
+            "text": "KEPULAUAN RIAU"
+        },
+        {
+            "id": "18",
+            "text": "LAMPUNG"
+        },
+        {
+            "id": "81",
+            "text": "MALUKU"
+        },
+        {
+            "id": "82",
+            "text": "MALUKU UTARA"
+        },
+        {
+            "id": "52",
+            "text": "NUSA TENGGARA BARAT"
+        },
+        {
+            "id": "53",
+            "text": "NUSA TENGGARA TIMUR"
+        },
+        {
+            "id": "94",
+            "text": "PAPUA"
+        },
+        {
+            "id": "91",
+            "text": "PAPUA BARAT"
+        },
+        {
+            "id": "14",
+            "text": "RIAU"
+        },
+        {
+            "id": "76",
+            "text": "SULAWESI BARAT"
+        },
+        {
+            "id": "73",
+            "text": "SULAWESI SELATAN"
+        },
+        {
+            "id": "72",
+            "text": "SULAWESI TENGAH"
+        },
+        {
+            "id": "74",
+            "text": "SULAWESI TENGGARA"
+        },
+        {
+            "id": "71",
+            "text": "SULAWESI UTARA"
+        },
+        {
+            "id": "13",
+            "text": "SUMATERA BARAT"
+        },
+        {
+            "id": "16",
+            "text": "SUMATERA SELATAN"
+        },
+        {
+            "id": "12",
+            "text": "SUMATERA UTARA"
+        }
+    ];
+    var pid = 11;
+      var step = 1;
+      var totalSteps = 3;
+
+      $(document).ready(function() {
+
+    // File upload handling
+    $('input[type="file"]').on('change', function() {
+        const file = this.files[0];
+        const inputId = $(this).attr('id');
+        const previewId = inputId + '_preview';
+        
+        if (file) {
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB');
+                $(this).val('');
+                return;
+            }
+            
+            // Validate file type
+            const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Invalid file type. Please upload PDF, JPG, PNG, DOC, or DOCX files only.');
+                $(this).val('');
+                return;
+            }
+            
+            // Create preview
+            let preview = $('#' + previewId);
+            if (preview.length === 0) {
+                preview = $('<div id="' + previewId + '" class="file-upload-preview"></div>');
+                $(this).after(preview);
+            }
+            
+            const fileSizeKB = Math.round(file.size / 1024);
+            preview.html(`
+                <div class="file-info">
+                    <span class="file-name">${file.name}</span>
+                    <span class="file-size">${fileSizeKB} KB</span>
+                    <span class="remove-file" onclick="removeFile('${inputId}')">Remove</span>
+                </div>
+            `).addClass('show');
+        } else {
+            $('#' + previewId).removeClass('show');
+        }
+    });
+    // Form submission validation
+    $('form').on('submit', function(e) {
+        // Check file uploads (optional but validate if provided)
+        let hasInvalidFiles = false;
+        $('input[type="file"]').each(function() {
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File "' + file.name + '" is too large. Maximum size is 5MB.');
+                    hasInvalidFiles = true;
+                    return false;
+                }
+            }
+        });
+
+        if (hasInvalidFiles) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+          $('#nenkinNumber').pincodeInput({hidedigits: false, inputs:10});
+          $('#myNumber').pincodeInput({hidedigits: false, inputs:12});
+
+          $('#account').hide();
+          $('#survey').hide();
+
+          // Initialize button visibility
+          $('#prevBtn').hide();
+          $('#nextBtn').show();
+          $('#submitBtn').hide();
+
+          // Previous button handler
+          $('#prevBtn').click(function (){
+              if(step > 1) {
+                  step -= 1;
+                  changeStep();
+              }
+
+              // Update button visibility
+              if(step === 1) {
+                  $('#prevBtn').hide();
+              }
+              if(step < totalSteps) {
+                  $('#nextBtn').show();
+                  $('#submitBtn').hide();
+              }
+          });
+
+          // Next button handler
+          $('#nextBtn').click(function (){
+              // Validate current step before advancing
+              if(!validateCurrentStep()) {
+                  return false;
+              }
+
+              if(step < totalSteps) {
+                  step += 1;
+                  changeStep();
+              }
+
+              // Update button visibility
+              $('#prevBtn').show();
+              if(step === totalSteps) {
+                  $('#nextBtn').hide();
+                  $('#submitBtn').show();
+              }
+          });
+
+          // Attach validation clear handlers
+          attachValidationClearHandlers();
+
+          // Select2
+          $('#province').on('change', function() {
+            if(this.value) {
+                pid = this.value;
+            }
+            $("#city").val(null).trigger('change');
+          });
+
+          $("#province").select2({
+              data: p
+          });
+
+          $("#city").select2({
+              minimumResultsForSearch: Infinity,
+              ajax: {
+                  url: "https://nenkin.web.id/form-online/admin/rest/regencies",
+                  dataType: 'json',
+                  data: function (params) {
+                      return {
+                          pid: pid,
+                          page: params.page
+                      };
+                  },
+              },
+          });
+
+      });
+
+      /**
+       * Validate all required fields in current step
+       * @returns {boolean} true if all required fields are filled, false otherwise
+       */
+      function validateCurrentStep() {
+          // Clear previous error states
+          $('.form-control').removeClass('is-invalid');
+          $('.select2-selection').removeClass('is-invalid');
+          $('.invalid-feedback').remove();
+          $('.validation-error-alert').remove();
+
+          // Determine current step section
+          var currentSection;
+          if (step === 1) {
+              currentSection = $('#customer');
+          } else if (step === 2) {
+              currentSection = $('#account');
+          } else if (step === 3) {
+              currentSection = $('#survey');
+          }
+
+          // Find all required fields in current section
+          var requiredFields = currentSection.find('input[data-required="true"], select[data-required="true"], textarea[data-required="true"]');
+          var hasErrors = false;
+          var firstErrorField = null;
+
+          // Validate each required field
+          requiredFields.each(function() {
+              var field = $(this);
+              var value = field.val();
+              var isEmpty = !value || value.trim() === '';
+
+              if (isEmpty) {
+                  hasErrors = true;
+
+                  // Add error styling
+                  field.addClass('is-invalid');
+
+                  // For Select2, also style the visible container
+                  if (field.hasClass('select2-hidden-accessible')) {
+                      field.next('.select2-container').find('.select2-selection').addClass('is-invalid');
+                  }
+
+                  // Get field label
+                  var label = field.closest('.form-group').find('label').first().text();
+                  label = label.replace('*', '').trim();
+
+                  // Add error message
+                  var errorMsg = '<div class="invalid-feedback d-block">Field ' + label + ' harus diisi</div>';
+
+                  if (field.parent().hasClass('input-group')) {
+                      field.parent().after(errorMsg);
+                  } else if (field.hasClass('select2-hidden-accessible')) {
+                      field.next('.select2-container').after(errorMsg);
+                  } else {
+                      field.after(errorMsg);
+                  }
+
+                  // Track first error field for scrolling
+                  if (!firstErrorField) {
+                      firstErrorField = field;
+                  }
+              }
+          });
+
+          // If there are errors, scroll to first error and show alert
+          if (hasErrors) {
+              // Scroll to first error field
+              if (firstErrorField) {
+                  $('html, body').animate({
+                      scrollTop: firstErrorField.offset().top - 100
+                  }, 500);
+              }
+
+              // Show error summary alert
+              var errorAlert = '<div class="alert alert-danger alert-dismissible fade show validation-error-alert" role="alert" style="margin-bottom: 20px;">' +
+                  '<strong>Validasi Gagal!</strong> Mohon lengkapi semua field yang wajib diisi (bertanda *) sebelum melanjutkan.' +
+                  '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                  '<span aria-hidden="true">&times;</span>' +
+                  '</button>' +
+                  '</div>';
+
+              currentSection.prepend(errorAlert);
+
+              return false;
+          }
+
+          return true;
+      }
+
+      /**
+       * Clear validation errors when user starts typing/selecting
+       */
+      function attachValidationClearHandlers() {
+          $(document).on('input change', '.form-control, .select2-hidden-accessible', function() {
+              var field = $(this);
+
+              if (field.hasClass('is-invalid')) {
+                  field.removeClass('is-invalid');
+                  field.siblings('.invalid-feedback').remove();
+                  field.parent().siblings('.invalid-feedback').remove();
+              }
+
+              // Clear Select2 error styling
+              if (field.hasClass('select2-hidden-accessible')) {
+                  field.next('.select2-container').find('.select2-selection').removeClass('is-invalid');
+                  field.next('.select2-container').siblings('.invalid-feedback').remove();
+              }
+          });
+      }
+
+      function changeStep() {
+          // Update stepper UI
+          $('.stepper-item').each(function() {
+              var stepNum = parseInt($(this).data('step'));
+              $(this).removeClass('active completed');
+              if (stepNum < step) {
+                  $(this).addClass('completed');
+              } else if (stepNum === step) {
+                  $(this).addClass('active');
+              }
+          });
+
+          // Show/hide form sections
+          if (step === 1) {
+              $('#customer').show();
+              $('#account').hide();
+              $('#survey').hide();
+          } else if (step === 2) {
+              $('#customer').hide();
+              $('#account').show();
+              $('#survey').hide();
+          } else if(step === 3) {
+              $('#customer').hide();
+              $('#account').hide();
+              $('#survey').show();
+          }
+
+          // Scroll to top
+          $('.card-body').get(0)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+
+  </script>
+
+
+</body></html>

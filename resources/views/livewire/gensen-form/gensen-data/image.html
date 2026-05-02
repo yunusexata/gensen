@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+   <head>
+      <meta charset="utf-8"/>
+      <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+      <title>Gallery Preview - Professional Editor</title>
+      <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+      <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+      <script id="tailwind-config">
+         tailwind.config = {
+             darkMode: "class",
+             theme: {
+                 extend: {
+                     "colors": {
+                         "surface-container-high": "#e1e3e3",
+                         "surface": "#f6f6f6",
+                         "error-container": "#f74b6d",
+                         "on-secondary": "#f9efff",
+                         "on-tertiary-container": "#63033b",
+                         "surface-container-lowest": "#ffffff",
+                         "on-secondary-container": "#563098",
+                         "surface-tint": "#5a2af7",
+                         "secondary-fixed-dim": "#d2b8ff",
+                         "error": "#b41340",
+                         "surface-container-low": "#f0f1f1",
+                         "on-surface": "#2d2f2f",
+                         "tertiary-container": "#ff8cbd",
+                         "tertiary-dim": "#8c2a5b",
+                         "on-primary": "#f6f0ff",
+                         "tertiary-fixed-dim": "#f27db0",
+                         "on-background": "#2d2f2f",
+                         "background": "#f6f6f6",
+                         "primary-fixed-dim": "#9581ff",
+                         "secondary-fixed": "#ddc8ff",
+                         "on-tertiary-fixed-variant": "#6f1044",
+                         "on-tertiary": "#ffeff2",
+                         "tertiary": "#9b3667",
+                         "tertiary-fixed": "#ff8cbd",
+                         "primary-container": "#a292ff",
+                         "outline-variant": "#acadad",
+                         "surface-container-highest": "#dbdddd",
+                         "primary": "#5a2af7",
+                         "secondary": "#6b46ae",
+                         "primary-fixed": "#a292ff",
+                         "surface-container": "#e7e8e8",
+                         "on-tertiary-fixed": "#37001e",
+                         "error-dim": "#a70138",
+                         "primary-dim": "#4e0bec",
+                         "outline": "#767777",
+                         "inverse-surface": "#0c0f0f",
+                         "on-surface-variant": "#5a5c5c",
+                         "on-primary-fixed-variant": "#2b0090",
+                         "inverse-on-surface": "#9c9d9d",
+                         "surface-dim": "#d3d5d5",
+                         "on-primary-container": "#220076",
+                         "surface-variant": "#dbdddd",
+                         "on-error-container": "#510017",
+                         "on-secondary-fixed-variant": "#603aa2",
+                         "surface-bright": "#f6f6f6",
+                         "secondary-dim": "#5f39a1",
+                         "secondary-container": "#ddc8ff",
+                         "inverse-primary": "#927dff"
+                     },
+                     "borderRadius": {
+                         "DEFAULT": "0.25rem",
+                         "lg": "0.5rem",
+                         "xl": "0.75rem",
+                         "full": "9999px"
+                     },
+                     "fontFamily": {
+                         "headline": ["Manrope"],
+                         "body": ["Manrope"],
+                         "label": ["Manrope"]
+                     }
+                 },
+             },
+         }
+      </script>
+      <style>
+         body { font-family: 'Manrope', sans-serif; }
+         .material-symbols-outlined {
+         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+         }
+         .glass-nav {
+         background: rgba(255, 255, 255, 0.8);
+         backdrop-filter: blur(20px);
+         }
+         .primary-gradient {
+         background: linear-gradient(135deg, #5a2af7 0%, #a292ff 100%);
+         }
+         .ambient-shadow {
+         box-shadow: 0px 20px 40px rgba(45, 47, 47, 0.06);
+         }
+      </style>
+   </head>
+   <body class="bg-background text-on-surface antialiased overflow-hidden">
+      <!-- TopNavBar -->
+      <header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-16 w-full bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl">
+         <div class="flex items-center gap-8">
+            <h1 class="text-xl font-bold text-neutral-900 dark:text-neutral-50 font-manrope tracking-tight">Gallery Preview</h1>
+            <nav class="hidden md:flex gap-6">
+               <a class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 font-manrope tracking-tight transition-colors" href="#">Collections</a>
+               <a class="text-violet-600 dark:text-violet-400 font-bold border-b-2 border-violet-600 font-manrope tracking-tight" href="#">Recent</a>
+               <a class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 font-manrope tracking-tight transition-colors" href="#">Favorites</a>
+            </nav>
+         </div>
+         <div class="flex items-center gap-4">
+            <button class="p-2 text-neutral-500 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors active:scale-95 duration-200">
+            <span class="material-symbols-outlined">settings</span>
+            </button>
+            <button class="p-2 text-neutral-500 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors active:scale-95 duration-200">
+            <span class="material-symbols-outlined">account_circle</span>
+            </button>
+         </div>
+      </header>
+      <div class="flex h-screen pt-16">
+         <!-- SideNavBar -->
+         <aside class="hidden lg:flex flex-col gap-6 py-8 px-6 h-screen w-64 bg-neutral-50 dark:bg-neutral-950 font-manrope antialiased">
+            <div class="mb-4">
+               <p class="text-lg font-black text-neutral-900 dark:text-neutral-50 uppercase tracking-widest text-[10px] opacity-50 mb-1">Editorial View</p>
+               <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden">
+                     <img class="w-full h-full object-cover" data-alt="close-up portrait of a professional photographer in a soft lit studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDz5LQZXTCrqi58ZrJkk12Umf8YudzncYb13vpl8uDWSxIUkmRdc-jRqub4m7FuAGyzTm8DWSxAZEvGfm7BGb1RRWU0MRJCJMWu34rF4Bmirfg-voIxQg59VpZOvWu9PO9ME0Ye-k7v0MN5ca1r7YgAq9WB_WseKJTmVUkaewD7IA9JXZXIWq33xHpINxSgO54-qAAvvwUcXhs-NxToAo7Xv7CPsvnqpQ_Ak7_iZmgkg54abrteHEji4nZJHQbKImd6LutqmyVZW3al"/>
+                  </div>
+                  <div>
+                     <p class="text-xs font-bold">Premium Tier</p>
+                  </div>
+               </div>
+            </div>
+            <nav class="flex flex-col gap-4">
+               <div class="flex items-center gap-3 text-violet-600 dark:text-violet-400 font-semibold hover:translate-x-1 transition-transform cursor-pointer">
+                  <span class="material-symbols-outlined">photo_library</span>
+                  <span class="text-sm">Library</span>
+               </div>
+               <div class="flex items-center gap-3 text-neutral-500 dark:text-neutral-400 hover:translate-x-1 transition-transform cursor-pointer">
+                  <span class="material-symbols-outlined">auto_awesome_motion</span>
+                  <span class="text-sm">Albums</span>
+               </div>
+               <div class="flex items-center gap-3 text-neutral-500 dark:text-neutral-400 hover:translate-x-1 transition-transform cursor-pointer">
+                  <span class="material-symbols-outlined">group</span>
+                  <span class="text-sm">Shared</span>
+               </div>
+               <div class="flex items-center gap-3 text-neutral-500 dark:text-neutral-400 hover:translate-x-1 transition-transform cursor-pointer">
+                  <span class="material-symbols-outlined">archive</span>
+                  <span class="text-sm">Archive</span>
+               </div>
+            </nav>
+            <button class="mt-auto primary-gradient text-white py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-lg shadow-primary/20">
+            <span class="material-symbols-outlined text-sm">add</span>
+            <span class="text-sm">Upload New</span>
+            </button>
+         </aside>
+         <!-- Main Content Area -->
+         <main class="flex-1 flex flex-col md:flex-row bg-background overflow-hidden">
+            <!-- Center: Image Previewer -->
+            <section class="flex-1 p-6 md:p-12 flex flex-col h-full">
+               <!-- Main Preview Stage -->
+               <div class="flex-1 bg-surface-container-lowest rounded-xl ambient-shadow p-8 flex flex-col relative overflow-hidden group">
+                  <div class="flex justify-between items-center mb-6">
+                     <div>
+                        <h2 class="text-2xl font-extrabold tracking-tight text-on-surface">Preview</h2>
+                        <p class="text-xs text-on-surface-variant">IMG_8422_NORWAY_LANDSCAPE.RAW</p>
+                     </div>
+                     <button class="primary-gradient text-on-primary px-6 py-2.5 rounded-md text-sm font-bold flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+                     <span class="material-symbols-outlined text-[18px]">download</span>
+                     Export Image
+                     </button>
+                  </div>
+                  <div class="flex-1 relative rounded-xl overflow-hidden bg-surface-container flex items-center justify-center">
+                     <img class="w-full h-full object-cover" data-alt="majestic snow-capped mountain peaks reflecting in a crystal clear alpine lake during morning blue hour" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPQY3GsOZNLYbwiwMiSvJMgmxgcPajg0YVtdma7cG3caTujq-xZylYLBzRxVxA1WRkt4z6iUC4cMFEiG-ZMYiZV1_sKFlCFNomrauInsqlqJieIQEQkRl2bKssBz_8wjUKETu0DjoNidpu4TNIV7Y4h1DMgfxUpp7BIABaNvmljxp1D7DnSDG6K37lszBtfyxGxQGqglhOO6UsSnHAi3wK3KID0R2JW_THk18JXCOwklELUf7uB4x3r_d2jby8qxXttgOtTkh-uw1V"/>
+                     <!-- Floating Zoom Control -->
+                     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 glass-nav px-4 py-2 rounded-full flex items-center gap-4 ambient-shadow">
+                        <button class="p-1 hover:bg-surface-container-high rounded-full transition-colors"><span class="material-symbols-outlined text-sm">remove</span></button>
+                        <span class="text-xs font-bold w-8 text-center">85%</span>
+                        <button class="p-1 hover:bg-surface-container-high rounded-full transition-colors"><span class="material-symbols-outlined text-sm">add</span></button>
+                     </div>
+                  </div>
+                  <!-- Bottom Controls -->
+                  <div class="mt-8 flex justify-center gap-12">
+                     <button class="flex flex-col items-center gap-2 group/btn">
+                        <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
+                           <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">crop_rotate</span>
+                        </div>
+                        <span class="text-xs font-bold text-on-surface-variant">Crop</span>
+                     </button>
+                     <button class="flex flex-col items-center gap-2 group/btn">
+                        <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
+                           <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">tune</span>
+                        </div>
+                        <span class="text-xs font-bold text-on-surface-variant">Adjust</span>
+                     </button>
+                     <button class="flex flex-col items-center gap-2 group/btn">
+                        <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
+                           <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">filter_vintage</span>
+                        </div>
+                        <span class="text-xs font-bold text-on-surface-variant">Filter</span>
+                     </button>
+                     <button class="flex flex-col items-center gap-2 group/btn">
+                        <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
+                           <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">brush</span>
+                        </div>
+                        <span class="text-xs font-bold text-on-surface-variant">Retouch</span>
+                     </button>
+                  </div>
+               </div>
+            </section>
+            <!-- Right: Select Image List -->
+            <aside class="w-full md:w-80 p-6 md:py-12 md:pr-12 flex flex-col h-full bg-background md:bg-transparent">
+               <div class="mb-6">
+                  <h3 class="text-lg font-extrabold tracking-tight">Select Image</h3>
+                  <p class="text-xs text-on-surface-variant">12 items in this collection</p>
+               </div>
+               <div class="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
+                  <!-- Thumbnail Item 1 (Active) -->
+                  <div class="relative group cursor-pointer active:scale-95 transition-all">
+                     <div class="aspect-video w-full rounded-xl overflow-hidden border-2 border-primary ring-4 ring-primary/10">
+                        <img class="w-full h-full object-cover" data-alt="majestic snow-capped mountain peaks reflecting in a crystal clear alpine lake during morning blue hour" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-MPb62amnmmR-kUEhrTKRHi4UNsM5cgtkws43Us9m5eX_L7ijFCUbr-lWFqrd-ykWUNmb55iIYmgGeYU2fwT19BfcTx-0wCA_hPPgJgoc4kTJHDtAx9gNtfpxYJcO9lnJBwBQ-zwt5cTgWUmIYm-FooxYTu3ZwFJMQM1dwGHjiUcTS4snFgSusCy-pDnf6-Qjs2hcdWDFno2ki7pXUawfIZIn5RSVCc3yuNkVFcPtOWto2o-rWRapCMatVyoHaa4Hopn9Pla6YQ90"/>
+                     </div>
+                     <div class="absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[14px] text-white" style="font-variation-settings: 'FILL' 1;">check</span>
+                     </div>
+                  </div>
+                  <!-- Thumbnail Item 2 -->
+                  <div class="relative group cursor-pointer active:scale-95 transition-all">
+                     <div class="aspect-video w-full rounded-xl overflow-hidden bg-surface-container-low grayscale hover:grayscale-0 transition-all">
+                        <img class="w-full h-full object-cover" data-alt="lush green foggy forest with sunbeams filtering through ancient trees at sunrise" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCope6Jk02w4OB9_Fwt7HimfASNnQjw7GdTlqvX1t0qmSPnKs7yAvO9djP_QhOpl-7jw4liuDKtBnF3BEplytd_88fq7yqOn3W3B2VEWdwOrmnSgUjXpbLMz_yX7AA7UaFq-VD7es-HIvsl6YhIfVNzJL36l7QZnz5hB8PFpIGMqBW7WL29otfjG8aCeSJTFIpXsUWxLWVYRcXSFKoL9mibJrIZ1cM09V7jDZsaFwtY8DNS0a0YA-dAAqTxflPzVF-OmWr-FfDwbOmx"/>
+                     </div>
+                     <div class="mt-2 flex justify-between items-center px-1">
+                        <span class="text-[10px] font-bold text-on-surface-variant">IMG_0234.JPG</span>
+                        <span class="text-[10px] text-outline">12 MB</span>
+                     </div>
+                  </div>
+                  <!-- Thumbnail Item 3 -->
+                  <div class="relative group cursor-pointer active:scale-95 transition-all">
+                     <div class="aspect-video w-full rounded-xl overflow-hidden bg-surface-container-low grayscale hover:grayscale-0 transition-all">
+                        <img class="w-full h-full object-cover" data-alt="low angle shot looking up at towering sequoia trees reaching towards a bright blue sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCToIcSbJD2R1Rz8ylk5KFRz3nrTxBLWemXEZ0d7CKeY5WjXaBB_WZ9NRoQ6tmSXlQxHHAgmm3P4TqMAB7PLEKjmaGPyvNJS_Zo07WGoQv_wvYvwbCCxA-390VAC2SJ6BOb9xF3blhvR-OyZJvz6tKPeP1_IEnlb94LHgJwOLAbzce9ULotSklH8QagRHu5gAd7R56k78OF6nPmx_MIY6clP6QdG3EbPjEF9bCwF2HBNStJJx9TRUNfaoNHykkgLzSayQBHH3mEkfth"/>
+                     </div>
+                     <div class="mt-2 flex justify-between items-center px-1">
+                        <span class="text-[10px] font-bold text-on-surface-variant">IMG_0235.JPG</span>
+                        <span class="text-[10px] text-outline">18 MB</span>
+                     </div>
+                  </div>
+                  <!-- Thumbnail Item 4 -->
+                  <div class="relative group cursor-pointer active:scale-95 transition-all">
+                     <div class="aspect-video w-full rounded-xl overflow-hidden bg-surface-container-low grayscale hover:grayscale-0 transition-all">
+                        <img class="w-full h-full object-cover" data-alt="dramatic waterfall cascading over black basalt rocks into a misty pool in a volcanic landscape" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD12RENU8Kh6GFgY6H_E6V3u3UfOZwjC4iduyfIvLjfsM7OskW0WB4aP8U-moS54A3APaAPKTUywSP_h-jzNarXboLQLMWtjOuuRRtled_oPAppbus9ylQ4G-gM7kspJO7DKT8HmPLbRmo9DrMz1u5B4l-Dy5u_KzMqcmXEpZrnn4X-eCOYJBmbCYoKy4FIA8KK9wC89qUoVQ-eaStMAeU6hJFM1e8XbLnV4EUgR0fTKEyg0opGsFJ7M-QdQUl4Kgu8GGja-hFHTfLf"/>
+                     </div>
+                     <div class="mt-2 flex justify-between items-center px-1">
+                        <span class="text-[10px] font-bold text-on-surface-variant">IMG_0236.JPG</span>
+                        <span class="text-[10px] text-outline">15 MB</span>
+                     </div>
+                  </div>
+                  <!-- Thumbnail Item 5 -->
+                  <div class="relative group cursor-pointer active:scale-95 transition-all">
+                     <div class="aspect-video w-full rounded-xl overflow-hidden bg-surface-container-low grayscale hover:grayscale-0 transition-all">
+                        <img class="w-full h-full object-cover" data-alt="vibrant sunset colors painting the sky over rolling green hills and distant mountain ranges" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSDV4KGIPBTBae41kz3m3e8lHX1j6FoHXzHoglzNE4qCXnvT1fkSDiIBKtIKnHyBcDzNxLbMB_koGIZ_58IB4L6fjbFXm_56i5Qfh6NsPz9at-MfjYedoIULfS5_PQXBAlc9z53aMWEqaxdHGyWeg2nv77Z2lNji54CNApVWkq0CrP9FKTn2sET6FuRMm72h2YtS6omvQVhoSgyVAiadmdTQD-KdywjuT4CFaIyhzmmEY-W8zKV9OSClGrqEOkng1ihComk-h5zFL8"/>
+                     </div>
+                     <div class="mt-2 flex justify-between items-center px-1">
+                        <span class="text-[10px] font-bold text-on-surface-variant">IMG_0237.JPG</span>
+                        <span class="text-[10px] text-outline">22 MB</span>
+                     </div>
+                  </div>
+               </div>
+               <div class="mt-6 p-4 bg-surface-container-low rounded-xl">
+                  <div class="flex items-center gap-3 mb-2">
+                     <span class="material-symbols-outlined text-primary text-sm">cloud_done</span>
+                     <span class="text-[11px] font-bold">Cloud Sync Active</span>
+                  </div>
+                  <div class="w-full bg-surface-container h-1 rounded-full overflow-hidden">
+                     <div class="bg-primary w-2/3 h-full"></div>
+                  </div>
+               </div>
+            </aside>
+         </main>
+      </div>
+      <!-- Mobile Navigation (Visible only on small screens) -->
+      <nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 glass-nav z-50 flex justify-around items-center px-4">
+         <button class="flex flex-col items-center gap-1 text-violet-600">
+         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">photo_library</span>
+         <span class="text-[10px] font-bold">Library</span>
+         </button>
+         <button class="flex flex-col items-center gap-1 text-neutral-400">
+         <span class="material-symbols-outlined">auto_awesome_motion</span>
+         <span class="text-[10px] font-bold">Albums</span>
+         </button>
+         <button class="flex flex-col items-center gap-1 text-neutral-400">
+         <span class="material-symbols-outlined">group</span>
+         <span class="text-[10px] font-bold">Shared</span>
+         </button>
+         <button class="flex flex-col items-center gap-1 text-neutral-400">
+         <span class="material-symbols-outlined">archive</span>
+         <span class="text-[10px] font-bold">Archive</span>
+         </button>
+      </nav>
+   </body>
+</html>

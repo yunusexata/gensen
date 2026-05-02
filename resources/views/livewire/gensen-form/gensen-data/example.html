@@ -1,0 +1,2327 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Kelola Dokumen - MUHAMMAD HELMI SATRIA | Yanoshii Stokis</title>
+      <link rel="stylesheet" href="https://nenkin.web.id/form-online/resources/vendors/mdi/css/materialdesignicons.min.css">
+      <link rel="stylesheet" href="https://nenkin.web.id/form-online/resources/vendors/base/vendor.bundle.base.css">
+      <link rel="stylesheet" href="https://nenkin.web.id/form-online/resources/css/style.css">
+      <link rel="stylesheet" href="https://nenkin.web.id/form-online/resources/css/material.css">
+      <link rel="shortcut icon" href="https://nenkin.web.id/form-online/resources/images/favicon.png" />
+      <style>
+         iframe{
+         width: 100%;
+         height: 100%;
+         border: 1px solid transparent;
+         }
+         body .form-control { border: 1px solid #ced4da !important; }
+         body select.form-control{ outline: none; }
+         .content-wrapper-inner {
+         padding: 2.1rem 1.04rem 0;
+         }
+         .input-group.search,
+         .filter.search{
+         width: 30%;
+         }
+         .input-group-append .input-group-text,
+         .input-group-prepend .input-group-text {
+         border-color: transparent;
+         }
+         @media(max-width: 575.98px){
+         .col-md-auto.w-50{ width: 100% !important; }
+         .input-group.search{ width: 100%; }
+         }
+         select.form-control{
+         color: #495057;
+         }
+         table.table tr td:last-child .btn{
+         padding: .5em 1em;
+         }
+      </style>
+      <script src="https://nenkin.web.id/form-online/resources/modules/vue/vue.js"></script>
+      <script src="https://nenkin.web.id/form-online/resources/modules/axios/axios.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+      <script src="https://nenkin.web.id/form-online/resources/js/jszip.min.js"></script>
+      <script src="https://nenkin.web.id/form-online/resources/js/vue-snotify.min.js"></script>
+      <script type="text/x-template" id="modal-template">
+         <transition name="modal">
+         <div class="custom-modal-mask">
+         <div class="custom-modal-wrapper">
+         <div class="custom-modal-container">
+         
+         <div class="custom-modal-header">
+         <slot name="header">
+         default header
+         </slot>
+         </div>
+         
+         <div class="custom-modal-body">
+         <slot name="body">
+         default body
+         </slot>
+         </div>
+         
+         <div class="custom-modal-footer">
+         <slot name="footer">
+         default footer
+         <button class="custom-modal-default-button" @click="$emit('close')">
+         OK
+         </button>
+         </slot>
+         </div>
+         </div>
+         </div>
+         </div>
+         </transition>
+      </script>
+   </head>
+   <body class="sidebar-icon-only">
+      <div class="container-scroller">
+         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="navbar-brand-wrapper d-flex justify-content-center">
+               <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+                  <a class="navbar-brand brand-logo" href="https://nenkin.web.id/form-online/admin/dashboard">
+                  EXATA INDONESIA
+                  </a>
+                  <a class="navbar-brand brand-logo-mini" href="https://nenkin.web.id/form-online/admin/dashboard">
+                  <span class="mdi mdi-view-dashboard"></span>
+                  </a>
+                  <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                  <span class="mdi mdi-sort-variant"></span>
+                  </button>
+               </div>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+               <ul class="navbar-nav navbar-nav-right">
+                  <li class="nav-item nav-profile dropdown">
+                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                     <span class="nav-profile-name">dira.exataindonesia2018@gmail.com</span>
+                     </a>
+                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                        <a class="dropdown-item" href="https://nenkin.web.id/form-online/account">
+                        <i class="mdi mdi-settings text-primary"></i>
+                        Pengaturan Akun
+                        </a>
+                        <a class="dropdown-item" href="https://nenkin.web.id/form-online/auth/logout">
+                        <i class="mdi mdi-logout text-primary"></i>
+                        Keluar
+                        </a>
+                     </div>
+                  </li>
+               </ul>
+               <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+               <span class="mdi mdi-menu"></span>
+               </button>
+            </div>
+         </nav>
+         <div class="container-fluid page-body-wrapper">
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+               <ul class="nav">
+                  <li class="nav-item">
+                     <a class="nav-link" href="https://nenkin.web.id/form-online/admin/dashboard">
+                     <i class="mdi mdi-home menu-icon"></i>
+                     <span class="menu-title">Home</span>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="https://nenkin.web.id/form-online/admin/user">
+                     <i class="mdi mdi-account-multiple menu-icon"></i>
+                     <span class="menu-title">Daftar Pengguna</span>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="https://nenkin.web.id/form-online/admin/export">
+                     <i class="mdi mdi-file-export menu-icon"></i>
+                     <span class="menu-title">Export Data</span>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="https://nenkin.web.id/form-online/admin/dashboard_sales">
+                     <i class="mdi mdi-chart-bar menu-icon"></i>
+                     <span class="menu-title">Dashboard Sales</span>
+                     </a>
+                  </li>
+               </ul>
+            </nav>
+            <div class="main-panel">
+               <div class="content-wrapper p-0">
+                  <style>
+                     /* Vue Snotify Styles */
+                     .snotify {
+                     position: fixed;
+                     right: 10px;
+                     top: 10px;
+                     z-index: 9999;
+                     width: 300px;
+                     }
+                     .snotify-rightTop {
+                     top: 10px;
+                     right: 10px;
+                     }
+                     .snotify-item {
+                     margin-bottom: 10px;
+                     border-radius: 4px;
+                     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                     padding: 15px;
+                     color: white;
+                     position: relative;
+                     overflow: hidden;
+                     }
+                     .snotify-success {
+                     background-color: #28a745;
+                     }
+                     .snotify-error {
+                     background-color: #dc3545;
+                     }
+                     .snotify-title {
+                     font-weight: bold;
+                     margin-bottom: 5px;
+                     }
+                     .snotify-progressbar {
+                     position: absolute;
+                     bottom: 0;
+                     left: 0;
+                     height: 3px;
+                     background-color: rgba(255,255,255,0.7);
+                     }
+                     /* Utility class for gap */
+                     .gap-2 {
+                     gap: 0.5rem;
+                     }
+                     .d-flex.gap-2 > * {
+                     margin-right: 0.5rem;
+                     }
+                     .d-flex.gap-2 > *:last-child {
+                     margin-right: 0;
+                     }
+                     .preview-container {
+                     min-height: 200px;
+                     background: #f8f9fa;
+                     border-radius: 4px;
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                     margin-bottom: 15px;
+                     border: 2px dashed #dee2e6;
+                     overflow: hidden;
+                     }
+                     .preview-container img {
+                     max-width: 100%;
+                     max-height: 200px;
+                     object-fit: contain;
+                     }
+                     .preview-placeholder {
+                     text-align: center;
+                     color: #999;
+                     }
+                     .preview-placeholder i {
+                     font-size: 48px;
+                     display: block;
+                     margin-bottom: 10px;
+                     }
+                     .file-info-text {
+                     font-size: 0.85rem;
+                     color: #6c757d;
+                     margin-bottom: 10px;
+                     }
+                     .btn-file-action {
+                     margin-bottom: 8px;
+                     }
+                     label.btn-file-action.btn-outline-primary:hover {
+                     background-color: #ffc107 !important;
+                     border-color: #ffc107 !important;
+                     color: #212529 !important;
+                     }
+                     .card-file-slot {
+                     height: 100%;
+                     }
+                     .card-file-slot .card-body {
+                     display: flex;
+                     flex-direction: column;
+                     }
+                     .loading-overlay {
+                     position: fixed;
+                     top: 0;
+                     left: 0;
+                     width: 100%;
+                     height: 100%;
+                     background: rgba(0, 0, 0, 0.5);
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                     z-index: 9999;
+                     }
+                     .loading-spinner {
+                     background: white;
+                     padding: 30px;
+                     border-radius: 8px;
+                     text-align: center;
+                     }
+                     .spinner-border {
+                     width: 3rem;
+                     height: 3rem;
+                     }
+                     /* PDF Preview Modal Styles */
+                     .pdf-preview-overlay {
+                     position: fixed;
+                     top: 0;
+                     left: 0;
+                     width: 100%;
+                     height: 100%;
+                     background: rgba(0, 0, 0, 0.7);
+                     z-index: 10000;
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                     }
+                     .pdf-preview-modal {
+                     background: #fff;
+                     border-radius: 8px;
+                     width: 95%;
+                     max-width: 1400px;
+                     height: 90vh;
+                     display: flex;
+                     flex-direction: column;
+                     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+                     }
+                     .pdf-preview-header {
+                     display: flex;
+                     align-items: center;
+                     justify-content: space-between;
+                     padding: 15px 20px;
+                     border-bottom: 1px solid #dee2e6;
+                     background: #f8f9fa;
+                     border-radius: 8px 8px 0 0;
+                     }
+                     .pdf-preview-header .page-indicator {
+                     font-size: 14px;
+                     color: #666;
+                     }
+                     .pdf-preview-body {
+                     display: flex;
+                     flex: 1;
+                     overflow: hidden;
+                     }
+                     .pdf-preview-canvas-container {
+                     flex: 1;
+                     overflow: auto;
+                     background: #e9ecef;
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                     padding: 20px;
+                     }
+                     .pdf-preview-canvas-container canvas {
+                     background: #fff;
+                     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                     transform-origin: center center;
+                     transition: transform 0.2s ease;
+                     }
+                     .pdf-preview-sidebar {
+                     width: 280px;
+                     padding: 20px;
+                     border-left: 1px solid #dee2e6;
+                     background: #f8f9fa;
+                     display: flex;
+                     flex-direction: column;
+                     }
+                     .pdf-preview-sidebar h5 {
+                     margin-bottom: 15px;
+                     color: #333;
+                     font-weight: 600;
+                     }
+                     .pdf-preview-sidebar .file-list {
+                     list-style: none;
+                     padding: 0;
+                     margin: 0;
+                     }
+                     .pdf-preview-sidebar .file-list li {
+                     padding: 10px 12px;
+                     margin-bottom: 5px;
+                     border: 1px solid #dee2e6;
+                     border-radius: 4px;
+                     cursor: pointer;
+                     transition: all 0.2s ease;
+                     background: #fff;
+                     }
+                     .pdf-preview-sidebar .file-list li:hover {
+                     border-color: #007bff;
+                     background: #f0f7ff;
+                     }
+                     .pdf-preview-sidebar .file-list li.selected {
+                     border-color: #007bff;
+                     background: #007bff;
+                     color: #fff;
+                     }
+                     .pdf-preview-nav {
+                     padding-top: 20px;
+                     border-top: 1px solid #dee2e6;
+                     margin-top: auto;
+                     }
+                     .pdf-preview-footer {
+                     display: flex;
+                     justify-content: flex-end;
+                     padding: 15px 20px;
+                     border-top: 1px solid #dee2e6;
+                     background: #f8f9fa;
+                     border-radius: 0 0 8px 8px;
+                     }
+                  </style>
+                  <div class="content-wrapper-inner">
+                     <div id="app">
+                        <vue-snotify></vue-snotify>
+                        <!-- Page Header with Breadcrumb -->
+                        <div class="row">
+                           <div class="col-md-12 grid-margin">
+                              <div class="d-flex justify-content-between flex-wrap">
+                                 <div class="d-flex align-items-end flex-wrap">
+                                    <div class="mr-md-3 mr-xl-5">
+                                       <h2>Kelola Dokumen Pelanggan</h2>
+                                       <p class="mb-md-0">{{ customerName }}</p>
+                                    </div>
+                                    <div class="d-flex">
+                                       <i class="mdi mdi-home text-muted hover-cursor"></i>
+                                       <p class="text-muted mb-0 hover-cursor">&nbsp;/&nbsp;Dashboard&nbsp;/&nbsp;</p>
+                                       <p class="text-primary mb-0 hover-cursor">Kelola Dokumen</p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <!-- Changelog Section -->
+                        <div class="row mb-3">
+                           <div class="col-md-12">
+                              <div class="card">
+                                 <div class="card-header d-flex justify-content-between align-items-center"
+                                    style="cursor: pointer;" @click="showChangelog = !showChangelog">
+                                    <h5 class="mb-0">
+                                       <i class="mdi mdi-history"></i> Changelog Dokumen
+                                    </h5>
+                                    <i class="mdi" :class="showChangelog ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
+                                 </div>
+                                 <div v-if="showChangelog" class="card-body p-0">
+                                    <table class="table table-sm table-hover mb-0">
+                                       <thead class="thead-light">
+                                          <tr>
+                                             <th style="width: 200px;">Waktu</th>
+                                             <th style="width: 180px;">Pengguna</th>
+                                             <th style="width: 130px;">Aksi</th>
+                                             <th>Keterangan</th>
+                                          </tr>
+                                       </thead>
+                                       <tbody>
+                                          <tr v-for="log in pdfLogs" :key="log.id">
+                                             <td>{{ formatDate(log.created_at) }}</td>
+                                             <td>{{ log.user_name || '-' }}</td>
+                                             <td>
+                                                <span class="badge"
+                                                   :class="log.action === 'download_pdf' ? 'badge-primary' : 'badge-success'">
+                                                <i class="mdi" :class="log.action === 'download_pdf' ? 'mdi-download' : 'mdi-content-save'"></i>
+                                                {{ log.action === 'download_pdf' ? 'Download PDF' : 'Simpan' }}
+                                                </span>
+                                             </td>
+                                             <td>{{ log.description }}</td>
+                                          </tr>
+                                          <tr v-if="pdfLogs.length === 0">
+                                             <td colspan="4" class="text-center text-muted py-3">
+                                                <i class="mdi mdi-information-outline"></i> Belum ada riwayat
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <!-- Finalized PDF Viewer (read-only) -->
+                        <div v-if="isFinalized" class="row">
+                           <div class="col-md-12">
+                              <div class="card">
+                                 <div class="card-header" style="background-color: #28a745; color: white;">
+                                    <h5 class="mb-0">
+                                       <i class="mdi mdi-check-circle"></i>
+                                       Dokumen Telah Difinalisasi
+                                    </h5>
+                                    <small>Difinalisasi pada {{ formatDate(pdfFinalizedAt) }}</small>
+                                 </div>
+                                 <div class="card-body">
+                                    <p class="text-muted mb-3">Gambar asli telah dihapus. PDF final tersedia di bawah ini.</p>
+                                    <div class="row">
+                                       <div class="col-md-6">
+                                          <div class="card">
+                                             <div class="card-body text-center">
+                                                <i class="mdi mdi-file-pdf text-danger" style="font-size: 48px;"></i>
+                                                <h5 class="mt-2">Document N80</h5>
+                                                <a :href="servePdfUrl('n80', false)" class="btn btn-primary btn-sm mr-2">
+                                                <i class="mdi mdi-download"></i> Download
+                                                </a>
+                                                <a :href="servePdfUrl('n80', true)" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                <i class="mdi mdi-eye"></i> Lihat
+                                                </a>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                          <div class="card">
+                                             <div class="card-body text-center">
+                                                <i class="mdi mdi-file-pdf text-danger" style="font-size: 48px;"></i>
+                                                <h5 class="mt-2">Document N20</h5>
+                                                <a :href="servePdfUrl('n20', false)" class="btn btn-primary btn-sm mr-2">
+                                                <i class="mdi mdi-download"></i> Download
+                                                </a>
+                                                <a :href="servePdfUrl('n20', true)" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                <i class="mdi mdi-eye"></i> Lihat
+                                                </a>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <!-- Normal Mode: PDF Action Button + File Grid -->
+                        <template v-if="!isFinalized">
+                           <!-- PDF Action Button -->
+                           <div class="row mb-3">
+                              <div class="col-md-12">
+                                 <div class="d-flex justify-content-end">
+                                    <button class="btn btn-info"
+                                       @click="openPdfPreview"
+                                       
+                                       title="Preview dan Download PDF">
+                                    <i class="mdi mdi-file-pdf"></i>
+                                    <span v-if="!generatingPdf">Lihat Dokumen</span>
+                                    <span v-else>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Generating...
+                                    </span>
+                                    </button>
+                                 </div>
+                              </div>
+                           </div>
+                           <!-- File Management Grid -->
+                           <div class="row">
+                              <div class="col-md-4 grid-margin stretch-card" v-for="(slot, index) in visibleFileSlots" :key="index">
+                                 <div class="card card-file-slot">
+                                    <div class="card-body">
+                                       <h4 class="card-title">{{ slot.label }}</h4>
+                                       <!-- Preview Area -->
+                                       <div class="preview-container">
+                                          <img v-if="slot.hasFile && slot.previewUrl" :src="slot.previewUrl" alt="Preview">
+                                          <div v-else class="preview-placeholder">
+                                             <i class="mdi mdi-file-image"></i>
+                                             <p>Belum ada file</p>
+                                          </div>
+                                       </div>
+                                       <!-- File Info -->
+                                       <div v-if="slot.hasFile" class="file-info-text">
+                                          <small><i class="mdi mdi-clock-outline"></i> {{ formatDate(slot.uploadedDate) }}</small>
+                                       </div>
+                                       <!-- Action Buttons -->
+                                       <div class="d-flex flex-column">
+                                          <!-- Download Button -->
+                                          <button v-if="slot.hasFile"
+                                             class="btn btn-primary btn-sm btn-file-action"
+                                             @click="downloadFile(slot.number)"
+                                             :disabled="slot.uploading">
+                                          <i class="mdi mdi-download"></i> Download
+                                          </button>
+                                          <!-- Upload/Replace Button -->
+                                          <label class="btn btn-outline-primary btn-sm btn-file-action"
+                                             style="cursor: pointer;"
+                                             :class="{'disabled': slot.uploading}">
+                                          <i class="mdi mdi-upload"></i> {{ slot.hasFile ? 'Ganti File' : 'Upload File' }}
+                                          <input type="file"
+                                             :ref="'fileInput' + slot.number"
+                                             @change="handleFileSelect($event, slot.number)"
+                                             accept="image/jpeg,image/jpg,image/png,image/heic,image/heif"
+                                             style="display: none;"
+                                             :disabled="slot.uploading">
+                                          </label>
+                                          <!--
+                                             Delete Button — hanya untuk slot tertentu:
+                                             slot.number 5 = Juminhyou / tensetsu todoke (UI card 5)
+                                             slot.number 6 = Form Pengganti buku nenkin (UI card 6)
+                                             slot.number 9 = Ichijikin / Form Lumpsum (UI card 11 — slot number != urutan tampil)
+                                             Catatan: slot.number mengacu ke kolom file_N di DB, bukan urutan card di UI.
+                                             -->
+                                          <button v-if="slot.hasFile && [5, 6, 9].includes(slot.number)"
+                                             class="btn btn-danger btn-sm btn-file-action"
+                                             @click="deleteFile(slot.number)"
+                                             :disabled="slot.uploading">
+                                          <i class="mdi mdi-delete"></i> Hapus File
+                                          </button>
+                                          <!-- Upload Progress -->
+                                          <div v-if="slot.uploading" class="progress mt-2" style="height: 25px;">
+                                             <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                                role="progressbar"
+                                                :style="{width: slot.uploadProgress + '%'}"
+                                                :aria-valuenow="slot.uploadProgress"
+                                                aria-valuemin="0"
+                                                aria-valuemax="100">
+                                                {{ slot.uploadProgress }}%
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </template>
+                        <!-- Loading Overlay -->
+                        <div v-if="loading" class="loading-overlay">
+                           <div class="loading-spinner">
+                              <div class="spinner-border text-primary" role="status">
+                                 <span class="sr-only">Loading...</span>
+                              </div>
+                              <p class="mt-3 mb-0">Memuat data...</p>
+                           </div>
+                        </div>
+                        <!-- PDF Preview Modal -->
+                        <div v-if="pdfPreview.show" class="pdf-preview-overlay">
+                           <div class="pdf-preview-modal">
+                              <!-- Header -->
+                              <div class="pdf-preview-header">
+                                 <div class="d-flex align-items-center">
+                                    <span class="mr-3">Preview:</span>
+                                    <select v-model="pdfPreview.selectedTemplate" @change="onTemplateChange"
+                                       class="form-control form-control-sm" style="width: 180px;">
+                                       <option value="type_a_20_speed">Document 20</option>
+                                       <option value="type_a_80">Document 80</option>
+                                    </select>
+                                    <small v-if="pdfAdjustmentsSavedAt" class="text-muted ml-3">
+                                    <i class="mdi mdi-check-circle text-success"></i>
+                                    Disimpan: {{ formatDate(pdfAdjustmentsSavedAt) }} oleh {{ pdfAdjustmentsSavedBy }}
+                                    </small>
+                                 </div>
+                                 <div class="d-flex align-items-center">
+                                    <button class="btn btn-sm btn-outline-secondary mr-1" @click="zoomOut"
+                                       :disabled="pdfPreview.zoom <= 0.5" title="Zoom Out">
+                                    <i class="mdi mdi-magnify-minus"></i>
+                                    </button>
+                                    <span class="mx-2">{{ Math.round(pdfPreview.zoom * 100) }}%</span>
+                                    <button class="btn btn-sm btn-outline-secondary mr-3" @click="zoomIn"
+                                       :disabled="pdfPreview.zoom >= 2.0" title="Zoom In">
+                                    <i class="mdi mdi-magnify-plus"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" @click="rotateSelectedImage"
+                                       :disabled="pdfPreview.selectedImageIndex === null" title="Rotate 90°">
+                                    <i class="mdi mdi-rotate-right"></i>
+                                    </button>
+                                 </div>
+                                 <span class="page-indicator">page {{ pdfPreview.currentPage }} / {{ pdfPreview.totalPages }}</span>
+                                 <button class="btn btn-sm btn-light" @click="closePdfPreview">
+                                 <i class="mdi mdi-close"></i>
+                                 </button>
+                              </div>
+                              <!-- Body -->
+                              <div class="pdf-preview-body">
+                                 <div class="pdf-preview-canvas-container" ref="canvasContainer">
+                                    <canvas ref="pdfCanvas"
+                                    @mousedown="onCanvasMouseDown"
+                                    @mousemove="onCanvasMouseMove"
+                                    @mouseup="onCanvasMouseUp"
+                                    @mouseleave="onCanvasMouseUp"
+                                    :style="{
+                                    transform: 'scale(' + pdfPreview.zoom + ')',
+                                    cursor: getCanvasCursor()
+                                    }">
+                                    </canvas>
+                                 </div>
+                                 <div class="pdf-preview-sidebar">
+                                    <h5>Files: Page {{ pdfPreview.currentPage }}</h5>
+                                    <ul class="file-list">
+                                       <li v-for="(label, idx) in currentPageFileLabels" :key="idx"
+                                          :class="{ 'selected': pdfPreview.selectedImageIndex === idx }"
+                                          @click="selectImage(idx)">
+                                          {{ label }}
+                                       </li>
+                                    </ul>
+                                    <div class="pdf-preview-nav">
+                                       <button class="btn btn-outline-success mr-2" @click="previousPage"
+                                          :disabled="pdfPreview.currentPage <= 1">Previous</button>
+                                       <button class="btn btn-outline-success" @click="nextPage"
+                                          :disabled="pdfPreview.currentPage >= pdfPreview.totalPages">Next</button>
+                                    </div>
+                                 </div>
+                              </div>
+                              <!-- Footer -->
+                              <div class="pdf-preview-footer">
+                                 <button class="btn btn-secondary mr-2" @click="resetAllAdjustments">
+                                 <i class="mdi mdi-refresh"></i> Reset
+                                 </button>
+                                 <span v-if="hasUnsavedChanges" class="badge badge-warning align-self-center mr-2">
+                                 <i class="mdi mdi-alert"></i> Belum disimpan
+                                 </span>
+                                 <button class="btn btn-success mr-2" @click="saveAdjustments" :disabled="savingAdjustments">
+                                 <i class="mdi mdi-content-save"></i>
+                                 <span v-if="!savingAdjustments">Simpan</span>
+                                 <span v-else>
+                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                 Menyimpan...
+                                 </span>
+                                 </button>
+                                 <button v-if="pdfAdjustmentsSavedAt !== null || pdfLogs.length > 0"
+                                    class="btn btn-primary" @click="applyAdjustmentsAndDownload" :disabled="generatingPdf">
+                                 <i class="mdi mdi-download"></i>
+                                 <span v-if="!generatingPdf">Download PDF</span>
+                                 <span v-else>Generating...</span>
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                        <!-- Finalize Confirmation Dialog -->
+                        <div v-if="showFinalizeConfirm" class="pdf-preview-overlay" style="z-index: 10001;">
+                           <div style="background: #fff; border-radius: 8px; max-width: 500px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+                              <h4 class="text-danger mb-3">
+                                 <i class="mdi mdi-alert-circle"></i> Peringatan Finalisasi
+                              </h4>
+                              <p>Anda akan mendownload PDF final untuk customer ini.</p>
+                              <p class="text-danger font-weight-bold">
+                                 Semua gambar yang telah diupload akan DIHAPUS PERMANEN setelah proses ini.
+                                 Anda tidak akan bisa mengupload ulang gambar.
+                              </p>
+                              <p>Apakah Anda yakin ingin melanjutkan?</p>
+                              <div class="d-flex justify-content-end mt-4">
+                                 <button class="btn btn-secondary mr-2" @click="showFinalizeConfirm = false">
+                                 Batal
+                                 </button>
+                                 <button class="btn btn-danger" @click="confirmFinalizeAndDownload" :disabled="finalizingPdfs">
+                                 <i class="mdi mdi-check"></i>
+                                 <span v-if="!finalizingPdfs">Ya, Finalisasi & Download</span>
+                                 <span v-else>
+                                 <span class="spinner-border spinner-border-sm"></span> Memproses...
+                                 </span>
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <script>
+                     // Initialize Vue Snotify
+                     Vue.use(Snotify, {
+                     toast: {
+                     position: 'rightTop',
+                     timeout: 3000,
+                     showProgressBar: true,
+                     closeOnClick: true,
+                     pauseOnHover: true
+                     }
+                     });
+                     
+                     // =============================================================================
+                     // KONVENSI PENOMORAN SLOT FILE — BACA INI DULU SEBELUM EDIT!
+                     // =============================================================================
+                     // fileSlots[] : array 0-indexed. fileSlots[0] = slot nomor 1, fileSlots[11] = slot nomor 12.
+                     // slot.number : nomor 1-based yang ditampilkan ke user (1..12).
+                     // documentLabels[i] : label untuk fileSlots[i] — index sama, bukan slot.number.
+                     //
+                     // Mapping slot → 0-based index (dipakai di pageFileMapping & array PDF generation):
+                     // Slot 1 (idx 0) = Paspor Identitas diri
+                     // Slot 2 (idx 1) = Paspor Stempel Imigrasi
+                     // Slot 3 (idx 2) = Buku Nenkin biru/kuning
+                     // Slot 4 (idx 3) = Buku Rekening / E-statement
+                     // Slot 5 (idx 4) = Juminhyou / Tensetsu Todoke
+                     // Slot 6 (idx 5) = Form Pengganti Buku Nenkin
+                     // Slot 7 (idx 6) = Zairyou card - Depan
+                     // Slot 8 (idx 7) = Zairyou card - Belakang
+                     // Slot 9 (idx 8) = My Number - Depan
+                     // Slot 10 (idx 9) = My Number - Belakang
+                     // Slot 11 (idx 10) = Ichijikin / Form Lumpsum
+                     // Slot 12 (idx 11) = KTP (tidak masuk PDF, hanya arsip)
+                     //
+                     // N80 PDF : slot 1–6 (idx 0–5)
+                     // N20 PDF : slot 7,9,8,10,3,11 (idx 6,8,7,9,2,10)
+                     // Layout N20 page 1: kiri-atas=Zairyou Depan, kanan-atas=My Number Depan,
+                     // kiri-bawah=Zairyou Belakang, kanan-bawah=My Number Belakang,
+                     // full-bawah=Buku Nenkin
+                     // Layout N20 page 2: full=Ichijikin
+                     // =============================================================================
+                     var app = new Vue({
+                     el: '#app',
+                     data: {
+                     customerId: 'paimJFjdQorZT4Y5DnqfP3hU8zgc1xtW',
+                     customerName: "MUHAMMAD HELMI SATRIA",
+                     customerBirthDate: '1989-09-16',
+                     uploadType: 'A', // Always Type A (11 files)
+                     loading: true,
+                     // fileSlots adalah satu-satunya sumber kebenaran untuk urutan tampil, label, dan mapping backend key.
+                     // Untuk mengubah urutan card, cukup pindahkan elemen di array ini.
+                     // fileKey : key yang dikirim backend di response get-files (file_1..file_11 atau ktp_file)
+                     // number : nomor slot 1-based yang dikirim ke endpoint upload/delete
+                     // label : teks judul card
+                     fileSlots: [
+                     { number: 1, fileKey: 'file_1', label: '1. Paspor Identitas diri', hasFile: false, filename: null, previewUrl: null, uploadedDate: null, uploading: false, uploadProgress: 0 },
+                     { number: 2, fileKey: 'file_2', label: '2. Paspor Stempel Imigrasi', hasFile: false, filename: null, previewUrl: null, uploadedDate: null, uploading: false, uploadProgress: 0 },
+                     { number: 3, fileKey: 'file_3', label: '3. Buku nenkin biru / kuning', hasFile: false, filename: null, previewUrl: null, uploadedDate: null, uploading: false, uploadProgress: 0 },
+                     { number: 4, fileKey: 'file_4', label: '4. Buku Rekening / E-statement', hasFile: false, filename: null, previewUrl: null, uploadedDate: null, uploading: false, uploadProgress: 0 },
+                     { number: 5, fileKey: 'file_5', label: '5. Juminhyou / tensetsu todoke (bukti putus izin tinggal)', hasFile: false, filename: null, previewUrl: null, uploadedDate: null, uploading: false, uploadProgress: 0 },
+                     { number: 6, fileKey: 'file_6', label: '6. Form Pengganti buku nenkin', hasFile: false, filename: null, previewUrl: null, uploadedDate: null, uploading: false, uploadProgress: 0 },
+                     { number: 7, fileKey: 'file_7', label: '7. Zairyou card - Depan', hasFile: false, filename: null, previewUrl: null, uploadedDate: null, uploading: false, uploadProgress: 0 },
+                     { number: 10, fileKey: 'file_10', label: '8. Zairyou card - Belakang', hasFile: false, filename: null, previewUrl: null, uploadedDate: null, uploading: false, uploadProgress: 0 },
+                     { number: 8, fileKey: 'file_8', label: '9. My Number - Depan', hasFile: false, filename: null, previewUrl: null, uploadedDate: null, uploading: false, uploadProgress: 0 },
+                     { number: 11, fileKey: 'file_11', label: '10. My Number - Belakang', hasFile: false, filename: null, previewUrl: null, uploadedDate: null, uploading: false, uploadProgress: 0 },
+                     { number: 9, fileKey: 'file_9', label: '11. Ichijikin / Form Lumpsum', hasFile: false, filename: null, previewUrl: null, uploadedDate: null, uploading: false, uploadProgress: 0 },
+                     { number: 12, fileKey: 'ktp_file', label: '12. KTP (Kartu Tanda Penduduk)', hasFile: false, filename: null, previewUrl: null, uploadedDate: null, uploading: false, uploadProgress: 0 },
+                     ],
+                     // PDF adjustments persistence
+                     pdfAdjustmentsSavedAt: null,
+                     pdfAdjustmentsSavedBy: null,
+                     hasUnsavedChanges: false,
+                     savingAdjustments: false,
+                     // Finalization state
+                     statusNenkin: '',
+                     isFinalized: false,
+                     pdfN80File: null,
+                     pdfN20File: null,
+                     pdfFinalizedAt: null,
+                     finalizingPdfs: false,
+                     showFinalizeConfirm: false,
+                     // Changelog
+                     pdfLogs: [],
+                     showChangelog: false,
+                     // PDF generation
+                     generatingPdf: false,
+                     pdfLayouts: {
+                     type_a_80: {
+                     page1: {
+                     pageWidth: 210,
+                     pageHeight: 297,
+                     images: [
+                     { x: 0, y: 0, width: 105, height: 148.5 }, // File 1 - Paspor (top-left)
+                     { x: 105, y: 0, width: 105, height: 148.5 }, // File 2 - Stempel (top-right)
+                     { x: 0, y: 148.5, width: 210, height: 148.5 } // File 3 - Nenkin (bottom full-width)
+                     ]
+                     },
+                     page2: {
+                     pageWidth: 210,
+                     pageHeight: 297,
+                     images: [
+                     { x: 0, y: 0, width: 210, height: 297 } // File 4 - Rekening (full page)
+                     ]
+                     },
+                     page3: {
+                     pageWidth: 210,
+                     pageHeight: 297,
+                     images: [
+                     { x: 0, y: 0, width: 210, height: 297 } // File 5 - Juminhyou (full page)
+                     ]
+                     },
+                     page4: {
+                     pageWidth: 210,
+                     pageHeight: 297,
+                     images: [
+                     { x: 0, y: 0, width: 210, height: 297 } // File 6 - Form Pengganti (full page)
+                     ]
+                     }
+                     },
+                     // N20 layout: 4 card images (2x2 grid) + nenkin full-width on page 1, ichijikin full page on page 2.
+                     // Urutan posisi gambar di sini harus cocok dengan urutan di pageFileMapping.type_a_20_speed.
+                     // Index ke-N di images[] = index ke-N di pageFileMapping page (0-based).
+                     type_a_20_speed: {
+                     page1: {
+                     pageWidth: 210,
+                     pageHeight: 297,
+                     images: [
+                     { x: 0, y: 0, width: 105, height: 74.25 }, // pos 0 → slot 7 (index 6) Zairyou card Depan (kiri atas)
+                     { x: 105, y: 0, width: 105, height: 74.25 }, // pos 1 → slot 9 (index 8) My Number Depan (kanan atas)
+                     { x: 0, y: 74.25, width: 105, height: 74.25 }, // pos 2 → slot 8 (index 7) Zairyou card Belakang (kiri bawah)
+                     { x: 105, y: 74.25, width: 105, height: 74.25 }, // pos 3 → slot 10 (index 9) My Number Belakang (kanan bawah)
+                     { x: 0, y: 148.5, width: 210, height: 148.5 } // pos 4 → slot 3 (index 2) Buku Nenkin (full-width bawah)
+                     ]
+                     },
+                     page2: {
+                     pageWidth: 210,
+                     pageHeight: 297,
+                     images: [
+                     { x: 0, y: 0, width: 210, height: 297 } // pos 0 → slot 11 (index 10) Ichijikin / Form Lumpsum (full page)
+                     ]
+                     }
+                     }
+                     },
+                     // PDF Preview State
+                     pdfPreview: {
+                     show: false,
+                     selectedTemplate: 'type_a_20_speed',
+                     currentPage: 1,
+                     totalPages: 2,
+                     zoom: 1.0,
+                     selectedImageIndex: null,
+                     isDragging: false,
+                     isResizing: false,
+                     resizeHandle: null, // 'tl', 'tr', 'bl', 'br' for corners
+                     hoveredHandle: null, // Handle being hovered over
+                     dragStartX: 0,
+                     dragStartY: 0,
+                     canvasWidth: 595,
+                     canvasHeight: 842
+                     },
+                     // Image position/rotation adjustments per template/page/image
+                     imageAdjustments: {
+                     type_a_80: { 1: {}, 2: {}, 3: {}, 4: {} },
+                     type_a_20_speed: { 1: {}, 2: {} }
+                     },
+                     // Cached Image objects for canvas
+                     loadedImages: {},
+                     // Image bounding boxes for hit testing
+                     imageBounds: [],
+                     // Page-to-file slot mappings
+                     pageFileMapping: {
+                     type_a_80: {
+                     1: [0, 1, 2],
+                     2: [3],
+                     3: [4],
+                     4: [5]
+                     },
+                     type_a_20_speed: {
+                     1: [6, 8, 7, 9, 2],
+                     2: [10]
+                     }
+                     },
+                     pageFileLabels: {
+                     type_a_80: {
+                     1: ['Paspor Identitas', 'Stempel Imigrasi', 'Buku Nenkin'],
+                     2: ['Buku Rekening'],
+                     3: ['Juminhyou'],
+                     4: ['Form Pengganti']
+                     },
+                     type_a_20_speed: {
+                     1: ['Zairyou Card Depan', 'My Number Depan', 'Zairyou Card Belakang', 'My Number Belakang', 'Buku Nenkin'],
+                     2: ['Ichijikin']
+                     }
+                     }
+                     },
+                     mounted: function() {
+                     this.loadFiles();
+                     this.loadPdfLogs();
+                     },
+                     computed: {
+                     hasAnyFiles: function() {
+                     return this.fileSlots.some(slot => slot.hasFile && slot.previewUrl);
+                     },
+                     visibleFileSlots: function() {
+                     return this.fileSlots; // urutan sequential slot 1-12
+                     },
+                     currentPageFileLabels: function() {
+                     return this.pageFileLabels[this.pdfPreview.selectedTemplate][this.pdfPreview.currentPage] || [];
+                     },
+                     currentPageFileIndices: function() {
+                     return this.pageFileMapping[this.pdfPreview.selectedTemplate][this.pdfPreview.currentPage] || [];
+                     }
+                     },
+                     methods: {
+                     loadFiles: function() {
+                     this.loading = true;
+                     axios.get('https://nenkin.web.id/form-online/admin/customer-files/get-files/' + this.customerId)
+                     .then(response => {
+                     if (response.data.success) {
+                     const data = response.data;
+                     this.customerName = data.customer_name;
+                     this.customerBirthDate = data.customer_birth_date || this.customerBirthDate;
+                     this.uploadType = data.type || 'A'; // Set upload type from backend
+                     
+                     // Load file data menggunakan fileKey dari setiap slot
+                     this.fileSlots.forEach((slot) => {
+                     const fileData = data[slot.fileKey];
+                     if (fileData) {
+                     slot.hasFile = true;
+                     slot.filename = fileData.filename;
+                     slot.previewUrl = fileData.preview_url;
+                     slot.uploadedDate = fileData.uploaded_date;
+                     } else {
+                     slot.hasFile = false;
+                     slot.filename = null;
+                     slot.previewUrl = null;
+                     slot.uploadedDate = null;
+                     }
+                     });
+                     
+                     // Load saved PDF adjustments if available
+                     if (data.pdf_adjustments) {
+                     this.imageAdjustments = {
+                     type_a_80: data.pdf_adjustments.type_a_80 || { 1: {}, 2: {}, 3: {}, 4: {} },
+                     type_a_20_speed: data.pdf_adjustments.type_a_20_speed || { 1: {}, 2: {} }
+                     };
+                     }
+                     this.pdfAdjustmentsSavedAt = data.pdf_adjustments_saved_at || null;
+                     this.pdfAdjustmentsSavedBy = data.pdf_adjustments_saved_by || null;
+                     this.hasUnsavedChanges = false;
+                     
+                     // Load finalization state
+                     this.statusNenkin = data.status_nenkin || '';
+                     this.isFinalized = data.is_finalized || false;
+                     this.pdfN80File = data.pdf_n80_file || null;
+                     this.pdfN20File = data.pdf_n20_file || null;
+                     this.pdfFinalizedAt = data.pdf_finalized_at || null;
+                     
+                     console.log('[DEBUG] status_nenkin dari API:', data.status_nenkin);
+                     console.log('[DEBUG] is_finalized:', data.is_finalized);
+                     
+                     } else {
+                     this.snotifyError('Gagal', response.data.message || 'Gagal memuat data file');
+                     }
+                     })
+                     .catch(error => {
+                     console.error('Error loading files:', error);
+                     this.snotifyError('Gagal', 'Terjadi kesalahan saat memuat data file');
+                     })
+                     .finally(() => {
+                     this.loading = false;
+                     });
+                     },
+                     
+                     handleFileSelect: function(event, slotNumber) {
+                     const file = event.target.files[0];
+                     if (!file) return;
+                     
+                     // Validate file type
+                     const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/heic', 'image/heif'];
+                     // Also check file extension for HEIC files (some browsers don't recognize the MIME type)
+                     const fileName = file.name.toLowerCase();
+                     const isValidExtension = fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') ||
+                     fileName.endsWith('.png') || fileName.endsWith('.heic') ||
+                     fileName.endsWith('.heif');
+                     
+                     if (!validTypes.includes(file.type) && !isValidExtension) {
+                     this.snotifyError('Gagal', 'File harus berformat JPG, PNG, atau HEIC');
+                     event.target.value = '';
+                     return;
+                     }
+                     
+                     // Validate file size (2MB)
+                     if (file.size > 2 * 1024 * 1024) {
+                     this.snotifyError('Gagal', 'Ukuran file maksimal 2MB');
+                     event.target.value = '';
+                     return;
+                     }
+                     
+                     // Upload file
+                     this.uploadFile(file, slotNumber);
+                     event.target.value = '';
+                     },
+                     
+                     uploadFile: function(file, slotNumber) {
+                     const formData = new FormData();
+                     formData.append('file_input', file);
+                     formData.append('file_number', slotNumber);
+                     
+                     const slotIndex = this.fileSlots.findIndex(s => s.number === slotNumber);
+                     this.fileSlots[slotIndex].uploading = true;
+                     this.fileSlots[slotIndex].uploadProgress = 0;
+                     
+                     axios.post(
+                     'https://nenkin.web.id/form-online/admin/customer-files/upload/' + this.customerId,
+                     formData,
+                     {
+                     headers: {
+                     'Content-Type': 'multipart/form-data'
+                     },
+                     onUploadProgress: (progressEvent) => {
+                     const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                     this.fileSlots[slotIndex].uploadProgress = percentCompleted;
+                     }
+                     }
+                     )
+                     .then(response => {
+                     if (response.data.success) {
+                     this.snotifySuccess('Berhasil', response.data.message);
+                     this.loadFiles(); // Reload file data
+                     } else {
+                     this.snotifyError('Gagal', response.data.message || 'Gagal mengupload file');
+                     }
+                     })
+                     .catch(error => {
+                     console.error('Error uploading file:', error);
+                     this.snotifyError('Gagal', 'Terjadi kesalahan saat upload file');
+                     })
+                     .finally(() => {
+                     this.fileSlots[slotIndex].uploading = false;
+                     this.fileSlots[slotIndex].uploadProgress = 0;
+                     });
+                     },
+                     
+                     downloadFile: function(slotNumber) {
+                     window.location.href = 'https://nenkin.web.id/form-online/admin/customer-files/download/' + this.customerId + '/' + slotNumber;
+                     },
+                     
+                     deleteFile: function(slotNumber) {
+                     if (!confirm('Apakah Anda yakin ingin menghapus file ini?')) return;
+                     
+                     var slotIndex = this.fileSlots.findIndex(function(s) { return s.number === slotNumber; });
+                     this.fileSlots[slotIndex].uploading = true;
+                     
+                     axios.post(
+                     'https://nenkin.web.id/form-online/admin/customer-files/delete-file/' + this.customerId + '/' + slotNumber
+                     )
+                     .then(response => {
+                     if (response.data.success) {
+                     this.snotifySuccess('Berhasil', response.data.message);
+                     this.loadFiles();
+                     } else {
+                     this.snotifyError('Gagal', response.data.message || 'Gagal menghapus file');
+                     }
+                     })
+                     .catch(error => {
+                     console.error('Error deleting file:', error);
+                     this.snotifyError('Gagal', 'Terjadi kesalahan saat menghapus file');
+                     })
+                     .finally(() => {
+                     this.fileSlots[slotIndex].uploading = false;
+                     });
+                     },
+                     
+                     formatDate: function(dateString) {
+                     if (!dateString) return '';
+                     
+                     const date = new Date(dateString);
+                     const options = {
+                     year: 'numeric',
+                     month: 'long',
+                     day: 'numeric',
+                     hour: '2-digit',
+                     minute: '2-digit',
+                     timeZone: 'Asia/Bangkok'
+                     };
+                     
+                     return date.toLocaleDateString('id-ID', options);
+                     },
+                     
+                     snotifySuccess: function(title, message) {
+                     this.$snotify.success(message, title, {
+                     timeout: 3000,
+                     showProgressBar: true,
+                     closeOnClick: true,
+                     pauseOnHover: true
+                     });
+                     },
+                     
+                     snotifyError: function(title, message) {
+                     this.$snotify.error(message, title, {
+                     timeout: 5000,
+                     showProgressBar: true,
+                     closeOnClick: true,
+                     pauseOnHover: true
+                     });
+                     },
+                     
+                     saveAdjustments: function() {
+                     this.savingAdjustments = true;
+                     return axios.post(
+                     'https://nenkin.web.id/form-online/admin/customer-files/save-adjustments/' + this.customerId,
+                     {
+                     adjustments_n80: this.imageAdjustments.type_a_80,
+                     adjustments_n20: this.imageAdjustments.type_a_20_speed
+                     }
+                     )
+                     .then(response => {
+                     if (response.data.success) {
+                     this.hasUnsavedChanges = false;
+                     this.pdfAdjustmentsSavedAt = response.data.saved_at;
+                     this.snotifySuccess('Berhasil', 'Posisi gambar berhasil disimpan');
+                     // Reload to get the saved_by name from server
+                     this.loadFiles();
+                     this.loadPdfLogs();
+                     } else {
+                     this.snotifyError('Gagal', response.data.message || 'Gagal menyimpan penyesuaian');
+                     }
+                     })
+                     .catch(error => {
+                     console.error('Error saving adjustments:', error);
+                     this.snotifyError('Gagal', 'Terjadi kesalahan saat menyimpan');
+                     })
+                     .finally(() => {
+                     this.savingAdjustments = false;
+                     });
+                     },
+                     
+                     loadPdfLogs: function() {
+                     axios.get('https://nenkin.web.id/form-online/admin/customer-files/get-pdf-logs/' + this.customerId)
+                     .then(response => {
+                     if (response.data.success) {
+                     this.pdfLogs = response.data.logs;
+                     }
+                     })
+                     .catch(error => {
+                     console.error('Error loading PDF logs:', error);
+                     });
+                     },
+                     
+                     buildBaseFilename: function() {
+                     var safeName = this.customerName.replace(/[\/\\:*?"<>|]/g, '').trim().toUpperCase();
+                     var safeBirth = (this.customerBirthDate || '').replace(/[\/\\:*?"<>|]/g, '').replace(/-/g, '').trim();
+                     return safeName + (safeBirth ? ' ' + safeBirth : '');
+                     },
+                     
+                     generatePDF: function() {
+                     // Always generate Type A PDFs (with 11 files)
+                     this.generateTypeAPDFs();
+                     },
+                     
+                     generateTypeAPDFs: async function() {
+                     this.generatingPdf = true;
+                     
+                     try {
+                     // Generate both PDFs with new structure
+                     // Document 80: files 1,2,3,4,5,6 (indices 0-5) - 4 pages
+                     const pdf80 = this.createPDF('type_a_80', [0, 1, 2, 3, 4, 5]);
+                     
+                     // Document 20: files 7,9,10,11,3,8 (indices 6,8,7,9,2,10) - 2 pages
+                     const pdf20 = this.createPDF('type_a_20_speed', [6, 8, 7, 9, 2, 10]);
+                     
+                     // Create ZIP
+                     const baseFilename = this.buildBaseFilename();
+                     const zip = new JSZip();
+                     zip.file(baseFilename + ' N80.pdf', pdf80.output('blob'));
+                     zip.file(baseFilename + ' N20.pdf', pdf20.output('blob'));
+                     
+                     const zipBlob = await zip.generateAsync({ type: 'blob' });
+                     
+                     // Download ZIP directly instead of showing preview
+                     const link = document.createElement('a');
+                     link.href = URL.createObjectURL(zipBlob);
+                     link.download = baseFilename + '.zip';
+                     link.click();
+                     
+                     // Clean up
+                     URL.revokeObjectURL(link.href);
+                     
+                     } catch (error) {
+                     console.error('PDF generation error:', error);
+                     } finally {
+                     this.generatingPdf = false;
+                     }
+                     },
+                     
+                     createPDF: function(layoutKey, fileIndices) {
+                     const { jsPDF } = window.jspdf;
+                     const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+                     
+                     const layout = this.pdfLayouts[layoutKey];
+                     
+                     // Page 1
+                     this.addImagesToPage(doc, layout.page1, fileIndices.slice(0, layout.page1.images.length));
+                     
+                     // Page 2
+                     doc.addPage();
+                     const page2StartIdx = layout.page1.images.length;
+                     this.addImagesToPage(doc, layout.page2, fileIndices.slice(page2StartIdx, page2StartIdx + layout.page2.images.length));
+                     
+                     // Page 3 (only if exists in layout)
+                     if (layout.page3) {
+                     doc.addPage();
+                     const page3StartIdx = page2StartIdx + layout.page2.images.length;
+                     this.addImagesToPage(doc, layout.page3, fileIndices.slice(page3StartIdx, page3StartIdx + layout.page3.images.length));
+                     
+                     // Page 4 (only if exists in layout)
+                     if (layout.page4) {
+                     doc.addPage();
+                     const page4StartIdx = page3StartIdx + layout.page3.images.length;
+                     this.addImagesToPage(doc, layout.page4, fileIndices.slice(page4StartIdx, page4StartIdx + layout.page4.images.length));
+                     }
+                     }
+                     
+                     return doc;
+                     },
+                     
+                     addImagesToPage: function(doc, pageLayout, fileIndices) {
+                     pageLayout.images.forEach((imgLayout, idx) => {
+                     if (fileIndices[idx] !== undefined) {
+                     const slot = this.fileSlots[fileIndices[idx]];
+                     if (slot && slot.hasFile && slot.previewUrl) {
+                     try {
+                     doc.addImage(
+                     slot.previewUrl,
+                     'JPEG',
+                     imgLayout.x,
+                     imgLayout.y,
+                     imgLayout.width,
+                     imgLayout.height,
+                     undefined,
+                     'FAST'
+                     );
+                     } catch (error) {
+                     console.error('Error adding image:', error);
+                     }
+                     }
+                     }
+                     });
+                     },
+                     
+                     downloadPDF: async function() {
+                     // Always download Type A PDFs (with 11 files)
+                     await this.downloadTypeAPDFs();
+                     },
+                     
+                     downloadTypeAPDFs: async function() {
+                     this.generatingPdf = true;
+                     
+                     try {
+                     // Generate PDFs with new structure
+                     // Document 80: files 1,2,3,4,5,6 (indices 0-5) - 4 pages
+                     const pdf80 = this.createPDF('type_a_80', [0, 1, 2, 3, 4, 5]);
+                     
+                     // Document 20: files 7,9,10,11,3,8 (indices 6,8,7,9,2,10) - 2 pages
+                     const pdf20 = this.createPDF('type_a_20_speed', [6, 8, 7, 9, 2, 10]);
+                     
+                     // Create ZIP
+                     const baseFilename = this.buildBaseFilename();
+                     const zip = new JSZip();
+                     zip.file(baseFilename + ' N80.pdf', pdf80.output('blob'));
+                     zip.file(baseFilename + ' N20.pdf', pdf20.output('blob'));
+                     
+                     const zipBlob = await zip.generateAsync({ type: 'blob' });
+                     
+                     // Download ZIP
+                     const link = document.createElement('a');
+                     link.href = URL.createObjectURL(zipBlob);
+                     link.download = baseFilename + '.zip';
+                     link.click();
+                     
+                     } catch (error) {
+                     console.error('PDF download error:', error);
+                     } finally {
+                     this.generatingPdf = false;
+                     }
+                     },
+                     
+                     // =====================================================
+                     // PDF PREVIEW METHODS
+                     // =====================================================
+                     
+                     // Modal Control
+                     openPdfPreview: function() {
+                     console.log('[DEBUG] openPdfPreview dipanggil');
+                     this.pdfPreview.show = true;
+                     this.pdfPreview.currentPage = 1;
+                     this.pdfPreview.selectedImageIndex = null;
+                     this.pdfPreview.zoom = 1.0;
+                     this.imageBounds = [];
+                     // Set totalPages based on selected template
+                     this.pdfPreview.totalPages = this.pdfPreview.selectedTemplate === 'type_a_80' ? 4 : 2;
+                     
+                     this.preloadImages().then(() => {
+                     this.$nextTick(() => {
+                     this.renderCanvasPage();
+                     });
+                     });
+                     },
+                     
+                     closePdfPreview: function() {
+                     this.pdfPreview.show = false;
+                     this.pdfPreview.selectedImageIndex = null;
+                     this.pdfPreview.isDragging = false;
+                     },
+                     
+                     onTemplateChange: function() {
+                     this.pdfPreview.currentPage = 1;
+                     this.pdfPreview.selectedImageIndex = null;
+                     this.imageBounds = [];
+                     // Update totalPages based on selected template
+                     this.pdfPreview.totalPages = this.pdfPreview.selectedTemplate === 'type_a_80' ? 4 : 2;
+                     this.$nextTick(() => {
+                     this.renderCanvasPage();
+                     });
+                     },
+                     
+                     // Image Preloading
+                     preloadImages: function() {
+                     const promises = [];
+                     
+                     this.fileSlots.forEach((slot, index) => {
+                     if (slot.hasFile && slot.previewUrl) {
+                     const promise = new Promise((resolve) => {
+                     const img = new Image();
+                     img.crossOrigin = 'anonymous';
+                     img.onload = () => {
+                     this.$set(this.loadedImages, index, img);
+                     resolve();
+                     };
+                     img.onerror = () => {
+                     console.error('Failed to load image for slot', index);
+                     resolve();
+                     };
+                     img.src = slot.previewUrl;
+                     });
+                     promises.push(promise);
+                     }
+                     });
+                     
+                     return Promise.all(promises);
+                     },
+                     
+                     // Canvas Rendering
+                     renderCanvasPage: function() {
+                     const canvas = this.$refs.pdfCanvas;
+                     if (!canvas) return;
+                     
+                     const ctx = canvas.getContext('2d');
+                     const template = this.pdfPreview.selectedTemplate;
+                     const page = this.pdfPreview.currentPage;
+                     
+                     // Set canvas size (A4 proportions at 72 DPI)
+                     canvas.width = this.pdfPreview.canvasWidth;
+                     canvas.height = this.pdfPreview.canvasHeight;
+                     
+                     // Clear canvas with white background
+                     ctx.fillStyle = '#ffffff';
+                     ctx.fillRect(0, 0, canvas.width, canvas.height);
+                     
+                     // Draw light grid/border
+                     ctx.strokeStyle = '#e0e0e0';
+                     ctx.lineWidth = 1;
+                     ctx.strokeRect(0, 0, canvas.width, canvas.height);
+                     
+                     // Get layout for current page
+                     const pageKey = 'page' + page;
+                     const layout = this.pdfLayouts[template][pageKey];
+                     const fileIndices = this.pageFileMapping[template][page];
+                     
+                     if (!layout || !fileIndices) return;
+                     
+                     // Scale factor from mm to pixels (A4: 210x297mm -> 595x842px at 72 DPI)
+                     const scaleX = canvas.width / 210;
+                     const scaleY = canvas.height / 297;
+                     
+                     // Draw fixed grid lines with black/yellow dotted pattern
+                     this.drawFixedGridLines(ctx, layout, scaleX, scaleY);
+                     
+                     // Reset image bounds
+                     this.imageBounds = [];
+                     
+                     // Draw each image
+                     layout.images.forEach((imgLayout, idx) => {
+                     const fileIndex = fileIndices[idx];
+                     const img = this.loadedImages[fileIndex];
+                     
+                     // Calculate base position
+                     const baseX = imgLayout.x * scaleX;
+                     const baseY = imgLayout.y * scaleY;
+                     const baseW = imgLayout.width * scaleX;
+                     const baseH = imgLayout.height * scaleY;
+                     
+                     // Get adjustments
+                     const adj = this.getImageAdjustment(template, page, idx);
+                     const x = baseX + adj.offsetX;
+                     const y = baseY + adj.offsetY;
+                     const scale = adj.scale || 1.0;
+                     
+                     // Calculate scaled dimensions
+                     const w = baseW * scale;
+                     const h = baseH * scale;
+                     
+                     // Calculate actual image dimensions based on rotation
+                     let actualW = w;
+                     let actualH = h;
+                     if (adj.rotation === 90 || adj.rotation === 270) {
+                     // Swap dimensions for 90/270 degree rotations
+                     actualW = h;
+                     actualH = w;
+                     }
+                     
+                     // Store bounding box for hit testing (with rotation-aware dimensions)
+                     // Include clip region (grid cell) and actual position
+                     this.imageBounds[idx] = {
+                     // Actual image position (may extend outside clip)
+                     x: x,
+                     y: y,
+                     width: actualW,
+                     height: actualH,
+                     // Clip region (fixed grid cell)
+                     clipX: baseX,
+                     clipY: baseY,
+                     clipW: baseW,
+                     clipH: baseH,
+                     // Original base position
+                     baseX: baseX,
+                     baseY: baseY,
+                     baseW: baseW,
+                     baseH: baseH,
+                     rotation: adj.rotation,
+                     scale: scale
+                     };
+                     
+                     if (img) {
+                     // Save context for clipping
+                     ctx.save();
+                     
+                     // Apply clipping to grid cell boundary
+                     ctx.beginPath();
+                     ctx.rect(baseX, baseY, baseW, baseH);
+                     ctx.clip();
+                     
+                     // Check if this image is selected
+                     const isSelected = this.pdfPreview.selectedImageIndex === idx;
+                     
+                     // Check if this image has been edited (has non-default adjustments)
+                     const hasBeenEdited = adj.offsetX !== 0 || adj.offsetY !== 0 || adj.rotation !== 0 || adj.scale !== 1.0;
+                     
+                     if (isSelected || hasBeenEdited) {
+                     // Selected or edited: show with original aspect ratio
+                     // This ensures edits are preserved consistently
+                     const aspectFit = this.calculateAspectFit(img.width, img.height, w, h);
+                     
+                     // Calculate centered position for aspect-fit image
+                     const aspectX = x + (actualW - (adj.rotation === 90 || adj.rotation === 270 ? aspectFit.height : aspectFit.width)) / 2;
+                     const aspectY = y + (actualH - (adj.rotation === 90 || adj.rotation === 270 ? aspectFit.width : aspectFit.height)) / 2;
+                     
+                     // Store aspect-fit bounds for selection border
+                     const aspectW = adj.rotation === 90 || adj.rotation === 270 ? aspectFit.height : aspectFit.width;
+                     const aspectH = adj.rotation === 90 || adj.rotation === 270 ? aspectFit.width : aspectFit.height;
+                     
+                     // Update bounds for hit testing with aspect-fit dimensions
+                     this.imageBounds[idx].aspectX = aspectX;
+                     this.imageBounds[idx].aspectY = aspectY;
+                     this.imageBounds[idx].aspectW = aspectW;
+                     this.imageBounds[idx].aspectH = aspectH;
+                     
+                     // Save again for rotation transform
+                     ctx.save();
+                     // Move to center of aspect-fit area for rotation
+                     ctx.translate(aspectX + aspectW/2, aspectY + aspectH/2);
+                     ctx.rotate(adj.rotation * Math.PI / 180);
+                     
+                     // Draw image with original aspect ratio (clipped to grid cell)
+                     ctx.drawImage(img,
+                     -aspectFit.width/2,
+                     -aspectFit.height/2,
+                     aspectFit.width,
+                     aspectFit.height
+                     );
+                     ctx.restore();
+                     } else {
+                     // Not selected and not edited: stretch to fill container (default preview)
+                     ctx.save();
+                     ctx.translate(x + actualW/2, y + actualH/2);
+                     ctx.rotate(adj.rotation * Math.PI / 180);
+                     
+                     ctx.drawImage(img,
+                     -w/2,
+                     -h/2,
+                     w,
+                     h
+                     );
+                     ctx.restore();
+                     }
+                     
+                     // Restore to remove clipping
+                     ctx.restore();
+                     }
+                     
+                     // Draw selection border if selected
+                     if (this.pdfPreview.selectedImageIndex === idx) {
+                     const bounds = this.imageBounds[idx];
+                     
+                     // Use aspect-fit bounds for the selection if available
+                     const selX = bounds.aspectX !== undefined ? bounds.aspectX : x;
+                     const selY = bounds.aspectY !== undefined ? bounds.aspectY : y;
+                     const selW = bounds.aspectW !== undefined ? bounds.aspectW : actualW;
+                     const selH = bounds.aspectH !== undefined ? bounds.aspectH : actualH;
+                     
+                     // Draw dotted outline showing full image bounds (including clipped parts)
+                     // This helps users see how much of the image extends beyond the grid cell
+                     ctx.strokeStyle = '#007bff';
+                     ctx.lineWidth = 2;
+                     ctx.setLineDash([3, 3]);
+                     ctx.strokeRect(selX, selY, selW, selH);
+                     ctx.setLineDash([]);
+                     
+                     // Draw solid border at clip region boundary for reference
+                     ctx.strokeStyle = 'rgba(0, 123, 255, 0.3)';
+                     ctx.lineWidth = 1;
+                     ctx.strokeRect(baseX, baseY, baseW, baseH);
+                     
+                     // Draw corner handles at the full bounds (for resizing)
+                     this.drawSelectionHandles(ctx, selX, selY, selW, selH, idx);
+                     }
+                     });
+                     },
+                     
+                     drawSelectionHandles: function(ctx, x, y, w, h, idx) {
+                     const handleSize = 12;
+                     ctx.fillStyle = '#007bff';
+                     
+                     // Define handle positions
+                     const handles = {
+                     tl: { x: x - handleSize/2, y: y - handleSize/2 },
+                     tr: { x: x + w - handleSize/2, y: y - handleSize/2 },
+                     bl: { x: x - handleSize/2, y: y + h - handleSize/2 },
+                     br: { x: x + w - handleSize/2, y: y + h - handleSize/2 }
+                     };
+                     
+                     // Store handle positions for hit testing
+                     if (this.imageBounds[idx]) {
+                     this.imageBounds[idx].handles = handles;
+                     this.imageBounds[idx].handleSize = handleSize;
+                     }
+                     
+                     // Draw corner handles
+                     Object.values(handles).forEach(handle => {
+                     ctx.fillRect(handle.x, handle.y, handleSize, handleSize);
+                     });
+                     },
+                     
+                     calculateAspectFit: function(srcWidth, srcHeight, maxWidth, maxHeight) {
+                     const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+                     return {
+                     width: srcWidth * ratio,
+                     height: srcHeight * ratio
+                     };
+                     },
+                     
+                     // Draw fixed grid lines with dotted black/yellow pattern
+                     drawFixedGridLines: function(ctx, layout, scaleX, scaleY) {
+                     ctx.save();
+                     ctx.lineWidth = 2;
+                     
+                     layout.images.forEach((imgLayout) => {
+                     const x = imgLayout.x * scaleX;
+                     const y = imgLayout.y * scaleY;
+                     const w = imgLayout.width * scaleX;
+                     const h = imgLayout.height * scaleY;
+                     
+                     // Draw black dotted line
+                     ctx.setLineDash([5, 3]);
+                     ctx.lineDashOffset = 0;
+                     ctx.strokeStyle = '#000000';
+                     ctx.strokeRect(x, y, w, h);
+                     
+                     // Draw yellow dotted line (offset by dash pattern for alternating effect)
+                     ctx.lineDashOffset = 5;
+                     ctx.strokeStyle = '#FFD700';
+                     ctx.strokeRect(x, y, w, h);
+                     });
+                     
+                     ctx.setLineDash([]);
+                     ctx.restore();
+                     },
+                     
+                     // Image Adjustment Helpers
+                     getImageAdjustment: function(template, page, imageIndex) {
+                     const pageAdj = this.imageAdjustments[template][page];
+                     if (pageAdj && pageAdj[imageIndex]) {
+                     return {
+                     offsetX: pageAdj[imageIndex].offsetX || 0,
+                     offsetY: pageAdj[imageIndex].offsetY || 0,
+                     rotation: pageAdj[imageIndex].rotation || 0,
+                     scale: pageAdj[imageIndex].scale || 1.0
+                     };
+                     }
+                     return { offsetX: 0, offsetY: 0, rotation: 0, scale: 1.0 };
+                     },
+                     
+                     setImageAdjustment: function(template, page, imageIndex, adjustment) {
+                     if (!this.imageAdjustments[template][page]) {
+                     this.$set(this.imageAdjustments[template], page, {});
+                     }
+                     this.$set(this.imageAdjustments[template][page], imageIndex, adjustment);
+                     this.hasUnsavedChanges = true;
+                     },
+                     
+                     resetAllAdjustments: function() {
+                     this.imageAdjustments = {
+                     type_a_80: { 1: {}, 2: {}, 3: {}, 4: {} },
+                     type_a_20_speed: { 1: {}, 2: {} }
+                     };
+                     this.pdfPreview.selectedImageIndex = null;
+                     this.hasUnsavedChanges = true;
+                     this.renderCanvasPage();
+                     },
+                     
+                     // Mouse Interaction Handlers
+                     onCanvasMouseDown: function(event) {
+                     const canvas = this.$refs.pdfCanvas;
+                     const rect = canvas.getBoundingClientRect();
+                     const scaleRatio = canvas.width / (rect.width / this.pdfPreview.zoom);
+                     
+                     const x = (event.clientX - rect.left) * scaleRatio / this.pdfPreview.zoom;
+                     const y = (event.clientY - rect.top) * scaleRatio / this.pdfPreview.zoom;
+                     
+                     // First check if clicking on a resize handle of selected image
+                     if (this.pdfPreview.selectedImageIndex !== null) {
+                     const handle = this.getHandleAtPoint(x, y, this.pdfPreview.selectedImageIndex);
+                     if (handle) {
+                     this.pdfPreview.isResizing = true;
+                     this.pdfPreview.resizeHandle = handle;
+                     this.pdfPreview.dragStartX = x;
+                     this.pdfPreview.dragStartY = y;
+                     return;
+                     }
+                     }
+                     
+                     // Check if click is on any image
+                     const clickedIndex = this.getImageAtPoint(x, y);
+                     
+                     if (clickedIndex !== null) {
+                     this.pdfPreview.selectedImageIndex = clickedIndex;
+                     this.pdfPreview.isDragging = true;
+                     this.pdfPreview.dragStartX = x;
+                     this.pdfPreview.dragStartY = y;
+                     } else {
+                     this.pdfPreview.selectedImageIndex = null;
+                     }
+                     
+                     this.renderCanvasPage();
+                     },
+                     
+                     onCanvasMouseMove: function(event) {
+                     const canvas = this.$refs.pdfCanvas;
+                     const rect = canvas.getBoundingClientRect();
+                     const scaleRatio = canvas.width / (rect.width / this.pdfPreview.zoom);
+                     
+                     const x = (event.clientX - rect.left) * scaleRatio / this.pdfPreview.zoom;
+                     const y = (event.clientY - rect.top) * scaleRatio / this.pdfPreview.zoom;
+                     
+                     // Check for handle hover when not dragging/resizing
+                     if (!this.pdfPreview.isDragging && !this.pdfPreview.isResizing) {
+                     if (this.pdfPreview.selectedImageIndex !== null) {
+                     const handle = this.getHandleAtPoint(x, y, this.pdfPreview.selectedImageIndex);
+                     this.pdfPreview.hoveredHandle = handle;
+                     } else {
+                     this.pdfPreview.hoveredHandle = null;
+                     }
+                     }
+                     
+                     // Handle resizing
+                     if (this.pdfPreview.isResizing && this.pdfPreview.selectedImageIndex !== null) {
+                     const deltaX = x - this.pdfPreview.dragStartX;
+                     const deltaY = y - this.pdfPreview.dragStartY;
+                     
+                     const template = this.pdfPreview.selectedTemplate;
+                     const page = this.pdfPreview.currentPage;
+                     const idx = this.pdfPreview.selectedImageIndex;
+                     const bounds = this.imageBounds[idx];
+                     
+                     if (bounds) {
+                     const currentAdj = this.getImageAdjustment(template, page, idx);
+                     
+                     // Calculate scale change based on handle and drag direction
+                     let scaleChange = 0;
+                     const handle = this.pdfPreview.resizeHandle;
+                     
+                     // Use the larger delta for uniform scaling
+                     if (handle === 'br') {
+                     scaleChange = (deltaX + deltaY) / (bounds.baseW + bounds.baseH);
+                     } else if (handle === 'bl') {
+                     scaleChange = (-deltaX + deltaY) / (bounds.baseW + bounds.baseH);
+                     } else if (handle === 'tr') {
+                     scaleChange = (deltaX - deltaY) / (bounds.baseW + bounds.baseH);
+                     } else if (handle === 'tl') {
+                     scaleChange = (-deltaX - deltaY) / (bounds.baseW + bounds.baseH);
+                     }
+                     
+                     const newScale = Math.max(0.2, Math.min(3.0, currentAdj.scale + scaleChange));
+                     
+                     this.setImageAdjustment(template, page, idx, {
+                     offsetX: currentAdj.offsetX,
+                     offsetY: currentAdj.offsetY,
+                     rotation: currentAdj.rotation,
+                     scale: newScale
+                     });
+                     
+                     this.pdfPreview.dragStartX = x;
+                     this.pdfPreview.dragStartY = y;
+                     this.renderCanvasPage();
+                     }
+                     return;
+                     }
+                     
+                     // Handle dragging
+                     if (!this.pdfPreview.isDragging || this.pdfPreview.selectedImageIndex === null) {
+                     return;
+                     }
+                     
+                     const deltaX = x - this.pdfPreview.dragStartX;
+                     const deltaY = y - this.pdfPreview.dragStartY;
+                     
+                     const template = this.pdfPreview.selectedTemplate;
+                     const page = this.pdfPreview.currentPage;
+                     const idx = this.pdfPreview.selectedImageIndex;
+                     
+                     const currentAdj = this.getImageAdjustment(template, page, idx);
+                     
+                     this.setImageAdjustment(template, page, idx, {
+                     offsetX: currentAdj.offsetX + deltaX,
+                     offsetY: currentAdj.offsetY + deltaY,
+                     rotation: currentAdj.rotation,
+                     scale: currentAdj.scale
+                     });
+                     
+                     this.pdfPreview.dragStartX = x;
+                     this.pdfPreview.dragStartY = y;
+                     
+                     this.renderCanvasPage();
+                     },
+                     
+                     onCanvasMouseUp: function() {
+                     this.pdfPreview.isDragging = false;
+                     this.pdfPreview.isResizing = false;
+                     this.pdfPreview.resizeHandle = null;
+                     this.pdfPreview.hoveredHandle = null;
+                     },
+                     
+                     getHandleAtPoint: function(x, y, imageIndex) {
+                     const bounds = this.imageBounds[imageIndex];
+                     if (!bounds || !bounds.handles) return null;
+                     
+                     const handleSize = bounds.handleSize || 12;
+                     
+                     for (const [handleName, handlePos] of Object.entries(bounds.handles)) {
+                     if (x >= handlePos.x && x <= handlePos.x + handleSize &&
+                     y >= handlePos.y && y <= handlePos.y + handleSize) {
+                     return handleName;
+                     }
+                     }
+                     return null;
+                     },
+                     
+                     getImageAtPoint: function(x, y) {
+                     if (!this.imageBounds || this.imageBounds.length === 0) return null;
+                     
+                     // Check in reverse order (top images first)
+                     for (let i = this.imageBounds.length - 1; i >= 0; i--) {
+                     const bounds = this.imageBounds[i];
+                     if (bounds &&
+                     x >= bounds.x && x <= bounds.x + bounds.width &&
+                     y >= bounds.y && y <= bounds.y + bounds.height) {
+                     return i;
+                     }
+                     }
+                     return null;
+                     },
+                     
+                     getCanvasCursor: function() {
+                     // Check for resize handle hover or active resizing
+                     const handle = this.pdfPreview.isResizing
+                     ? this.pdfPreview.resizeHandle
+                     : this.pdfPreview.hoveredHandle;
+                     
+                     if (handle) {
+                     if (handle === 'tl' || handle === 'br') return 'nwse-resize';
+                     if (handle === 'tr' || handle === 'bl') return 'nesw-resize';
+                     }
+                     if (this.pdfPreview.isDragging) return 'grabbing';
+                     if (this.pdfPreview.selectedImageIndex !== null) return 'grab';
+                     return 'default';
+                     },
+                     
+                     // Navigation and Controls
+                     previousPage: function() {
+                     if (this.pdfPreview.currentPage > 1) {
+                     this.pdfPreview.currentPage--;
+                     this.pdfPreview.selectedImageIndex = null;
+                     this.imageBounds = [];
+                     this.renderCanvasPage();
+                     }
+                     },
+                     
+                     nextPage: function() {
+                     if (this.pdfPreview.currentPage < this.pdfPreview.totalPages) {
+                     this.pdfPreview.currentPage++;
+                     this.pdfPreview.selectedImageIndex = null;
+                     this.imageBounds = [];
+                     this.renderCanvasPage();
+                     }
+                     },
+                     
+                     zoomIn: function() {
+                     if (this.pdfPreview.zoom < 2.0) {
+                     this.pdfPreview.zoom = Math.min(2.0, this.pdfPreview.zoom + 0.25);
+                     }
+                     },
+                     
+                     zoomOut: function() {
+                     if (this.pdfPreview.zoom > 0.5) {
+                     this.pdfPreview.zoom = Math.max(0.5, this.pdfPreview.zoom - 0.25);
+                     }
+                     },
+                     
+                     selectImage: function(idx) {
+                     this.pdfPreview.selectedImageIndex = idx;
+                     this.renderCanvasPage();
+                     },
+                     
+                     rotateSelectedImage: function() {
+                     if (this.pdfPreview.selectedImageIndex === null) return;
+                     
+                     const template = this.pdfPreview.selectedTemplate;
+                     const page = this.pdfPreview.currentPage;
+                     const idx = this.pdfPreview.selectedImageIndex;
+                     
+                     const currentAdj = this.getImageAdjustment(template, page, idx);
+                     
+                     this.setImageAdjustment(template, page, idx, {
+                     offsetX: currentAdj.offsetX,
+                     offsetY: currentAdj.offsetY,
+                     rotation: (currentAdj.rotation + 90) % 360,
+                     scale: currentAdj.scale
+                     });
+                     
+                     this.renderCanvasPage();
+                     },
+                     
+                     // PDF Generation with Adjustments
+                     applyAdjustmentsAndDownload: async function() {
+                     console.log('[DEBUG] applyAdjustmentsAndDownload - statusNenkin:', this.statusNenkin, 'isFinalized:', this.isFinalized);
+                     // If KIRIM_N80 and not yet finalized, show confirmation dialog
+                     if (this.statusNenkin === 'KIRIM_N80' && !this.isFinalized) {
+                     this.showFinalizeConfirm = true;
+                     return;
+                     }
+                     
+                     this.generatingPdf = true;
+                     
+                     try {
+                     // Auto-save adjustments before generating PDF
+                     await this.saveAdjustments();
+                     
+                     // Generate both PDFs with adjustments applied
+                     const pdf80 = this.createPDFWithAdjustments('type_a_80', [0, 1, 2, 3, 4, 5]);
+                     const pdf20 = this.createPDFWithAdjustments('type_a_20_speed', [6, 8, 7, 9, 2, 10]);
+                     
+                     const baseFilename = this.buildBaseFilename();
+                     const blob80 = pdf80.output('blob');
+                     const blob20 = pdf20.output('blob');
+                     
+                     // Store PDF copies on server (silent, overwrite existing)
+                     var storeFormData = new FormData();
+                     storeFormData.append('pdf_n80', blob80, baseFilename + ' N80.pdf');
+                     storeFormData.append('pdf_n20', blob20, baseFilename + ' N20.pdf');
+                     axios.post(
+                     'https://nenkin.web.id/form-online/admin/customer-files/store-pdfs/' + this.customerId,
+                     storeFormData,
+                     { headers: { 'Content-Type': 'multipart/form-data' } }
+                     ).catch(function(err) { console.error('Store PDFs error:', err); });
+                     
+                     // Create ZIP and download
+                     const zip = new JSZip();
+                     zip.file(baseFilename + ' N80.pdf', blob80);
+                     zip.file(baseFilename + ' N20.pdf', blob20);
+                     
+                     const zipBlob = await zip.generateAsync({ type: 'blob' });
+                     
+                     const link = document.createElement('a');
+                     link.href = URL.createObjectURL(zipBlob);
+                     link.download = baseFilename + '.zip';
+                     link.click();
+                     URL.revokeObjectURL(link.href);
+                     
+                     // Log the download
+                     axios.post('https://nenkin.web.id/form-online/admin/customer-files/log-pdf-download/' + this.customerId, {})
+                     .then(() => { this.loadPdfLogs(); })
+                     .catch(err => console.error('Log error:', err));
+                     
+                     // Close preview
+                     this.closePdfPreview();
+                     this.snotifySuccess('Berhasil', 'PDF berhasil di-download');
+                     
+                     } catch (error) {
+                     console.error('PDF generation error:', error);
+                     this.snotifyError('Error', 'Gagal membuat PDF');
+                     } finally {
+                     this.generatingPdf = false;
+                     }
+                     },
+                     
+                     // Finalize: generate PDF, upload to server, delete images (KIRIM_N80 only)
+                     confirmFinalizeAndDownload: async function() {
+                     this.showFinalizeConfirm = false;
+                     this.finalizingPdfs = true;
+                     this.generatingPdf = true;
+                     
+                     try {
+                     // 1. Auto-save adjustments
+                     await this.saveAdjustments();
+                     
+                     // 2. Generate PDFs
+                     const pdf80 = this.createPDFWithAdjustments('type_a_80', [0, 1, 2, 3, 4, 5]);
+                     const pdf20 = this.createPDFWithAdjustments('type_a_20_speed', [6, 8, 7, 9, 2, 10]);
+                     
+                     const baseFilename = this.buildBaseFilename();
+                     const blob80 = pdf80.output('blob');
+                     const blob20 = pdf20.output('blob');
+                     
+                     // 3. Upload PDF blobs to server for finalization (deletes images)
+                     var formData = new FormData();
+                     formData.append('pdf_n80', blob80, baseFilename + ' N80.pdf');
+                     formData.append('pdf_n20', blob20, baseFilename + ' N20.pdf');
+                     
+                     var finalizeResponse = await axios.post(
+                     'https://nenkin.web.id/form-online/admin/customer-files/finalize-pdfs/' + this.customerId,
+                     formData,
+                     { headers: { 'Content-Type': 'multipart/form-data' } }
+                     );
+                     
+                     if (!finalizeResponse.data.success) {
+                     this.snotifyError('Gagal', finalizeResponse.data.message || 'Gagal memfinalisasi PDF');
+                     return;
+                     }
+                     
+                     // 4. Download ZIP to user
+                     const zip = new JSZip();
+                     zip.file(baseFilename + ' N80.pdf', blob80);
+                     zip.file(baseFilename + ' N20.pdf', blob20);
+                     const zipBlob = await zip.generateAsync({ type: 'blob' });
+                     
+                     const link = document.createElement('a');
+                     link.href = URL.createObjectURL(zipBlob);
+                     link.download = baseFilename + '.zip';
+                     link.click();
+                     URL.revokeObjectURL(link.href);
+                     
+                     // 5. Close preview and reload
+                     this.closePdfPreview();
+                     this.snotifySuccess('Berhasil', 'PDF berhasil difinalisasi dan didownload. Gambar asli telah dihapus.');
+                     
+                     this.loadFiles();
+                     this.loadPdfLogs();
+                     
+                     } catch (error) {
+                     console.error('Finalization error:', error);
+                     this.snotifyError('Error', 'Gagal memfinalisasi PDF');
+                     } finally {
+                     this.finalizingPdfs = false;
+                     this.generatingPdf = false;
+                     }
+                     },
+                     
+                     servePdfUrl: function(type, inline) {
+                     var url = 'https://nenkin.web.id/form-online/admin/customer-files/serve-pdf/' + this.customerId + '/' + type;
+                     if (inline) url += '?inline=1';
+                     return url;
+                     },
+                     
+                     createPDFWithAdjustments: function(layoutKey, fileIndices) {
+                     const { jsPDF } = window.jspdf;
+                     const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+                     
+                     const layout = this.pdfLayouts[layoutKey];
+                     
+                     // Page 1
+                     this.addImagesWithAdjustments(doc, layout.page1, layoutKey, 1, fileIndices.slice(0, layout.page1.images.length));
+                     
+                     // Page 2
+                     doc.addPage();
+                     const page2Start = layout.page1.images.length;
+                     this.addImagesWithAdjustments(doc, layout.page2, layoutKey, 2, fileIndices.slice(page2Start, page2Start + layout.page2.images.length));
+                     
+                     // Page 3 (only if exists in layout)
+                     if (layout.page3) {
+                     doc.addPage();
+                     const page3Start = page2Start + layout.page2.images.length;
+                     this.addImagesWithAdjustments(doc, layout.page3, layoutKey, 3, fileIndices.slice(page3Start, page3Start + layout.page3.images.length));
+                     
+                     // Page 4 (only if exists in layout)
+                     if (layout.page4) {
+                     doc.addPage();
+                     const page4Start = page3Start + layout.page3.images.length;
+                     this.addImagesWithAdjustments(doc, layout.page4, layoutKey, 4, fileIndices.slice(page4Start, page4Start + layout.page4.images.length));
+                     }
+                     }
+                     
+                     return doc;
+                     },
+                     
+                     addImagesWithAdjustments: function(doc, pageLayout, template, pageNum, fileIndices) {
+                     // Scale factor from canvas pixels to mm
+                     const scaleX = 210 / this.pdfPreview.canvasWidth;
+                     const scaleY = 297 / this.pdfPreview.canvasHeight;
+                     
+                     pageLayout.images.forEach((imgLayout, idx) => {
+                     if (fileIndices[idx] !== undefined) {
+                     const slot = this.fileSlots[fileIndices[idx]];
+                     const img = this.loadedImages[fileIndices[idx]];
+                     if (slot && slot.hasFile && slot.previewUrl) {
+                     try {
+                     // Get adjustments
+                     const adj = this.getImageAdjustment(template, pageNum, idx);
+                     
+                     // Check if this image has been edited (has non-default adjustments)
+                     const hasBeenEdited = adj.offsetX !== 0 || adj.offsetY !== 0 || adj.rotation !== 0 || adj.scale !== 1.0;
+                     
+                     // Grid cell dimensions in mm (clip region)
+                     const clipX = imgLayout.x;
+                     const clipY = imgLayout.y;
+                     const clipW = imgLayout.width;
+                     const clipH = imgLayout.height;
+                     
+                     // For non-edited images, add original image directly for best quality
+                     if (!hasBeenEdited) {
+                     doc.addImage(
+                     slot.previewUrl,
+                     'JPEG',
+                     clipX,
+                     clipY,
+                     clipW,
+                     clipH
+                     );
+                     return;
+                     }
+                     
+                     // Calculate optimal resolution based on source image
+                     // Higher pdfScale = sharper output (pixels per mm)
+                     var pdfScale = 10; // Default ~254 DPI minimum
+                     if (img) {
+                     var imgPxPerMm = Math.max(img.width / clipW, img.height / clipH);
+                     // Use source resolution, cap between 8-14 px/mm (~200-355 DPI)
+                     pdfScale = Math.min(Math.max(Math.ceil(imgPxPerMm), 8), 14);
+                     }
+                     
+                     // Create a canvas for rendering with clipping
+                     const tempCanvas = document.createElement('canvas');
+                     const tempCtx = tempCanvas.getContext('2d');
+                     
+                     // Canvas size matches grid cell at high resolution
+                     tempCanvas.width = Math.round(clipW * pdfScale);
+                     tempCanvas.height = Math.round(clipH * pdfScale);
+                     
+                     // Fill with white background
+                     tempCtx.fillStyle = '#ffffff';
+                     tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+                     
+                     if (img) {
+                     // Calculate image position relative to clip region
+                     const baseW = imgLayout.width * adj.scale;
+                     const baseH = imgLayout.height * adj.scale;
+                     
+                     // Image offset relative to grid cell origin
+                     const relOffsetX = adj.offsetX * scaleX;
+                     const relOffsetY = adj.offsetY * scaleY;
+                     
+                     if (hasBeenEdited) {
+                     // Use aspect-fit rendering
+                     const aspectFit = this.calculateAspectFit(img.width, img.height, baseW, baseH);
+                     
+                     let actualW = baseW;
+                     let actualH = baseH;
+                     if (adj.rotation === 90 || adj.rotation === 270) {
+                     actualW = baseH;
+                     actualH = baseW;
+                     }
+                     
+                     const aspectW = adj.rotation === 90 || adj.rotation === 270 ? aspectFit.height : aspectFit.width;
+                     const aspectH = adj.rotation === 90 || adj.rotation === 270 ? aspectFit.width : aspectFit.height;
+                     
+                     // Position within grid cell
+                     const imgX = relOffsetX + (actualW - aspectW) / 2;
+                     const imgY = relOffsetY + (actualH - aspectH) / 2;
+                     
+                     // Draw on canvas with clipping (canvas automatically clips to its bounds)
+                     tempCtx.save();
+                     tempCtx.translate((imgX + aspectW/2) * pdfScale, (imgY + aspectH/2) * pdfScale);
+                     tempCtx.rotate(adj.rotation * Math.PI / 180);
+                     tempCtx.drawImage(img,
+                     -aspectFit.width * pdfScale / 2,
+                     -aspectFit.height * pdfScale / 2,
+                     aspectFit.width * pdfScale,
+                     aspectFit.height * pdfScale
+                     );
+                     tempCtx.restore();
+                     } else {
+                     // Stretch to fill
+                     let drawW = baseW;
+                     let drawH = baseH;
+                     if (adj.rotation === 90 || adj.rotation === 270) {
+                     const temp = drawW;
+                     drawW = drawH;
+                     drawH = temp;
+                     }
+                     
+                     const imgX = relOffsetX;
+                     const imgY = relOffsetY;
+                     
+                     tempCtx.save();
+                     tempCtx.translate((imgX + drawW/2) * pdfScale, (imgY + drawH/2) * pdfScale);
+                     tempCtx.rotate(adj.rotation * Math.PI / 180);
+                     tempCtx.drawImage(img,
+                     -baseW * pdfScale / 2,
+                     -baseH * pdfScale / 2,
+                     baseW * pdfScale,
+                     baseH * pdfScale
+                     );
+                     tempCtx.restore();
+                     }
+                     }
+                     
+                     // Add the clipped canvas as image to PDF
+                     const clippedDataUrl = tempCanvas.toDataURL('image/jpeg', 0.95);
+                     doc.addImage(
+                     clippedDataUrl,
+                     'JPEG',
+                     clipX,
+                     clipY,
+                     clipW,
+                     clipH,
+                     undefined,
+                     'FAST'
+                     );
+                     } catch (error) {
+                     console.error('Error adding image:', error);
+                     }
+                     }
+                     }
+                     });
+                     },
+                     
+                     getRotatedImageDataUrl: function(img, rotation, targetWidth, targetHeight) {
+                     const canvas = document.createElement('canvas');
+                     const ctx = canvas.getContext('2d');
+                     
+                     // For 90/270 degree rotations, swap dimensions
+                     if (rotation === 90 || rotation === 270) {
+                     canvas.width = img.height;
+                     canvas.height = img.width;
+                     } else {
+                     canvas.width = img.width;
+                     canvas.height = img.height;
+                     }
+                     
+                     ctx.translate(canvas.width / 2, canvas.height / 2);
+                     ctx.rotate(rotation * Math.PI / 180);
+                     ctx.drawImage(img, -img.width / 2, -img.height / 2);
+                     
+                     return canvas.toDataURL('image/jpeg', 0.9);
+                     }
+                     }
+                     });
+                  </script>
+               </div>
+            </div>
+         </div>
+      </div>
+      <script src="https://nenkin.web.id/form-online/resources/vendors/base/vendor.bundle.base.js"></script>
+      <script src="https://nenkin.web.id/form-online/resources/js/off-canvas.js"></script>
+      <script src="https://nenkin.web.id/form-online/resources/js/hoverable-collapse.js"></script>
+      <script src="https://nenkin.web.id/form-online/resources/js/template.js"></script>
+      <script>
+         // Real-time notification system
+         function loadNotifications() {
+         $.ajax({
+         url: 'https://nenkin.web.id/form-online/notifications/get_latest_notifications',
+         type: 'GET',
+         dataType: 'json',
+         success: function(notifications) {
+         let html = '';
+         if (notifications.length > 0) {
+         notifications.forEach(function(notification) {
+         const timeAgo = getTimeAgo(notification.created_timestamp);
+         html += `
+         <div class="dropdown-item" style="white-space: normal; border-bottom: 1px solid #f0f0f0; padding: 10px 15px;">
+         <div class="d-flex">
+         <div class="flex-grow-1" style="min-width: 0;">
+         <h6 class="mb-1" style="font-size: 13px;">${notification.title}</h6>
+         <p class="mb-1 text-muted" style="font-size: 12px; word-wrap: break-word;">${notification.message}</p>
+         <small class="text-muted">${timeAgo}</small>
+         </div>
+         ${notification.is_read == 0 ? '<span class="badge badge-primary ml-2" style="flex-shrink: 0; align-self: start;">New</span>' : ''}
+         </div>
+         </div>
+         `;
+         });
+         } else {
+         html = '<div class="dropdown-item text-center"><small class="text-muted">No notifications</small></div>';
+         }
+         $('#notification-list').html(html);
+         },
+         error: function() {
+         $('#notification-list').html('<div class="dropdown-item text-center"><small class="text-danger">Error loading notifications</small></div>');
+         }
+         });
+         }
+         
+         function updateNotificationCount() {
+         $.ajax({
+         url: 'https://nenkin.web.id/form-online/notifications/get_unread_count',
+         type: 'GET',
+         dataType: 'json',
+         success: function(response) {
+         const count = response.unread_count;
+         if (count > 0) {
+         $('#navbar-notification-count').text(count).show();
+         } else {
+         $('#navbar-notification-count').hide();
+         }
+         }
+         });
+         }
+         
+         function getTimeAgo(timestamp) {
+         const now = Math.floor(Date.now() / 1000);
+         const diff = now - timestamp;
+         if (diff < 60) return 'Just now';
+         if (diff < 3600) return Math.floor(diff / 60) + ' minutes ago';
+         if (diff < 86400) return Math.floor(diff / 3600) + ' hours ago';
+         return Math.floor(diff / 86400) + ' days ago';
+         }
+         
+         // Load notifications when dropdown is opened
+         $('#notificationDropdown').on('click', function() {
+         loadNotifications();
+         });
+         
+         // Update notification count every 30 seconds
+         setInterval(function() {
+         updateNotificationCount();
+         }, 30000);
+         
+         // Initial load
+         $(document).ready(function() {
+         updateNotificationCount();
+         });
+      </script>
+      <script>
+         function markAsRead(notificationId) {
+         $.ajax({
+         url: 'https://nenkin.web.id/form-online/notifications/mark_read/' + notificationId,
+         type: 'POST',
+         dataType: 'json',
+         success: function(response) {
+         if(response.success) {
+         location.reload();
+         }
+         }
+         });
+         }
+         
+         function markAllRead() {
+         $.ajax({
+         url: 'https://nenkin.web.id/form-online/notifications/mark_all_read',
+         type: 'POST',
+         dataType: 'json',
+         success: function(response) {
+         if(response.success) {
+         location.reload();
+         }
+         }
+         });
+         }
+         
+         // Real-time notification updates
+         function updateNotificationCount() {
+         $.ajax({
+         url: 'https://nenkin.web.id/form-online/notifications/get_unread_count',
+         type: 'GET',
+         dataType: 'json',
+         success: function(response) {
+         $('#unread-count').text(response.unread_count + ' unread');
+         // Update the notification badge in the navbar if it exists
+         if($('#navbar-notification-count').length) {
+         $('#navbar-notification-count').text(response.unread_count);
+         if(response.unread_count > 0) {
+         $('#navbar-notification-count').show();
+         } else {
+         $('#navbar-notification-count').hide();
+         }
+         }
+         }
+         });
+         }
+         
+         // Update notification count every 30 seconds
+         setInterval(updateNotificationCount, 30000);
+      </script>
+   </body>
+</html>

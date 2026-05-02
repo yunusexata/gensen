@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8"/>
+      <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+      <title>Precision Data | Analytics Dashboard</title>
+      <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+      <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+      <script id="tailwind-config">
+         tailwind.config = {
+           darkMode: "class",
+           theme: {
+             extend: {
+               "colors": {
+                       "tertiary": "#a43a3a",
+                       "surface-tint": "#006c49",
+                       "on-primary": "#ffffff",
+                       "inverse-primary": "#4edea3",
+                       "background": "#f7f9fb",
+                       "surface-container-high": "#e6e8ea",
+                       "surface-variant": "#e0e3e5",
+                       "on-tertiary": "#ffffff",
+                       "on-primary-fixed": "#002113",
+                       "on-primary-container": "#00422b",
+                       "surface-dim": "#d8dadc",
+                       "tertiary-fixed-dim": "#ffb3af",
+                       "secondary-fixed": "#d8e3fb",
+                       "secondary-fixed-dim": "#bcc7de",
+                       "outline-variant": "#bbcabf",
+                       "error-container": "#ffdad6",
+                       "surface-container-lowest": "#ffffff",
+                       "on-secondary-fixed-variant": "#3c475a",
+                       "primary-fixed-dim": "#4edea3",
+                       "inverse-on-surface": "#eff1f3",
+                       "primary-fixed": "#6ffbbe",
+                       "on-tertiary-container": "#711419",
+                       "on-surface-variant": "#3c4a42",
+                       "error": "#ba1a1a",
+                       "tertiary-container": "#fc7c78",
+                       "outline": "#6c7a71",
+                       "on-surface": "#191c1e",
+                       "on-secondary-container": "#586377",
+                       "on-error-container": "#93000a",
+                       "surface": "#f7f9fb",
+                       "surface-container-low": "#f2f4f6",
+                       "tertiary-fixed": "#ffdad7",
+                       "surface-container-highest": "#e0e3e5",
+                       "on-secondary": "#ffffff",
+                       "primary-container": "#10b981",
+                       "primary": "#006c49",
+                       "on-error": "#ffffff",
+                       "on-tertiary-fixed": "#410005",
+                       "on-primary-fixed-variant": "#005236",
+                       "on-tertiary-fixed-variant": "#842225",
+                       "secondary": "#545f73",
+                       "surface-container": "#eceef0",
+                       "inverse-surface": "#2d3133",
+                       "surface-bright": "#f7f9fb",
+                       "secondary-container": "#d5e0f8",
+                       "on-secondary-fixed": "#111c2d",
+                       "on-background": "#191c1e"
+               },
+               "borderRadius": {
+                       "DEFAULT": "0.25rem",
+                       "lg": "0.5rem",
+                       "xl": "0.75rem",
+                       "full": "9999px"
+               },
+               "fontFamily": {
+                       "headline": ["Manrope"],
+                       "body": ["Inter"],
+                       "label": ["Inter"]
+               }
+             },
+           },
+         }
+      </script>
+      <style>
+         .material-symbols-outlined {
+         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+         }
+         body { font-family: 'Inter', sans-serif; }
+         h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+         .no-scrollbar::-webkit-scrollbar { display: none; }
+         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      </style>
+   </head>
+   <body class="bg-surface text-on-surface">
+      <!-- SideNavBar from JSON Shell -->
+      <aside class="fixed left-0 top-0 h-full flex flex-col py-6 px-4 z-50 bg-[#2d3133] h-screen w-64 border-r border-transparent shadow-xl shadow-black/20">
+         <div class="mb-10 px-4">
+            <h2 class="text-white font-headline text-lg font-extrabold tracking-tighter">Precision Data</h2>
+            <div class="mt-4 flex items-center gap-3">
+               <div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden">
+                  <img class="w-full h-full object-cover" data-alt="close-up portrait of a professional system administrator in a modern office environment with soft bokeh background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLd4jqQEydiJTTh6r_yLd7AwOUQmW77SMfv5rMDzdKerKDgDqS4qpb82l13sPVyhkf-hAR-ba8x5-4X0fWNjpKbMUflUbGknFBlKc4PGeMD_PZNoprLUMCcA17eTuyP82ZTV35qCUEmE2bbNX4DmcJDupaTZav32UmwPMHdg-9ZdJ9Dt5y7MIEoqZWaCRprWheGUbw5p58YymCTbdSqAMwA2_dxxGCnN1nE_8aAjvhN8LMsu_ueXSbWteVluPxwYhcTOPFXPVGbPVB"/>
+               </div>
+               <div>
+                  <p class="font-inter text-[10px] font-semibold uppercase tracking-widest text-emerald-500">Admin Workspace</p>
+                  <p class="text-slate-400 text-[10px]">Management Tier 1</p>
+               </div>
+            </div>
+         </div>
+         <nav class="flex-1 space-y-1">
+            <!-- Active: Overview (Contextual logic: Dashboard view) -->
+            <a class="flex items-center gap-3 bg-white/10 text-emerald-400 rounded-lg px-4 py-3 relative before:absolute before:left-0 before:w-1 before:h-6 before:bg-emerald-500 before:rounded-r-full font-inter text-xs font-semibold uppercase tracking-widest transition-all duration-200" href="#">
+            <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+            <span>Overview</span>
+            </a>
+            <a class="flex items-center gap-3 text-slate-400 px-4 py-3 hover:text-slate-100 hover:bg-white/5 transition-all duration-200 font-inter text-xs font-semibold uppercase tracking-widest" href="#">
+            <span class="material-symbols-outlined" data-icon="database">database</span>
+            <span>Datasets</span>
+            </a>
+            <a class="flex items-center gap-3 text-slate-400 px-4 py-3 hover:text-slate-100 hover:bg-white/5 transition-all duration-200 font-inter text-xs font-semibold uppercase tracking-widest" href="#">
+            <span class="material-symbols-outlined" data-icon="schema">schema</span>
+            <span>Pipeline</span>
+            </a>
+            <a class="flex items-center gap-3 text-slate-400 px-4 py-3 hover:text-slate-100 hover:bg-white/5 transition-all duration-200 font-inter text-xs font-semibold uppercase tracking-widest" href="#">
+            <span class="material-symbols-outlined" data-icon="assignment_turned_in">assignment_turned_in</span>
+            <span>Audits</span>
+            </a>
+            <a class="flex items-center gap-3 text-slate-400 px-4 py-3 hover:text-slate-100 hover:bg-white/5 transition-all duration-200 font-inter text-xs font-semibold uppercase tracking-widest" href="#">
+            <span class="material-symbols-outlined" data-icon="shield">shield</span>
+            <span>Security</span>
+            </a>
+         </nav>
+         <div class="mt-auto space-y-1 border-t border-white/5 pt-4">
+            <button class="w-full bg-primary text-on-primary rounded-lg py-2.5 px-4 font-inter text-xs font-bold uppercase tracking-wider mb-4 hover:opacity-90 transition-opacity">
+            New Dataset
+            </button>
+            <a class="flex items-center gap-3 text-slate-400 px-4 py-2 hover:text-slate-100 font-inter text-[10px] font-semibold uppercase" href="#">
+            <span class="material-symbols-outlined text-sm" data-icon="contact_support">contact_support</span>
+            <span>Support</span>
+            </a>
+            <a class="flex items-center gap-3 text-slate-400 px-4 py-2 hover:text-slate-100 font-inter text-[10px] font-semibold uppercase" href="#">
+            <span class="material-symbols-outlined text-sm" data-icon="logout">logout</span>
+            <span>Sign Out</span>
+            </a>
+         </div>
+      </aside>
+      <!-- Main Content Canvas -->
+      <main class="ml-64 min-h-screen">
+         <!-- TopAppBar from JSON Shell -->
+         <header class="flex justify-between items-center px-6 py-3 w-full sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-slate-100 shadow-sm shadow-slate-200/50">
+            <div class="flex items-center gap-8">
+               <div class="relative w-64">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-sm" data-icon="search">search</span>
+                  <input class="w-full pl-9 pr-4 py-1.5 bg-surface-container-low border-none rounded-full text-sm focus:ring-2 focus:ring-primary/20 placeholder:text-slate-400 transition-all" placeholder="Search datasets..." type="text"/>
+               </div>
+               <nav class="hidden md:flex gap-6">
+                  <a class="text-emerald-700 border-b-2 border-emerald-700 pb-1 font-manrope text-sm font-medium tracking-tight" href="#">Dashboard</a>
+                  <a class="text-slate-500 hover:text-slate-900 transition-colors font-manrope text-sm font-medium tracking-tight" href="#">Analytics</a>
+                  <a class="text-slate-500 hover:text-slate-900 transition-colors font-manrope text-sm font-medium tracking-tight" href="#">Reports</a>
+                  <a class="text-slate-500 hover:text-slate-900 transition-colors font-manrope text-sm font-medium tracking-tight" href="#">Settings</a>
+               </nav>
+            </div>
+            <div class="flex items-center gap-4">
+               <div class="flex gap-2 mr-2">
+                  <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors">
+                  <span class="material-symbols-outlined" data-icon="help">help</span>
+                  </button>
+                  <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors relative">
+                  <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+                  <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+                  </button>
+               </div>
+               <button class="bg-primary text-on-primary px-4 py-1.5 rounded-lg font-inter text-sm font-semibold hover:opacity-90 transition-all flex items-center gap-2 shadow-sm">
+               <span class="material-symbols-outlined text-sm" data-icon="file_download">file_download</span>
+               Export Data
+               </button>
+            </div>
+         </header>
+         <div class="p-8 max-w-[1600px] mx-auto">
+            <!-- Editorial Header Section -->
+            <section class="mb-8 flex justify-between items-end">
+               <div>
+                  <h1 class="text-4xl font-headline font-extrabold text-on-surface tracking-tight mb-2">Dataset Overview</h1>
+                  <p class="text-on-surface-variant font-body">Management of digital registration profiles and verification pipelines.</p>
+               </div>
+               <div class="flex gap-3">
+                  <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/10 flex items-center gap-4">
+                     <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined" data-icon="group">group</span>
+                     </div>
+                     <div>
+                        <span class="block text-xs font-label uppercase tracking-widest text-on-surface-variant">Total Records</span>
+                        <span class="text-xl font-headline font-bold">12,840</span>
+                     </div>
+                  </div>
+               </div>
+            </section>
+            <!-- High-Density Data Table Card -->
+            <div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/10 overflow-hidden">
+               <div class="px-6 py-4 border-b border-surface-variant/50 flex justify-between items-center">
+                  <h3 class="text-sm font-headline font-bold uppercase tracking-wider text-on-surface-variant">Main Registry</h3>
+                  <div class="flex gap-2">
+                     <button class="px-3 py-1 bg-surface-container-low text-on-surface-variant text-xs font-semibold rounded hover:bg-surface-container-high transition-colors">Filter</button>
+                     <button class="px-3 py-1 bg-surface-container-low text-on-surface-variant text-xs font-semibold rounded hover:bg-surface-container-high transition-colors">Columns</button>
+                  </div>
+               </div>
+               <!-- Table Wrapper for Horizontal Scroll -->
+               <div class="overflow-x-auto no-scrollbar">
+                  <table class="w-full text-left border-collapse">
+                     <thead>
+                        <tr class="bg-surface-container-low/50">
+                           <th class="px-4 py-3 text-[11px] font-label font-bold uppercase tracking-widest text-on-surface-variant">Action</th>
+                           <th class="px-4 py-3 text-[11px] font-label font-bold uppercase tracking-widest text-on-surface-variant">Progres</th>
+                           <th class="px-4 py-3 text-[11px] font-label font-bold uppercase tracking-widest text-on-surface-variant min-w-[200px]">Nama Lengkap</th>
+                           <th class="px-4 py-3 text-[11px] font-label font-bold uppercase tracking-widest text-on-surface-variant">Tanggal Lahir</th>
+                           <th class="px-4 py-3 text-[11px] font-label font-bold uppercase tracking-widest text-on-surface-variant">Tanggal Kepulangan</th>
+                           <th class="px-4 py-3 text-[11px] font-label font-bold uppercase tracking-widest text-on-surface-variant">Instagram</th>
+                           <th class="px-4 py-3 text-[11px] font-label font-bold uppercase tracking-widest text-on-surface-variant">TikTok</th>
+                           <th class="px-4 py-3 text-[11px] font-label font-bold uppercase tracking-widest text-on-surface-variant">WhatsApp</th>
+                           <th class="px-4 py-3 text-[11px] font-label font-bold uppercase tracking-widest text-on-surface-variant">Email</th>
+                           <th class="px-4 py-3 text-[11px] font-label font-bold uppercase tracking-widest text-on-surface-variant">Alamat</th>
+                        </tr>
+                     </thead>
+                     <tbody class="divide-y divide-surface-variant/20">
+                        <!-- Row 1 -->
+                        <tr class="hover:bg-surface-container-low transition-colors group">
+                           <td class="px-4 py-2">
+                              <button class="p-1.5 hover:bg-primary/10 text-primary rounded transition-colors">
+                              <span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+                              </button>
+                           </td>
+                           <td class="px-4 py-2">
+                              <div class="flex gap-1">
+                                 <span class="w-6 h-6 flex items-center justify-center rounded-full bg-primary text-on-primary text-[10px] font-bold">1</span>
+                                 <span class="w-6 h-6 flex items-center justify-center rounded-full bg-primary text-on-primary text-[10px] font-bold">2</span>
+                                 <span class="w-6 h-6 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold">3</span>
+                              </div>
+                           </td>
+                           <td class="px-4 py-2">
+                              <div class="flex items-center gap-3">
+                                 <div class="w-7 h-7 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+                                    <img class="w-full h-full object-cover" data-alt="professional portrait of a young executive woman with soft natural lighting and a clean neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBJHbkV95nD8DCKKS8iokjiQ-9BiMBWnbn7rBGNcCx6QYvlnUhJX1Lb1auZy6AmDIYpHSOSSlCB1HfGcrnG8F81dXWJyWXi-ObGZWl5qSgRn6p54n3vYlVgEL2uqWoqDiv2Lr7Q9dJPKuMwmKUUW7Df91pAGXxDjl6wZy0Z85KBRB8YMUdv4vQliPybrdvscPN9ixzLERTD3bI5Ok1D0gYnXgxN2wP0KbpRRs5d0lxn7eUaZGx-ZZde8B3NHnRwd3B_E6Td5BppCn8"/>
+                                 </div>
+                                 <span class="font-semibold text-sm text-on-surface">Aditya Pratama</span>
+                              </div>
+                           </td>
+                           <td class="px-4 py-2 text-[13px] whitespace-nowrap">12 Jan 1994</td>
+                           <td class="px-4 py-2 text-[13px] whitespace-nowrap">20 Nov 2023</td>
+                           <td class="px-4 py-2 text-[13px] text-primary">@aditya.p</td>
+                           <td class="px-4 py-2 text-[13px] text-primary">@adit_tok</td>
+                           <td class="px-4 py-2 text-[13px]">+62 812-4455-6677</td>
+                           <td class="px-4 py-2 text-[13px]">aditya@example.com</td>
+                           <td class="px-4 py-2 text-[13px] truncate max-w-[150px]">Jl. Sudirman No. 45, Jakarta Selatan</td>
+                        </tr>
+                        <!-- Row 2 -->
+                        <tr class="hover:bg-surface-container-low transition-colors group">
+                           <td class="px-4 py-2">
+                              <button class="p-1.5 hover:bg-primary/10 text-primary rounded transition-colors">
+                              <span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+                              </button>
+                           </td>
+                           <td class="px-4 py-2">
+                              <div class="flex gap-1">
+                                 <span class="w-6 h-6 flex items-center justify-center rounded-full bg-primary text-on-primary text-[10px] font-bold">1</span>
+                                 <span class="w-6 h-6 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold">2</span>
+                                 <span class="w-6 h-6 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold">3</span>
+                              </div>
+                           </td>
+                           <td class="px-4 py-2">
+                              <div class="flex items-center gap-3">
+                                 <div class="w-7 h-7 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+                                    <img class="w-full h-full object-cover" data-alt="candid corporate headshot of a smiling young man in a modern coworking space with warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClPFA7VLIg1gyWkHG0K6e-5z6sUK67HZ7CcIRjTeql37FB3KyEZ91bp9zjIANyjS7vmg_9Euj5Cqia-rvAuuWp1zPKxJyclu2fgYB3tPOqPzEoDDVRJAfaUlLH8jpIu2L2ODRP2ljTbbixMMe_oeb02N_aUgs16S8H3ANKRtdvCKqK0HrLi6tHm53j0G91HZPxFVdk80b3MwRviqZeZ2prHAu71vWYps_0VO2XVLXkq6HV8eG7gRZst22U9j0-Uy_BXGvpvnxgiDYg"/>
+                                 </div>
+                                 <span class="font-semibold text-sm text-on-surface">Siti Wahyuni</span>
+                              </div>
+                           </td>
+                           <td class="px-4 py-2 text-[13px] whitespace-nowrap">25 Mei 1990</td>
+                           <td class="px-4 py-2 text-[13px] whitespace-nowrap">15 Des 2023</td>
+                           <td class="px-4 py-2 text-[13px] text-primary">@siti.w</td>
+                           <td class="px-4 py-2 text-[13px] text-primary">-</td>
+                           <td class="px-4 py-2 text-[13px]">+62 811-2233-4455</td>
+                           <td class="px-4 py-2 text-[13px]">siti@example.com</td>
+                           <td class="px-4 py-2 text-[13px] truncate max-w-[150px]">Komp. Griya Indah Blok C3, Bandung</td>
+                        </tr>
+                        <!-- Row 3 -->
+                        <tr class="hover:bg-surface-container-low transition-colors group">
+                           <td class="px-4 py-2">
+                              <button class="p-1.5 hover:bg-primary/10 text-primary rounded transition-colors">
+                              <span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+                              </button>
+                           </td>
+                           <td class="px-4 py-2">
+                              <div class="flex gap-1">
+                                 <span class="w-6 h-6 flex items-center justify-center rounded-full bg-primary text-on-primary text-[10px] font-bold">1</span>
+                                 <span class="w-6 h-6 flex items-center justify-center rounded-full bg-primary text-on-primary text-[10px] font-bold">2</span>
+                                 <span class="w-6 h-6 flex items-center justify-center rounded-full bg-primary text-on-primary text-[10px] font-bold">3</span>
+                              </div>
+                           </td>
+                           <td class="px-4 py-2">
+                              <div class="flex items-center gap-3">
+                                 <div class="w-7 h-7 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+                                    <img class="w-full h-full object-cover" data-alt="close-up of a middle-aged professional man wearing glasses in a brightly lit studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3M3dVfue5IFiDh9xWP-59mJFO3pFhKo9paK-phfVGSa6t1torrqGOhD385lthDKa2CxCIDvbeLn5it8cbjtJCWC2Zu-FsHku0UOpfZL1Bq8DLWtKrqW2_E5Wd9h1_xcmLkAbCVU5To4fuoavI372QcYxhgwPe4pO5jBJAM2oOARTUvR0AuYL8njDKy8dpnymxOOa6nub810StCedbEAGq-BcGLGm4YVle5E77GnC0XNcIBWQUBdwWgmsBS0NJZHskGsoXCUbtRQCy"/>
+                                 </div>
+                                 <span class="font-semibold text-sm text-on-surface">Budi Nugraha</span>
+                              </div>
+                           </td>
+                           <td class="px-4 py-2 text-[13px] whitespace-nowrap">05 Sep 1988</td>
+                           <td class="px-4 py-2 text-[13px] whitespace-nowrap">02 Feb 2024</td>
+                           <td class="px-4 py-2 text-[13px] text-primary">@budi_nug</td>
+                           <td class="px-4 py-2 text-[13px] text-primary">@budinug_official</td>
+                           <td class="px-4 py-2 text-[13px]">+62 856-9988-7766</td>
+                           <td class="px-4 py-2 text-[13px]">budi.n@company.net</td>
+                           <td class="px-4 py-2 text-[13px] truncate max-w-[150px]">Jl. Gajah Mada No. 10, Surabaya</td>
+                        </tr>
+                        <!-- Row 4 -->
+                        <tr class="hover:bg-surface-container-low transition-colors group">
+                           <td class="px-4 py-2">
+                              <button class="p-1.5 hover:bg-primary/10 text-primary rounded transition-colors">
+                              <span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+                              </button>
+                           </td>
+                           <td class="px-4 py-2">
+                              <div class="flex gap-1">
+                                 <span class="w-6 h-6 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold">1</span>
+                                 <span class="w-6 h-6 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold">2</span>
+                                 <span class="w-6 h-6 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold">3</span>
+                              </div>
+                           </td>
+                           <td class="px-4 py-2">
+                              <div class="flex items-center gap-3">
+                                 <div class="w-7 h-7 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+                                    <img class="w-full h-full object-cover" data-alt="creative entrepreneur sitting at a minimalist desk with architectural sketches in soft focus background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFjca2aDp1nsB5bNjrcn9K3u5Tl8z12eY69ZJ20fUIcrhtw0mS677Z2faopt2RoiEgxP850Go2g8Uh60CsUctpb-8SimvtePXarVQ_bVtLEilAVlFbf7tiRd81lmcs2Y9a0PDV2meh2nIsjn_7Pmwiul98RWnI3tYf3IXT5BCdZ1vgnj5iAZRuhb86NwfsP9GwV-6RSA0r3BiAc2yXlbDzs-p8rK4GfLfcMt3mQiYZJoVVge7xXs0nq3EHn50go1GzcYns5oT06Hbr"/>
+                                 </div>
+                                 <span class="font-semibold text-sm text-on-surface">Rina Safitri</span>
+                              </div>
+                           </td>
+                           <td class="px-4 py-2 text-[13px] whitespace-nowrap">21 Okt 1996</td>
+                           <td class="px-4 py-2 text-[13px] whitespace-nowrap">10 Jan 2024</td>
+                           <td class="px-4 py-2 text-[13px] text-primary">@rina.saf</td>
+                           <td class="px-4 py-2 text-[13px] text-primary">-</td>
+                           <td class="px-4 py-2 text-[13px]">+62 813-1122-3344</td>
+                           <td class="px-4 py-2 text-[13px]">rina@safitri.me</td>
+                           <td class="px-4 py-2 text-[13px] truncate max-w-[150px]">Apartemen Medit Tower A, Jakarta Barat</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+               <div class="px-6 py-4 bg-surface-container-low/30 flex justify-between items-center text-xs font-medium text-on-surface-variant">
+                  <span>Showing 4 of 12,840 results</span>
+                  <div class="flex items-center gap-4">
+                     <div class="flex gap-1">
+                        <button class="w-8 h-8 flex items-center justify-center rounded bg-surface-container-high text-on-surface">1</button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-high">2</button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-high">3</button>
+                        <span class="px-2">...</span>
+                        <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-high">450</button>
+                     </div>
+                     <div class="flex gap-1">
+                        <button class="p-1 rounded border border-outline-variant/20 hover:bg-surface-container-high">
+                        <span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+                        </button>
+                        <button class="p-1 rounded border border-outline-variant/20 hover:bg-surface-container-high">
+                        <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Dashboard Analytics Grid (Asymmetric) -->
+            <section class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+               <div class="md:col-span-2 bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
+                  <div class="flex justify-between items-center mb-6">
+                     <h3 class="font-headline font-bold text-lg">Registration Velocity</h3>
+                     <select class="bg-surface-container-low border-none rounded text-xs py-1 px-2 font-medium">
+                        <option>Last 30 Days</option>
+                        <option>Last 6 Months</option>
+                     </select>
+                  </div>
+                  <div class="h-48 flex items-end gap-2 w-full">
+                     <div class="flex-1 bg-primary/20 rounded-t-sm h-[40%]" title="Day 1"></div>
+                     <div class="flex-1 bg-primary/20 rounded-t-sm h-[55%]" title="Day 2"></div>
+                     <div class="flex-1 bg-primary/20 rounded-t-sm h-[45%]" title="Day 3"></div>
+                     <div class="flex-1 bg-primary/20 rounded-t-sm h-[70%]" title="Day 4"></div>
+                     <div class="flex-1 bg-primary/20 rounded-t-sm h-[85%]" title="Day 5"></div>
+                     <div class="flex-1 bg-primary rounded-t-sm h-[95%]" title="Day 6"></div>
+                     <div class="flex-1 bg-primary/20 rounded-t-sm h-[60%]" title="Day 7"></div>
+                     <div class="flex-1 bg-primary/20 rounded-t-sm h-[50%]" title="Day 8"></div>
+                     <div class="flex-1 bg-primary/20 rounded-t-sm h-[40%]" title="Day 9"></div>
+                     <div class="flex-1 bg-primary/20 rounded-t-sm h-[30%]" title="Day 10"></div>
+                     <div class="flex-1 bg-primary/20 rounded-t-sm h-[45%]" title="Day 11"></div>
+                     <div class="flex-1 bg-primary/20 rounded-t-sm h-[55%]" title="Day 12"></div>
+                  </div>
+                  <div class="mt-4 flex justify-between text-[10px] font-bold text-on-surface-variant/50 uppercase tracking-widest">
+                     <span>Feb 01</span>
+                     <span>Feb 12</span>
+                  </div>
+               </div>
+               <div class="bg-inverse-surface p-6 rounded-xl shadow-xl flex flex-col justify-between">
+                  <div>
+                     <span class="text-emerald-500 font-label text-[10px] font-bold uppercase tracking-[0.2em] mb-4 block">System Health</span>
+                     <h4 class="text-white text-2xl font-headline font-bold mb-2">Optimal Performance</h4>
+                     <p class="text-slate-400 text-sm">All pipelines are operating at 99.9% uptime. Security protocols are fully active.</p>
+                  </div>
+                  <div class="mt-6 pt-6 border-t border-white/10 flex items-center justify-between">
+                     <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full border-2 border-inverse-surface overflow-hidden">
+                           <img class="w-full h-full object-cover" data-alt="close-up of a diverse professional team member avatar with soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAJX4Bw5bXFdy5pG7ifKO2qhhcjvmEy_XnG5b0kriTwBRPkNCgo-ZNVDLZgb7zEHxaQ4-BNe1pMUBFNzR5I0w1nRIbKmCi40WIvxv2coN-L-VnAz-Fb-tHk9rp2EFHszTNgRyJg4KKE3J7kXi1dUczTE05Hv4O-i9CtksbI9L1c6oxfbeF_3d0EbfkYSPc4ivPlyKnheNUOCycdOxFE6U6A_Svfb-Ymw9CuVfykveSmS6YC4r37b5OI_ndjOOk2jsLWVd3yfrzwF1n"/>
+                        </div>
+                        <div class="w-8 h-8 rounded-full border-2 border-inverse-surface overflow-hidden">
+                           <img class="w-full h-full object-cover" data-alt="close-up of a diverse professional team member avatar with soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfQcW4Cd2zYPr578vSxP4X4r9VeBfJmQyVUW-MtPsxtY-LjLUbJuq2rq1OSKIuA4cc1aBNDwAYy9-yZ0Q2XyoIa_dDeuoof0r-w57ZuARDGMQD90tJM4fmq_0b7gkUHkoqx1Fmk1BfA4hAmX9ZituImO6Ut3CbCDFLCYB0VNs2q2g7sq6EAhi_bEnwTeh66QsKLvf-2s6taEGy6X6nIv09cM1XZJ4xXY1qQ11QA5WNmJjE8GgDzFRQ5SPZIzDJCvI0TFg7jvW23r7f"/>
+                        </div>
+                        <div class="w-8 h-8 rounded-full border-2 border-inverse-surface bg-slate-700 flex items-center justify-center text-[10px] font-bold text-white">
+                           +3
+                        </div>
+                     </div>
+                     <span class="text-white text-xs font-semibold">5 Active Admins</span>
+                  </div>
+               </div>
+            </section>
+         </div>
+      </main>
+      <!-- FAB Suppression Rule Applied (Not rendered on dashboard) -->
+   </body>
+</html>

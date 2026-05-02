@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+   <head>
+      <meta charset="utf-8"/>
+      <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+      <title>The Digital Curator | Archive Preview</title>
+      <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+      <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+      <script id="tailwind-config">
+         tailwind.config = {
+             darkMode: "class",
+             theme: {
+                 extend: {
+                     "colors": {
+                         "inverse-on-surface": "#eff1f3",
+                         "on-secondary-fixed-variant": "#3c475a",
+                         "secondary-fixed-dim": "#bcc7dd",
+                         "on-tertiary-container": "#c59c63",
+                         "surface-tint": "#436182",
+                         "tertiary-fixed-dim": "#ecbf83",
+                         "surface-bright": "#f7f9fb",
+                         "tertiary-container": "#4f3303",
+                         "primary": "#002542",
+                         "surface-variant": "#e0e3e5",
+                         "primary-fixed-dim": "#abc9ef",
+                         "error": "#ba1a1a",
+                         "on-primary": "#ffffff",
+                         "tertiary": "#341f00",
+                         "on-error-container": "#93000a",
+                         "surface-container-lowest": "#ffffff",
+                         "on-secondary-container": "#586377",
+                         "primary-container": "#1b3b5a",
+                         "on-surface": "#191c1e",
+                         "surface": "#f7f9fb",
+                         "error-container": "#ffdad6",
+                         "outline": "#73777e",
+                         "surface-container-low": "#f2f4f6",
+                         "surface-dim": "#d8dadc",
+                         "on-surface-variant": "#43474d",
+                         "on-primary-fixed": "#001d35",
+                         "secondary-fixed": "#d8e3fa",
+                         "surface-container": "#eceef0",
+                         "secondary-container": "#d5e0f7",
+                         "on-tertiary": "#ffffff",
+                         "surface-container-highest": "#e0e3e5",
+                         "on-secondary-fixed": "#111c2c",
+                         "on-primary-fixed-variant": "#2a4968",
+                         "inverse-surface": "#2d3133",
+                         "on-secondary": "#ffffff",
+                         "on-primary-container": "#87a5ca",
+                         "primary-fixed": "#d1e4ff",
+                         "tertiary-fixed": "#ffddb3",
+                         "outline-variant": "#c3c6ce",
+                         "on-tertiary-fixed-variant": "#5f4110",
+                         "on-background": "#191c1e",
+                         "background": "#f7f9fb",
+                         "inverse-primary": "#abc9ef",
+                         "surface-container-high": "#e6e8ea",
+                         "on-error": "#ffffff",
+                         "on-tertiary-fixed": "#291800",
+                         "secondary": "#545f72"
+                     },
+                     "borderRadius": {
+                         "DEFAULT": "0.125rem",
+                         "lg": "0.25rem",
+                         "xl": "0.5rem",
+                         "full": "0.75rem"
+                     },
+                     "fontFamily": {
+                         "headline": ["Manrope"],
+                         "body": ["Inter"],
+                         "label": ["Inter"]
+                     }
+                 },
+             },
+         }
+      </script>
+      <style>
+         .material-symbols-outlined {
+         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+         }
+         .file-scroll-mask {
+         mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+         }
+         .glass-toolbar {
+         background: rgba(255, 255, 255, 0.7);
+         backdrop-filter: blur(20px);
+         -webkit-backdrop-filter: blur(20px);
+         }
+      </style>
+   </head>
+   <body class="bg-surface font-body text-on-surface">
+      
+    
+      <!-- Main Content Area -->
+      <main class="h-screen flex overflow-hidden">
+         <!-- File List Panel -->
+         <div class="w-80 border-r border-outline-variant/10 bg-surface-container-low flex flex-col">
+            <div class="p-6 border-b border-outline-variant/20">
+               <div class="flex items-center justify-between mb-4">
+                  <h3 class="font-headline font-bold text-primary">Library</h3>
+                  <button class="p-1 text-outline hover:text-primary transition-colors">
+                  <span class="material-symbols-outlined">filter_list</span>
+                  </button>
+               </div>
+               <div class="relative">
+                  <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+                  <input class="w-full bg-surface-container-high border-none rounded-md py-2 pl-9 pr-4 text-xs font-medium focus:ring-1 focus:ring-primary/20" placeholder="Find in Library" type="text"/>
+               </div>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-3 file-scroll-mask">
+               <!-- Active File Row -->
+               <div class="bg-surface-container-lowest p-3 rounded-xl shadow-[0px_8px_32px_rgba(25,28,30,0.06)] border-l-4 border-primary group cursor-pointer transition-all duration-200">
+                  <div class="flex gap-3">
+                     <div class="h-10 w-10 bg-primary/5 rounded-lg flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined">picture_as_pdf</span>
+                     </div>
+                     <div class="flex-1 overflow-hidden">
+                        <h4 class="text-sm font-bold text-primary truncate">Q4 Financial Report.pdf</h4>
+                        <div class="flex items-center justify-between mt-1">
+                           <span class="text-[10px] text-outline font-medium">12.4 MB • Oct 24, 2023</span>
+                           <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- Inactive File Row -->
+               <div class="p-3 rounded-xl hover:bg-surface-container-lowest transition-all duration-200 group cursor-pointer">
+                  <div class="flex gap-3">
+                     <div class="h-10 w-10 bg-secondary/5 rounded-lg flex items-center justify-center text-secondary-container">
+                        <span class="material-symbols-outlined">description</span>
+                     </div>
+                     <div class="flex-1 overflow-hidden">
+                        <h4 class="text-sm font-medium text-on-surface truncate">Project Proposal.pdf</h4>
+                        <div class="flex items-center justify-between mt-1">
+                           <span class="text-[10px] text-outline font-medium">2.1 MB • Oct 22, 2023</span>
+                           <span class="h-1.5 w-1.5 rounded-full bg-outline-variant"></span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- More Rows -->
+               <div class="p-3 rounded-xl hover:bg-surface-container-lowest transition-all duration-200 group cursor-pointer">
+                  <div class="flex gap-3">
+                     <div class="h-10 w-10 bg-secondary/5 rounded-lg flex items-center justify-center text-secondary-container">
+                        <span class="material-symbols-outlined">description</span>
+                     </div>
+                     <div class="flex-1 overflow-hidden">
+                        <h4 class="text-sm font-medium text-on-surface truncate">Site Analysis_V2.pdf</h4>
+                        <div class="flex items-center justify-between mt-1">
+                           <span class="text-[10px] text-outline font-medium">45.8 MB • Oct 20, 2023</span>
+                           <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="p-3 rounded-xl hover:bg-surface-container-lowest transition-all duration-200 group cursor-pointer">
+                  <div class="flex gap-3">
+                     <div class="h-10 w-10 bg-secondary/5 rounded-lg flex items-center justify-center text-secondary-container">
+                        <span class="material-symbols-outlined">image</span>
+                     </div>
+                     <div class="flex-1 overflow-hidden">
+                        <h4 class="text-sm font-medium text-on-surface truncate">Elevation_Render_01.jpg</h4>
+                        <div class="flex items-center justify-between mt-1">
+                           <span class="text-[10px] text-outline font-medium">8.4 MB • Oct 19, 2023</span>
+                           <span class="h-1.5 w-1.5 rounded-full bg-outline-variant"></span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- Preview Area -->
+         <div class="flex-1 bg-surface-container relative flex flex-col p-6">
+            <!-- Header/Metadata -->
+            <div class="flex items-start justify-between mb-6">
+               <div>
+                  <h1 class="text-3xl font-extrabold tracking-tight text-primary font-headline">Q4 Financial Report.pdf</h1>
+                  <div class="flex items-center gap-3 mt-2">
+                     <span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase tracking-wider">Internal Use</span>
+                     <span class="text-xs text-outline font-medium">Owner: Julian Arp • Last edited 3h ago</span>
+                  </div>
+               </div>
+               <div class="flex items-center gap-2">
+                  <button class="bg-surface-container-high p-2 rounded-md hover:bg-surface-container-highest transition-colors">
+                  <span class="material-symbols-outlined text-on-surface-variant">star</span>
+                  </button>
+                  <button class="bg-surface-container-high p-2 rounded-md hover:bg-surface-container-highest transition-colors">
+                  <span class="material-symbols-outlined text-on-surface-variant">share</span>
+                  </button>
+                  <button class="bg-surface-container-high p-2 rounded-md hover:bg-surface-container-highest transition-colors">
+                  <span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+                  </button>
+               </div>
+            </div>
+            <!-- PDF Preview Container -->
+            <div class="flex-1 bg-surface-container-lowest rounded-xl relative shadow-[0px_8px_32px_rgba(25,28,30,0.04)] overflow-hidden flex flex-col">
+               <!-- PDF Viewer Toolbar -->
+               <div class="glass-toolbar border-b border-outline-variant/10 px-4 py-3 flex items-center justify-between z-10">
+                  <div class="flex items-center gap-4">
+                     <div class="flex items-center gap-1">
+                        <button class="p-1 hover:bg-surface-container-high rounded transition-colors">
+                        <span class="material-symbols-outlined text-lg">chevron_left</span>
+                        </button>
+                        <span class="text-xs font-bold font-inter text-on-surface-variant bg-surface-container-high px-2 py-1 rounded">1 / 48</span>
+                        <button class="p-1 hover:bg-surface-container-high rounded transition-colors">
+                        <span class="material-symbols-outlined text-lg">chevron_right</span>
+                        </button>
+                     </div>
+                     <div class="h-4 w-[1px] bg-outline-variant/30"></div>
+                     <div class="flex items-center gap-1">
+                        <button class="p-1 hover:bg-surface-container-high rounded transition-colors">
+                        <span class="material-symbols-outlined text-lg">zoom_out</span>
+                        </button>
+                        <span class="text-xs font-bold font-inter text-on-surface-variant min-w-[3rem] text-center">100%</span>
+                        <button class="p-1 hover:bg-surface-container-high rounded transition-colors">
+                        <span class="material-symbols-outlined text-lg">zoom_in</span>
+                        </button>
+                     </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                     <button class="flex items-center gap-2 px-3 py-1.5 hover:bg-surface-container-high rounded text-xs font-bold text-on-surface-variant transition-colors">
+                     <span class="material-symbols-outlined text-lg">print</span>
+                     Print
+                     </button>
+                     <button class="flex items-center gap-2 px-4 py-1.5 bg-primary text-on-primary rounded text-xs font-bold transition-all hover:shadow-md">
+                     <span class="material-symbols-outlined text-lg">download</span>
+                     Download
+                     </button>
+                  </div>
+               </div>
+               <!-- Document Content Simulation -->
+                <embed type="application/x-google-chrome-pdf" src="chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/f683852d-d75d-4c7a-99b9-82d035c8c9dd" original-url="http://localhost:8000/gensen/attachment/5/preview?expires=1776760823&amp;signature=e889ff3b824c7932a9d83670e513f0f14940662db1a56079e81462f8022870f7" background-color="4280821800" javascript="allow">
+               <!-- <div class="flex-1 overflow-y-auto bg-surface-dim/30 p-12 flex justify-center">
+                  <div class="w-full max-w-3xl bg-white shadow-2xl min-h-[1000px] p-20 flex flex-col">
+                     <div class="flex justify-between items-start mb-20">
+                        <div class="w-12 h-12 bg-primary"></div>
+                        <div class="text-right">
+                           <p class="text-xs font-bold text-primary uppercase tracking-widest">Confidential Document</p>
+                           <p class="text-[10px] text-outline uppercase tracking-wider mt-1">Ref: ARC-2023-Q4-FIN</p>
+                        </div>
+                     </div>
+                     <h2 class="font-headline text-5xl font-extrabold text-primary mb-6 leading-tight">Quarterly <br/>Financial Performance</h2>
+                     <p class="text-lg text-on-surface-variant font-light mb-16 leading-relaxed">Analysis of institutional growth markers and architectural investment returns for the period ending December 2023.</p>
+                     <div class="grid grid-cols-2 gap-12 mb-16">
+                        <div class="border-t-4 border-primary pt-6">
+                           <span class="text-xs font-bold text-outline uppercase tracking-widest">Growth Rate</span>
+                           <p class="text-4xl font-headline font-extrabold text-primary mt-2">+14.2%</p>
+                        </div>
+                        <div class="border-t-4 border-primary pt-6">
+                           <span class="text-xs font-bold text-outline uppercase tracking-widest">Asset Value</span>
+                           <p class="text-4xl font-headline font-extrabold text-primary mt-2">$2.4M</p>
+                        </div>
+                     </div>
+                     <div class="relative w-full h-64 bg-surface-container rounded-lg overflow-hidden mb-12">
+                        <img alt="Financial Graph Visualization" class="w-full h-full object-cover opacity-80" data-alt="Minimalist architectural blue print style bar graph showing growth trends, clean lines, professional financial visualization aesthetics" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvAs6czwebIL8n3zh5CwI4p4WBXtbTRmLTQ1cdqDwwx-j500FdAiiX7fpCFuRiThb8FvYTOJ7kicB66BtDqJHJOzxuigRTS4BpVvwpABKL8W5ZisDegQuol74aT6mq-mYNEMW-4OGP7xt9gRdgiJE9PAhULiinsDHEG_msJtxfDS7AXc6D1JDMAXrFXnUAGubBhiS3ckvhEMK55VA9prNo0tIE_K3dj8Qo-0nOYt5fAd8fTdlmoYLcf0iiEQMMieSSAWsH7h_uCXDc"/>
+                        <div class="absolute inset-0 bg-gradient-to-t from-white/40 to-transparent"></div>
+                     </div>
+                     <div class="mt-auto pt-10 border-t border-outline-variant/30 flex justify-between items-end">
+                        <div>
+                           <p class="text-[10px] font-bold text-outline uppercase tracking-widest">Authorized By</p>
+                           <p class="text-sm font-bold text-primary mt-1">Board of Directors</p>
+                        </div>
+                        <p class="text-[10px] text-outline font-medium italic">Document Digitally Verified by The Digital Curator</p>
+                     </div>
+                  </div>
+               </div> -->
+            </div>
+         </div>
+      </main>
+      <!-- FAB (Suppressed on Details as per Mandate) -->
+      <!-- Determined not to render as this is a focused Detail/Preview screen -->
+   </body>
+</html>
