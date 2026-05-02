@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
 
-            GensenPerformanceSeeder::class,
+            // GensenPerformanceSeeder::class,
         ]);
     }
 }
