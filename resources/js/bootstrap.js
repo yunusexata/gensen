@@ -18,32 +18,40 @@ import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 
 window.Pusher = Pusher;
-
-// window.Echo = new Echo({
-//     broadcaster: 'reverb',
-//     key: import.meta.env.VITE_REVERB_APP_KEY,
-
-//     wsHost: window.location.hostname,   // ✅ IMPORTANT FIX
-
-//     wsPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
-//     wssPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
-
-//     forceTLS: window.location.protocol === 'https:',
-//     enabledTransports: ['ws', 'wss'],
-// });
+// const isLocal = import.meta.env.DEV;
 
 window.Echo = new Echo({
     broadcaster: 'reverb',
     key: import.meta.env.VITE_REVERB_APP_KEY,
 
-    wsHost: import.meta.env.VITE_REVERB_HOST,
+    wsHost: import.meta.env.VITE_REVERB_HOST || window.location.hostname,
 
-    wsPort: import.meta.env.VITE_REVERB_PORT,
-    wssPort: import.meta.env.VITE_REVERB_PORT,
+    wsPort: import.meta.env.VITE_REVERB_PORT || 8080,
 
-    forceTLS: true,
-    enabledTransports: ['ws', 'wss'],
+    forceTLS: import.meta.env.VITE_REVERB_SCHEME === 'https',
+
+    disableStats: true,
 });
+// window.Echo = new Echo({
+//     broadcaster: 'reverb',
+//     key: import.meta.env.VITE_REVERB_APP_KEY,
+//     wsHost: import.meta.env.VITE_REVERB_HOST ?? '127.0.0.1',
+//     wsPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
+//     forceTLS: false,
+//     disableStats: true,
+// });
+// window.Echo = new Echo({
+//     broadcaster: 'reverb',
+//     key: import.meta.env.VITE_REVERB_APP_KEY,
+
+//     wsHost: import.meta.env.VITE_REVERB_HOST,
+
+//     wsPort: import.meta.env.VITE_REVERB_PORT,
+//     wssPort: import.meta.env.VITE_REVERB_PORT,
+
+//     forceTLS: true,
+//     enabledTransports: ['ws', 'wss'],
+// });
 // import Echo from 'laravel-echo';
 
 // import Pusher from 'pusher-js';
@@ -66,4 +74,3 @@ window.Echo = new Echo({
  * allow your team to quickly build robust real-time web applications.
  */
 
-import './echo';
