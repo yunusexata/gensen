@@ -19,7 +19,7 @@ import Pusher from 'pusher-js';
 
 window.Pusher = Pusher;
 // const isLocal = import.meta.env.DEV;
-
+// halo
 window.Echo = new Echo({
     broadcaster: 'reverb',
     key: import.meta.env.VITE_REVERB_APP_KEY,
