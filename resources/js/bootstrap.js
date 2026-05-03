@@ -22,10 +22,14 @@ window.Pusher = Pusher;
 window.Echo = new Echo({
     broadcaster: 'reverb',
     key: import.meta.env.VITE_REVERB_APP_KEY,
-    wsHost: import.meta.env.VITE_REVERB_HOST ?? '127.0.0.1',
+
+    wsHost: window.location.hostname,   // ✅ IMPORTANT FIX
+
     wsPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
-    forceTLS: false,
-    disableStats: true,
+    wssPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
+
+    forceTLS: window.location.protocol === 'https:',
+    enabledTransports: ['ws', 'wss'],
 });
 // import Echo from 'laravel-echo';
 
