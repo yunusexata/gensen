@@ -28,7 +28,8 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
     {{-- <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet" type="text/css" /> --}}
     <!--end::Global Stylesheets Bundle-->
-    @vite(['resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+ 
     @livewireStyles
 
     @stack('css')
