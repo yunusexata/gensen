@@ -393,13 +393,31 @@ class GensenForm extends Model
                 ];
             });
     }
+
+    // Mysql
+    // public function attachments()
+    // {
+    //     return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')->orderByRaw(
+    //         "FIELD(type, " . collect(self::ATTACHMENT_ORDER_BY)
+    //             ->map(fn($v) => "'$v'")
+    //             ->implode(',') . ")"
+    //     );
+    // }
+
+
+    // PostgreSQL
     public function attachments()
     {
-        return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')->orderByRaw(
-            "FIELD(type, " . collect(self::ATTACHMENT_ORDER_BY)
-                ->map(fn($v) => "'$v'")
-                ->implode(',') . ")"
-        );
+        $case = collect(self::ATTACHMENT_ORDER_BY)
+            ->values()
+            ->map(
+                fn($value, $index) =>
+                "WHEN '{$value}' THEN " . ($index + 1)
+            )
+            ->implode(' ');
+
+        return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')
+            ->orderByRaw("CASE type {$case} ELSE 999 END");
     }
 
     public function remarks()
