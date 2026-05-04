@@ -449,9 +449,9 @@ class Datatable extends Component
                 'tanggal_verified' => Carbon::parse($this->editidData['tanggal_verified'])->format('Y-m-d'),
                 'no_input_jepang' => $this->editidData['no_input_jepang'],
                 'tanggal_cair' => Carbon::parse($this->editidData['tanggal_cair'])->format('Y-m-d'),
-                'nominal_cair' => valueToImask($this->editidData['nominal_cair']),
-                'nominal_gensen' => valueToImask($this->editidData['nominal_gensen']),
-                'jumlah_kirim_uang' => valueToImask($this->editidData['jumlah_kirim_uang']),
+                'nominal_cair' => imaskToValue($this->editidData['nominal_cair']),
+                'nominal_gensen' => imaskToValue($this->editidData['nominal_gensen']),
+                'jumlah_kirim_uang' => imaskToValue($this->editidData['jumlah_kirim_uang']),
                 'tanggal_kepulangan' => Carbon::parse($this->editidData['tanggal_kepulangan'])->format('Y-m-d'),
                 // REK PENERIMA
                 'no_rekening_penerima' => $this->editidData['no_rekening_penerima'],
