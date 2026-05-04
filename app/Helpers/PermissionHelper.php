@@ -85,18 +85,18 @@ class PermissionHelper
 
         // JOBKEY
         // EXPORT
-        self::EXPORT_LIST_DATA_BELUM_LENGKAP => 'Data Gensen - Belum lengkap',
-        self::EXPORT_LIST_DATA_SIAP_VERIFIKASI => 'Data Gensen - Siap verifikasi',
-        self::EXPORT_LIST_DATA_VERIFIED => 'Data Gensen - Verified',
-        self::EXPORT_LIST_DATA_NO_INPUT_JAPAN => 'Data Gensen - No input Japan',
-        self::EXPORT_LIST_DATA_DALAM_PENGAJUAN => 'Data Gensen - Dalam pengajuan',
+        self::EXPORT_LIST_DATA_BELUM_LENGKAP => 'Data Gensen - Export Belum lengkap',
+        self::EXPORT_LIST_DATA_SIAP_VERIFIKASI => 'Data Gensen - Export Siap verifikasi',
+        self::EXPORT_LIST_DATA_VERIFIED => 'Data Gensen - Export Verified',
+        self::EXPORT_LIST_DATA_NO_INPUT_JAPAN => 'Data Gensen - Export No input Japan',
+        self::EXPORT_LIST_DATA_DALAM_PENGAJUAN => 'Data Gensen - Export Dalam pengajuan',
 
         // IMPORT
-        self::IMPORT_LIST_DATA_LENGKAP => 'Data Gensen - Lengkap',
-        self::IMPORT_LIST_DATA_VERIFIED => 'Data Gensen - Verified',
-        self::IMPORT_LIST_DATA_NO_INPUT_JAPAN => 'Data Gensen - No input Japan',
-        self::IMPORT_LIST_DATA_DALAM_PENGAJUAN => 'Data Gensen - Dalam pengajuan',
-        self::IMPORT_LIST_DATA_GENSEN_CAIR => 'Data Gensen - Gensen cair',
+        self::IMPORT_LIST_DATA_LENGKAP => 'Data Gensen - Import Lengkap',
+        self::IMPORT_LIST_DATA_VERIFIED => 'Data Gensen - Import Verified',
+        self::IMPORT_LIST_DATA_NO_INPUT_JAPAN => 'Data Gensen - Import No input Japan',
+        self::IMPORT_LIST_DATA_DALAM_PENGAJUAN => 'Data Gensen - Import Dalam pengajuan',
+        self::IMPORT_LIST_DATA_GENSEN_CAIR => 'Data Gensen - Import Gensen cair',
     ];
 
     const ACCESS_TYPE_ALL = [
