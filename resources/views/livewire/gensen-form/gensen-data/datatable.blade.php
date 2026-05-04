@@ -327,6 +327,7 @@
                                                                     type="text" 
                                                                     class="form-control w-[130px] py-3"  
                                                                     value="{{$editingData['created_at']}}"
+                                                                    readonly
                                                                 />
                                                             </td>
                                                             <td>
@@ -348,9 +349,17 @@
                                                             <td>
                                                                 <label for="">nama bank penerima</label>
                                                                 <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_bank_penerima"
-                                                                    />
+                                                                    <select
+                                                                        id="nama_bank_penerima"
+                                                                        wire:model.defer="editingData.nama_bank_penerima"
+                                                                        name="nama_bank_penerima"
+                                                                        class="form-control"
+                                                                    >
+                                                                        <option value="">-- ISI --</option>
+                                                                        @foreach (App\Enums\Gensen\GensenBank::options() as $item)
+                                                                            <option value="{{$item}}">{{$item}}</option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                             </td>
                                                             <td>
