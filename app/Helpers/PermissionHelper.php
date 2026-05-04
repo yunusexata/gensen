@@ -38,10 +38,21 @@ class PermissionHelper
 
     // EXPORT IMPORT
     const ACCESS_GENSEN_EXPORT_IMPORT = 'gensen_form_export_import';
-    const ACCESS_GENSEN_STATUS_BELUM_LENGKAP = 'gensen_export_status_belum_lengkap';
-    const ACCESS_GENSEN_STATUS_SIAP_VERIFIKASI = 'gensen_export_status_siap_verifikasi';
-    const ACCESS_GENSEN_STATUS_VERIFIED = 'gensen_export_status_verified';
-    const ACCESS_GENSEN_STATUS_NO_INPUT_JEPANG = 'gensen_export_status_no_input_jepang';
+
+    // JOBKEY
+    // EXPORT
+    const EXPORT_LIST_DATA_BELUM_LENGKAP = 'export_list_data_belum_lengkap';
+    const EXPORT_LIST_DATA_SIAP_VERIFIKASI = 'export_list_data_siap_verifikasi';
+    const EXPORT_LIST_DATA_VERIFIED = 'export_list_data_verified';
+    const EXPORT_LIST_DATA_NO_INPUT_JAPAN = 'export_list_data_no_input_japan';
+    const EXPORT_LIST_DATA_DALAM_PENGAJUAN = 'export_list_data_dalam_pengajuan';
+
+    // IMPORT
+    const IMPORT_LIST_DATA_LENGKAP = 'import_list_data_lengkap';
+    const IMPORT_LIST_DATA_VERIFIED = 'import_list_data_verified';
+    const IMPORT_LIST_DATA_NO_INPUT_JAPAN = 'import_list_data_no_input_japan';
+    const IMPORT_LIST_DATA_DALAM_PENGAJUAN = 'import_list_data_dalam_pengajuan';
+    const IMPORT_LIST_DATA_GENSEN_CAIR = 'import_list_data_gensen_cair';
 
     const ACCESS_ALL = [
         self::ACCESS_DASHBOARD,
@@ -71,10 +82,21 @@ class PermissionHelper
 
         // EXPORT IMPORT
         self::ACCESS_GENSEN_EXPORT_IMPORT => 'Form Gensen - Export Import',
-        self::ACCESS_GENSEN_STATUS_BELUM_LENGKAP => 'Data Gensen - Status Belum Lengkap',
-        self::ACCESS_GENSEN_STATUS_SIAP_VERIFIKASI => 'Data Gensen - Status Siap Verifikasi',
-        self::ACCESS_GENSEN_STATUS_VERIFIED => 'Data Gensen - Status Verified',
-        self::ACCESS_GENSEN_STATUS_NO_INPUT_JEPANG => 'Data Gensen - Status No Input Jepang',
+
+        // JOBKEY
+        // EXPORT
+        self::EXPORT_LIST_DATA_BELUM_LENGKAP => 'Data Gensen - Belum lengkap',
+        self::EXPORT_LIST_DATA_SIAP_VERIFIKASI => 'Data Gensen - Siap verifikasi',
+        self::EXPORT_LIST_DATA_VERIFIED => 'Data Gensen - Verified',
+        self::EXPORT_LIST_DATA_NO_INPUT_JAPAN => 'Data Gensen - No input Japan',
+        self::EXPORT_LIST_DATA_DALAM_PENGAJUAN => 'Data Gensen - Dalam pengajuan',
+
+        // IMPORT
+        self::IMPORT_LIST_DATA_LENGKAP => 'Data Gensen - Lengkap',
+        self::IMPORT_LIST_DATA_VERIFIED => 'Data Gensen - Verified',
+        self::IMPORT_LIST_DATA_NO_INPUT_JAPAN => 'Data Gensen - No input Japan',
+        self::IMPORT_LIST_DATA_DALAM_PENGAJUAN => 'Data Gensen - Dalam pengajuan',
+        self::IMPORT_LIST_DATA_GENSEN_CAIR => 'Data Gensen - Gensen cair',
     ];
 
     const ACCESS_TYPE_ALL = [
@@ -92,10 +114,21 @@ class PermissionHelper
         self::ACCESS_GENSEN_EXPORT_IMPORT => self::TYPE_ALL,
 
         // Export Gensen
-        self::ACCESS_GENSEN_STATUS_BELUM_LENGKAP => [self::TYPE_READ, self::TYPE_CREATE],
-        self::ACCESS_GENSEN_STATUS_SIAP_VERIFIKASI => [self::TYPE_READ, self::TYPE_CREATE],
-        self::ACCESS_GENSEN_STATUS_VERIFIED => [self::TYPE_READ, self::TYPE_CREATE],
-        self::ACCESS_GENSEN_STATUS_NO_INPUT_JEPANG => [self::TYPE_READ, self::TYPE_CREATE],
+
+        // JOBKEY
+        // EXPORT
+        self::EXPORT_LIST_DATA_BELUM_LENGKAP => [self::TYPE_READ],
+        self::EXPORT_LIST_DATA_SIAP_VERIFIKASI => [self::TYPE_READ],
+        self::EXPORT_LIST_DATA_VERIFIED => [self::TYPE_READ],
+        self::EXPORT_LIST_DATA_NO_INPUT_JAPAN => [self::TYPE_READ],
+        self::EXPORT_LIST_DATA_DALAM_PENGAJUAN => [self::TYPE_READ],
+
+        // IMPORT
+        self::IMPORT_LIST_DATA_LENGKAP => [self::TYPE_CREATE],
+        self::IMPORT_LIST_DATA_VERIFIED => [self::TYPE_CREATE],
+        self::IMPORT_LIST_DATA_NO_INPUT_JAPAN => [self::TYPE_CREATE],
+        self::IMPORT_LIST_DATA_DALAM_PENGAJUAN => [self::TYPE_CREATE],
+        self::IMPORT_LIST_DATA_GENSEN_CAIR => [self::TYPE_CREATE],
     ];
 
     /*

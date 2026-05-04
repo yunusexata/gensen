@@ -33,6 +33,8 @@ return new class extends Migration
 
         if ($is_history) {
             $table->bigInteger('obj_id')->unsigned();
+
+            // unique access token (used in URL)
             $table->uuid('token');
         } else {
             $table->index('token', 'gensen_form_links_token_idx');
@@ -41,10 +43,9 @@ return new class extends Migration
             $table->index('expired_at', 'gensen_form_links_expired_at_idx');
             $table->index('status', 'gensen_form_links_status_idx');
 
+            // unique access token (used in URL)
             $table->uuid('token')->unique();
         }
-
-        // unique access token (used in URL)
 
         // PIC / marketing / agent reference
         $table->string('pic_code')->nullable();

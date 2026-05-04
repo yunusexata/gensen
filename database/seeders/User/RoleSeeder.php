@@ -45,6 +45,12 @@ class RoleSeeder extends Seeder
                 $role->givePermissionTo(PermissionHelper::transform($access, $type));
             }
         }
+        $role = Role::create(['name' => User::ROLE_ACC_EXATA]);
+        foreach (PermissionHelper::ACCESS_TYPE_ALL as $access => $types) {
+            foreach ($types as $type) {
+                $role->givePermissionTo(PermissionHelper::transform($access, $type));
+            }
+        }
         $role = Role::create(['name' => User::ROLE_SUPERVISOR]);
         foreach (PermissionHelper::ACCESS_TYPE_ALL as $access => $types) {
             foreach ($types as $type) {

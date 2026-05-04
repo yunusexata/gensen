@@ -247,24 +247,24 @@ class Datatable extends Component
                 }
             ],
             [
-                'key' => 'status',
-                'name' => 'Status',
-                'render' => function ($item) {
-                    return "<p class='btn btn-sm py-1 mb-0' style='background-color:" . $item->statusColor() . "'>" . $item->status . "</p>";
-                }
-            ],
-            [
                 'key' => 'is_should_filled',
-                'name' => 'Pengisian Form',
+                'name' => 'Pengisian',
                 'render' => function ($item) {
                     return "<p class='btn btn-sm py-1 mb-0 btn-" . ($item->is_should_filled ? 'success' : 'danger') . "'>" . ($item->is_should_filled ? 'Sudah' : 'Belum') . "</p>";
                 }
             ],
             [
                 'key' => 'is_submitted',
-                'name' => 'Submit Form',
+                'name' => 'Submit',
                 'render' => function ($item) {
                     return "<p class='btn btn-sm py-1 mb-0 btn-" . ($item->is_submitted ? 'success' : 'danger') . "'>" . ($item->is_submitted ? 'Sudah' : 'Belum') . "</p>";
+                }
+            ],
+            [
+                'key' => 'status',
+                'name' => 'Status',
+                'render' => function ($item) {
+                    return "<p class='btn btn-sm py-1 mb-0' style='background-color:" . $item->statusColor() . "'>" . $item->status . "</p>";
                 }
             ],
             [
@@ -282,6 +282,20 @@ class Datatable extends Component
             [
                 'key' => 'email',
                 'name' => 'Email',
+            ],
+            [
+                'key' => 'nominal_gensen',
+                'name' => 'Nominal Gensen',
+                'render' => function ($item) {
+                    return $item->nominal_gensen ? number_format($item->nominal_gensen, 0, ',', '.') : '-';
+                }
+            ],
+            [
+                'key' => 'jumlah_kirim_uang',
+                'name' => 'Jumlah Kirim Uang',
+                'render' => function ($item) {
+                    return $item->jumlah_kirim_uang ? number_format($item->jumlah_kirim_uang, 0, ',', '.') : '-';
+                }
             ],
             [
                 'key' => 'tanggal_lengkap',
@@ -316,10 +330,6 @@ class Datatable extends Component
                 }
             ],
             [
-                'key' => 'keterangan_mondai',
-                'name' => 'Keterangan Mondai',
-            ],
-            [
                 'key' => 'created_at',
                 'name' => 'Tanggal Input',
                 'render' => function ($item) {
@@ -339,14 +349,6 @@ class Datatable extends Component
                 'name' => 'Nama Bank Penerima',
             ],
             [
-                'key' => 'tahun_gensen',
-                'name' => 'Tahun Gensen',
-            ],
-            [
-                'key' => 'tahun_transfer',
-                'name' => 'Tahun Transfer',
-            ],
-            [
                 'key' => 'nama_penerima',
                 'name' => 'Nama Penerima',
             ],
@@ -355,22 +357,16 @@ class Datatable extends Component
                 'name' => 'Hubungan Penerima',
             ],
             [
+                'key' => 'tahun_gensen',
+                'name' => 'Tahun Gensen',
+            ],
+            [
+                'key' => 'tahun_transfer',
+                'name' => 'Tahun Transfer',
+            ],
+            [
                 'key' => 'pic_code',
                 'name' => 'Kode PIC',
-            ],
-            [
-                'key' => 'nominal_gensen',
-                'name' => 'Nominal Gensen',
-                'render' => function ($item) {
-                    return $item->nominal_gensen ? number_format($item->nominal_gensen, 0, ',', '.') : '-';
-                }
-            ],
-            [
-                'key' => 'jumlah_kirim_uang',
-                'name' => 'Jumlah Kirim Uang',
-                'render' => function ($item) {
-                    return $item->jumlah_kirim_uang ? number_format($item->jumlah_kirim_uang, 0, ',', '.') : '-';
-                }
             ],
             [
                 'key' => 'nama_instagram',
@@ -407,6 +403,10 @@ class Datatable extends Component
                 'render' => function ($item) {
                     return $item->remarks_type == User::class ? 'Manual PIC' : 'Link Pengisian Clien';
                 }
+            ],
+            [
+                'key' => 'keterangan_mondai',
+                'name' => 'Keterangan Mondai',
             ],
         ];
     }
@@ -464,7 +464,7 @@ class Datatable extends Component
                 'tahun_gensen' => $this->editingData['tahun_gensen'],
                 'tahun_transfer' => $this->editingData['tahun_transfer'],
             ];
-            GensenFormRepository::update(simple_decrypt($this->editingRowId), $validatedData);
+            GensenFormRepository::update($this->editingRowId, $validatedData);
 
             DB::commit();
             Alert::confirmation(
@@ -574,32 +574,42 @@ class Datatable extends Component
     {
         $row = GensenForm::findOrFail(simple_decrypt($id));
 
-        $this->editingRowId = $id;
+        $this->editingRowId = simple_decrypt($id);
 
         $this->editingData = [
             'id' => Crypt::encrypt($row['id']),
+            'status' => $row['status'],
             'nama_lengkap' => $row['nama_lengkap'],
             'tanggal_lahir' => $row['tanggal_lahir'],
-            'tanggal_kepulangan' => $row['tanggal_kepulangan'],
-            'nama_instagram' => $row['nama_instagram'],
-            'nama_tiktok' => $row['nama_tiktok'],
-            'nomor_whatsapp' => $row['nomor_whatsapp'],
-            'nomor_whatsapp_darurat' => $row['nomor_whatsapp_darurat'],
             'email' => $row['email'],
-            'alamat_jepang' => $row['alamat_jepang'],
-            'kode_pos_jepang' => $row['kode_pos_jepang'],
-            'nama_lpk' => $row['nama_lpk'],
-            'status' => $row['status'],
-
+            'tanggal_lengkap' => Carbon::parse($row['tanggal_lengkap'])->format('Y-m-d'),
+            'tanggal_verified' => Carbon::parse($row['tanggal_verified'])->format('Y-m-d'),
+            'no_input_jepang' => $row['no_input_jepang'],
+            'tanggal_cair' => Carbon::parse($row['tanggal_cair'])->format('Y-m-d'),
+            'nominal_cair' => valueToImask($row['nominal_cair']),
+            'created_at' => Carbon::parse($row['created_at'])->format('Y-m-d'),
+            'nominal_gensen' => valueToImask($row['nominal_gensen']),
+            'jumlah_kirim_uang' => valueToImask($row['jumlah_kirim_uang']),
+            'tanggal_kepulangan' => Carbon::parse($row['tanggal_kepulangan'])->format('Y-m-d'),
             // REK PENERIMA
             'no_rekening_penerima' => $row['no_rekening_penerima'],
             'nama_bank_penerima' => $row['nama_bank_penerima'],
             'nama_penerima' => $row['nama_penerima'],
             'hubungan_penerima' => $row['hubungan_penerima'],
-
             // 'status' => $row['status'],
             'tahun_gensen' => $row['tahun_gensen'],
             'tahun_transfer' => $row['tahun_transfer'],
+            'pic_code' => $row['pic_code'],
+            'nama_instagram' => $row['nama_instagram'],
+            'nama_tiktok' => $row['nama_tiktok'],
+            'nomor_whatsapp' => $row['nomor_whatsapp'],
+            'nomor_whatsapp_darurat' => $row['nomor_whatsapp_darurat'],
+            'alamat_jepang' => $row['alamat_jepang'],
+            'kode_pos_jepang' => $row['kode_pos_jepang'],
+            'nama_lpk' => $row['nama_lpk'],
+            'remarks_type' => $row['remarks_type'] == User::class ? 'Manual PIC' : 'Link Pengisian Clien',
+            'keterangan_mondai' => $row['keterangan_mondai'],
+
         ];
     }
 

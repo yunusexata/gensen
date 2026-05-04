@@ -2,6 +2,7 @@
 
 namespace App\Livewire\GensenForm\GensenData;
 
+use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
 use App\Imports\ExcelImportBulkStatusGensen;
@@ -111,6 +112,7 @@ class BulkUpdateGensenNoInputJepangModal extends Component
             $history = GensenExportImportHistoryRepository::create([
                 'role' => Auth::user()->roles->pluck('name')->first(),
                 'created_by' => auth()->id(),
+                'job_key' => ExportImportJobKey::IMPORT_LIST_DATA_NO_INPUT_JAPAN->value,
                 'type' => 'import',
                 'filters' => json_encode([], true),
                 'status' => JobStatus::DONE,

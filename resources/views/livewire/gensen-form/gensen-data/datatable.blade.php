@@ -107,7 +107,7 @@
                 <thead class="sticky top-0 bg-white z-10">
                     <tr class="bg-surface-container-low/50"> --}}
         <div class="table-responsive" style="max-height:80vh; overflow:auto;">
-            <table class="table table-row-bordered" style="max-height:80vh;">
+            <table class="table table-row-bordered table-bordered" style="max-height:80vh;">
                 <thead class="sticky-top bg-white">
                     <tr class="bg-surface-container-low/50">
                         @foreach ($columns as $index => $col)
@@ -189,13 +189,13 @@
                                         <div class="table-responsive">
                                             <table class="table table-bordered text-nowrap w-100 m-0 p-0">
                                                 <tbody>
-                                                    @if ($editingRowId)
+                                                    @if ($editingRowId && $editingRowId == $item['id'])
                                                         <tr>
-                                                            <td class=" d-flex align-items-end">
-                                                                <div class="row d-flex flex-nowrap ">
-                                                                    <div class="col-auto mb-0">
+                                                            <td class="w-[350px] ">
+                                                                <div class="row d-flex flex-nowrap gap-2 ">
+                                                                    <div class="col-auto m-0 p-0">
                                                                         <button type="button" class="btn btn-success btn-sm m-0" wire:click="saveEditedRow">
-                                                                        <i class="ki-duotone ki-check fs-1">
+                                                                        <i class="ki-duotone ki-check text-sm">
                                                                         <span class="path1"></span>
                                                                         <span class="path2"></span>
                                                                         <span class="path3"></span>
@@ -205,10 +205,10 @@
                                                                         Simpan
                                                                         </button>
                                                                     </div>
-                                                                    <div class="col-auto mb-0">
+                                                                    <div class="col-auto m-0 p-0">
                                                                         <a href="{{route('gensen_data.attachment', ['id' => $editingData['id']])}}"
                                                                             target="_BLANK" class="btn btn-primary btn-sm m-0">
-                                                                            <i class="ki-duotone ki-cube-2 fs-1">
+                                                                            <i class="ki-duotone ki-cube-2 text-sm">
                                                                             <span class="path1"></span>
                                                                             <span class="path2"></span>
                                                                             <span class="path3"></span>
@@ -218,10 +218,10 @@
                                                                             Lampiran
                                                                         </a>
                                                                     </div>
-                                                                    <div class="col-auto mb-0">
+                                                                    <div class="col-auto m-0 p-0">
                                                                         <button onclick="copyToClipboard('{{route('gensen_form.upload_attachment', ['id' => $editingData['id']])}}')"
                                                                             type="button" class="btn btn-info btn-sm m-0">
-                                                                            <i class="ki-duotone ki-fasten fs-1">
+                                                                            <i class="ki-duotone ki-fasten text-sm">
                                                                                 <span class="path1"></span>
                                                                                 <span class="path2"></span>
                                                                             </i>
@@ -230,7 +230,7 @@
                                                                     </div>
                                                                 </div>
                                                             </td>
-                                                            <td>
+                                                            <td class="w-[350px]">
                                                                 <label for="">status</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <select class="form-control" wire:model.defer="editingData.status">
@@ -241,7 +241,7 @@
                                                                     </select>
                                                                 </div>
                                                             </td>
-                                                            <td>
+                                                            <td class="w-[300px]">
                                                                 <label>nama lengkap</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
@@ -258,10 +258,138 @@
                                                                 </div>
                                                             </td>
                                                             <td>
+                                                                <label for="">email</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="email" class="form-control" wire:model.defer="editingData.email"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">nominal gensen</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control currency" max="999999999999999" wire:model.defer="editingData.nominal_gensen"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">jumlah kirim uang</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control currency" max="999999999999999" wire:model.defer="editingData.jumlah_kirim_uang"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">tanggal lengkap</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="date" class="form-control" wire:model.defer="editingData.tanggal_lengkap"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">tanggal verified</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="date" class="form-control" wire:model.defer="editingData.tanggal_verified"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">no input Jepang</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.no_input_jepang"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">tanggal cair</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="date" class="form-control" wire:model.defer="editingData.tanggal_cair"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">nominal cair</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control currency" max="999999999999999" wire:model.defer="editingData.nominal_cair"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td class="">
+                                                                <label class="truncate block" for="">Tanggal input</label>
+                                                                <input
+                                                                    type="text" 
+                                                                    class="form-control w-[130px] py-3"  
+                                                                    value="{{$editingData['created_at']}}"
+                                                                />
+                                                            </td>
+                                                            <td>
                                                                 <label for="">tanggal kepulangan</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="date" class="form-control" wire:model.defer="editingData.tanggal_kepulangan"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">no rekening penerima</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control w-[200px]" wire:model.defer="editingData.no_rekening_penerima"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">nama bank penerima</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_bank_penerima"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">nama penerima</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control w-[200px]" wire:model.defer="editingData.nama_penerima"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">hubungan penerima</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.hubungan_penerima"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">tahun gensen</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="number" class="form-control" wire:model.defer="editingData.tahun_gensen"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">tahun transfer</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="number" class="form-control" wire:model.defer="editingData.tahun_transfer"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">kode PIC</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" value="{{$editingData['pic_code']}}" readonly
                                                                     />
                                                                 </div>
                                                             </td>
@@ -290,10 +418,10 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <label for="">email</label>
+                                                                <label for="">nomor whatsapp darurat</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="email" class="form-control" wire:model.defer="editingData.email"
+                                                                        type="text" class="form-control" wire:model.defer="editingData.nomor_whatsapp_darurat"
                                                                     />
                                                                 </div>
                                                             </td>
@@ -306,6 +434,14 @@
                                                                 </div>
                                                             </td>
                                                             <td>
+                                                                <label for="">kode pos jepang</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.kode_pos_jepang"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
                                                                 <label for="">nama lpk/so/pt</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
@@ -314,50 +450,18 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <label for="">no rekening penerima</label>
+                                                                <label for="">asal pembuatan</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.no_rekening_penerima"
+                                                                        type="text" class="form-control" value="{{$editingData['remarks_type']}}" readonly
                                                                     />
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <label for="">nama bank penerima</label>
+                                                                <label for="">keterangan mondai</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_bank_penerima"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">nama penerima</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_penerima"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">hubungan penerima</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.hubungan_penerima"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">tahun gensen</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="number" class="form-control" wire:model.defer="editingData.tahun_gensen"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">tahun transfer</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="number" class="form-control" wire:model.defer="editingData.tahun_transfer"
+                                                                        type="text" class="form-control" wire:model.defer="editingData.keterangan_mondai"
                                                                     />
                                                                 </div>
                                                             </td>
@@ -404,3 +508,5 @@
         }
     </style>
 @endpush
+
+@include('js.imask')

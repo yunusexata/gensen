@@ -2,6 +2,7 @@
 
 namespace App\Models\Gensen;
 
+use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Jobs\ExportGensenJob;
 use App\Jobs\MergePersyaratanPengurusanGensen;
@@ -20,6 +21,7 @@ class GensenExportImportHistory extends Model
 
         'role',
         'type',
+        'job_key',
         'status',
 
         'file_name',
@@ -38,6 +40,7 @@ class GensenExportImportHistory extends Model
 
     protected $casts = [
         'status' => JobStatus::class,
+        'job_key' => ExportImportJobKey::class,
     ];
 
     protected static function onBoot()

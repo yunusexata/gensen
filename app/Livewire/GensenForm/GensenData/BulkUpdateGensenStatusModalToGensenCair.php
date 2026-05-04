@@ -2,6 +2,7 @@
 
 namespace App\Livewire\GensenForm\GensenData;
 
+use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
 use App\Imports\ExcelImportBulkStatusGensen;
@@ -46,6 +47,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                 'id_customer' => $row['id_customer'],
                 'nama_lengkap' => $row['nama'],
                 'no_input_jepang' => $row['no_input_jepang'],
+                'tanggal_pengajuan' => $row['tanggal_pengajuan'],
                 'tanggal_cair' => $row['tanggal_cair'],
                 'nominal_cair' => $row['nominal_cair'],
             ];
@@ -53,6 +55,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                 'id_customer' => 'required|exists:gensen_forms,id_customer',
                 'nama_lengkap' => 'required|exists:gensen_forms,nama_lengkap',
                 'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
+                'tanggal_pengajuan' => 'required',
                 'tanggal_cair' => 'required',
                 'nominal_cair' => 'required',
             ], [
@@ -62,6 +65,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                 'nama_lengkap.exists' => 'Nama lengkap tidak terdaftar',
                 'no_input_jepang.required' => 'No Input Jepang harus di isi',
                 'no_input_jepang.exists' => 'No Input Jepang tidak terdaftar',
+                'tanggal_pengajuan.required' => 'Tanggal Pengajuan harus di isi',
                 'tanggal_cair.required' => 'Tanggal cair harus di isi',
                 'nominal_cair.required' => 'Nominal cair harus di isi',
             ]);
@@ -96,6 +100,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                         ['id_customer', $value['data']['id_customer']],
                         ['nama_lengkap', $value['data']['nama_lengkap']],
                         ['no_input_jepang', $value['data']['no_input_jepang']],
+                        ['tanggal_pengajuan', $value['data']['tanggal_pengajuan']],
                     ], [
                         'tanggal_cair' => $value['data']['tanggal_cair'],
                         'nominal_cair' => $value['data']['nominal_cair'],
@@ -112,6 +117,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                 'role' => Auth::user()->roles->pluck('name')->first(),
                 'created_by' => auth()->id(),
                 'type' => 'import',
+                'job_key' => ExportImportJobKey::IMPORT_LIST_DATA_GENSEN_CAIR->value,
                 'filters' => json_encode([], true),
                 'status' => JobStatus::DONE,
                 'amount' => $successCount

@@ -67,6 +67,16 @@ class UserSeeder extends Seeder
         ]);
         $user->assignRole(User::ROLE_HS);
 
+        // HS 2
+        $user = User::create([
+            'name' => "Rina",
+            'username' => "Rina",
+            'email' => "rinaexataindonesia@gmail.com",
+            'password' => Hash::make("123exata"),
+        ]);
+
+        $user->assignRole(User::ROLE_HS2);
+
         // SALES
         $user = User::create([
             'name' => "Ainul",
@@ -99,5 +109,15 @@ class UserSeeder extends Seeder
         ]);
 
         $user->assignRole(User::ROLE_SALES);
+
+        // ACC EXATA
+        $user = User::create([
+            'name' => "Nurul",
+            'username' => "Nurul",
+            'email' => "nurul.exataindonesia2018@gmail.com",
+            'password' => Hash::make("123exata"),
+        ]);
+
+        $user->assignRole(User::ROLE_ACC_EXATA);
     }
 }

@@ -1,11 +1,11 @@
     {{-- Import Pipeline Modal --}}
-    <div class="modal" id="bulkUpdateGensenStatusModalToGensenCair" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div class="modal" id="bulkUpdateGensenStatusModalToDalamPengajuan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         wire:ignore.self>
         <div class="modal-dialog modal-fullscreen custom-zoom" style="overflow: scroll">
             <div class="modal-content" style="overflow: scroll">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="bulkUpdateGensenStatusModalToGensenCairLabel">Import List Data Gensen Cair</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="closebulkUpdateGensenStatusModalToGensenCair"></button>
+                    <h5 class="modal-title" id="bulkUpdateGensenStatusModalToDalamPengajuanLabel">Import List Data Dalam Pengajuan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="closebulkUpdateGensenStatusModalToDalamPengajuan"></button>
                 </div>
                 <form wire:submit.prevent="storeImportBulkStatus">
                     <div class="modal-body import_modal">
@@ -37,9 +37,7 @@
                                                     <th>ID Customer</th>
                                                     <th>Nama</th>
                                                     <th>No Input Jepang</th>
-                                                    <th>Tanggal Pengajuan ke kantor pajak Jepang</th>
-                                                    <th>Tanggal Cair</th>
-                                                    <th>Nominal Cair</th>
+                                                    <th>Tanggal Pengajuan</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -55,8 +53,6 @@
                                                                 <td>{{ $row['data']['nama_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['no_input_jepang'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_pengajuan'] }}</td>
-                                                                <td>{{ $row['data']['tanggal_cair'] }}</td>
-                                                                <td>{{ $row['data']['nominal_cair'] }}</td>
                                                                 
                                                         </tr>
                                                     @endif
@@ -74,9 +70,7 @@
                                                     <th>ID Customer</th>
                                                     <th>Nama</th>
                                                     <th>No Input Jepang</th>
-                                                    <th>Tanggal Pengajuan ke kantor pajak Jepang</th>
-                                                    <th>Tanggal Cair</th>
-                                                    <th>Nominal Cair</th>
+                                                    <th>Tanggal Pengajuan</th>
                                                     <th>Pesan Error System</th>
                                                 </tr>
                                             </thead>
@@ -93,8 +87,6 @@
                                                                 <td>{{ $row['data']['nama_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['no_input_jepang'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_pengajuan'] }}</td>
-                                                                <td>{{ $row['data']['tanggal_cair'] }}</td>
-                                                                <td>{{ $row['data']['nominal_cair'] }}</td>
                                                             <td>
                                                                 @foreach($row['error'] as $field => $msg)
                                                                     <div>{{ json_encode($msg) }}</div>
@@ -112,7 +104,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" wire:click="closebulkUpdateGensenStatusModalToGensenCair">Tutup</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" wire:click="closebulkUpdateGensenStatusModalToDalamPengajuan">Tutup</button>
                         
                         <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
                             wire:target='inputFileBulkStatus'>Simpan</button>
@@ -125,8 +117,8 @@
 
     @push('js')
         <script>
-            Livewire.on('onSuccessImportBulkStatusDataToGensenCair', () => {
-            $('#bulkUpdateGensenStatusModalToGensenCair').modal('hide');
+            Livewire.on('onSuccessImportBulkStatusDataToDalamPengajuan', () => {
+            $('#bulkUpdateGensenStatusModalToDalamPengajuan').modal('hide');
             $('#inputFileBulkStatus').val(null);
         })
         </script>

@@ -119,6 +119,7 @@ class GensenForm extends Model
     const STATUS_LENGKAP = 'LENGKAP';
     const STATUS_VERIFIED = 'VERIFIED';
     const STATUS_NO_INPUT_JEPANG = 'NO INPUT JEPANG'; // NOT INCLUDE IN FLOW / CUSTOM STATUS 
+    const STATUS_DALAM_PENGAJUAN = 'DALAM PENGAJUAN';
     const STATUS_GENSEN_CAIR = 'GENSEN CAIR';
     const STATUS_CANCEL = 'CANCEL';
     const STATUS_HONNIN = 'HONNIN';
@@ -129,6 +130,7 @@ class GensenForm extends Model
         self::STATUS_SIAP_VERIFIKASI => 'SIAP VERIFIKASI',
         self::STATUS_VERIFIED => 'VERIFIED',
         self::STATUS_NO_INPUT_JEPANG => 'NO INPUT JEPANG',
+        self::STATUS_DALAM_PENGAJUAN => 'DALAM PENGAJUAN',
         self::STATUS_GENSEN_CAIR => 'GENSEN CAIR',
         self::STATUS_CANCEL => 'CANCEL',
         self::STATUS_HONNIN => 'HONNIN',
@@ -151,6 +153,7 @@ class GensenForm extends Model
             self::STATUS_BELUM_LENGKAP => '#F9B2D7',
             self::STATUS_LENGKAP => '#5DEBD7',
             self::STATUS_VERIFIED => '#89D4FF',
+            self::STATUS_DALAM_PENGAJUAN => '#4689e8',
             self::STATUS_GENSEN_CAIR => '#E5C95F',
             self::STATUS_CANCEL => '#FFF6F6',
             self::STATUS_HONNIN => '#D1855C',
@@ -191,6 +194,9 @@ class GensenForm extends Model
             }
             if ($model->isDirty('tanggal_cair') && $model->tanggal_cair && $model->isDirty('nominal_cair') && $model->nominal_cair) {
                 $model->status = self::STATUS_GENSEN_CAIR;
+            }
+            if ($model->isDirty('tanggal_pengajuan') && $model->tanggal_pengajuan) {
+                $model->status = self::STATUS_DALAM_PENGAJUAN;
             }
             // if ($model->isDirty('no_input_jepang') && $model->no_input_jepang) {
             // $model->status = self::STATUS_GENSEN_CAIR;

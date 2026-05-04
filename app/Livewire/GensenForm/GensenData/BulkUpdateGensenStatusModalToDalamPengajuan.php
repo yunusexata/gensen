@@ -19,7 +19,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
 
-class BulkUpdateGensenStatusModalToLengkap extends Component
+class BulkUpdateGensenStatusModalToDalamPengajuan extends Component
 {
     use WithFileUploads;
 
@@ -46,18 +46,22 @@ class BulkUpdateGensenStatusModalToLengkap extends Component
             $d = [
                 'id_customer' => $row['id_customer'],
                 'nama_lengkap' => $row['nama'],
-                'tanggal_lengkap' => $row['tanggal_lengkap'],
+                'no_input_jepang' => $row['no_input_jepang'],
+                'tanggal_pengajuan' => $row['tanggal_pengajuan'],
             ];
             $validator = Validator::make($d, [
                 'id_customer' => 'required|exists:gensen_forms,id_customer',
                 'nama_lengkap' => 'required|exists:gensen_forms,nama_lengkap',
-                'tanggal_lengkap' => 'required',
+                'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
+                'tanggal_pengajuan' => 'required',
             ], [
                 'id_customer.required' => 'Id customer harus di isi',
                 'id_customer.exists' => 'Id customer tidak terdaftar',
                 'nama_lengkap.required' => 'Nama lengkap harus di isi',
                 'nama_lengkap.exists' => 'Nama lengkap tidak terdaftar',
-                'tanggal_lengkap.required' => 'Tanggal lengkap harus di isi',
+                'no_input_jepang.required' => 'No Input Jepang harus di isi',
+                'no_input_jepang.exists' => 'No Input Jepang tidak terdaftar',
+                'tanggal_pengajuan.required' => 'Tanggal Pengajuan harus di isi',
             ]);
 
             $this->previewBulkStatusRows[] = [
@@ -89,8 +93,9 @@ class BulkUpdateGensenStatusModalToLengkap extends Component
                     $updated = GensenFormRepository::updateBy([
                         ['id_customer', $value['data']['id_customer']],
                         ['nama_lengkap', $value['data']['nama_lengkap']],
+                        ['no_input_jepang', $value['data']['no_input_jepang']],
                     ], [
-                        'tanggal_lengkap' => $value['data']['tanggal_lengkap'],
+                        'tanggal_pengajuan' => $value['data']['tanggal_pengajuan'],
                     ]);
 
                     if ($updated > 0) {
@@ -103,7 +108,7 @@ class BulkUpdateGensenStatusModalToLengkap extends Component
             $history = GensenExportImportHistoryRepository::create([
                 'role' => Auth::user()->roles->pluck('name')->first(),
                 'created_by' => auth()->id(),
-                'job_key' => ExportImportJobKey::IMPORT_LIST_DATA_LENGKAP->value,
+                'job_key' => ExportImportJobKey::IMPORT_LIST_DATA_DALAM_PENGAJUAN->value,
                 'type' => 'import',
                 'filters' => json_encode([], true),
                 'status' => JobStatus::DONE,
@@ -111,9 +116,9 @@ class BulkUpdateGensenStatusModalToLengkap extends Component
             ]);
 
             $this->dispatch('datatable-refresh');
-            $this->dispatch('onSuccessImportBulkStatusDataToLengkap');
+            $this->dispatch('onSuccessImportBulkStatusDataToDalamPengajuan');
             $this->dispatch('refresh-table');
-            $this->closebulkUpdateGensenStatusModalToLengkap();
+            $this->closebulkUpdateGensenStatusModalToDalamPengajuan();
 
             Alert::confirmation(
                 $this,
@@ -131,7 +136,7 @@ class BulkUpdateGensenStatusModalToLengkap extends Component
         }
     }
 
-    public function closebulkUpdateGensenStatusModalToLengkap()
+    public function closebulkUpdateGensenStatusModalToDalamPengajuan()
     {
         $this->reset('inputFileBulkStatus');
         $this->previewBulkStatusRows = [];
@@ -140,6 +145,6 @@ class BulkUpdateGensenStatusModalToLengkap extends Component
 
     public function render()
     {
-        return view('livewire.gensen-form.gensen-data.bulk-update-gensen-status-modal-to-lengkap');
+        return view('livewire.gensen-form.gensen-data.bulk-update-gensen-status-modal-to-dalam-pengajuan');
     }
 }

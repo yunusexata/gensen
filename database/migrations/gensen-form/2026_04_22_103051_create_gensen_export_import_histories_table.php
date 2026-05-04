@@ -41,6 +41,7 @@ return new class extends Migration
         }
         $table->string('role')->nullable();
         $table->string('type'); // export or import
+        $table->string('job_key'); // Example : Import Data Belum Lengkap, Export Data Lengkap
         $table->string('status'); // pending, processing, success, failed
 
         $table->string('file_name')->nullable(); // nama file

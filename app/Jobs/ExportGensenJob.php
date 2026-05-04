@@ -35,7 +35,7 @@ class ExportGensenJob implements ShouldQueue
         $history = GensenExportImportHistory::findOrFail($this->historyId);
         Log::info('Broadcasting event', [
             'id' => $history->id,
-            'status' => $history->status,
+            'job_key' => $history->job_key,
         ]);
         try {
             $history->update(['status' => JobStatus::PROCESSING]);
@@ -45,7 +45,7 @@ class ExportGensenJob implements ShouldQueue
 
             // ambil data sesuai role + filter
             $data = app(ExportService::class)
-                ->handle($history->role, $filters);
+                ->handle($history->job_key, $filters);
 
             $fileName = 'export_' . time() . '.xlsx';
             $filePath = 'exports/' . $fileName;
@@ -69,7 +69,7 @@ class ExportGensenJob implements ShouldQueue
             event(new ExportStatusUpdated($history));
             Log::info('Broadcasting event', [
                 'id' => $history->id,
-                'status' => $history->status,
+                'job_key' => $history->job_key,
             ]);
         } catch (\Throwable $e) {
             $history->update([
@@ -79,7 +79,7 @@ class ExportGensenJob implements ShouldQueue
             event(new ExportStatusUpdated($history));
             Log::info('Broadcasting event', [
                 'id' => $history->id,
-                'status' => $history->status,
+                'job_key' => $history->job_key,
             ]);
         }
     }

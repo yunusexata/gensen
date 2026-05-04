@@ -2,8 +2,11 @@
 
 namespace App\Livewire\Gensen\ExportImport;
 
+use App\Enums\Gensen\ExportImportJobKey;
 use App\Helpers\Alert;
 use App\Helpers\ExportHelper;
+use App\Imports\ExcelImportBulkStatusGensen;
+use App\Models\GensenForm\GensenForm;
 use App\Repositories\Gensen\GensenExportImportHistoryRepository;
 use App\Repositories\GensenForm\GensenFormRepository;
 use Carbon\Carbon;
@@ -14,21 +17,21 @@ use Livewire\Component;
 
 class Export extends Component
 {
-    public $exportStatus;
+    public $export_job_key;
     public $filter_tanggal_input_dari;
     public $filter_tanggal_input_sampai;
     public $filter_pic;
     public function mount() {}
 
-    #[On('setExportStatus')]
-    public function setExportStatus($status)
+    #[On('setExportJobKey')]
+    public function setExportJobKey($job_key)
     {
-        $this->exportStatus = $status;
+        $this->export_job_key = ExportImportJobKey::from($job_key);;
     }
     public function submitExport()
     {
         // $query = GensenFormRepository::export(
-        //     $this->exportStatus,
+        //     $this->export_job_key,
         //     $this->filter_pic,
         //     $this->filter_tanggal_input_dari ?
         //         [
@@ -38,7 +41,8 @@ class Export extends Component
         // );
 
         $filters = [
-            'status' => $this->exportStatus,
+            'status' => GensenForm::STATUS_BELUM_LENGKAP,
+            'job_key' => $this->export_job_key->value,
             'pic_code' => $this->filter_pic,
             'tanggal_input' => $this->filter_tanggal_input_dari ?
                 [
@@ -48,6 +52,7 @@ class Export extends Component
         ];
         $history = GensenExportImportHistoryRepository::create([
             'role' => Auth::user()->roles->pluck('name')->first(),
+            'job_key' => $this->export_job_key,
             'created_by' => auth()->id(),
             'type' => 'export',
             'filters' => json_encode($filters, true)
@@ -87,7 +92,7 @@ class Export extends Component
     public function closeExportModal()
     {
         $this->reset([
-            'exportStatus',
+            'export_job_key',
             'filter_pic',
             'filter_tanggal_input_dari',
             'filter_tanggal_input_sampai',

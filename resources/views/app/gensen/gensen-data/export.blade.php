@@ -31,6 +31,7 @@
                 <th class="text-center">TANGGAL LENGKAP</th>
                 <th class="text-center">TANGGAL VERIFIED</th>
                 <th class="text-center">NO INPUT JEPANG</th>
+                <th class="text-center">TANGGAL PENGAJUAN</th>
                 <th class="text-center">TANGGAL CAIR</th>
                 <th class="text-center">NOMINAL CAIR</th>
                 <th class="text-center">KETERANGAN MONDAI</th>
@@ -67,6 +68,7 @@
                         <td>{{ $data['tanggal_lengkap'] ? Carbon\Carbon::parse($data['tanggal_lengkap'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['tanggal_verified'] ? Carbon\Carbon::parse($data['tanggal_verified'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['no_input_jepang']}}</td>
+                        <td>{{ $data['tanggal_pengajuan'] ? Carbon\Carbon::parse($data['tanggal_pengajuan'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['tanggal_cair'] ? Carbon\Carbon::parse($data['tanggal_cair'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['nominal_cair'] }}</td>
                         <td>{{ $data['keterangan_mondai']}}</td>

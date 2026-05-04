@@ -16,7 +16,7 @@ class UserRepository extends MasterDataRepository
 
     public static function getPicCodeChoice()
     {
-        return User::role('sales')->pluck('pic_code');
+        return User::role(User::ROLE_SALES)->pluck('pic_code');
     }
 
     public static function update($id, $data)

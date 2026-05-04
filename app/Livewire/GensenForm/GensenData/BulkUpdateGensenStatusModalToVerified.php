@@ -2,6 +2,7 @@
 
 namespace App\Livewire\GensenForm\GensenData;
 
+use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
 use App\Imports\ExcelImportBulkStatusGensen;
@@ -91,7 +92,6 @@ class BulkUpdateGensenStatusModalToVerified extends Component
                         ['id_customer', $value['data']['id_customer']],
                         ['nama_lengkap', $value['data']['nama_lengkap']],
                         ['tanggal_lengkap', '!=', null],
-                        ['tanggal_verified', null],
                     ], [
                         'tanggal_verified' => $value['data']['tanggal_verified'],
                     ]);
@@ -106,6 +106,7 @@ class BulkUpdateGensenStatusModalToVerified extends Component
             $history = GensenExportImportHistoryRepository::create([
                 'role' => Auth::user()->roles->pluck('name')->first(),
                 'created_by' => auth()->id(),
+                'job_key' => ExportImportJobKey::IMPORT_LIST_DATA_VERIFIED->value,
                 'type' => 'import',
                 'filters' => json_encode([], true),
                 'status' => JobStatus::DONE,
