@@ -119,5 +119,15 @@ class UserSeeder extends Seeder
         ]);
 
         $user->assignRole(User::ROLE_ACC_EXATA);
+
+        // ADMIN JAPAN
+        $user = User::create([
+            'name' => "Admin Japan",
+            'username' => "Admin Japan",
+            'email' => "adminjapan@gmail.com",
+            'password' => Hash::make("123exata"),
+        ]);
+
+        $user->assignRole(User::ROLE_ADMIN_JAPAN);
     }
 }
