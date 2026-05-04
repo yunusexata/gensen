@@ -178,8 +178,12 @@
                                         </div>
                                         <div class="flex flex-col gap-2">
                                             <label class="font-label text-xs font-medium text-on-surface-variant" for="nomor_whatsapp">Nomor Whatsapp<span class="text-red-500">*</span></label>
-                                            <input class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('nomor_whatsapp') is-invalid border border-red-500 @enderror" id="nomor_whatsapp" wire:model="nomor_whatsapp" name="nomor_whatsapp" type="text" placeholder="Nomor Whatsapp"/>
-
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="basic-addon1">+62</span>
+                                                <input type="text" class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 phone" required name="nomor_whatsapp" model-name="nomor_whatsapp" min="1" placeholder="8XX-XXXX-XXXX" aria-label="phone" aria-describedby="basic-addon1">
+                                            </div>
+                                            <div class="form-text" id="basic-addon4">Contoh +62 8XX-XXXX-XXXX</div>
+                                            <input class="d-none @error('nomor_whatsapp') is-invalid border border-red-500 @enderror" id="nomor_whatsapp"/>
                                             @error('nomor_whatsapp')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -188,8 +192,12 @@
                                         </div>
                                         <div class="flex flex-col gap-2">
                                             <label class="font-label text-xs font-medium text-on-surface-variant" for="nomor_whatsapp_darurat">Nomor Whatsapp Darurat</label>
-                                            <input class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('nomor_whatsapp_darurat') is-invalid border border-red-500 @enderror" id="nomor_whatsapp_darurat" wire:model="nomor_whatsapp_darurat" name="nomor_whatsapp_darurat" type="text" placeholder="Nomor Whatsapp Darurat"/>
-
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="basic-addon1">+62</span>
+                                                <input type="text" class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 phone" name="nomor_whatsapp_darurat" model-name="nomor_whatsapp_darurat" min="1" placeholder="8XX-XXXX-XXXX" aria-label="phone" aria-describedby="basic-addon1">
+                                            </div>
+                                            <div class="form-text" id="basic-addon4">Contoh +62 8XX-XXXX-XXXX</div>
+                                            <input class="d-none @error('nomor_whatsapp_darurat') is-invalid border border-red-500 @enderror" id="nomor_whatsapp_darurat"/>
                                             @error('nomor_whatsapp_darurat')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -1522,6 +1530,9 @@
         }
         </style>
 @endpush
+
+@include('js.imask')
+
 @push('js')
     <script>
         document.addEventListener('livewire:init', () => {

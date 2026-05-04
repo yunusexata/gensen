@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -50,7 +51,7 @@ class Form extends Component
     public $nama_instagram;
     #[Validate('required', message: 'Nama Tiktok Harus Diisi', onUpdate: false)]
     public $nama_tiktok;
-    #[Validate('required', message: 'Nomor Whatsapp Harus Diisi', onUpdate: false)]
+    // #[Validate('required', message: 'Nomor Whatsapp Harus Diisi', onUpdate: false)]
     public $nomor_whatsapp;
     public $nomor_whatsapp_darurat;
     #[Validate('required', message: 'Alamat Jepang Harus Diisi', onUpdate: false)]
@@ -222,16 +223,15 @@ class Form extends Component
         //     $this->currentStep
         // ]);
 
-        $this->validatationStepper($this->currentStep);
-
-
+        if (!$this->validatationStepper($this->currentStep)) {
+            return;
+        }
         $this->currentStep++;
 
         $this->dispatch('stepper-go-to', $this->currentStep);
     }
     private function validatationStepper($index)
     {
-        consoleLog($this, $this->isUploadAttachment);
         if ($this->isUploadAttachment) {
             match ($index) {
 
@@ -254,72 +254,41 @@ class Form extends Component
     }
     private function validateStepPersonal()
     {
-        // consoleLog($this, [
-        //     'firstcheck',
-        //     $this->isFirstCheck
-        // ]);
         if (!$this->isFirstCheck) {
             $this->firstCheck(); // your existing logic
         } else {
             $this->validate();
-            $this->validate([
-                'nomor_whatsapp' => [
-                    'required',
-                    function ($attribute, $value, $fail) {
-
-                        $number = preg_replace('/[^\d]/', '', $value);
-
-                        if (str_starts_with($number, '62')) {
-                            $number = substr($number, 2);
-                        }
-
-                        if (!preg_match('/^8[0-9]{8,11}$/', $number)) {
-                            $fail('Format No Whatsapp tidak sesuai, contoh: +62 8XX-XXXX-XXXX');
-                        }
-                    },
-                ],
-
-                'nomor_whatsapp_darurat' => [
-                    'nullable',
-                    function ($attribute, $value, $fail) {
-
-                        if (!$value) return;
-
-                        $number = preg_replace('/[^\d]/', '', $value);
-
-                        if (str_starts_with($number, '62')) {
-                            $number = substr($number, 2);
-                        }
-
-                        if (!preg_match('/^8[0-9]{8,11}$/', $number)) {
-                            $fail('Format No Whatsapp Darurat tidak sesuai, contoh: +62 8XX-XXXX-XXXX');
-                        }
-                    },
-                ],
-            ]);
+            $nomor_whatsapp = preg_replace('/[^\d]/', '', $this->nomor_whatsapp);
+            if (!preg_match("/^8[0-9]{9,11}$/", $nomor_whatsapp) || (strlen($nomor_whatsapp) < 9 || strlen($nomor_whatsapp) > 11)) {
+                throw ValidationException::withMessages([
+                    'nomor_whatsapp' => 'Format No Whatsapp tidak sesuai',
+                ]);
+                return false;
+            }
+            if ($this->nomor_whatsapp_darurat) {
+                $nomor_whatsapp_darurat = preg_replace('/[^\d]/', '', $this->nomor_whatsapp_darurat);
+                if (!preg_match("/^8[0-9]{9,11}$/", $nomor_whatsapp_darurat) || (strlen($nomor_whatsapp_darurat) < 9 || strlen($nomor_whatsapp_darurat) > 11)) {
+                    throw ValidationException::withMessages([
+                        'nomor_whatsapp_darurat' => 'Format No Whatsapp Darurat tidak sesuai',
+                    ]);
+                    return false;
+                }
+            }
             $this->saveData(false);
         }
     }
 
-    private function validateStepAttachment()
-    {
-        // if (!$this->isAttachmentReadyMerged()) {
-        //     throw \Illuminate\Validation\ValidationException::withMessages([
-        //         'attachment' => 'Attachment belum lengkap'
-        //     ]);
-        // }
-    }
-    private function validateStepReview()
-    {
-        // final validation
-    }
+    private function validateStepAttachment() {}
+    private function validateStepReview() {}
     public function handleStepClick($step)
     {
         $target = $step;
         consoleLog($this, $target);
         consoleLog($this, $this->currentStep);
 
-        $this->validatationStepper(1);
+        if (!$this->validatationStepper(1)) {
+            return;
+        }
         $this->currentStep = $target;
 
         $this->dispatch('stepper-go-to', $target);
@@ -614,8 +583,7 @@ class Form extends Component
     {
         try {
             DB::transaction(function () use ($isSubmitted, $withAttachment) {
-                $nomor_whatsapp = preg_replace('/[^\d]/', '', $this->nomor_whatsapp);
-                $nomor_whatsapp_darurat = preg_replace('/[^\d]/', '', $this->nomor_whatsapp_darurat);
+
                 // Form Candidate
                 $validateData = [
                     // Form J-Expert
@@ -624,8 +592,8 @@ class Form extends Component
                     'tanggal_kepulangan' => $this->tanggal_kepulangan,
                     'nama_instagram' => $this->nama_instagram,
                     'nama_tiktok' => $this->nama_tiktok,
-                    'nomor_whatsapp' => $nomor_whatsapp,
-                    'nomor_whatsapp_darurat' => $nomor_whatsapp_darurat,
+                    'nomor_whatsapp' => $this->nomor_whatsapp,
+                    'nomor_whatsapp_darurat' => $this->nomor_whatsapp_darurat,
                     'email' => $this->email,
                     'alamat_jepang' => $this->alamat_jepang,
                     'kode_pos_jepang' => $this->kode_pos_jepang,

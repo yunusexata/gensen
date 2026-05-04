@@ -87,6 +87,7 @@
                 $(element).on('blur', (event) => {
                     const value = event.target.value;
                     const modelName = $(element).attr('model-name');
+                    console.log(value);
                     @this.set(modelName, value)
                 });
             });
