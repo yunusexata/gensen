@@ -54,6 +54,9 @@ class PermissionHelper
     const IMPORT_LIST_DATA_DALAM_PENGAJUAN = 'import_list_data_dalam_pengajuan';
     const IMPORT_LIST_DATA_GENSEN_CAIR = 'import_list_data_gensen_cair';
 
+    // BUKU NENKIN
+    const ACCESS_BUKU_NENKIN = 'buku_nenkin';
+
     const ACCESS_ALL = [
         self::ACCESS_DASHBOARD,
         self::ACCESS_USER,
@@ -97,6 +100,9 @@ class PermissionHelper
         self::IMPORT_LIST_DATA_NO_INPUT_JAPAN => 'Data Gensen - Import No input Japan',
         self::IMPORT_LIST_DATA_DALAM_PENGAJUAN => 'Data Gensen - Import Dalam pengajuan',
         self::IMPORT_LIST_DATA_GENSEN_CAIR => 'Data Gensen - Import Gensen cair',
+
+        // BUKU NENKIN
+        self::ACCESS_BUKU_NENKIN => 'Data Pengganti Buku Nenkin',
     ];
 
     const ACCESS_TYPE_ALL = [
@@ -129,6 +135,9 @@ class PermissionHelper
         self::IMPORT_LIST_DATA_NO_INPUT_JAPAN => [self::TYPE_CREATE],
         self::IMPORT_LIST_DATA_DALAM_PENGAJUAN => [self::TYPE_CREATE],
         self::IMPORT_LIST_DATA_GENSEN_CAIR => [self::TYPE_CREATE],
+
+        // Export Import
+        self::ACCESS_BUKU_NENKIN => self::TYPE_ALL,
     ];
 
     /*

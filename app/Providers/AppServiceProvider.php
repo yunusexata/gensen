@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
             database_path('migrations/user'),
             database_path('migrations/other'),
             database_path('migrations/gensen-form'),
+            database_path('migrations/buku-nenkin'),
         ]);
     }
 }

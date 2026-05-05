@@ -559,7 +559,7 @@ class Datatable extends Component
                         isset($col['key'])
                         && (!isset($col['searchable']) || (isset($col['searchable']) && $col['searchable']))
                     ) {
-                        $query->orWhere($col['key'], 'LIKE', "%$search%");
+                        $query->orWhere($col['key'], 'ILIKE', "%$search%");
                     }
                 }
             });

@@ -42,6 +42,11 @@ return [
             'icon' => 'ki-duotone ki-element-11',
         ],
         [
+            'text' => 'Pengganti Buku Nenkin',
+            'route'  => 'buku_nenkin.index',
+            'icon' => 'ki-duotone ki-element-11',
+        ],
+        [
             // 'id' => 'menu_admin'
             'text' => 'Admin',
             'icon' => 'ki-duotone ki-shield-tick',

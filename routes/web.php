@@ -19,6 +19,7 @@ Route::group([], __DIR__ . '/web/Auth.php');
 Route::group([], __DIR__ . '/web/Other.php');
 Route::group([], __DIR__ . '/web/Account.php');
 Route::group([], __DIR__ . '/web/GensenForm.php');
+Route::group([], __DIR__ . '/web/BukuNenkin.php');
 
 Route::middleware(['auth', 'access_permission'])->group(function () {
     Route::group(["controller" => DashboardController::class, "prefix" => "dashboard", "as" => "dashboard."], function () {
