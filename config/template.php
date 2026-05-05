@@ -41,11 +41,11 @@ return [
             'route'  => 'gensen_form_export_import.index',
             'icon' => 'ki-duotone ki-element-11',
         ],
-        [
-            'text' => 'Pengganti Buku Nenkin',
-            'route'  => 'buku_nenkin.index',
-            'icon' => 'ki-duotone ki-element-11',
-        ],
+        // [
+        //     'text' => 'Pengganti Buku Nenkin',
+        //     'route'  => 'buku_nenkin.index',
+        //     'icon' => 'ki-duotone ki-element-11',
+        // ],
         [
             // 'id' => 'menu_admin'
             'text' => 'Admin',
