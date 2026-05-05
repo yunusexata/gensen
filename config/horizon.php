@@ -213,19 +213,18 @@ return [
     ],
 
     'environments' => [
+
         'production' => [
-            'production' => [
-                'supervisor-default' => [
-                    'connection' => 'redis',
-                    'queue' => ['default'],
-                    'balance' => 'auto',
-                    'maxProcesses' => 8,
-                    'minProcesses' => 2,
-                    'balanceMaxShift' => 2,
-                    'balanceCooldown' => 3,
-                    'tries' => 3,
-                    'timeout' => 120,
-                ],
+            'supervisor-default' => [
+                'connection' => 'redis',
+                'queue' => ['default'],
+                'balance' => 'auto',
+                'maxProcesses' => 8,
+                'minProcesses' => 2,
+                'balanceMaxShift' => 2,
+                'balanceCooldown' => 3,
+                'tries' => 3,
+                'timeout' => 120,
             ],
         ],
     ],
