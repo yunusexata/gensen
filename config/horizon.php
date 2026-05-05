@@ -214,7 +214,6 @@ return [
     ],
 
     'environments' => [
-
         'production' => [
             'supervisor-default' => [
                 'connection' => 'redis',
