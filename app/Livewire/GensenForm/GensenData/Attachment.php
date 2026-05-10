@@ -274,6 +274,7 @@ class Attachment extends Component
         ])) {
 
             $this->remittance_extraction = null;
+            $this->remittance_validate_total = 0;
             return;
         }
 
