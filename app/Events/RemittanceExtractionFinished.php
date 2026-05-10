@@ -34,7 +34,7 @@ class RemittanceExtractionFinished implements ShouldBroadcastNow
         logger('Broadcast channel hit finish');
         return [
             // 'export-status'
-            new PrivateChannel('export-remittance-extranction')
+            new Channel('export-remittance-extranction')
         ];
     }
     public function broadcastAs()

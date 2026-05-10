@@ -41,7 +41,8 @@ class ExportStatusUpdated implements ShouldBroadcastNow
         Log::info('Broadcast channel hit');
         return [
             // 'export-status'
-            new PrivateChannel('export-status')
+            new Channel('export-status')
+
         ];
     }
     public function broadcastAs()
