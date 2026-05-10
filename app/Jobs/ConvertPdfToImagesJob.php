@@ -62,7 +62,8 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 continue;
             }
             $process = new Process([
-                '/usr/local/bin/gs',
+                // '/usr/local/bin/gs',
+                'gs',
                 '-sDEVICE=jpeg',
                 '-r200',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
                 '-dNOPAUSE',
