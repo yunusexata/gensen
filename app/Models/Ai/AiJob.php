@@ -84,6 +84,7 @@ class AiJob extends Model
             $model->status = JobStatus::PENDING;
         });
         self::created(function ($model) {
+            logger('ai job created');
             if ($model->job_type === self::JOB_TYPE_REMITTANCE_EXTRACTION) {
                 RemittanceExtraction::where('subject_type', $model->subject_type)
                     ->where('subject_id', $model->subject_id)
