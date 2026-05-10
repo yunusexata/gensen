@@ -11,6 +11,7 @@ use App\Models\Ai\AiJob;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\GensenFormAttachment;
 use App\Models\User;
+use App\Repositories\Ai\AiJobRepository;
 use App\Repositories\Gensen\Ai\RemittanceExtractionGroupRepository;
 use App\Repositories\Gensen\Ai\RemittanceExtractionRepository;
 use App\Repositories\GensenForm\GensenFormAttachmentRepository;
@@ -147,7 +148,7 @@ class Attachment extends Component
     {
         try {
             DB::transaction(function () {
-                AiJob::firstOrCreate(
+                $job = AiJob::firstOrCreate(
                     [
                         'subject_type' => GensenForm::class,
                         'subject_id'   => Crypt::decrypt($this->objId),
@@ -159,6 +160,9 @@ class Attachment extends Component
                         'model'    => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
                     ]
                 );
+                if ($job) {
+                    $this->remittance_extraction = null;
+                }
             });
 
             DB::commit();
@@ -261,6 +265,18 @@ class Attachment extends Component
     }
     public function getRemittanceExtraction($gensen = null)
     {
+
+        if (AiJobRepository::findBy([
+            ['subject_type', GensenForm::class],
+            ['subject_id', Crypt::decrypt($this->objId)],
+            ['job_type', AiJob::JOB_TYPE_REMITTANCE_EXTRACTION],
+            ['status', 'pending'],
+        ])) {
+
+            $this->remittance_extraction = null;
+            return;
+        }
+
         if (!$gensen) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
         }

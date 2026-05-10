@@ -1830,28 +1830,37 @@
                             <!-- Group 2: Financials -->
                             <div class="space-y-4">
                                 <h3 class="text-label-bold font-label-bold text-on-surface-variant uppercase border-b border-outline-variant pb-2 mt-4">Remittance Details</h3>
-                                @foreach ($remittance_extraction_groups as $index => $remittance)
-                                    <div class="flex items-start gap-md p-sm hover:bg-surface-container-lowest rounded-lg border border-transparent hover:border-outline-variant transition-colors group">
-                                        <input wire:model.live="remittance_extraction_groups.{{ $index }}.is_validate" class="mt-1 h-4 w-4 rounded border-outline text-primary focus:ring-primary-container bg-surface cursor-pointer" type="checkbox"/>
-                                        <div class="flex-1">
-                                            <label class="text-label-sm font-label-sm text-on-surface-variant block mb-1">{{$remittance['receiver_name']}} - {{$remittance['transaction_year']}}</label>
-                                            <button type="button" data-bs-toggle="collapse" href="#collapse_remittance_groups_{{ $remittance['id'] }}" role="button" aria-expanded="false" aria-controls="#collapse_remittance_groups_{{ $remittance['id'] }}" 
-                                                class="w-full text-body-md font-body-md text-on-surface bg-surface p-2 border border-outline-variant rounded flex justify-between items-center opacity-70">
-                                                <span class="font-data-mono text-data-mono">@currency($remittance['total_amount']) - {{$remittance['currency']}}</span>
-                                                <span class="material-symbols-outlined text-outline text-[16px]">check_circle</span>
-                                            </button >
-                                            <div id="collapse_remittance_groups_{{ $remittance['id'] }}" class="collapse" aria-labelledby="headingOne" wire:ignore>
-                                                <div class="card-body py-0">
-                                                    <ul class="list-group list-group-flush">
-                                                        @foreach ($remittance['amount_details'] as $index_detail => $item)
-                                                            <li wire:key="remittance_detail_{{ $remittance['id'] }}_{{ $index_detail }}" class="list-group-item text-dark">@currency($item)</li>
-                                                        @endforeach
-                                                    </ul>
+                                @if ($remittance_extraction)
+                                    @foreach ($remittance_extraction_groups as $index => $remittance)
+                                        <div class="flex items-start gap-md p-sm hover:bg-surface-container-lowest rounded-lg border border-transparent hover:border-outline-variant transition-colors group">
+                                            <input wire:model.live="remittance_extraction_groups.{{ $index }}.is_validate" class="mt-1 h-4 w-4 rounded border-outline text-primary focus:ring-primary-container bg-surface cursor-pointer" type="checkbox"/>
+                                            <div class="flex-1">
+                                                <label class="text-label-sm font-label-sm text-on-surface-variant block mb-1">{{$remittance['receiver_name']}} - {{$remittance['transaction_year']}}</label>
+                                                <button type="button" data-bs-toggle="collapse" href="#collapse_remittance_groups_{{ $remittance['id'] }}" role="button" aria-expanded="false" aria-controls="#collapse_remittance_groups_{{ $remittance['id'] }}" 
+                                                    class="w-full text-body-md font-body-md text-on-surface bg-surface p-2 border border-outline-variant rounded flex justify-between items-center opacity-70">
+                                                    <span class="font-data-mono text-data-mono">@currency($remittance['total_amount']) - {{$remittance['currency']}}</span>
+                                                    <span class="material-symbols-outlined text-outline text-[16px]">check_circle</span>
+                                                </button >
+                                                <div id="collapse_remittance_groups_{{ $remittance['id'] }}" class="collapse" aria-labelledby="headingOne" wire:ignore>
+                                                    <div class="card-body py-0">
+                                                        <ul class="list-group list-group-flush">
+                                                            @foreach ($remittance['amount_details'] as $index_detail => $item)
+                                                                <li wire:key="remittance_detail_{{ $remittance['id'] }}_{{ $index_detail }}" class="list-group-item text-dark">@currency($item)</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    @endforeach
+                                @else
+                                    <div class="">
+                                        <div class="btn text-white w-100" style="background-color: #5d2fc2; "> 
+                                            Sedang Memproses <i class="fa-solid fa-wand-magic-sparkles text-white animate-wand"></i>
+                                            </span>
+                                        </div>
                                     </div>
-                                @endforeach
+                                @endif
                                 <h1 class="text-label-bold font-label-bold text-on-surface-variant text-[20pt] uppercase border-b border-outline-variant pb-2 mt-4 text-right">Total : @currency($remittance_validate_total)</h1>
                             </div>
                             </div>
