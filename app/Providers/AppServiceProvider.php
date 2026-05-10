@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +12,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton('ai', function () {
+            return new \App\AiServices\Manager\AiManager();
+        });
     }
 
     /**
@@ -25,6 +28,12 @@ class AppServiceProvider extends ServiceProvider
             database_path('migrations/other'),
             database_path('migrations/gensen-form'),
             database_path('migrations/buku-nenkin'),
+            database_path('migrations/ai'),
         ]);
+
+        Blade::directive('currency', function ($expression) {
+            // return "<?php echo ($expression);";
+            return "<?php echo App\Helpers\NumberFormatter::format($expression); ?>";
+        });
     }
 }

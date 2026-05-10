@@ -7,6 +7,8 @@ use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\NumberGenerator;
 use App\Helpers\PermissionHelper;
+use App\Models\Ai\AiJob;
+use App\Models\Gensen\Ai\RemittanceExtraction;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\GensenForm\PersyaratanGensenJobRepository;
 use App\Repositories\GensenForm\SeluruhBerkasJobRepository;
@@ -207,6 +209,25 @@ class GensenForm extends Model
                 $model->remarks->incrementUsedCount();
             }
         });
+        self::updated(function ($model) {
+            if ($model->status === self::STATUS_LENGKAP) {
+
+                $aiJob = AiJob::create([
+
+                    'provider' => 'gemini-ai',
+
+                    'model' => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
+
+                    'job_type' => AiJob::JOB_TYPE_REMITTANCE_EXTRACTION,
+
+                    'status' => 'pending',
+
+                    'subject_type' => $model::class,
+
+                    'subject_id' => $model->id,
+                ]);
+            }
+        });
         self::deleted(function ($model) {
             if ($model->remarks_type === GensenFormLink::class) {
                 $model->remarks->decrementUsedCount();
@@ -304,9 +325,13 @@ class GensenForm extends Model
             ->every(fn($field) => filled($this->{$field}));
     }
 
-    public function attachmentGroups()
+    public function attachmentGroups($types)
     {
         $attachments = $this->attachments
+            ->where('status', '!=', GensenAttachmenStatus::STATUS_CONVERTED)
+            ->when($types, function ($q) use ($types) {
+                $q->whereIn('type', $types);
+            })
             ->groupBy(fn($a) => $a->type->value);
 
         return collect(GensenAttachmentType::cases())
@@ -425,6 +450,24 @@ class GensenForm extends Model
         return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')
             ->orderByRaw("CASE type {$case} ELSE 999 END");
     }
+    public function attachmentsToConvert()
+    {
+        return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')->whereIn('type', [
+            GensenAttachmentType::KERTAS_GENSEN->value,
+            GensenAttachmentType::KARTU_KELUARGA->value,
+            GensenAttachmentType::REKAP_PENGIRIMAN_UANG->value,
+        ])
+            ->where(function ($q) {
+                $q->whereNull('convert_image')
+                    ->orWhere('convert_image', false);
+            })
+            ->where('status', '!=', GensenAttachmenStatus::STATUS_CONVERTED);
+    }
+    public function attachmentsConvertedRekapanPengirimanUang()
+    {
+        return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')->where('type', GensenAttachmentType::REKAP_PENGIRIMAN_UANG)
+            ->where('status', GensenAttachmenStatus::STATUS_CONVERTED);
+    }
 
     public function remarks()
     {
@@ -460,5 +503,10 @@ class GensenForm extends Model
             'gensen_form_id', // FK in jobs table
             'id'              // PK in gensen_forms
         );
+    }
+
+    public function remittanceExtraction()
+    {
+        return $this->hasOne(RemittanceExtraction::class, 'subject_id', 'id')->where('subject_type', self::class);
     }
 }

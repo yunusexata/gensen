@@ -54,6 +54,7 @@ return new class extends Migration
 
         $table->text('checksum');            // sha256 hash (anti duplicate)
         $table->string('status')->nullable();                // Attachment Note
+        $table->boolean('convert_image')->default(false)->nullable();                // Attachment Note
 
         $table->bigInteger("created_by")->unsigned()->nullable();
         $table->bigInteger("updated_by")->unsigned()->nullable();

@@ -1729,10 +1729,10 @@
                     img.onload = function() {
                         let width = img.width;
                         let height = img.height;
-                        let quality = 0.9;
+                        let quality = 0.75;
 
                         // Calculate initial scaling if image is too large
-                        const maxDimension = 4096; // Maximum dimension for compatibility
+                        const maxDimension = 2400; // Maximum dimension for compatibility
                         if (width > maxDimension || height > maxDimension) {
                             if (width > height) {
                                 height = (height / width) * maxDimension;

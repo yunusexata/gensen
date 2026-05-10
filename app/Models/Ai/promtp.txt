@@ -1,0 +1,338 @@
+Ya — dan ini bagian penting:
+
+You are a highly accurate data extraction assistant.
+
+Rules:
+- Output STRICT valid JSON only.
+- Never explain.
+- Never add commentary.
+- Never guess missing information.
+- If uncertain, return null values.
+- Classification must be mutually exclusive.
+- Choose the single BEST document_type.
+- Analyze the uploaded document image or PDF.
+- group as year and receiver_name
+Classify the document into ONE of the following types:
+
+- gensen_choshu_hyo
+- remittance
+- kartu_keluarga
+- unknown_document
+
+Extract the data and return ONLY a valid JSON object matching this exact structure,
+Do not include markdown tags like ```json. Return only the raw JSON:
+[
+  {
+    "document_type": "remittance",
+    "confidence_document_type": 0-100,
+    "data": [
+      {
+        "receiver_name": "MUALIM",
+        "total_transfer": amount remittance total without fee and tax(double),
+        "transfer_year": "year",
+        "confidence_total_and_year": 0-100
+      },
+      {
+        "receiver_name": "RINI ASTUTIK",
+        "total_transfer": amount remittance total without fee and tax(double),
+        "transfer_year": "year",
+        "confidence_total_and_year": 0-100
+      },
+      {
+        "receiver_name": "MUALIM",
+        "total_transfer": amount remittance total without fee and tax(double),
+        "transfer_year": "year",
+        "confidence_total_and_year": 0-100
+      },
+      {
+        "receiver_name": "RINI ASTUTIK",
+        "total_transfer": amount remittance total without fee and tax(double),
+        "transfer_year": "year",
+        "confidence_total_and_year": 0-100
+      }
+    ]
+  }
+]
+
+
+Prompt contoh kamu **sudah benar secara konsep**, tetapi **belum production-grade** untuk sistem enterprise document pipeline.
+
+Masalah utama prompt awal:
+
+❌ model bisa ambigu
+❌ classification tidak mutual-exclusive
+❌ tidak scalable untuk multi file
+❌ rawan hallucination
+❌ sulit di-debug saat gagal
+❌ tidak siap batch processing
+
+Di fintech Jepang, classification prompt dibuat seperti **machine interface**, bukan natural instruction.
+
+Saya redesign menjadi **Production-Grade Document Classifier Prompt** yang biasa dipakai sebelum extraction pipeline.
+
+---
+
+# ✅ DESIGN PRINCIPLE (KENAPA PROMPT HARUS DIUBAH)
+
+Classifier ideal harus:
+
+1. **single prompt untuk semua dokumen**
+2. **mutually exclusive classification**
+3. **confidence scoring**
+4. **future proof**
+5. **anti hallucination**
+6. **cheap inference**
+7. **stable JSON schema**
+
+👉 Jangan 3 prompt terpisah.
+
+Enterprise system selalu:
+
+```text
+ONE CLASSIFIER → MANY DOCUMENT TYPES
+```
+
+---
+
+# 🏆 FINAL — PRODUCTION GEMINI 1.5 FLASH CLASSIFICATION PROMPT
+
+## ✅ SYSTEM PROMPT (WAJIB)
+
+```
+You are a document classification engine.
+
+Rules:
+- Output STRICT valid JSON only.
+- Never explain.
+- Never add commentary.
+- Never guess missing information.
+- If uncertain, return null values.
+- Classification must be mutually exclusive.
+- Choose the single BEST document_type.
+```
+
+---
+
+## ✅ USER PROMPT
+
+```
+Analyze the uploaded document image or PDF.
+
+Classify the document into ONE of the following types:
+
+- gensen_choshu_hyo
+- remittance
+- kartu_keluarga
+- unknown_document
+
+Definitions:
+
+gensen_choshu_hyo:
+Japanese tax withholding slip (源泉徴収票).
+Contains employer name, tax year (Reiwa/Heisei), income amount, withholding tax table.
+
+remittance:
+Money transfer proof showing sender, receiver, transfer company, or transaction confirmation.
+
+kartu_keluarga:
+Indonesian Family Card (Kartu Keluarga) issued by Dukcapil Indonesia.
+
+unknown_document:
+Document does not clearly belong to any category.
+
+Extract minimal metadata ONLY when confident.
+
+Return JSON using EXACT schema below.
+```
+
+---
+
+## ✅ JSON SCHEMA (VERY IMPORTANT)
+
+```
+{
+  "document_type": "gensen_choshu_hyo | remittance | kartu_keluarga | unknown_document",
+  "confidence": 0-100,
+
+  "gensen": {
+    "tahun_reiwa": string | null,
+    "nama_pemilik": string | null
+  },
+
+  "remittance": {
+    "nama_pengirim": string | null,
+    "provider": string | null
+  },
+
+  "kartu_keluarga": {
+    "detected": boolean | null
+  }
+}
+```
+
+---
+
+# 🔥 KENAPA INI JAUH LEBIH BAGUS
+
+## 1️⃣ Tidak Perlu 3 API Call
+
+Sebelumnya:
+
+```
+file → gensen prompt
+file → remittance prompt
+file → kk prompt
+```
+
+❌ 3x cost
+❌ 3x latency
+
+Sekarang:
+
+```
+file → ONE classifier
+```
+
+✅ cheaper
+✅ faster
+✅ scalable
+
+---
+
+## 2️⃣ Mutual Exclusive Decision
+
+Model dipaksa memilih:
+
+```
+ONE TYPE ONLY
+```
+
+Ini penting untuk:
+
+* queue automation
+* routing extraction job
+* audit trail
+
+---
+
+## 3️⃣ Confidence Score (SUPER IMPORTANT)
+
+Production AI tanpa confidence = bahaya.
+
+Contoh:
+
+```json
+{
+ "document_type": "gensen_choshu_hyo",
+ "confidence": 52
+}
+```
+
+Laravel bisa:
+
+```php
+if ($confidence < 70) {
+   markManualReview();
+}
+```
+
+👉 Ini yang bikin akurasi sistem nyata naik drastis.
+
+---
+
+## 4️⃣ Anti Hallucination Guard
+
+Rule:
+
+```
+Never guess missing information
+```
+
+Ini critical untuk dokumen pajak.
+
+Tanpa ini model sering:
+
+```
+invent nama
+invent tahun
+```
+
+---
+
+## 5️⃣ Future Proof
+
+Besok kamu tambah:
+
+* residence card
+* passport
+* invoice
+* payslip
+
+Tinggal tambah enum.
+
+Tidak redesign prompt.
+
+---
+
+# 🧠 Cara Pakai di Gemini 1.5 Flash
+
+Gunakan:
+
+* **JSON mode ON**
+* temperature: `0`
+* top_p: `1`
+
+Tujuan classifier:
+
+```
+deterministic decision
+```
+
+bukan reasoning kreatif.
+
+---
+
+# 🧠 Enterprise Pipeline Kamu Nanti
+
+Flow ideal:
+
+```
+Upload
+   ↓
+Gemini Flash (Classifier)
+   ↓
+Route Job
+   ├── Gensen → OpenAI Extract
+   ├── Remittance → OpenAI Extract
+   └── KK → Laravel Validation
+```
+
+Cost jadi:
+
+```
+Gemini = cheap router
+OpenAI = precision extractor
+```
+
+---
+
+# ⭐ Insight Senior (Yang Biasanya Baru Disadari Setelah Production)
+
+Document AI system **tidak mahal karena extraction**.
+
+Yang mahal adalah:
+
+```
+wrong routing
+wrong model usage
+reprocessing document
+```
+
+Classifier yang benar = saving terbesar.
+
+---
+
+Kalau kamu mau, next step paling powerful adalah:
+
+👉 **Document Router Architecture (AI Orchestrator Layer)**
+Ini yang membedakan aplikasi biasa vs SaaS automation level Jepang.

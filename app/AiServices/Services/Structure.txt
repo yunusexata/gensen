@@ -1,0 +1,15 @@
+<!-- app/
+ └── AI/
+     ├── Contracts/
+     │     AIProvider.php
+     ├── Providers/
+     │     OpenAIProvider.php
+     ├── Pipelines/
+     │     ExtractGensenPipeline.php
+     ├── DTO/
+     ├── Factories/
+     │     AiJobFactory.php
+     ├── Executors/
+     │     AiExecutor.php
+     └── Support/
+           AICostCalculator.php -->

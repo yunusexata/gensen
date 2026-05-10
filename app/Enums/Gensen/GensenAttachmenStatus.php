@@ -7,6 +7,7 @@ enum GensenAttachmenStatus: string
     case STATUS_STORED = 'stored';
     case STATUS_REJECTED = 'rejected';
     case STATUS_EDITED = 'edited';
+    case STATUS_CONVERTED = 'converted';
 
     public function label(): string
     {
@@ -14,6 +15,7 @@ enum GensenAttachmenStatus: string
             self::STATUS_STORED => 'STORED',
             self::STATUS_REJECTED => 'REJECTED',
             self::STATUS_EDITED => 'EDITED',
+            self::STATUS_CONVERTED => 'CONVERTED',
         };
     }
     public function print(): string
@@ -22,6 +24,7 @@ enum GensenAttachmenStatus: string
             self::STATUS_STORED => '<span class="btn btn-sm btn-warning">' . $this->label() . '</span>',
             self::STATUS_REJECTED => '<span class="btn btn-sm btn-danger">' . $this->label() . '</span>',
             self::STATUS_EDITED => '<span class="btn btn-sm btn-success">' . $this->label() . '</span>',
+            self::STATUS_CONVERTED => '<span class="btn btn-sm btn-light text-dark">' . $this->label() . '</span>',
         };
     }
 

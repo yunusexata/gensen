@@ -6,6 +6,7 @@ use App\Enums\Gensen\GensenAttachmenStatus;
 use App\Enums\Gensen\GensenAttachmentRemittanceType;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
+use App\Models\Ai\AiJob;
 use App\Repositories\GensenForm\GensenFormAttachmentHistoryRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,6 +37,7 @@ class GensenFormAttachment extends Model
 
         'checksum',
         'status',               // STORED ,REJECTED, EDITED
+        'convert_image',        // BOOLEAN
     ];
 
     protected $guarded = ['id'];
@@ -114,7 +116,9 @@ class GensenFormAttachment extends Model
     protected static function onBoot()
     {
         self::creating(function ($model) {
-            $model->status = GensenAttachmenStatus::STATUS_STORED;
+            if (!$model->status) {
+                $model->status = GensenAttachmenStatus::STATUS_STORED;
+            }
         });
         self::created(function ($model) {
 
@@ -157,5 +161,10 @@ class GensenFormAttachment extends Model
     public function isJobProcessDone()
     {
         return $this->latestJob?->status === JobStatus::DONE;
+    }
+
+    public function aiJobs()
+    {
+        return $this->morphMany(AiJob::class, 'subject');
     }
 }

@@ -7,8 +7,8 @@ enum GensenAttachmentType: string
     case KERTAS_GENSEN = 'kertas_gensen';
     case REKAP_PENGIRIMAN_UANG = 'rekap_pengiriman_uang';
     case KARTU_KELUARGA = 'kartu_keluarga';
-    case ZAIRYOU_CARD_FRONT = 'zairyou_front';
-    case ZAIRYOU_CARD_BACK = 'zairyou_back';
+    case ZAIRYOU_CARD_FRONT = 'zairyou_card_front';
+    case ZAIRYOU_CARD_BACK = 'zairyou_card_back';
     case MY_NUMBER_FRONT = 'my_number_front';
     case MY_NUMBER_BACK = 'my_number_back';
     case REKENING_INDONESIA = 'rekening_indonesia';

@@ -369,15 +369,15 @@ class MergeSeluruhBerkas implements ShouldQueue
     | FORCE ALL PAGES → A4
     |--------------------------------------------------------------------------
     */
-
         $command = sprintf(
             'gs -sDEVICE=pdfwrite ' .
                 '-dCompatibilityLevel=1.4 ' .
                 '-dNOPAUSE -dQUIET -dBATCH ' .
                 '-dPDFFitPage ' .
                 '-dFIXEDMEDIA ' .
+                '-dUseCropBox ' .
                 '-sPAPERSIZE=a4 ' .
-                '-dAutoRotatePages=/None ' .
+                '-dAutoRotatePages=/All ' .
                 '-sOutputFile=%s %s',
             escapeshellarg($normalized),
             escapeshellarg($input)

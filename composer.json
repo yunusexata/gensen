@@ -7,7 +7,10 @@
     "require": {
         "php": "^8.1",
         "barryvdh/laravel-dompdf": "^3.1",
+        "google-gemini-php/laravel": "^2.0",
+        "guzzlehttp/guzzle": "^7.10",
         "iio/libmergepdf": "^4.0",
+        "laravel/ai": "^0.6.6",
         "laravel/framework": "^13.0",
         "laravel/horizon": "^5.46",
         "laravel/reverb": "^1.10",
@@ -17,6 +20,7 @@
         "maatwebsite/excel": "^3.1",
         "mews/captcha": "^3.3",
         "muhammadyunus1072/track-history": "^1.0",
+        "openai-php/laravel": "^0.19.1",
         "predis/predis": "^3.4",
         "pusher/pusher-php-server": "^7.2",
         "setasign/fpdi": "^2.6",

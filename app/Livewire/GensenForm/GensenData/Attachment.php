@@ -7,9 +7,12 @@ use App\Enums\Gensen\GensenAttachmentRemittanceType;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
+use App\Models\Ai\AiJob;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\GensenFormAttachment;
 use App\Models\User;
+use App\Repositories\Gensen\Ai\RemittanceExtractionGroupRepository;
+use App\Repositories\Gensen\Ai\RemittanceExtractionRepository;
 use App\Repositories\GensenForm\GensenFormAttachmentRepository;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
 use App\Repositories\GensenForm\GensenFormRepository;
@@ -31,6 +34,7 @@ class Attachment extends Component
 
     public $objId;
     public $targetDeleteId;
+    public $targetDeleteType;
     public $isCanDelete;
 
     #[Validate('required', message: 'Nama Harus Diisi', onUpdate: false)]
@@ -61,6 +65,10 @@ class Attachment extends Component
     public $rekap_pengiriman_uang_old;
     public $rekening_indonesia_old;
 
+    public $remittance_extraction;
+    public $remittance_validate_total = 0;
+    public $remittance_extraction_groups = [];
+    public $onload = false;
     // Edited Data
     public $editedData = [
         'id' => false,
@@ -83,29 +91,197 @@ class Attachment extends Component
         $this->getData();
     }
 
+    public function updatedRemittanceExtractionGroups($value, $index)
+    {
+        try {
+            consoleLog($this, $value);
+            $el = explode('.', $index);
+            consoleLog($this, $el);
+            if ($el[1] == 'is_validate') {
+                if ($value) {
+                    $this->remittance_validate_total += $this->remittance_extraction_groups[$el[0]]['total_amount'];
+                } else {
+                    $this->remittance_validate_total -= $this->remittance_extraction_groups[$el[0]]['total_amount'];
+                }
+            }
+        } catch (Exception $e) {
+            consoleLog($this, $e->getMessage());
+        }
+    }
+
+    public function confirmRemittanceValidation()
+    {
+        try {
+            DB::transaction(function () {
+                foreach ($this->remittance_extraction_groups as $remittance) {
+                    RemittanceExtractionGroupRepository::update($remittance['id'], [
+                        'is_validate' => $remittance['is_validate'],
+                    ]);
+                }
+            });
+            $remittance_extraction = RemittanceExtractionRepository::findBy([
+                ['subject_id', Crypt::decrypt($this->objId)],
+                ['subject_type', GensenForm::class]
+            ]);
+            $remittance_extraction->syncSubjectTotal();
+            DB::commit();
+            Alert::confirmation(
+                $this,
+                Alert::ICON_SUCCESS,
+                "Berhasil",
+                "Data Berhasil Diperbarui",
+                "on-dialog-confirm",
+                "on-dialog-cancel",
+                "Oke",
+                "Tutup",
+            );
+        } catch (Exception $e) {
+            DB::rollBack();
+            Alert::fail($this, "Gagal", $e->getMessage());
+        }
+    }
+    public function submitRemittanceExtractionJob()
+    {
+        try {
+            DB::transaction(function () {
+                AiJob::firstOrCreate(
+                    [
+                        'subject_type' => GensenForm::class,
+                        'subject_id'   => Crypt::decrypt($this->objId),
+                        'job_type'     => AiJob::JOB_TYPE_REMITTANCE_EXTRACTION,
+                        'status'       => 'pending',
+                    ],
+                    [
+                        'provider' => 'gemini-ai',
+                        'model'    => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
+                    ]
+                );
+            });
+
+            DB::commit();
+            Alert::confirmation(
+                $this,
+                Alert::ICON_SUCCESS,
+                "Berhasil",
+                "Data Berhasil Diperbarui",
+                "on-dialog-confirm",
+                "on-dialog-cancel",
+                "Oke",
+                "Tutup",
+            );
+        } catch (Exception $e) {
+            DB::rollBack();
+            Alert::fail($this, "Gagal", $e->getMessage());
+        }
+    }
+
+
+
     private function getData()
     {
-
         if ($this->objId) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
             $this->nama_lengkap = $gensen->nama_lengkap;
             $this->tanggal_lahir = $gensen->tanggal_lahir;
             $this->nomor_whatsapp = $gensen->nomor_whatsapp;
 
-            $attachments = $gensen->attachmentGroups();
-            // dd($attachments);
-            $this->kertas_gensen_old = $attachments[GensenAttachmentType::KERTAS_GENSEN->value];
+            $attachments = $gensen->attachmentGroups([
+                GensenAttachmentType::MY_NUMBER_FRONT,
+                GensenAttachmentType::MY_NUMBER_BACK,
+                GensenAttachmentType::ZAIRYOU_CARD_FRONT,
+                GensenAttachmentType::ZAIRYOU_CARD_BACK,
+                GensenAttachmentType::REKENING_INDONESIA,
+            ]);
+            // dd($this->remittance_extraction_groups);
+            if ($this->kertas_gensen) {
+                $this->kertas_gensen_old = $attachments[GensenAttachmentType::KERTAS_GENSEN->value];
+                $this->kertas_gensen = null;
+            }
+            if ($this->my_number_front) {
+                $this->my_number_front_old = $attachments[GensenAttachmentType::MY_NUMBER_FRONT->value];
+                $this->my_number_front = null;
+            }
+            if ($this->my_number_back) {
+                $this->my_number_back_old = $attachments[GensenAttachmentType::MY_NUMBER_BACK->value];
+                $this->my_number_back = null;
+            }
+            if ($this->zairyou_card_front) {
+                $this->zairyou_card_front_old = $attachments[GensenAttachmentType::ZAIRYOU_CARD_FRONT->value];
+                $this->zairyou_card_front = null;
+            }
+            if ($this->zairyou_card_back) {
+                $this->zairyou_card_back_old = $attachments[GensenAttachmentType::ZAIRYOU_CARD_BACK->value];
+                $this->zairyou_card_back = null;
+            }
+            if ($this->kartu_keluarga) {
+                $this->kartu_keluarga_old = $attachments[GensenAttachmentType::KARTU_KELUARGA->value];
+                $this->kartu_keluarga = null;
+            }
+            if ($this->rekap_pengiriman_uang) {
+                $this->rekap_pengiriman_uang_old = $attachments[GensenAttachmentType::REKAP_PENGIRIMAN_UANG->value];
+                $this->rekap_pengiriman_uang = null;
+            }
+            if ($this->rekening_indonesia) {
+                $this->rekening_indonesia_old = $attachments[GensenAttachmentType::REKENING_INDONESIA->value];
+                $this->rekening_indonesia = null;
+            }
+
             $this->my_number_front_old = $attachments[GensenAttachmentType::MY_NUMBER_FRONT->value];
             $this->my_number_back_old = $attachments[GensenAttachmentType::MY_NUMBER_BACK->value];
             $this->zairyou_card_front_old = $attachments[GensenAttachmentType::ZAIRYOU_CARD_FRONT->value];
             $this->zairyou_card_back_old = $attachments[GensenAttachmentType::ZAIRYOU_CARD_BACK->value];
-            $this->kartu_keluarga_old = $attachments[GensenAttachmentType::KARTU_KELUARGA->value];
-            $this->rekap_pengiriman_uang_old = $attachments[GensenAttachmentType::REKAP_PENGIRIMAN_UANG->value];
             $this->rekening_indonesia_old = $attachments[GensenAttachmentType::REKENING_INDONESIA->value];
-            $this->persyaratan_pengurusan_gensen_old = $attachments[GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value];
-            $this->seluruh_berkas_old = $attachments[GensenAttachmentType::SELURUH_BERKAS->value];
+
             $this->isCanDelete = $gensen->isCanDelete();
         }
+    }
+    public function getOnload()
+    {
+        consoleLog($this, 'onload');
+        $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
+        $this->nama_lengkap = $gensen->nama_lengkap;
+        $this->tanggal_lahir = $gensen->tanggal_lahir;
+        $this->nomor_whatsapp = $gensen->nomor_whatsapp;
+
+        $attachments = $gensen->attachmentGroups([
+            GensenAttachmentType::KERTAS_GENSEN,
+            GensenAttachmentType::KARTU_KELUARGA,
+            GensenAttachmentType::REKAP_PENGIRIMAN_UANG,
+            GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN,
+            GensenAttachmentType::SELURUH_BERKAS,
+        ]);
+        $this->kertas_gensen_old = $attachments[GensenAttachmentType::KERTAS_GENSEN->value];
+        $this->kartu_keluarga_old = $attachments[GensenAttachmentType::KARTU_KELUARGA->value];
+        $this->rekap_pengiriman_uang_old = $attachments[GensenAttachmentType::REKAP_PENGIRIMAN_UANG->value];
+        $this->persyaratan_pengurusan_gensen_old = $attachments[GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value];
+        $this->seluruh_berkas_old = $attachments[GensenAttachmentType::SELURUH_BERKAS->value];
+
+        $this->getRemittanceExtraction($gensen);
+    }
+    public function getRemittanceExtraction($gensen = null)
+    {
+        if (!$gensen) {
+            $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
+        }
+        $this->remittance_extraction = $gensen->remittanceExtraction;
+        // dd($this->remittance_extraction->remittanceExtractionGroups->toArray());
+        $this->remittance_extraction_groups = $this->remittance_extraction
+            ? $this->remittance_extraction
+            ->remittanceExtractionGroups
+            ->map(function ($group) {
+                $groupArray = $group->toArray();
+                if ($group->is_validate) {
+                    $this->remittance_validate_total += $group->total_amount;
+                }
+                $groupArray['amount_details'] =
+                    json_decode($group->amount_details, true) ?? [];
+
+                return $groupArray;
+            })
+            ->values()
+            ->toArray()
+            : [];
+        $this->onload = true;
     }
     private function getDataGenerated()
     {
@@ -113,7 +289,20 @@ class Attachment extends Component
         if ($this->objId) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
 
-            $attachments = $gensen->attachmentGroups();
+            $attachments = $gensen->attachmentGroups(
+                [
+                    GensenAttachmentType::MY_NUMBER_FRONT,
+                    GensenAttachmentType::MY_NUMBER_BACK,
+                    GensenAttachmentType::ZAIRYOU_CARD_FRONT,
+                    GensenAttachmentType::ZAIRYOU_CARD_BACK,
+                    GensenAttachmentType::REKENING_INDONESIA,
+                    GensenAttachmentType::KERTAS_GENSEN,
+                    GensenAttachmentType::KARTU_KELUARGA,
+                    GensenAttachmentType::REKAP_PENGIRIMAN_UANG,
+                    GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN,
+                    GensenAttachmentType::SELURUH_BERKAS,
+                ]
+            );
             $this->persyaratan_pengurusan_gensen_old = $attachments[GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value];
             $this->seluruh_berkas_old = $attachments[GensenAttachmentType::SELURUH_BERKAS->value];
         }
@@ -129,9 +318,11 @@ class Attachment extends Component
         }
     }
 
-    public function showDialogDeleteFile($id)
+    public function showDialogDeleteFile($id, $type)
     {
         $this->targetDeleteId = $id;
+        $this->targetDeleteType = $type . "_old";
+        consoleLog($this, $this->targetDeleteType);
         Alert::confirmation(
             $this,
             Alert::ICON_QUESTION,
@@ -148,6 +339,7 @@ class Attachment extends Component
     public function onDialogDeleteFileCancel()
     {
         $this->targetDeleteId = null;
+        $this->targetDeleteType = null;
     }
     #[On('on-delete-dialog-file-confirm')]
     public function onDialogDeleteFileConfirm()
@@ -160,7 +352,55 @@ class Attachment extends Component
             $data = GensenFormAttachmentRepository::delete(Crypt::decrypt($this->targetDeleteId));
         }
         Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
-        $this->getData();
+        $this->removeAttachmentFromGroups($this->targetDeleteId, $this->targetDeleteType);
+
+        $this->targetDeleteId = null;
+        $this->targetDeleteType = null;
+        // $this->getData($this->targetDeleteType);
+    }
+
+    private function removeAttachmentFromGroups($attachmentId, $property)
+    {
+
+        $property = Str::lower($property);
+        consoleLog($this, [
+            'property',
+            $property
+        ]);
+        if (isset($this->{$property})) {
+            $data = $this->{$property};
+
+            // CASE 1: grouped (has 'groups')
+            if (isset($data['groups'])) {
+                $data['groups'] = collect($data['groups'])
+                    ->map(function ($group) use ($attachmentId) {
+                        $group['files'] = collect($group['files'])
+                            ->reject(fn($file) => $file['id'] === $attachmentId)
+                            ->values()
+                            ->toArray();
+
+                        return $group;
+                    })
+                    ->filter(fn($group) => count($group['files']) > 0) // remove empty provider
+                    ->values()
+                    ->toArray();
+
+                $data['uploaded'] = count($data['groups']) > 0;
+                consoleLog($this, $data);
+                consoleLog($this, $this->{$property});
+                $this->{$property} = $data;
+                return;
+            }
+
+            // CASE 2: single file
+            if (isset($data['id']) && $data['id'] === $attachmentId) {
+                consoleLog($this, 'GAK GROUPS');
+                $this->{$property}['id'] = null;
+                $this->{$property}['uploaded'] = false;
+                $this->{$property}['url'] = null;
+            }
+        }
+        consoleLog($this, $this->{$property});
     }
 
     public function clickFile($id, $url, $type)
@@ -267,13 +507,15 @@ class Attachment extends Component
     #[On('on-dialog-confirm')]
     public function onDialogConfirm()
     {
-        $this->redirectRoute('gensen_data.attachment', [$this->objId]);
+        $this->getData();
+        // $this->redirectRoute('gensen_data.attachment', [$this->objId]);
     }
 
     #[On('on-dialog-cancel')]
     public function onDialogCancel()
     {
-        $this->redirectRoute('gensen_data.attachment', [$this->objId]);
+        $this->getData();
+        // $this->redirectRoute('gensen_data.attachment', [$this->objId]);
     }
 
     public function submitChange()
@@ -282,6 +524,30 @@ class Attachment extends Component
         try {
             DB::transaction(function () {
                 $this->saveData(true);
+            });
+
+            DB::commit();
+            Alert::confirmation(
+                $this,
+                Alert::ICON_SUCCESS,
+                "Berhasil",
+                "Data Berhasil Diperbarui",
+                "on-dialog-confirm",
+                "on-dialog-cancel",
+                "Oke",
+                "Tutup",
+            );
+        } catch (Exception $e) {
+            DB::rollBack();
+            Alert::fail($this, "Gagal", $e->getMessage());
+        }
+    }
+
+    public function submitMergeJob()
+    {
+        $this->validate();
+        try {
+            DB::transaction(function () {
                 $gensenForm = GensenFormRepository::find(Crypt::decrypt($this->objId));
                 $gensenForm->handleMergePersyaratanGensen();
                 $gensenForm->handleMergeSeluruhBerkas();

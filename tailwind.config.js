@@ -56,6 +56,7 @@ content: [
                          "on-primary-fixed-variant": "#25496c",
                          "on-tertiary-fixed-variant": "#454a00",
                          "primary-container": "#b2d5ff",
+                         "success-container": "#55e01e",
                          "tertiary-container": "#cfdc00",
                          "on-error-container": "#93000a",
                          "on-background": "#191c1d",
