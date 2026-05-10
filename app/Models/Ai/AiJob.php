@@ -5,6 +5,7 @@ namespace App\Models\Ai;
 use App\Enums\Gensen\GensenAttachmenStatus;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
+use App\Events\RemittanceExtractionFinished;
 use App\Jobs\ConvertPdfToImagesJob;
 use App\Models\Ai\AiPayload;
 use App\Models\Ai\AiResult;
@@ -134,6 +135,7 @@ class AiJob extends Model
                         );
                     }
                 }
+                event(new RemittanceExtractionFinished($model->subject_id));
             }
         });
     }

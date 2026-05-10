@@ -2352,6 +2352,7 @@
 @push('js')
 <script src="https://cdn.jsdelivr.net/npm/fslightbox/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+    
     <script>
         let cropper = null;
         const rotateDegree90 = 90;
@@ -2450,6 +2451,12 @@
                     initializeFileInputs();
                     // initializeFormSubmits();
                 }, 200); 
+                window.Echo.channel('export-remittance-extranction')
+                    .subscribed(() => console.log('SUBSCRIBED'))
+                    .listen('.export.remittance-extraction.finished', (e) => {
+                        console.log('EVENT MASUK:', e);
+                        Livewire.dispatch('remittance-extraction-updated',{gensen_form_id: e.gensen_form_id});
+                });
             });
             {{-- Compress File Upload --}}
             const MAX_FILE_SIZE = 20 * 1024 * 1024; // 50MB in bytes (before compression)

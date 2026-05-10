@@ -86,6 +86,8 @@ class Attachment extends Component
 
     public $photo;
 
+    protected $listeners = ['remittance-extraction-updated' => 'getRemittanceExtraction'];
+
     public function mount()
     {
         $this->getData();
@@ -140,6 +142,7 @@ class Attachment extends Component
             Alert::fail($this, "Gagal", $e->getMessage());
         }
     }
+
     public function submitRemittanceExtractionJob()
     {
         try {
@@ -174,8 +177,6 @@ class Attachment extends Component
             Alert::fail($this, "Gagal", $e->getMessage());
         }
     }
-
-
 
     private function getData()
     {

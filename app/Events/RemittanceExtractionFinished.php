@@ -10,25 +10,18 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
-class ExportStatusUpdated implements ShouldBroadcastNow
+class RemittanceExtractionFinished implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $data;
-
+    public $gensen_form_id;
     /**
      * Create a new event instance.
      */
-    public function __construct($history)
+    public function __construct($gensen_form_id)
     {
-        $this->data = [
-            'id' => $history->id,
-            'status' => $history->status->value,
-            'file_path' => $history->file_path,
-            'file_name' => $history->file_name,
-        ];
+        $this->gensen_form_id = $gensen_form_id;
     }
 
     /**
@@ -38,14 +31,14 @@ class ExportStatusUpdated implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        Log::info('Broadcast channel hit');
+        logger('Broadcast channel hit');
         return [
             // 'export-status'
-            new PrivateChannel('export-status')
+            new PrivateChannel('export-remittance-extranction')
         ];
     }
     public function broadcastAs()
     {
-        return 'export.status.updated';
+        return 'export.remittance-extraction.finished';
     }
 }

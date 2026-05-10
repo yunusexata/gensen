@@ -19,3 +19,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('export-status', function ($user) {
     return true; // atau bisa pakai auth check
 });
+Broadcast::channel('export-remittance-extranction', function ($user) {
+    return true; // atau bisa pakai auth check
+});

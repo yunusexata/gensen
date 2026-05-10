@@ -124,12 +124,12 @@
             //         console.log(e);
             //         Livewire.dispatch('status-updated', e.data);
             //     });
-                    window.Echo.channel('export-status')
-            .subscribed(() => console.log('SUBSCRIBED'))
-            .listen('.export.status.updated', (e) => {
-                console.log('EVENT MASUK:', e);
-                Livewire.dispatch('status-updated',{data: e.data});
-            });
+            window.Echo.channel('export-status')
+                .subscribed(() => console.log('SUBSCRIBED'))
+                .listen('.export.status.updated', (e) => {
+                    console.log('EVENT MASUK:', e);
+                    Livewire.dispatch('status-updated',{data: e.data});
+                });
         });
     </script>
 @endpush
