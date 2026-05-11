@@ -25,14 +25,50 @@ class ExportService
 
     private function query($filters)
     {
-        return GensenForm::withExists([
-            'attachments as has_kartu_keluarga' => function ($q) {
-                $q->where('type', GensenAttachmentType::KARTU_KELUARGA);
-            },
-            'attachments as has_my_number' => function ($q) {
-                $q->where('type', GensenAttachmentType::MY_NUMBER_FRONT);
-            },
-        ])
+        $remittanceAgg = DB::table('remittance_extraction_groups as reg')
+            ->join('remittance_extractions as re', function ($join) {
+                $join->on('re.id', '=', 'reg.remittance_extraction_id')
+                    ->where('re.subject_type', '=', GensenForm::class)
+                    ->whereNull('re.deleted_at');
+            })
+            ->where('reg.is_validate', '=', true)
+            ->whereNull('reg.deleted_at')
+            ->selectRaw("
+                re.subject_id,
+                re.subject_type,
+
+                STRING_AGG(
+                    reg.total_amount::text,
+                    '; '
+                    ORDER BY reg.transaction_year
+                ) AS remittance_total_amounts,
+
+                STRING_AGG(
+                    reg.receiver_name,
+                    '; '
+                    ORDER BY reg.transaction_year
+                ) AS remittance_receiver_names
+            ")
+            ->groupBy('re.subject_id', 're.subject_type');
+
+        return GensenForm::query()
+            ->leftJoinSub($remittanceAgg, 'remittances', function ($join) {
+                $join->on('remittances.subject_id', '=', 'gensen_forms.id')
+                    ->where('remittances.subject_type', '=', GensenForm::class);
+            })
+            ->select([
+                'gensen_forms.*',
+                'remittances.remittance_total_amounts',
+                'remittances.remittance_receiver_names',
+            ])
+            ->withExists([
+                'attachments as has_kartu_keluarga' => function ($q) {
+                    $q->where('type', GensenAttachmentType::KARTU_KELUARGA);
+                },
+                'attachments as has_my_number' => function ($q) {
+                    $q->where('type', GensenAttachmentType::MY_NUMBER_FRONT);
+                },
+            ])
             ->when(isset($filters['pic_code']) && $filters['pic_code'], function ($q) use ($filters) {
                 $q->where('pic_code', $filters['pic_code']);
             })
