@@ -33,7 +33,8 @@ class GensenFormRepository extends MasterDataRepository
         $remittanceAgg = DB::table('remittance_extraction_groups as reg')
             ->join('remittance_extractions as re', function ($join) {
                 $join->on('re.id', '=', 'reg.remittance_extraction_id')
-                    ->where('re.subject_type', '=', GensenForm::class);
+                    ->where('re.subject_type', '=', GensenForm::class)
+                    ->whereNull('re.deleted_at');
             })
             ->where('reg.is_validate', '=', true)
             ->whereNull('reg.deleted_at')
