@@ -178,13 +178,14 @@ class GensenFormRepository extends MasterDataRepository
         $gensenDetailAgg = DB::table('gensen_form_details as gfd')
             ->whereNull('gfd.deleted_at')
             ->selectRaw("
-                gfd.gensen_form_id,
+        gfd.gensen_form_id,
 
-                STRING_AGG(
-                    gfd.tahun_gensen::text || '-' || gfd.nominal_gensen::text,
-                    '; '
-                ) AS details,
-            ")
+        STRING_AGG(
+            gfd.tahun_gensen::text || '-' || gfd.nominal_gensen::text,
+            '; '
+            ORDER BY gfd.tahun_gensen
+        ) AS details
+    ")
             ->groupBy('gfd.gensen_form_id');
         return
             // dd(
