@@ -36,6 +36,7 @@ class GensenFormRepository extends MasterDataRepository
                     ->where('re.subject_type', '=', GensenForm::class);
             })
             ->where('reg.is_validate', '=', true)
+            ->whereNull('reg.deleted_at')
             ->selectRaw("
                 re.subject_id,
                 re.subject_type,
