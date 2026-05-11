@@ -184,7 +184,7 @@ class GensenFormRepository extends MasterDataRepository
                     gfd.tahun_gensen::text || - || gfd.nominal_gensen,
                     '; '
                     ORDER BY gfd.tahun_gensen
-                ) AS gensen_form_details,
+                ) AS details,
             ")
             ->groupBy('gfd.gensen_form_id');
         return
@@ -203,7 +203,7 @@ class GensenFormRepository extends MasterDataRepository
             })
             ->select([
                 'gensen_forms.*',
-                'gfd.gensen_form_details',
+                'gfd.details',
                 'remittances.remittance_total_amounts',
                 'remittances.remittance_receiver_names',
             ])
