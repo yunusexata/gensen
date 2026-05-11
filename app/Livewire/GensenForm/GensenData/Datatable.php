@@ -299,7 +299,7 @@ class Datatable extends Component
                     $receiver_names = explode(';', $item->remittance_receiver_names);
                     $html = "";
                     foreach ($total_amounts as $index => $item) {
-                        $html .= $item . " - " . $receiver_names['$index'] . "<br/>";
+                        $html .= $item . " - " . $receiver_names[$index] . "<br/>";
                     }
                     return $html;
                 }
