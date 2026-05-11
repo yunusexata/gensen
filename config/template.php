@@ -4,10 +4,10 @@ return [
     'title' => env('APP_NAME', 'Template Project'),
     'subtitle' => 'Software House',
 
-    'logo_auth' => 'files/images/logo.png',
+    'logo_auth' => 'files/images/logo.svg',
     'logo_auth_background' => 'white',
 
-    'logo_panel' => 'files/images/logo_long.png',
+    'logo_panel' => 'files/images/logo_long.svg',
     'logo_panel_background' => 'white',
 
     'registration_route' => 'register',
