@@ -46,48 +46,53 @@ class GensenFormRepository extends MasterDataRepository
                 ) AS remittance
             ")
             ->groupBy('re.subject_id', 're.subject_type');
-        return GensenForm::query()
-            ->when($gensenFormLinkId, function ($q) use ($gensenFormLinkId) {
-                $q->where('remarks_id', $gensenFormLinkId)
-                    ->where('remarks_type', GensenFormLink::class);
-            })
-            ->leftJoinSub($remittanceAgg, 'remittances', function ($join) {
-                $join->on('remittances.subject_id', '=', 'gensen_forms.id')
-                    ->where('remittances.subject_type', '=', GensenForm::class);
-            })
-            ->select([
-                'gensen_forms.*',
-                'remittances.remittance',
-            ])
-            ->withExists([
-                'attachments as has_kartu_keluarga' => function ($q) {
-                    $q->where('type', GensenAttachmentType::KARTU_KELUARGA);
-                },
-                'attachments as has_my_number' => function ($q) {
-                    $q->where('type', GensenAttachmentType::MY_NUMBER_FRONT);
-                },
-            ])
-            ->when($pic_code, function ($q) use ($pic_code) {
-                $q->where('pic_code', $pic_code);
-            })
-            ->when($tanggal_input, function ($query) use ($tanggal_input) {
-                $query->whereBetween('created_at', $tanggal_input);
-            })
-            ->when($tanggal_kepulangan, function ($query) use ($tanggal_kepulangan) {
-                $query->whereBetween('tanggal_kepulangan', $tanggal_kepulangan);
-            })
-            ->when($status && !in_array($status, [GensenForm::STATUS_SIAP_VERIFIKASI, GensenForm::STATUS_NO_INPUT_JEPANG]), function ($q) use ($status) {
-                $q->where('status', $status);
-            })
-            ->when($status == GensenForm::STATUS_SIAP_VERIFIKASI, function ($q) use ($status) {
-                $q->whereNotNull('tanggal_lengkap')
-                    ->whereNull('tanggal_verified');
-            })
-            ->when($status == GensenForm::STATUS_NO_INPUT_JEPANG, function ($q) use ($status) {
-                $q->whereNotNull('tanggal_lengkap')
-                    ->whereNotNull('tanggal_verified')
-                    ->whereNotNull('no_input_jepang');
-            });
+        return
+            dd(
+                GensenForm::query()
+                    ->when($gensenFormLinkId, function ($q) use ($gensenFormLinkId) {
+                        $q->where('remarks_id', $gensenFormLinkId)
+                            ->where('remarks_type', GensenFormLink::class);
+                    })
+                    ->leftJoinSub($remittanceAgg, 'remittances', function ($join) {
+                        $join->on('remittances.subject_id', '=', 'gensen_forms.id')
+                            ->where('remittances.subject_type', '=', GensenForm::class);
+                    })
+                    ->select([
+                        'gensen_forms.*',
+                        'remittances.remittance',
+                    ])
+                    ->withExists([
+                        'attachments as has_kartu_keluarga' => function ($q) {
+                            $q->where('type', GensenAttachmentType::KARTU_KELUARGA);
+                        },
+                        'attachments as has_my_number' => function ($q) {
+                            $q->where('type', GensenAttachmentType::MY_NUMBER_FRONT);
+                        },
+                    ])
+                    ->when($pic_code, function ($q) use ($pic_code) {
+                        $q->where('pic_code', $pic_code);
+                    })
+                    ->when($tanggal_input, function ($query) use ($tanggal_input) {
+                        $query->whereBetween('created_at', $tanggal_input);
+                    })
+                    ->when($tanggal_kepulangan, function ($query) use ($tanggal_kepulangan) {
+                        $query->whereBetween('tanggal_kepulangan', $tanggal_kepulangan);
+                    })
+                    ->when($status && !in_array($status, [GensenForm::STATUS_SIAP_VERIFIKASI, GensenForm::STATUS_NO_INPUT_JEPANG]), function ($q) use ($status) {
+                        $q->where('status', $status);
+                    })
+                    ->when($status == GensenForm::STATUS_SIAP_VERIFIKASI, function ($q) use ($status) {
+                        $q->whereNotNull('tanggal_lengkap')
+                            ->whereNull('tanggal_verified');
+                    })
+                    ->when($status == GensenForm::STATUS_NO_INPUT_JEPANG, function ($q) use ($status) {
+                        $q->whereNotNull('tanggal_lengkap')
+                            ->whereNotNull('tanggal_verified')
+                            ->whereNotNull('no_input_jepang');
+                    })
+                    // );
+                    ->get()
+            );
     }
     public static function export(
         $status,
