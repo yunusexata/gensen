@@ -40,7 +40,7 @@ class GensenFormRepository extends MasterDataRepository
                 re.subject_id,
                 re.subject_type,
                 STRING_AGG(
-                    reg.total_amount || '-' || reg.receiver_name,
+                    reg.total_amount || '-' || reg.receiver_name || '-' || reg.is_validate,
                     '; '
                     ORDER BY reg.transaction_year
                 ) AS remittance
