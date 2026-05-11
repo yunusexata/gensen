@@ -181,7 +181,7 @@ class GensenFormRepository extends MasterDataRepository
                 gfd.gensen_form_id,
 
                 STRING_AGG(
-                    gfd.tahun_gensen::text || '-' || gfd.nominal_gensen,
+                    gfd.tahun_gensen || '-' || gfd.nominal_gensen,
                     '; '
                 ) AS details,
             ")
