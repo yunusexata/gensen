@@ -74,7 +74,7 @@
                         <td>{{ $data['keterangan_mondai']}}</td>
                         <td>{{ $data['nama_lengkap'] }}</td>
                         <td>{{ $data['tanggal_lahir'] ? Carbon\Carbon::parse($data['tanggal_lahir'])->format('Ymd') : '' }}</td>
-                        <td>{{ $data['tanggal_kepulangan'] ? Carbon\Carbon::parse($data['tanggal_kepulangan'])->format('Ymd') : '' }}</td>
+                        <td>{{ $data['tanggal_kepulangan'] ? Carbon\Carbon::parse($data['tanggal_kepulangan'])->format('ymd') : '' }}</td>
                         <td>{{ $data['no_rekening_penerima'] }}</td>
                         <td>{{ $data['nama_bank_penerima'] }}</td>
                         <td>{{ $data['tahun_gensen'] }}</td>
