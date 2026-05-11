@@ -66,8 +66,16 @@
                     <td>{{ $data['has_my_number'] ? 'O' : 'X' }}</td>
                     <td>{{ $data['has_kartu_keluarga'] ? 'O' : 'X' }}</td>
                     <td></td>
-                    <td></td>
-                    <td>{{$data['hubungan_penerima']}}</td>
+                    @php
+                        $total_amounts = explode(';', $item->remittance_total_amounts);
+                        $receiver_names = explode(';', $item->remittance_receiver_names);
+                    @endphp
+                    <td>@foreach ($total_amounts as $item)
+                        {{ $item }}/
+                    @endforeach</td>
+                    <td>@foreach ($receiver_names as $item)
+                        {{ $item }},
+                    @endforeach</td>
                     <td></td>
                     <td>{{$data['nama_instagram']}}</td>
                     <td>{{$data['nomor_whatsapp']}}</td>

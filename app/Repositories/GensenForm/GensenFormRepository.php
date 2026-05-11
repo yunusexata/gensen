@@ -42,10 +42,15 @@ class GensenFormRepository extends MasterDataRepository
                 re.subject_id,
                 re.subject_type,
                 STRING_AGG(
-                    reg.total_amount || '-' || reg.receiver_name,
+                    reg.total_amount,
                     '; '
                     ORDER BY reg.transaction_year
-                ) AS remittance
+                ) AS remittance_total_amounts,
+                STRING_AGG(
+                    reg.receiver_name,
+                    '; '
+                    ORDER BY reg.transaction_year
+                ) AS remittance_receiver_names
             ")
             ->groupBy('re.subject_id', 're.subject_type');
         return
@@ -61,7 +66,8 @@ class GensenFormRepository extends MasterDataRepository
             })
             ->select([
                 'gensen_forms.*',
-                'remittances.remittance',
+                'remittances.remittance_total_amount',
+                'remittances.remittance_receiver_name',
             ])
             ->withExists([
                 'attachments as has_kartu_keluarga' => function ($q) {

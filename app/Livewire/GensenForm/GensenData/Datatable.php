@@ -295,10 +295,11 @@ class Datatable extends Component
                 'searchable' => false,
                 'name' => 'Tanggungan Keluarga',
                 'render' => function ($item) {
-                    $tanggungan = explode(';', $item->remittance);
+                    $total_amounts = explode(';', $item->remittance_total_amounts);
+                    $receiver_names = explode(';', $item->remittance_receiver_names);
                     $html = "";
-                    foreach ($tanggungan as $item) {
-                        $html .= "$item" . "<br/>";
+                    foreach ($total_amounts as $index => $item) {
+                        $html .= $item . " - " . $receiver_names['$index'] . "<br/>";
                     }
                     return $html;
                 }
