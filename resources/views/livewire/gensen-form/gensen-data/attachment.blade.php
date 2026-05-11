@@ -1890,6 +1890,49 @@
                                 class="h-[500px] overflow-scroll p-xl mt-3 relative flex flex-col gap-4"
                             >
 
+                            @if(!empty($kertas_gensen_old['groups'][0]['files'] ?? []))
+
+                            {{-- @for ($i = 0; $i < 2; $i++) --}}
+                                
+                            @foreach ($kertas_gensen_old['groups'][0]['files'] as $item)
+
+                                @if ($item['isImage'])
+                                    <img
+                                        wire:ignore
+                                        src="{{ $item['url'] }}"
+                                        x-data="{
+                                            rotate: false,
+                                            init() {
+                                                const img = new Image();
+
+                                                img.onload = () => {
+                                                    this.rotate = img.height > img.width;
+                                                };
+
+                                                img.src = this.$el.src;
+                                            }
+                                        }"
+                                        x-init="init()"
+                                        :class="rotate
+                                            ? '-rotate-90 max-h-[42vw] mx-auto object-contain'
+                                            : 'w-full object-contain'
+                                        "
+                                        class="shadow-2xl bg-white border border-white rounded transition-all duration-300"
+                                    />
+                                @else
+                                    <embed
+                                        src="{{ $item['url'] }}"
+                                        type="application/pdf"
+                                        class="w-full"
+                                        style="min-height: 450px;"
+                                    >
+
+                                @endif
+
+                            @endforeach
+                            {{-- @endfor --}}
+
+                            @endif
                             @if(!empty($kartu_keluarga_old['groups'][0]['files'] ?? []))
 
                             {{-- @for ($i = 0; $i < 2; $i++) --}}
