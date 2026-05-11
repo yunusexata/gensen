@@ -67,8 +67,8 @@
                     <td>{{ $data['has_kartu_keluarga'] ? 'O' : 'X' }}</td>
                     <td></td>
                     @php
-                        $total_amounts = explode(';', $item->remittance_total_amounts);
-                        $receiver_names = explode(';', $item->remittance_receiver_names);
+                        $total_amounts = explode(';', $item['remittance_total_amounts']);
+                        $receiver_names = explode(';', $item['remittance_receiver_names']);
                     @endphp
                     <td>@foreach ($total_amounts as $total)
                         {{ $total }}/
