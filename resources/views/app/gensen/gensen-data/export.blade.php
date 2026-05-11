@@ -81,8 +81,18 @@
                         <td>{{ $data['has_my_number'] ? 'O' : 'X' }}</td>
                         <td>{{ $data['has_kartu_keluarga'] ? 'O' : 'X' }}</td>
                         <td>{{ $data['nominal_gensen'] }}</td>
-                        <td>{{ $data['jumlah_kirim_uang'] }}</td>
-                        <td>{{$data['hubungan_penerima']}}</td>
+                        @php
+                            $total_amounts = explode(';', $data['remittance_total_amounts']);
+                            $receiver_names = explode(';', $data['remittance_receiver_names']);
+                            logger(['export total amounts', $total_amounts])
+                            logger(['export receivers', $receiver_names])
+                        @endphp
+                        <td>@foreach ($total_amounts as $total)
+                            {{ $total }}/
+                        @endforeach</td>
+                        <td>@foreach ($receiver_names as $name)
+                            {{ $name }},
+                        @endforeach</td>s
                         <td></td>
                         <td>{{$data['nama_instagram']}}</td>
                         <td>{{$data['nomor_whatsapp']}}</td>
