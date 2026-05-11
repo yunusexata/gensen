@@ -10,6 +10,7 @@ enum GensenAttachmentRemittanceType: string
     case REMITTANCE_RIA_KYODAI = 'RIA KYODAI';
     case REMITTANCE_CITY_EXPRESS = 'CITY EXPRESS';
     case REMITTANCE_SBI = 'SBI';
+    case REMITTANCE_DCOM = 'DCOM';
     case REMITTANCE_LAINNYA = 'LAINNYA';
 
     public function label(): string
@@ -21,6 +22,7 @@ enum GensenAttachmentRemittanceType: string
             self::REMITTANCE_RIA_KYODAI => 'RIA KYODAI',
             self::REMITTANCE_CITY_EXPRESS => 'CITY EXPRESS',
             self::REMITTANCE_SBI => 'SBI',
+            self::REMITTANCE_DCOM => 'DCOM',
             self::REMITTANCE_LAINNYA => 'LAINNYA',
         };
     }
