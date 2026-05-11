@@ -144,9 +144,11 @@ class MergeSeluruhBerkas implements ShouldQueue
     |--------------------------------------------------------------------------
     */
 
-        $gensen = GensenForm::with(['attachments', function ($q) {
-            return $q->where('status', '!=', GensenAttachmenStatus::STATUS_CONVERTED);
-        }])
+        $gensen = GensenForm::with([
+            'attachments' => function ($q) {
+                return $q->where('status', '!=', GensenAttachmenStatus::STATUS_CONVERTED);
+            }
+        ])
             ->findOrFail($this->gensenFormId);
 
         /*
