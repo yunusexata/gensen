@@ -44,7 +44,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
         $d = [];
         foreach ($import->rows as $index => $row) {
             $d = [
-                'id_customer' => $row['id_customer'],
+                // 'id_customer' => $row['id_customer'],
                 'nama_lengkap' => $row['nama'],
                 'no_input_jepang' => $row['no_input_jepang'],
                 'tanggal_pengajuan' => $row['tanggal_pengajuan'],
@@ -52,15 +52,15 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                 'nominal_cair' => $row['nominal_cair'],
             ];
             $validator = Validator::make($d, [
-                'id_customer' => 'required|exists:gensen_forms,id_customer',
+                // 'id_customer' => 'required|exists:gensen_forms,id_customer',
                 'nama_lengkap' => 'required|exists:gensen_forms,nama_lengkap',
                 'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
                 'tanggal_pengajuan' => 'required',
                 'tanggal_cair' => 'required',
                 'nominal_cair' => 'required',
             ], [
-                'id_customer.required' => 'Id customer harus di isi',
-                'id_customer.exists' => 'Id customer tidak terdaftar',
+                // 'id_customer.required' => 'Id customer harus di isi',
+                // 'id_customer.exists' => 'Id customer tidak terdaftar',
                 'nama_lengkap.required' => 'Nama lengkap harus di isi',
                 'nama_lengkap.exists' => 'Nama lengkap tidak terdaftar',
                 'no_input_jepang.required' => 'No Input Jepang harus di isi',
@@ -97,7 +97,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
             foreach ($this->previewBulkStatusRows as $key => $value) {
                 if (!$value['error']) {
                     $updated = GensenFormRepository::updateBy([
-                        ['id_customer', $value['data']['id_customer']],
+                        // ['id_customer', $value['data']['id_customer']],
                         ['nama_lengkap', $value['data']['nama_lengkap']],
                         ['no_input_jepang', $value['data']['no_input_jepang']],
                         ['tanggal_pengajuan', $value['data']['tanggal_pengajuan']],

@@ -361,14 +361,6 @@ class Attachment extends Component
 
             $attachments = $gensen->attachmentGroups(
                 [
-                    GensenAttachmentType::MY_NUMBER_FRONT,
-                    GensenAttachmentType::MY_NUMBER_BACK,
-                    GensenAttachmentType::ZAIRYOU_CARD_FRONT,
-                    GensenAttachmentType::ZAIRYOU_CARD_BACK,
-                    GensenAttachmentType::REKENING_INDONESIA,
-                    GensenAttachmentType::KERTAS_GENSEN,
-                    GensenAttachmentType::KARTU_KELUARGA,
-                    GensenAttachmentType::REKAP_PENGIRIMAN_UANG,
                     GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN,
                     GensenAttachmentType::SELURUH_BERKAS,
                 ]
