@@ -574,6 +574,9 @@ class Attachment extends Component
         try {
             DB::transaction(function () {
                 $this->saveData(true);
+                $gensenForm = GensenFormRepository::find(Crypt::decrypt($this->objId));
+                $gensenForm->handleMergePersyaratanGensen();
+                $gensenForm->handleMergeSeluruhBerkas();
             });
 
             DB::commit();

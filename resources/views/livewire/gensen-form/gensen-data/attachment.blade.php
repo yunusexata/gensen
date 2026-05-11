@@ -63,15 +63,15 @@
                <div class="flex items-center gap-md">
                   <button type="button" wire:click="submitChange" class="bg-primary-container hover:bg-primary-fixed-dim text-on-primary-fixed-variant px-xl py-sm rounded-xl font-semibold shadow-sm transition-all active:scale-95 flex items-center gap-sm">
                   <span class="material-symbols-outlined text-[20px]">save</span>
-                  Save All Documents
+                  Save And Merge Documents
                   </button>
                </div>
-               <div class="flex items-center gap-md">
+               {{-- <div class="flex items-center gap-md">
                   <button type="button" wire:click="submitMergeJob" class="bg-success-container hover:bg-success-fixed-dim text-on-success-fixed-variant px-xl py-sm rounded-xl font-semibold shadow-sm transition-all active:scale-95 flex items-center gap-sm">
                   <span class="material-symbols-outlined text-[20px]">photo_auto_merge</span>
                   Merge Documents
                   </button>
-               </div>
+               </div> --}}
             </div>
          </header>
         <div class="tab-content" id="myTabContent">
