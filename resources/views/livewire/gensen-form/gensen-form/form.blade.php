@@ -178,32 +178,29 @@
                                         </div>
                                         <div class="flex flex-col gap-2">
                                             <label class="font-label text-xs font-medium text-on-surface-variant" for="nomor_whatsapp">Nomor Whatsapp<span class="text-red-500">*</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 @error('nomor_whatsapp') is-invalid border border-red-500 @enderror" 
-                                                required name="nomor_whatsapp" placeholder="Nomor Whatsapp" aria-label="nomor_whatsapp" aria-describedby="basic-addon1"
-                                                wire:model="nomor_whatsapp"
-                                                >
-                                                @error('nomor_whatsapp')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                            </div>
+                                            <input type="text" class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 @error('nomor_whatsapp') is-invalid border border-red-500 @enderror" 
+                                            required name="nomor_whatsapp" placeholder="Nomor Whatsapp" aria-label="nomor_whatsapp" aria-describedby="basic-addon1"
+                                            wire:model="nomor_whatsapp"
+                                            >
+                                            @error('nomor_whatsapp')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                            
                                             <div class="form-text" id="basic-addon4">Contoh +628XXXXXXXXXX</div>
                                         </div>
                                         <div class="flex flex-col gap-2">
                                             <label class="font-label text-xs font-medium text-on-surface-variant" for="nomor_whatsapp_darurat">Nomor Whatsapp Darurat<span class="text-red-500">*</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 @error('nomor_whatsapp') is-invalid border border-red-500 @enderror" 
-                                                required name="nomor_whatsapp_darurat" placeholder="Nomor Whatsapp Darurat" aria-label="nomor_whatsapp_darurat" aria-describedby="basic-addon1"
-                                                wire:model="nomor_whatsapp_darurat"
-                                                >
-                                                @error('nomor_whatsapp_darurat')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                            </div>
+                                            <input type="text" class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 @error('nomor_whatsapp') is-invalid border border-red-500 @enderror" 
+                                            required name="nomor_whatsapp_darurat" placeholder="Nomor Whatsapp Darurat" aria-label="nomor_whatsapp_darurat" aria-describedby="basic-addon1"
+                                            wire:model="nomor_whatsapp_darurat"
+                                            >
+                                            @error('nomor_whatsapp_darurat')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                             <div class="form-text" id="basic-addon4">Contoh +628XXXXXXXXXX</div>
                                         </div>
                                         <div class="flex flex-col gap-2">
