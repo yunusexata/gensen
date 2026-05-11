@@ -68,8 +68,8 @@ class GensenFormRepository extends MasterDataRepository
             })
             ->select([
                 'gensen_forms.*',
-                'remittances.remittance_total_amount',
-                'remittances.remittance_receiver_name',
+                'remittances.remittance_total_amounts',
+                'remittances.remittance_receiver_names',
             ])
             ->withExists([
                 'attachments as has_kartu_keluarga' => function ($q) {
