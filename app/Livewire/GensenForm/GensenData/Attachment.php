@@ -564,7 +564,6 @@ class Attachment extends Component
 
     public function submitMergeJob()
     {
-        $this->validate();
         try {
             DB::transaction(function () {
                 $gensenForm = GensenFormRepository::find(Crypt::decrypt($this->objId));
