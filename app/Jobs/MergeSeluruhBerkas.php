@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\Gensen\GensenAttachmenStatus;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
 use App\Models\GensenForm\GensenForm;
@@ -143,7 +144,9 @@ class MergeSeluruhBerkas implements ShouldQueue
     |--------------------------------------------------------------------------
     */
 
-        $gensen = GensenForm::with('attachments')
+        $gensen = GensenForm::with(['attachments', function ($q) {
+            return $q->where('status', '!=', GensenAttachmenStatus::STATUS_CONVERTED);
+        }])
             ->findOrFail($this->gensenFormId);
 
         /*
