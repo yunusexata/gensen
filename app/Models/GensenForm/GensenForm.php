@@ -235,6 +235,50 @@ class GensenForm extends Model
         });
     }
 
+    public function copyInfo($object, $data = false, $prefix = "")
+    {
+        if ($data) {
+            // foreach ($data as $item) {
+            //     $object[$prefix . "" . $item] = $this->$item;
+            // }
+        } else {
+
+            // ---------- //
+            // Form Input //
+            // ---------- //
+
+            // Data Diri
+            $object[$prefix . 'nama_lengkap'] = $this->nama_lengkap;
+            $object[$prefix . 'tanggal_lahir'] = $this->tanggal_lahir;
+            $object[$prefix . 'email'] = $this->email;
+            $object[$prefix . 'tanggal_kepulangan'] = $this->tanggal_kepulangan;
+            $object[$prefix . 'nama_instagram'] = $this->nama_instagram;
+            $object[$prefix . 'nama_tiktok'] = $this->nama_tiktok;
+            $object[$prefix . 'nomor_whatsapp'] = $this->nomor_whatsapp;
+            $object[$prefix . 'nomor_whatsapp_darurat'] = $this->nomor_whatsapp_darurat;
+            $object[$prefix . 'alamat_jepang'] = $this->alamat_jepang;
+            $object[$prefix . 'kode_pos_jepang'] = $this->kode_pos_jepang;
+            $object[$prefix . 'nama_lpk'] = $this->nama_lpk;
+
+            // REK PENERIMA
+            $object[$prefix . 'no_rekening_penerima'] = $this->no_rekening_penerima;
+            $object[$prefix . 'nama_bank_penerima'] = $this->nama_bank_penerima;
+            $object[$prefix . 'nama_penerima'] = $this->nama_penerima;
+            $object[$prefix . 'hubungan_penerima'] = $this->hubungan_penerima;
+
+            // Relasi History
+            $object[$prefix . 'remarks_id'] = $this->remarks_id;
+            $object[$prefix . 'remarks_type'] = $this->remarks_type;
+            $object[$prefix . 'pic_code'] = $this->pic_code;
+
+            // Validasi
+            $object[$prefix . 'is_should_filled'] = true;
+            $object[$prefix . 'is_submitted'] = true;
+        }
+
+        return $object;
+    }
+
     public function onSubmitted()
     {
         // AUTOMATIC UPDATE STATUS LENGKAP WHEN GensenAttachmentType::completeIdentity() == true
@@ -310,6 +354,7 @@ class GensenForm extends Model
         'nama_instagram',
         'nama_tiktok',
         'nomor_whatsapp',
+        'nomor_whatsapp_darurat',
         'alamat_jepang',
         'kode_pos_jepang',
 

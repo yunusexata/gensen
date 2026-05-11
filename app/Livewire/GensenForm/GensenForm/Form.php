@@ -32,6 +32,7 @@ class Form extends Component
     public $gensenFormId = null;
 
     public $isAdmin = false;
+    public $isCopyGensen = false;
     public $isUploadAttachment = false;
     public $isFirstCheck = false;
     public $targetDeleteId; // ATTACHMENT DELETE ID

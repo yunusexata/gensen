@@ -8,12 +8,57 @@ use App\Models\GensenForm\GensenFormLink;
 use App\Repositories\MasterDataRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class GensenFormRepository extends MasterDataRepository
 {
     protected static function className(): string
     {
         return GensenForm::class;
+    }
+
+    public static function copy($gensen_form_id)
+    {
+
+        try {
+            DB::transaction(function () use ($gensen_form_id) {
+                $gensen_form = self::find($gensen_form_id);
+                // Form Candidate
+                $validateData = [
+                    // Form J-Expert
+                    'nama_lengkap' => $gensen_form->nama_lengkap,
+                    'tanggal_lahir' => $gensen_form->tanggal_lahir,
+                    'tanggal_kepulangan' => $gensen_form->tanggal_kepulangan,
+                    'nama_instagram' => $gensen_form->nama_instagram,
+                    'nama_tiktok' => $gensen_form->nama_tiktok,
+                    'nomor_whatsapp' => $gensen_form->nomor_whatsapp,
+                    'nomor_whatsapp_darurat' => $gensen_form->nomor_whatsapp_darurat,
+                    'email' => $gensen_form->email,
+                    'alamat_jepang' => $gensen_form->alamat_jepang,
+                    'kode_pos_jepang' => $gensen_form->kode_pos_jepang,
+                    'nama_lpk' => $gensen_form->nama_lpk,
+
+                    // REK PENERIMA
+                    'no_rekening_penerima' => $gensen_form->no_rekening_penerima,
+                    'nama_bank_penerima' => $gensen_form->nama_bank_penerima,
+                    'nama_penerima' => $gensen_form->nama_penerima,
+                    'hubungan_penerima' => $gensen_form->hubungan_penerima,
+
+                    'tahun_gensen' => $gensen_form->tahun_gensen,
+                    'tahun_transfer' => $gensen_form->tahun_transfer,
+
+                    'remarks_id' => $gensen_form->remarks_id,
+                    'remarks_type' => $gensen_form->remarks_type,
+                    'pic_code' => $gensen_form->pic_code,
+
+                ];
+                $gensenForm = GensenFormRepository::create($validateData);
+            });
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
     }
 
     public static function datatable(

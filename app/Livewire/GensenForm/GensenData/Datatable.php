@@ -34,6 +34,7 @@ class Datatable extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $targetDeleteId;
+    public $targetCopyId;
 
     public $pageName = "";
     public $lengthOptions = [10, 25, 50, 100];
@@ -48,6 +49,7 @@ class Datatable extends Component
     public $loadingIndicatorTarget = "";
 
     public $isCanUpdate;
+    public $isCanCreate;
     public $isCanDelete;
     public $openRow = null;
 
@@ -68,19 +70,9 @@ class Datatable extends Component
     {
         $authUser = UserRepository::authenticatedUser();
 
+        $this->isCanCreate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_DATA, PermissionHelper::TYPE_CREATE));
         $this->isCanUpdate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_DATA, PermissionHelper::TYPE_UPDATE));
         $this->isCanDelete = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_DATA, PermissionHelper::TYPE_DELETE));
-    }
-
-    #[On('on-delete-dialog-confirm')]
-    public function onDialogDeleteConfirm()
-    {
-        if (!$this->isCanDelete || $this->targetDeleteId == null) {
-            return;
-        }
-
-        GensenFormRepository::delete(Crypt::decrypt($this->targetDeleteId));
-        Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
     }
 
     #[On('export')]
@@ -126,6 +118,17 @@ class Datatable extends Component
         );
     }
 
+    #[On('on-delete-dialog-confirm')]
+    public function onDialogDeleteConfirm()
+    {
+        if (!$this->isCanDelete || $this->targetDeleteId == null) {
+            return;
+        }
+
+        GensenFormRepository::delete(Crypt::decrypt($this->targetDeleteId));
+        Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
+    }
+
     #[On('on-delete-dialog-cancel')]
     public function onDialogDeleteCancel()
     {
@@ -141,10 +144,44 @@ class Datatable extends Component
             $this,
             Alert::ICON_QUESTION,
             "Hapus Data",
-            "Apakah Anda Yakin Ingin Menghapus Data Ini ?",
+            "Apakah Anda Yakin Ingin Duplikat Data Ini ?",
             "on-delete-dialog-confirm",
             "on-delete-dialog-cancel",
             "Hapus",
+            "Batal",
+        );
+    }
+
+    #[On('on-copy-dialog-confirm')]
+    public function onDialogCopyConfirm()
+    {
+        if (!$this->isCanCreate || $this->targetCopyId == null) {
+            return;
+        }
+
+        GensenFormRepository::copy(Crypt::decrypt($this->targetCopyId));
+        Alert::success($this, 'Berhasil', 'Data berhasil diperbarui');
+    }
+
+    #[On('on-copy-dialog-cancel')]
+    public function onDialogCopyCancel()
+    {
+        $this->targetCopyId = null;
+    }
+
+    #[On('showCopyDialog')]
+    public function showCopyDialog($id)
+    {
+        $this->targetCopyId = $id;
+
+        Alert::confirmation(
+            $this,
+            Alert::ICON_QUESTION,
+            "Hapus Data",
+            "Apakah Anda Yakin Ingin Duplikat Data Ini ?",
+            "on-copy-dialog-confirm",
+            "on-copy-dialog-cancel",
+            "Duplikat",
             "Batal",
         );
     }
@@ -163,26 +200,7 @@ class Datatable extends Component
                 'sortable' => false,
                 'searchable' => false,
                 'render' => function ($item) {
-                    $editHtml = "";
                     $id = Crypt::encrypt($item->id);
-                    if ($this->isCanUpdate) {
-                        $editHtml =  "<div class='col-auto mb-2'>
-                            <button 
-                                class='btn btn-primary btn-sm'
-                                data-bs-toggle='modal'
-                                data-bs-target='#editModal'
-                                type='button'
-                                x-data
-                                @click=\"\$dispatch('edit-data', { id: '" . $id . "' })\"
-                            >
-                                <i class='ki-duotone ki-notepad-edit fs-3'>
-                                    <span class='path1'></span>
-                                    <span class='path2'></span>
-                                </i>
-                                Ubah
-                            </button>
-                        </div>";
-                    }
 
                     $destroyHtml = "";
                     if ($this->isCanDelete) {
@@ -193,9 +211,34 @@ class Datatable extends Component
                         </div>";
                     }
 
-                    $html = "<div class='row p-0 m-0'>
+                    $copyHtml = "";
+                    if ($this->isCanCreate) {
+                        $copyHtml = "<div class='col-auto'>
+                            <button type='button' class='p-0 hover:bg-primary/10 text-primary rounded transition-colors' wire:click=\"showCopyDialog('$id')\">
+                                <span class='material-symbols-outlined text-lg' data-icon='save_as'>save_as</span>
+                            </button>
+                        </div>";
+                    }
+                    // @click=\"\$dispatch('edit-data', { id: '" . $id . "' })\"
+                    $editHtml = "";
+                    if ($this->isCanUpdate) {
+                        $editHtml = "<div class='col-auto' wire:key='datatable_row_main_" . $item['id'] . "'>
+                            <button type='button' class='p-0 hover:bg-success/10 text-success rounded transition-colors'
+                            
+                                data-bs-toggle='collapse'
+                                data-bs-target='#collapse-" . $item['id'] . "'
+                                style='cursor: pointer;'
+                                wire:click=\" editRow('" . simple_encrypt($item['id']) . "')\">
+                                <span class='material-symbols-outlined text-lg' data-icon='edit_square'>edit_square</span>
+                            </button>
+                        </div>";
+                    }
+
+                    $html = "<div class='row p-0 m-0 d-flex d-inline flex-nowrap'>
                         
                         $destroyHtml 
+                        $copyHtml 
+                        $editHtml 
                     </div>";
 
                     return $html;

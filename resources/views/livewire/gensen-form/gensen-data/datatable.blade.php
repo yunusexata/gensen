@@ -144,10 +144,6 @@
                         
                         @foreach ($data as $index => $item)
                             <tr wire:key='datatable_row_{{ $item['id'] }}'
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapse-{{ $item['id'] }}"
-                                style="cursor: pointer;"
-                                wire:click="editRow('{{ simple_encrypt($item['id']) }}')"
                                 class="hover:bg-surface-container-low transition-colors group">
                                 @foreach ($columns as $col)
                                     @php
