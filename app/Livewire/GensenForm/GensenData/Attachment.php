@@ -90,7 +90,10 @@ class Attachment extends Component
 
     public $photo;
 
-    protected $listeners = ['remittance-extraction-updated' => 'getRemittanceExtraction'];
+    protected $listeners = [
+        'remittance-extraction-updated' => 'getRemittanceExtraction',
+        'merge-attachment-updated' => 'getMergeAttachment'
+    ];
 
     public function mount()
     {
@@ -298,10 +301,8 @@ class Attachment extends Component
     {
 
         if ($gensen_form_id && Crypt::decrypt($this->objId) != $gensen_form_id) {
-            consoleLog($this, 'gak perlu remit');
             return;
         }
-        consoleLog($this, 'get new remit');
         if (AiJobRepository::findBy([
             ['subject_type', GensenForm::class],
             ['subject_id', Crypt::decrypt($this->objId)],
@@ -336,6 +337,21 @@ class Attachment extends Component
             ->toArray()
             : [];
         $this->onload = true;
+    }
+    public function getMergeAttachment($gensen_form_id = null)
+    {
+        if ($gensen_form_id && Crypt::decrypt($this->objId) != $gensen_form_id) {
+            return;
+        }
+
+        $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
+
+        $attachments = $gensen->attachmentGroups([
+            GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN,
+            GensenAttachmentType::SELURUH_BERKAS,
+        ]);
+        $this->persyaratan_pengurusan_gensen_old = $attachments[GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value];
+        $this->seluruh_berkas_old = $attachments[GensenAttachmentType::SELURUH_BERKAS->value];
     }
     private function getDataGenerated()
     {
