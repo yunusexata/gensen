@@ -108,6 +108,7 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
                 'status' => JobStatus::DONE,
                 'finished_at' => now(),
             ]);
+            $gensen->handleMergeSeluruhBerkas();
             logger('end merger');
         } catch (\Throwable $e) {
 
