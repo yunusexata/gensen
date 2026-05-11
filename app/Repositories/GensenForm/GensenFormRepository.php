@@ -183,7 +183,6 @@ class GensenFormRepository extends MasterDataRepository
                 STRING_AGG(
                     gfd.tahun_gensen::text || '-' || gfd.nominal_gensen,
                     '; '
-                    ORDER BY gfd.tahun_gensen::text
                 ) AS details,
             ")
             ->groupBy('gfd.gensen_form_id');
