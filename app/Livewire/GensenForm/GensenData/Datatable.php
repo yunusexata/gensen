@@ -291,10 +291,16 @@ class Datatable extends Component
                 }
             ],
             [
-                'key' => 'jumlah_kirim_uang',
-                'name' => 'Jumlah Kirim Uang',
+                'sortable' => false,
+                'searchable' => false,
+                'name' => 'Tanggungan Keluarga',
                 'render' => function ($item) {
-                    return $item->jumlah_kirim_uang ? number_format($item->jumlah_kirim_uang, 0, ',', '.') : '-';
+                    $tanggungan = explode(';', $item->remittance);
+                    $html = "";
+                    foreach ($tanggungan as $item) {
+                        $html .= "$item" . "<br/>";
+                    }
+                    return $html;
                 }
             ],
             [
