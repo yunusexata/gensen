@@ -334,7 +334,7 @@ class Datatable extends Component
                     $details = explode(';', $item->details);
                     $html = "";
                     foreach ($details as $index => $gensen) {
-                        $html .= $gensen . "<br/>";
+                        $html .= "<div class='text-nowrap'>{$gensen}</div>";
                     }
                     return $html;
                 }
