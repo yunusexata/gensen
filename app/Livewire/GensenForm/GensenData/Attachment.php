@@ -294,12 +294,13 @@ class Attachment extends Component
 
         $this->getRemittanceExtraction($gensen);
     }
-    public function getRemittanceExtraction($gensen = null)
+    public function getRemittanceExtraction($gensen = null, $gensen_form_id = null)
     {
 
         consoleLog($this, [
             'get remit',
-            $gensen
+            $gensen,
+            $gensen_form_id,
         ]);
         if (AiJobRepository::findBy([
             ['subject_type', GensenForm::class],
