@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Enums\Gensen\GensenAttachmenStatus;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
+use App\Events\MergeAttachmentStatus;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\PersyaratanGensenJob;
 use App\Models\GensenForm\SeluruhBerkasJob;
@@ -116,6 +117,7 @@ class MergeSeluruhBerkas implements ShouldQueue
                 'finished_at' => now(),
             ]);
 
+            event(new MergeAttachmentStatus($this->gensenFormId));
             logger('MERGE PDF SUCCESS');
         } catch (\Throwable $e) {
 

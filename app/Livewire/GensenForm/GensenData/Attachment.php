@@ -297,6 +297,10 @@ class Attachment extends Component
     public function getRemittanceExtraction($gensen = null)
     {
 
+        consoleLog($this, [
+            'get remit',
+            $gensen
+        ]);
         if (AiJobRepository::findBy([
             ['subject_type', GensenForm::class],
             ['subject_id', Crypt::decrypt($this->objId)],

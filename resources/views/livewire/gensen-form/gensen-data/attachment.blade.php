@@ -2528,6 +2528,12 @@
                         console.log('EVENT MASUK:', e);
                         Livewire.dispatch('remittance-extraction-updated',{gensen_form_id: e.gensen_form_id});
                 });
+                window.Echo.channel('export-merge-attachment-status')
+                    .subscribed(() => console.log('SUBSCRIBED'))
+                    .listen('.export.merge-attachment-status.updated', (e) => {
+                        console.log('EVENT MASUK:', e);
+                        Livewire.dispatch('merge-attachment-updated',{gensen_form_id: e.gensen_form_id});
+                });
             });
             {{-- Compress File Upload --}}
             const MAX_FILE_SIZE = 20 * 1024 * 1024; // 50MB in bytes (before compression)
