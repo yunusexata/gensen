@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Validation\Rule;
 
 class BulkUpdateGensenStatusModalToGensenCair extends Component
 {
@@ -53,7 +54,14 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
             ];
             $validator = Validator::make($d, [
                 // 'id_customer' => 'required|exists:gensen_forms,id_customer',
-                'nama_lengkap' => 'required|exists:gensen_forms,nama_lengkap',
+                'nama_lengkap' => [
+                    'required',
+                    Rule::exists('gensen_forms')
+                        ->where(function ($query) use ($d) {
+                            $query->where('nama_lengkap', $d['nama_lengkap'])
+                                ->where('no_input_jepang', $d['no_input_jepang']);
+                        }),
+                ],
                 'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
                 'tanggal_pengajuan' => 'required',
                 'tanggal_cair' => 'required',
