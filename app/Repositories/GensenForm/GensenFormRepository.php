@@ -7,6 +7,7 @@ use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\GensenFormLink;
 use App\Repositories\MasterDataRepository;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class GensenFormRepository extends MasterDataRepository
 {
@@ -25,10 +26,39 @@ class GensenFormRepository extends MasterDataRepository
 
         $pic_code = $pic ? $pic : Auth::user()->pic_code;
 
-        return GensenForm::when($gensenFormLinkId, function ($q) use ($gensenFormLinkId) {
-            $q->where('remarks_id', $gensenFormLinkId)
-                ->where('remarks_type', GensenFormLink::class);
-        })
+        // return GensenForm::when($gensenFormLinkId, function ($q) use ($gensenFormLinkId) {
+        //     $q->where('remarks_id', $gensenFormLinkId)
+        //         ->where('remarks_type', GensenFormLink::class);
+        // })
+        $remittanceAgg = DB::table('remittance_extraction_groups as reg')
+            ->join('remittance_extractions as re', function ($join) {
+                $join->on('re.id', '=', 'reg.remittance_extraction_id')
+                    ->where('re.subject_type', '=', GensenForm::class);
+            })
+            ->where('reg.is_validate', '=', true)
+            ->selectRaw("
+                re.subject_id,
+                re.subject_type,
+                STRING_AGG(
+                    reg.total_amount || '-' || reg.receiver_name,
+                    ', '
+                    ORDER BY reg.transaction_year
+                ) AS remittance
+            ")
+            ->groupBy('re.subject_id', 're.subject_type');
+        return GensenForm::query()
+            ->when($gensenFormLinkId, function ($q) use ($gensenFormLinkId) {
+                $q->where('remarks_id', $gensenFormLinkId)
+                    ->where('remarks_type', GensenFormLink::class);
+            })
+            ->leftJoinSub($remittanceAgg, 'remittances', function ($join) {
+                $join->on('remittances.subject_id', '=', 'gensen_forms.id')
+                    ->where('remittances.subject_type', '=', GensenForm::class);
+            })
+            ->select([
+                'gensen_forms.*',
+                'remittances.remittance',
+            ])
             ->withExists([
                 'attachments as has_kartu_keluarga' => function ($q) {
                     $q->where('type', GensenAttachmentType::KARTU_KELUARGA);
