@@ -1821,6 +1821,22 @@
                     <main class="w-full max-w-container-max mx-auto flex flex-row border overflow-hidden p-0">
                         <!-- Left Column: Validation Form (approx 40% based on guidance, though prompt asked for 30%. Defaulting to system guidance of 40% for right pane but prompt asked left. I will use 35/65 split to balance) -->
                         <section class="w-[35%] flex flex-col h-full bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
+                            <div class="row">
+                                <button type="button" class="btn btn-primary w-full" wire:click="addGensenFormDetail">Tambah Gensen</button>
+                            </div>
+                            <div class="row my-3">
+                                @foreach ($tahun_gensen_details as $index_tahun_gensen => $tahun_gensen_detail)
+                                    <div class="col-md-12 my-2" wire:key="tahun_gensen_details_{{ $tahun_gensen_detail['id'] ? $tahun_gensen_detail['id'] : $tahun_gensen_detail['key'] }}">
+                                        <input
+                                                class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full"
+                                                id="tahun_gensen"
+                                                wire:model="tahun_gensen_details.{{ $index_tahun_gensen }}.tahun_gensen"
+                                                type="number"
+                                                placeholder="2025"
+                                            />
+                                    </div>
+                                @endforeach
+                            </div>
                             <div class="bg-surface-container px-lg py-md border-b border-outline-variant flex justify-between items-center">
                             <h2 class="text-headline-md font-headline-md text-on-surface">Data Extraction Results</h2>
                             <span class="bg-secondary-container text-on-primary-fixed-variant fw-bold px-2 py-1 rounded-full text-label-sm font-label-sm">CONFIDENCE {{ $remittance_extraction ? $remittance_extraction['confidence_score'] : '-'}}</span>

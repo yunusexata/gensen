@@ -77,7 +77,7 @@
                         <td>{{ $data['tanggal_kepulangan'] ? Carbon\Carbon::parse($data['tanggal_kepulangan'])->format('ymd') : '' }}</td>
                         <td>{{ $data['no_rekening_penerima'] }}</td>
                         <td>{{ $data['nama_bank_penerima'] }}</td>
-                        <td>{{ $data['tahun_gensen'] }}</td>
+                        <td>{{ $data['tahun_gensen_detail'] }}</td>
                         <td>{{ $data['has_my_number'] ? 'O' : 'X' }}</td>
                         <td>{{ $data['has_kartu_keluarga'] ? 'O' : 'X' }}</td>
                         <td>{{ $data['nominal_gensen'] }}</td>

@@ -15,6 +15,7 @@ use App\Repositories\Ai\AiJobRepository;
 use App\Repositories\Gensen\Ai\RemittanceExtractionGroupRepository;
 use App\Repositories\Gensen\Ai\RemittanceExtractionRepository;
 use App\Repositories\GensenForm\GensenFormAttachmentRepository;
+use App\Repositories\GensenForm\GensenFormDetailRepository;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
 use App\Repositories\GensenForm\GensenFormRepository;
 use App\Repositories\GensenForm\PersyaratanGensenJobRepository;
@@ -66,6 +67,8 @@ class Attachment extends Component
     public $rekap_pengiriman_uang_old;
     public $rekening_indonesia_old;
 
+    public $tahun_gensen_details = [];
+    public $nominal_gensen;
     public $remittance_extraction;
     public $remittance_validate_total = 0;
     public $remittance_extraction_groups = [];
@@ -112,6 +115,15 @@ class Attachment extends Component
         }
     }
 
+    public function addGensenFormDetail()
+    {
+        $this->tahun_gensen_details[] = [
+            'id' => null,
+            'key' => Str::random(10),
+            'tahun_gensen' => null
+        ];
+    }
+
     public function confirmRemittanceValidation()
     {
         try {
@@ -120,6 +132,20 @@ class Attachment extends Component
                     RemittanceExtractionGroupRepository::update($remittance['id'], [
                         'is_validate' => $remittance['is_validate'],
                     ]);
+                }
+                foreach ($this->tahun_gensen_details as $tahun_gensen) {
+                    if ($tahun_gensen['id']) {
+                        GensenFormDetailRepository::update($tahun_gensen['id'], [
+                            'tahun_gensen' => $tahun_gensen['tahun_gensen'],
+                        ]);
+                    } else {
+                        if ($tahun_gensen['tahun_gensen']) {
+                            GensenFormDetailRepository::create([
+                                'gensen_form_id' => Crypt::decrypt($this->objId),
+                                'tahun_gensen' => $tahun_gensen['tahun_gensen'],
+                            ]);
+                        }
+                    }
                 }
             });
             $remittance_extraction = RemittanceExtractionRepository::findBy([
@@ -189,6 +215,8 @@ class Attachment extends Component
             $this->nama_lengkap = $gensen->nama_lengkap;
             $this->tanggal_lahir = $gensen->tanggal_lahir;
             $this->nomor_whatsapp = $gensen->nomor_whatsapp;
+            $this->tahun_gensen_details = $gensen->gensenFormDetails->toArray();
+            $this->nominal_gensen = $gensen->nominal_gensen;
 
             $attachments = $gensen->attachmentGroups([
                 GensenAttachmentType::MY_NUMBER_FRONT,

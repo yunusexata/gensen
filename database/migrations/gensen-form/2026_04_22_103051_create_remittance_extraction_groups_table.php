@@ -39,6 +39,7 @@ return new class extends Migration
         }
         $table->unsignedBigInteger('remittance_extraction_id');
         $table->string('receiver_name');
+        $table->string('receiver_relationship')->nullable();
         $table->integer('transaction_year');
 
         // We use decimal(15,2) for financial accuracy rather than float/number

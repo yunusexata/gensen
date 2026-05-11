@@ -509,4 +509,9 @@ class GensenForm extends Model
     {
         return $this->hasOne(RemittanceExtraction::class, 'subject_id', 'id')->where('subject_type', self::class);
     }
+
+    public function gensenFormDetails()
+    {
+        return $this->hasMany(GensenFormDetail::class, 'gensen_form_id', 'id');
+    }
 }

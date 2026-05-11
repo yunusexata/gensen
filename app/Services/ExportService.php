@@ -25,39 +25,86 @@ class ExportService
 
     private function query($filters)
     {
+        // $remittanceAgg = DB::table('remittance_extraction_groups as reg')
+        //     ->join('remittance_extractions as re', function ($join) {
+        //         $join->on('re.id', '=', 'reg.remittance_extraction_id')
+        //             ->where('re.subject_type', '=', GensenForm::class)
+        //             ->whereNull('re.deleted_at');
+        //     })
+        //     ->where('reg.is_validate', '=', true)
+        //     ->whereNull('reg.deleted_at')
+        //     ->selectRaw("
+        //         re.subject_id,
+        //         re.subject_type,
+
+        //         STRING_AGG(
+        //             reg.total_amount::text,
+        //             '; '
+        //             ORDER BY reg.transaction_year
+        //         ) AS remittance_total_amounts,
+
+        //         STRING_AGG(
+        //             reg.receiver_name,
+        //             '; '
+        //             ORDER BY reg.transaction_year
+        //         ) AS remittance_receiver_names
+        //     ")
+        //     ->groupBy('re.subject_id', 're.subject_type');
         $remittanceAgg = DB::table('remittance_extraction_groups as reg')
             ->join('remittance_extractions as re', function ($join) {
                 $join->on('re.id', '=', 'reg.remittance_extraction_id')
-                    ->where('re.subject_type', '=', GensenForm::class)
                     ->whereNull('re.deleted_at');
             })
-            ->where('reg.is_validate', '=', true)
+            ->where('reg.is_validate', true)
             ->whereNull('reg.deleted_at')
             ->selectRaw("
-                re.subject_id,
-                re.subject_type,
+        re.subject_id,
+        re.subject_type,
+        reg.transaction_year,
 
-                STRING_AGG(
-                    reg.total_amount::text,
-                    '; '
-                    ORDER BY reg.transaction_year
-                ) AS remittance_total_amounts,
+        STRING_AGG(
+            reg.total_amount::text,
+            '; '
+            ORDER BY reg.transaction_year
+        ) AS remittance_total_amounts,
 
-                STRING_AGG(
-                    reg.receiver_name,
-                    '; '
-                    ORDER BY reg.transaction_year
-                ) AS remittance_receiver_names
-            ")
-            ->groupBy('re.subject_id', 're.subject_type');
+        STRING_AGG(
+            reg.receiver_name,
+            '; '
+            ORDER BY reg.transaction_year
+        ) AS remittance_receiver_names
+    ")
+            ->groupBy(
+                're.subject_id',
+                're.subject_type',
+                'reg.transaction_year'
+            );
 
+        // return GensenForm::query()
+        //     ->leftJoinSub($remittanceAgg, 'remittances', function ($join) {
+        //         $join->on('remittances.subject_id', '=', 'gensen_forms.id')
+        //             ->where('remittances.subject_type', '=', GensenForm::class);
+        //     })
+        //     ->select([
+        //         'gensen_forms.*',
+        //         'remittances.remittance_total_amounts',
+        //         'remittances.remittance_receiver_names',
+        //     ])
         return GensenForm::query()
+            ->join('gensen_form_details as gfd', function ($join) {
+                $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id')
+                    ->whereNull('gfd.deleted_at');
+            })
+
             ->leftJoinSub($remittanceAgg, 'remittances', function ($join) {
                 $join->on('remittances.subject_id', '=', 'gensen_forms.id')
-                    ->where('remittances.subject_type', '=', GensenForm::class);
+                    ->where('remittances.subject_type', '=', GensenForm::class)
+                    ->on('remittances.transaction_year', '=', 'gfd.tahun_gensen');
             })
+
             ->select([
                 'gensen_forms.*',
+                'gfd.tahun_gensen as tahun_gensen_detail',
                 'remittances.remittance_total_amounts',
                 'remittances.remittance_receiver_names',
             ])
@@ -70,61 +117,61 @@ class ExportService
                 },
             ])
             ->when(isset($filters['pic_code']) && $filters['pic_code'], function ($q) use ($filters) {
-                $q->where('pic_code', $filters['pic_code']);
+                $q->where('gensen_forms.pic_code', $filters['pic_code']);
             })
             ->when(isset($filters['tanggal_input']) && $filters['tanggal_input'], function ($query) use ($filters) {
-                $query->whereBetween('created_at', $filters['tanggal_input']);
+                $query->whereBetween('gensen_forms.created_at', $filters['tanggal_input']);
             });
     }
 
     private function exportListDataBelumLengkap($filters)
     {
         return $this->query($filters)
-            ->where('status', GensenForm::STATUS_BELUM_LENGKAP)
-            ->whereNull('tanggal_lengkap')
+            ->where('gensen_forms.status', GensenForm::STATUS_BELUM_LENGKAP)
+            ->whereNull('gensen_forms.tanggal_lengkap')
             ->get();
     }
 
     private function exportListDataSiapVerifikasi($filters)
     {
         return $this->query($filters)
-            ->where('status', GensenForm::STATUS_LENGKAP)
-            ->whereNotNull('tanggal_lengkap')
-            ->whereNull('tanggal_verified')
+            ->where('gensen_forms.status', GensenForm::STATUS_LENGKAP)
+            ->whereNotNull('gensen_forms.tanggal_lengkap')
+            ->whereNull('gensen_forms.tanggal_verified')
             ->get();
     }
 
     private function exportListDataVerified($filters)
     {
         return $this->query($filters)
-            ->where('status', GensenForm::STATUS_VERIFIED)
-            ->whereNotNull('tanggal_lengkap')
-            ->whereNotNull('tanggal_verified')
-            ->whereNull('no_input_jepang')
+            ->where('gensen_forms.status', GensenForm::STATUS_VERIFIED)
+            ->whereNotNull('gensen_forms.tanggal_lengkap')
+            ->whereNotNull('gensen_forms.tanggal_verified')
+            ->whereNull('gensen_forms.no_input_jepang')
             ->get();
     }
 
     private function exportListDataNoInputJapan($filters)
     {
         return   $this->query($filters)
-            ->where('status', GensenForm::STATUS_VERIFIED)
-            ->whereNotNull('tanggal_lengkap')
-            ->whereNotNull('tanggal_verified')
-            ->whereNotNull('no_input_jepang')
-            ->whereNull('tanggal_pengajuan')
+            ->where('gensen_forms.status', GensenForm::STATUS_VERIFIED)
+            ->whereNotNull('gensen_forms.tanggal_lengkap')
+            ->whereNotNull('gensen_forms.tanggal_verified')
+            ->whereNotNull('gensen_forms.no_input_jepang')
+            ->whereNull('gensen_forms.tanggal_pengajuan')
             ->get();
     }
 
     private function exportListDataDalamPengajuan($filters)
     {
         return $this->query($filters)
-            ->where('status', GensenForm::STATUS_DALAM_PENGAJUAN)
-            ->whereNotNull('tanggal_lengkap')
-            ->whereNotNull('tanggal_verified')
-            ->whereNotNull('no_input_jepang')
-            ->whereNotNull('tanggal_pengajuan')
-            ->whereNull('tanggal_cair')
-            ->whereNull('nominal_cair')
+            ->where('gensen_forms.status', GensenForm::STATUS_DALAM_PENGAJUAN)
+            ->whereNotNull('gensen_forms.tanggal_lengkap')
+            ->whereNotNull('gensen_forms.tanggal_verified')
+            ->whereNotNull('gensen_forms.no_input_jepang')
+            ->whereNotNull('gensen_forms.tanggal_pengajuan')
+            ->whereNull('gensen_forms.tanggal_cair')
+            ->whereNull('gensen_forms.nominal_cair')
             ->get();
     }
 }

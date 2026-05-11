@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Models\GensenForm;
+
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
+use Muhammadyunus1072\TrackHistory\HasTrackHistory;
+
+class GensenFormDetail extends Model
+{
+    use HasFactory, SoftDeletes, HasTrackHistory;
+
+    protected $fillable = [
+        'gensen_form_id',
+        'tahun_gensen',
+    ];
+
+    protected $guarded = ['id'];
+
+    public function isDeletable()
+    {
+        return true;
+    }
+
+    public function isEditable()
+    {
+        return true;
+    }
+    public function gensenForm()
+    {
+        return $this->belongsTo(GensenForm::class, 'gensen_form_id', 'id');
+    }
+}
