@@ -331,9 +331,9 @@ class Datatable extends Component
                 'searchable' => false,
                 'name' => 'Gensen',
                 'render' => function ($item) {
-                    $gensen_form_details = explode(';', $item->gensen_form_details);
+                    $details = explode(';', $item->details);
                     $html = "";
-                    foreach ($gensen_form_details as $index => $gensen) {
+                    foreach ($details as $index => $gensen) {
                         $html .= $gensen . "<br/>";
                     }
                     return $html;
