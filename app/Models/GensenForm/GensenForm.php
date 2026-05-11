@@ -482,7 +482,7 @@ class GensenForm extends Model
 
 
     // PostgreSQL
-    public function attachments()
+    public function attachments($types = null)
     {
         $case = collect(self::ATTACHMENT_ORDER_BY)
             ->values()
@@ -493,6 +493,9 @@ class GensenForm extends Model
             ->implode(' ');
 
         return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')
+            ->when($types, function ($q) use ($types) {
+                $q->whereIn('type', $types);
+            })
             ->orderByRaw("CASE type {$case} ELSE 999 END");
     }
     public function attachmentsToConvert()
@@ -512,6 +515,18 @@ class GensenForm extends Model
     {
         return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')->where('type', GensenAttachmentType::REKAP_PENGIRIMAN_UANG)
             ->where('status', GensenAttachmenStatus::STATUS_CONVERTED);
+    }
+    public function attachmentsCopy()
+    {
+        return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')
+            ->whereIn('type', [
+                GensenAttachmentType::KARTU_KELUARGA,
+                GensenAttachmentType::ZAIRYOU_CARD_FRONT,
+                GensenAttachmentType::ZAIRYOU_CARD_BACK,
+                GensenAttachmentType::MY_NUMBER_FRONT,
+                GensenAttachmentType::MY_NUMBER_BACK,
+                GensenAttachmentType::REKENING_INDONESIA,
+            ]);
     }
 
     public function remarks()

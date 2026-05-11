@@ -5,10 +5,13 @@ namespace App\Repositories\GensenForm;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\GensenFormLink;
+use App\Repositories\GensenForm\GensenFormAttachmentRepository;
 use App\Repositories\MasterDataRepository;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Exception;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class GensenFormRepository extends MasterDataRepository
 {
@@ -19,45 +22,117 @@ class GensenFormRepository extends MasterDataRepository
 
     public static function copy($gensen_form_id)
     {
+        DB::beginTransaction();
 
         try {
-            DB::transaction(function () use ($gensen_form_id) {
-                $gensen_form = self::find($gensen_form_id);
-                // Form Candidate
-                $validateData = [
-                    // Form J-Expert
-                    'nama_lengkap' => $gensen_form->nama_lengkap,
-                    'tanggal_lahir' => $gensen_form->tanggal_lahir,
-                    'tanggal_kepulangan' => $gensen_form->tanggal_kepulangan,
-                    'nama_instagram' => $gensen_form->nama_instagram,
-                    'nama_tiktok' => $gensen_form->nama_tiktok,
-                    'nomor_whatsapp' => $gensen_form->nomor_whatsapp,
-                    'nomor_whatsapp_darurat' => $gensen_form->nomor_whatsapp_darurat,
-                    'email' => $gensen_form->email,
-                    'alamat_jepang' => $gensen_form->alamat_jepang,
-                    'kode_pos_jepang' => $gensen_form->kode_pos_jepang,
-                    'nama_lpk' => $gensen_form->nama_lpk,
 
-                    // REK PENERIMA
-                    'no_rekening_penerima' => $gensen_form->no_rekening_penerima,
-                    'nama_bank_penerima' => $gensen_form->nama_bank_penerima,
-                    'nama_penerima' => $gensen_form->nama_penerima,
-                    'hubungan_penerima' => $gensen_form->hubungan_penerima,
+            $gensen_form = self::find($gensen_form_id);
 
-                    'tahun_gensen' => $gensen_form->tahun_gensen,
-                    'tahun_transfer' => $gensen_form->tahun_transfer,
+            /*
+        |--------------------------------------------------------------------------
+        | 1. CREATE NEW FORM
+        |--------------------------------------------------------------------------
+        */
+            $newForm = GensenFormRepository::create([
+                'nama_lengkap' => $gensen_form->nama_lengkap,
+                'tanggal_lahir' => $gensen_form->tanggal_lahir,
+                'tanggal_kepulangan' => $gensen_form->tanggal_kepulangan,
+                'nama_instagram' => $gensen_form->nama_instagram,
+                'nama_tiktok' => $gensen_form->nama_tiktok,
+                'nomor_whatsapp' => $gensen_form->nomor_whatsapp,
+                'nomor_whatsapp_darurat' => $gensen_form->nomor_whatsapp_darurat,
+                'email' => $gensen_form->email,
+                'alamat_jepang' => $gensen_form->alamat_jepang,
+                'kode_pos_jepang' => $gensen_form->kode_pos_jepang,
+                'nama_lpk' => $gensen_form->nama_lpk,
 
-                    'remarks_id' => $gensen_form->remarks_id,
-                    'remarks_type' => $gensen_form->remarks_type,
-                    'pic_code' => $gensen_form->pic_code,
+                'no_rekening_penerima' => $gensen_form->no_rekening_penerima,
+                'nama_bank_penerima' => $gensen_form->nama_bank_penerima,
+                'nama_penerima' => $gensen_form->nama_penerima,
+                'hubungan_penerima' => $gensen_form->hubungan_penerima,
 
-                ];
-                $gensenForm = GensenFormRepository::create($validateData);
-            });
+                'tahun_gensen' => $gensen_form->tahun_gensen,
+                'tahun_transfer' => $gensen_form->tahun_transfer,
+
+                'remarks_id' => $gensen_form->remarks_id,
+                'remarks_type' => $gensen_form->remarks_type,
+                'pic_code' => $gensen_form->pic_code,
+            ]);
+
+            /*
+        |--------------------------------------------------------------------------
+        | 2. COPY ATTACHMENTS
+        |--------------------------------------------------------------------------
+        */
+
+            $attachments = $gensen_form->attachmentsCopy;
+
+            foreach ($attachments as $attachment) {
+
+                $disk = $attachment->disk;
+
+                if (!Storage::disk($disk)->exists($attachment->path)) {
+                    continue;
+                }
+
+                /*
+            |--------------------------------------------------------------------------
+            | Generate NEW FILE PATH
+            |--------------------------------------------------------------------------
+            */
+
+                $extension = $attachment->extension;
+                $newStoredName = Str::uuid() . '.' . $extension;
+
+                $newPath = "gensen/{$newForm->id}/{$attachment->type->value}/{$newStoredName}";
+
+                /*
+            |--------------------------------------------------------------------------
+            | Copy Physical File
+            |--------------------------------------------------------------------------
+            */
+
+                Storage::disk($disk)->copy(
+                    $attachment->path,
+                    $newPath
+                );
+
+                /*
+            |--------------------------------------------------------------------------
+            | Create New Attachment Row
+            |--------------------------------------------------------------------------
+            */
+
+                GensenFormAttachmentRepository::create([
+                    'gensen_form_id' => $newForm->id,
+                    'type' => $attachment->type,
+                    'original_name' => $attachment->original_name,
+                    'stored_name' => $newStoredName,
+                    'description' => $attachment->description,
+
+                    'disk' => $disk,
+                    'path' => $newPath,
+                    'note' => $attachment->note,
+                    'remittance_type' => $attachment->remittance_type,
+
+                    'extension' => $attachment->extension,
+                    'mime_type' => $attachment->mime_type,
+                    'file_size' => $attachment->file_size,
+
+                    'checksum' => $attachment->checksum,
+                    'status' => $attachment->status,
+                    'convert_image' => $attachment->convert_image,
+                ]);
+            }
 
             DB::commit();
-        } catch (Exception $e) {
+
+            return $newForm;
+        } catch (\Throwable $e) {
+
             DB::rollBack();
+
+            throw $e;
         }
     }
 

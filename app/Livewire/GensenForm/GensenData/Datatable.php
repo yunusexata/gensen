@@ -177,7 +177,7 @@ class Datatable extends Component
         Alert::confirmation(
             $this,
             Alert::ICON_QUESTION,
-            "Hapus Data",
+            "Duplikat Data",
             "Apakah Anda Yakin Ingin Duplikat Data Ini ?",
             "on-copy-dialog-confirm",
             "on-copy-dialog-cancel",
