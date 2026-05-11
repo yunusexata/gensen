@@ -327,10 +327,16 @@ class Datatable extends Component
                 'name' => 'Email',
             ],
             [
-                'key' => 'nominal_gensen',
-                'name' => 'Nominal Gensen',
+                'sortable' => false,
+                'searchable' => false,
+                'name' => 'Gensen',
                 'render' => function ($item) {
-                    return $item->nominal_gensen ? number_format($item->nominal_gensen, 0, ',', '.') : '-';
+                    $gensen_form_details = explode(';', $item->gensen_form_details);
+                    $html = "";
+                    foreach ($gensen_form_details as $index => $gensen) {
+                        $html .= $gensen . "<br/>";
+                    }
+                    return $html;
                 }
             ],
             [

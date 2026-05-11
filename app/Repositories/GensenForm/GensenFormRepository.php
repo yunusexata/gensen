@@ -175,6 +175,18 @@ class GensenFormRepository extends MasterDataRepository
                 ) AS remittance_receiver_names
             ")
             ->groupBy('re.subject_id', 're.subject_type');
+        $gensenDetailAgg = DB::table('gensen_form_details as gfd')
+            ->whereNull('gfd.deleted_at')
+            ->selectRaw("
+                gfd.gensen_form_id,
+
+                STRING_AGG(
+                    gfd.tahun_gensen::text || - || gfd.nominal_gensen,
+                    '; '
+                    ORDER BY gfd.tahun_gensen
+                ) AS gensen_form_details,
+            ")
+            ->groupBy('gfd.gensen_form_id');
         return
             // dd(
             GensenForm::query()
@@ -186,8 +198,12 @@ class GensenFormRepository extends MasterDataRepository
                 $join->on('remittances.subject_id', '=', 'gensen_forms.id')
                     ->where('remittances.subject_type', '=', GensenForm::class);
             })
+            ->leftJoinSub($gensenDetailAgg, 'gfd', function ($join) {
+                $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id');
+            })
             ->select([
                 'gensen_forms.*',
+                'gfd.gensen_form_details',
                 'remittances.remittance_total_amounts',
                 'remittances.remittance_receiver_names',
             ])
