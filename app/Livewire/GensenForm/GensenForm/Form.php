@@ -52,6 +52,7 @@ class Form extends Component
     public $nama_tiktok;
     #[Validate('required', message: 'Nomor Whatsapp Harus Diisi', onUpdate: false)]
     public $nomor_whatsapp;
+    #[Validate('required', message: 'Nomor Whatsapp Darurat Harus Diisi', onUpdate: false)]
     public $nomor_whatsapp_darurat;
     #[Validate('required', message: 'Alamat Jepang Harus Diisi', onUpdate: false)]
     public $alamat_jepang;
@@ -262,41 +263,41 @@ class Form extends Component
             $this->firstCheck(); // your existing logic
         } else {
             $this->validate();
-            $this->validate([
-                'nomor_whatsapp' => [
-                    'required',
-                    function ($attribute, $value, $fail) {
+            // $this->validate([
+            //     'nomor_whatsapp' => [
+            //         'required',
+            //         function ($attribute, $value, $fail) {
 
-                        $number = preg_replace('/[^\d]/', '', $value);
+            //             $number = preg_replace('/[^\d]/', '', $value);
 
-                        if (str_starts_with($number, '62')) {
-                            $number = substr($number, 2);
-                        }
+            //             if (str_starts_with($number, '62')) {
+            //                 $number = substr($number, 2);
+            //             }
 
-                        if (!preg_match('/^8[0-9]{8,11}$/', $number)) {
-                            $fail('Format No Whatsapp tidak sesuai, contoh: +62 8XX-XXXX-XXXX');
-                        }
-                    },
-                ],
+            //             if (!preg_match('/^8[0-9]{8,11}$/', $number)) {
+            //                 $fail('Format No Whatsapp tidak sesuai, contoh: +62 8XX-XXXX-XXXX');
+            //             }
+            //         },
+            //     ],
 
-                'nomor_whatsapp_darurat' => [
-                    'nullable',
-                    function ($attribute, $value, $fail) {
+            //     'nomor_whatsapp_darurat' => [
+            //         'nullable',
+            //         function ($attribute, $value, $fail) {
 
-                        if (!$value) return;
+            //             if (!$value) return;
 
-                        $number = preg_replace('/[^\d]/', '', $value);
+            //             $number = preg_replace('/[^\d]/', '', $value);
 
-                        if (str_starts_with($number, '62')) {
-                            $number = substr($number, 2);
-                        }
+            //             if (str_starts_with($number, '62')) {
+            //                 $number = substr($number, 2);
+            //             }
 
-                        if (!preg_match('/^8[0-9]{8,11}$/', $number)) {
-                            $fail('Format No Whatsapp Darurat tidak sesuai, contoh: +62 8XX-XXXX-XXXX');
-                        }
-                    },
-                ],
-            ]);
+            //             if (!preg_match('/^8[0-9]{8,11}$/', $number)) {
+            //                 $fail('Format No Whatsapp Darurat tidak sesuai, contoh: +62 8XX-XXXX-XXXX');
+            //             }
+            //         },
+            //     ],
+            // ]);
             $this->saveData(false);
         }
     }
@@ -614,8 +615,8 @@ class Form extends Component
     {
         try {
             DB::transaction(function () use ($isSubmitted, $withAttachment) {
-                $nomor_whatsapp = preg_replace('/[^\d]/', '', $this->nomor_whatsapp);
-                $nomor_whatsapp_darurat = preg_replace('/[^\d]/', '', $this->nomor_whatsapp_darurat);
+                // $nomor_whatsapp = preg_replace('/[^\d]/', '', $this->nomor_whatsapp);
+                // $nomor_whatsapp_darurat = preg_replace('/[^\d]/', '', $this->nomor_whatsapp_darurat);
                 // Form Candidate
                 $validateData = [
                     // Form J-Expert
@@ -624,8 +625,8 @@ class Form extends Component
                     'tanggal_kepulangan' => $this->tanggal_kepulangan,
                     'nama_instagram' => $this->nama_instagram,
                     'nama_tiktok' => $this->nama_tiktok,
-                    'nomor_whatsapp' => $nomor_whatsapp,
-                    'nomor_whatsapp_darurat' => $nomor_whatsapp_darurat,
+                    'nomor_whatsapp' => $this->nomor_whatsapp,
+                    'nomor_whatsapp_darurat' => $this->nomor_whatsapp_darurat,
                     'email' => $this->email,
                     'alamat_jepang' => $this->alamat_jepang,
                     'kode_pos_jepang' => $this->kode_pos_jepang,
