@@ -41,7 +41,7 @@ class GensenFormRepository extends MasterDataRepository
                 re.subject_type,
                 STRING_AGG(
                     reg.total_amount || '-' || reg.receiver_name,
-                    ', '
+                    '; '
                     ORDER BY reg.transaction_year
                 ) AS remittance
             ")
