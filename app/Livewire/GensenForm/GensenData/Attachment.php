@@ -146,7 +146,6 @@ class Attachment extends Component
 
     public function submitRemittanceExtractionJob()
     {
-        consoleLog($this, 'create save');
         try {
             DB::transaction(function () {
                 $job = AiJob::firstOrCreate(
@@ -539,6 +538,8 @@ class Attachment extends Component
 
     public function submitChange()
     {
+
+        consoleLog($this, 'create save');
         $this->validate();
         try {
             DB::transaction(function () {
