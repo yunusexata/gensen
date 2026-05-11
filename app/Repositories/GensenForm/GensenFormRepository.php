@@ -41,11 +41,13 @@ class GensenFormRepository extends MasterDataRepository
             ->selectRaw("
                 re.subject_id,
                 re.subject_type,
+
                 STRING_AGG(
-                    reg.total_amount,
+                    reg.total_amount::text,
                     '; '
                     ORDER BY reg.transaction_year
                 ) AS remittance_total_amounts,
+
                 STRING_AGG(
                     reg.receiver_name,
                     '; '
