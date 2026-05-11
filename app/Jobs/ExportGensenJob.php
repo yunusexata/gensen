@@ -49,6 +49,7 @@ class ExportGensenJob implements ShouldQueue
 
             $fileName = 'export_' . time() . '.xlsx';
             $filePath = 'exports/' . $fileName;
+            logger(['data export', $data]);
 
             // simpan file (pakai Laravel Excel atau manual)
             Excel::store(new CollectionExport(
