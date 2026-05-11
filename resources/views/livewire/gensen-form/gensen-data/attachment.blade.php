@@ -1828,11 +1828,18 @@
                                 @foreach ($tahun_gensen_details as $index_tahun_gensen => $tahun_gensen_detail)
                                     <div class="col-md-12 my-2" wire:key="tahun_gensen_details_{{ $tahun_gensen_detail['id'] ? $tahun_gensen_detail['id'] : $tahun_gensen_detail['key'] }}">
                                         <input
-                                                class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full"
+                                                class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80"
                                                 id="tahun_gensen"
                                                 wire:model="tahun_gensen_details.{{ $index_tahun_gensen }}.tahun_gensen"
                                                 type="number"
                                                 placeholder="2025"
+                                            />
+                                        <input
+                                                class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80"
+                                                id="tahun_gensen"
+                                                wire:model="tahun_gensen_details.{{ $index_tahun_gensen }}.nominal_gensen"
+                                                type="number"
+                                                placeholder="Nominal Gensen"
                                             />
                                     </div>
                                 @endforeach

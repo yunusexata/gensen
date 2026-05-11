@@ -16,6 +16,7 @@ class GensenFormDetail extends Model
     protected $fillable = [
         'gensen_form_id',
         'tahun_gensen',
+        'nominal_gensen',
     ];
 
     protected $guarded = ['id'];

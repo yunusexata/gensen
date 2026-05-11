@@ -80,7 +80,7 @@
                         <td>{{ $data['tahun_gensen_detail'] }}</td>
                         <td>{{ $data['has_my_number'] ? 'O' : 'X' }}</td>
                         <td>{{ $data['has_kartu_keluarga'] ? 'O' : 'X' }}</td>
-                        <td>{{ $data['nominal_gensen'] }}</td>
+                        <td>{{ $data['nominal_gensen_detail'] }}</td>
                         @php
                             $total_amounts = explode(';', $data['remittance_total_amounts']);
                             $receiver_names = explode(';', $data['remittance_receiver_names']);

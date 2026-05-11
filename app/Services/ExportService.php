@@ -105,6 +105,7 @@ class ExportService
             ->select([
                 'gensen_forms.*',
                 'gfd.tahun_gensen as tahun_gensen_detail',
+                'gfd.nominal_gensen as nominal_gensen_detail',
                 'remittances.remittance_total_amounts',
                 'remittances.remittance_receiver_names',
             ])

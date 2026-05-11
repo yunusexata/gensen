@@ -120,7 +120,8 @@ class Attachment extends Component
         $this->tahun_gensen_details[] = [
             'id' => null,
             'key' => Str::random(10),
-            'tahun_gensen' => null
+            'tahun_gensen' => null,
+            'nominal_gensen' => null,
         ];
     }
 
@@ -137,12 +138,14 @@ class Attachment extends Component
                     if ($tahun_gensen['id']) {
                         GensenFormDetailRepository::update($tahun_gensen['id'], [
                             'tahun_gensen' => $tahun_gensen['tahun_gensen'],
+                            'nominal_gensen' => $tahun_gensen['nominal_gensen'],
                         ]);
                     } else {
                         if ($tahun_gensen['tahun_gensen']) {
                             GensenFormDetailRepository::create([
                                 'gensen_form_id' => Crypt::decrypt($this->objId),
                                 'tahun_gensen' => $tahun_gensen['tahun_gensen'],
+                                'nominal_gensen' => $tahun_gensen['nominal_gensen'],
                             ]);
                         }
                     }
