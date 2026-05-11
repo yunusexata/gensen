@@ -540,7 +540,6 @@ class Attachment extends Component
     {
 
         consoleLog($this, 'create save');
-        $this->validate();
         try {
             DB::transaction(function () {
                 $this->saveData(true);
