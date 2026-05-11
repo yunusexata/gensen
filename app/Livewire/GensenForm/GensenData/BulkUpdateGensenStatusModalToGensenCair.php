@@ -9,6 +9,7 @@ use App\Imports\ExcelImportBulkStatusGensen;
 use App\Models\GensenForm\GensenForm;
 use App\Repositories\Exata\ExataRepository;
 use App\Repositories\Gensen\GensenExportImportHistoryRepository;
+use App\Repositories\GensenForm\GensenFormDetailRepository;
 use App\Repositories\GensenForm\GensenFormRepository;
 use Carbon\Carbon;
 use Exception;
@@ -54,6 +55,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
             ];
             $validator = Validator::make($d, [
                 // 'id_customer' => 'required|exists:gensen_forms,id_customer',
+                'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
                 'nama_lengkap' => [
                     'required',
                     Rule::exists('gensen_forms')
@@ -62,18 +64,19 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                                 ->where('no_input_jepang', $d['no_input_jepang']);
                         }),
                 ],
-                'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
                 'tanggal_pengajuan' => 'required',
+                'tahun_gensen' => 'required',
                 'tanggal_cair' => 'required',
                 'nominal_cair' => 'required',
             ], [
                 // 'id_customer.required' => 'Id customer harus di isi',
                 // 'id_customer.exists' => 'Id customer tidak terdaftar',
-                'nama_lengkap.required' => 'Nama lengkap harus di isi',
-                'nama_lengkap.exists' => 'Nama lengkap tidak terdaftar',
                 'no_input_jepang.required' => 'No Input Jepang harus di isi',
                 'no_input_jepang.exists' => 'No Input Jepang tidak terdaftar',
+                'nama_lengkap.required' => 'Nama lengkap harus di isi',
+                'nama_lengkap.exists' => 'Nama lengkap tidak terdaftar',
                 'tanggal_pengajuan.required' => 'Tanggal Pengajuan harus di isi',
+                'tahun_gensen.required' => 'Tahun Gensen harus di isi',
                 'tanggal_cair.required' => 'Tanggal cair harus di isi',
                 'nominal_cair.required' => 'Nominal cair harus di isi',
             ]);
@@ -104,9 +107,14 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
             $successCount = 0;
             foreach ($this->previewBulkStatusRows as $key => $value) {
                 if (!$value['error']) {
-                    $updated = GensenFormRepository::updateBy([
+                    $gensenForm = GensenFormRepository::findBy([
+                        ['no_input_jepang', $value['data']['no_input_jepang']]
+                    ]);
+                    $updated = GensenFormDetailRepository::updateBy([
                         // ['id_customer', $value['data']['id_customer']],
+                        ['gensen_form_id', $gensenForm->id],
                         ['nama_lengkap', $value['data']['nama_lengkap']],
+                        ['tahun_gensen', $value['data']['tahun_gensen']],
                         ['no_input_jepang', $value['data']['no_input_jepang']],
                         ['tanggal_pengajuan', $value['data']['tanggal_pengajuan']],
                     ], [
