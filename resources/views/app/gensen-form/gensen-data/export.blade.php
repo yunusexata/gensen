@@ -70,11 +70,11 @@
                         $total_amounts = explode(';', $item->remittance_total_amounts);
                         $receiver_names = explode(';', $item->remittance_receiver_names);
                     @endphp
-                    <td>@foreach ($total_amounts as $item)
-                        {{ $item }}/
+                    <td>@foreach ($total_amounts as $total)
+                        {{ $total }}/
                     @endforeach</td>
-                    <td>@foreach ($receiver_names as $item)
-                        {{ $item }},
+                    <td>@foreach ($receiver_names as $name)
+                        {{ $name }},
                     @endforeach</td>
                     <td></td>
                     <td>{{$data['nama_instagram']}}</td>
