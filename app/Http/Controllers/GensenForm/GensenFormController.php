@@ -64,7 +64,7 @@ class GensenFormController extends Controller
             404
         );
         if ($attachment->type === GensenAttachmentType::SELURUH_BERKAS) {
-            $filename = $attachment->gensenForm->nama_lengkap . "." . $attachment->extension;
+            $filename = $attachment->gensenForm->nama_lengkap . "-" . $attachment->gensenForm->tanggal_lahir . "." . $attachment->extension;
         } else {
             $filename = $attachment->original_name;
         }
