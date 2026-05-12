@@ -1,7 +1,8 @@
 <?php
 
-use Livewire\Component;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
 
 
 if (!function_exists('calculatedDiscount')) {
@@ -22,6 +23,18 @@ if (!function_exists('simple_encrypt')) {
         $key = hash('sha256', env('ENCRYPT_KEY'), true);
         $iv = substr($key, 0, 16); // Fixed IV
         return base64_encode(openssl_encrypt($value, 'aes-256-cbc', $key, 0, $iv));
+    }
+}
+if (!function_exists('toReiwaYear')) {
+    function toReiwaYear($date): ?int
+    {
+        $carbon = Carbon::parse($date);
+
+        if ($carbon->lt(Carbon::create(2019, 5, 1))) {
+            return null; // before Reiwa
+        }
+
+        return $carbon->year - 2018;
     }
 }
 if (!function_exists('formatFileSize')) {

@@ -176,10 +176,16 @@ class GensenFormRepository extends MasterDataRepository
                 ) AS remittance_total_amounts,
 
                 STRING_AGG(
-                    reg.receiver_name || ' - ' || reg.receiver_relationship || ' - ' || reg.transaction_year,
+                    reg.receiver_name || ' - ' || reg.receiver_relationship,
                     '; '
                     ORDER BY reg.transaction_year
-                ) AS remittance_receiver_names
+                ) AS remittance_receiver_names,
+
+                STRING_AGG(
+                    reg.transaction_year,
+                    '; '
+                    ORDER BY reg.transaction_year
+                ) AS remittance_receiver_years,
             ")
             ->groupBy('re.subject_id', 're.subject_type');
         $gensenDetailAgg = DB::table('gensen_form_details as gfd')
@@ -242,6 +248,7 @@ class GensenFormRepository extends MasterDataRepository
                 'gfd_cair.details as cair_details',
                 'remittances.remittance_total_amounts',
                 'remittances.remittance_receiver_names',
+                'remittances.remittance_receiver_years',
             ])
             ->withExists([
                 'attachments as has_kartu_keluarga' => function ($q) {
