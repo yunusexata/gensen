@@ -282,6 +282,7 @@ class GensenForm extends Model
     public function onSubmitted()
     {
         if ($this->allGensenDetailsCair()) {
+            logger('status cair');
             $this->status = self::STATUS_GENSEN_CAIR;
         }
         $this->is_should_filled = $this->isShouldFilled();
