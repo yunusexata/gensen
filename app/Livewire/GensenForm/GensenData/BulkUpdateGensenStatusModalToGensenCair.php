@@ -117,8 +117,6 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                         // ['id_customer', $value['data']['id_customer']],
                         ['gensen_form_id', $gensenForm->id],
                         ['tahun_gensen', $tahun_reiwa[0]],
-                        ['no_input_jepang', $value['data']['no_input_jepang']],
-                        ['tanggal_pengajuan', $value['data']['tanggal_pengajuan']],
                     ], [
                         'tanggal_cair' => $value['data']['tanggal_cair'],
                         'nominal_cair' => $value['data']['nominal_cair'],
