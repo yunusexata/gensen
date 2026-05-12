@@ -185,7 +185,7 @@ class GensenFormRepository extends MasterDataRepository
                     reg.transaction_year,
                     '; '
                     ORDER BY reg.transaction_year
-                ) AS remittance_receiver_years,
+                ) AS remittance_receiver_years
             ")
             ->groupBy('re.subject_id', 're.subject_type');
         $gensenDetailAgg = DB::table('gensen_form_details as gfd')
