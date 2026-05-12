@@ -357,14 +357,13 @@ class Datatable extends Component
                 'searchable' => false,
                 'name' => 'Tanggungan Keluarga',
                 'render' => function ($item) {
-                    if ($item->remittance_total_amounts) {
-                        dd($item->remittance_total_amounts);
-                    }
-                    $total_amounts = explode(';', explode('.', $item->remittance_total_amounts)[0]);
+
+                    $total_amounts = explode(';', $item->remittance_total_amounts);
                     $receiver_names = explode(';', $item->remittance_receiver_names);
                     $html = "";
-                    foreach ($total_amounts as $index => $item) {
-                        $html .= "<div class='text-nowrap'>{$item} - {$receiver_names[$index]}</div><br/>";
+                    foreach ($total_amounts as $index => $amount) {
+                        $amount = explode('.', $amount)[0];
+                        $html .= "<div class='text-nowrap'>" . $amount . " - {$receiver_names[$index]}</div><br/>";
                     }
                     return $html;
                 }
