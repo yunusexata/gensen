@@ -26,7 +26,7 @@ if (!function_exists('simple_encrypt')) {
     }
 }
 if (!function_exists('toReiwaYear')) {
-    function toReiwaYear($date): ?int
+    function toReiwaYear($date)
     {
         if (!$date) return null;
 
