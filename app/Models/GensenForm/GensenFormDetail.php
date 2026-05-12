@@ -17,6 +17,8 @@ class GensenFormDetail extends Model
         'gensen_form_id',
         'tahun_gensen',
         'nominal_gensen',
+        'nominal_cair',
+        'tanggal_cair',
     ];
 
     protected $guarded = ['id'];
