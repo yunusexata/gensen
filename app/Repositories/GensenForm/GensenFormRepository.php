@@ -182,7 +182,7 @@ class GensenFormRepository extends MasterDataRepository
                 ) AS remittance_receiver_names,
 
                 STRING_AGG(
-                    reg.transaction_year,
+                    reg.transaction_year::text,
                     '; '
                     ORDER BY reg.transaction_year
                 ) AS remittance_receiver_years
