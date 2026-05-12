@@ -193,7 +193,7 @@ class GensenFormRepository extends MasterDataRepository
         $gensenDetailCairAgg = DB::table('gensen_form_details as gfd')
             ->whereNull('gfd.deleted_at')
             ->whereNotNull('gfd.tanggal_cair')
-            ->wereNotNull('nominal_cair')
+            ->whereNotNull('nominal_cair')
             ->where('nominal_cair', '!=', 0)
             ->selectRaw("
         gfd.gensen_form_id,
