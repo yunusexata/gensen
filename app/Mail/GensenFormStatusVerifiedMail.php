@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\GensenForm\GensenForm;
+use App\Models\Service\SendEmailLog;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,7 +12,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class GensenFormCreatedMail extends Mailable
+class GensenFormStatusVerifiedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -19,10 +20,8 @@ class GensenFormCreatedMail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public GensenForm $form
-    ) {
-        //
-    }
+        public SendEmailLog $log
+    ) {}
 
     /**
      * Get the message envelope.
@@ -30,7 +29,7 @@ class GensenFormCreatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Gensen Form Created Mail',
+            subject: $this->log->subject_line,
         );
     }
 
@@ -41,9 +40,9 @@ class GensenFormCreatedMail extends Mailable
     {
         logger('mail created');
         return new Content(
-            view: 'app.gensen.emails.created',
+            view: 'app.gensen.emails.status_verified',
             with: [
-                'form' => $this->form,
+                'form' => $this->log->subject,
             ],
         );
     }

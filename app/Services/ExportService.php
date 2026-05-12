@@ -69,7 +69,7 @@ class ExportService
         ) AS remittance_total_amounts,
 
         STRING_AGG(
-            reg.receiver_name,
+            reg.receiver_name || '-' || reg.receiver_relationship,
             '; '
             ORDER BY reg.transaction_year
         ) AS remittance_receiver_names

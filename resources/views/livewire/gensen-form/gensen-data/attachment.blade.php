@@ -1820,27 +1820,29 @@
                 @if ($onload)
                     <main class="w-full max-w-container-max mx-auto flex flex-row border overflow-hidden p-0">
                         <!-- Left Column: Validation Form (approx 40% based on guidance, though prompt asked for 30%. Defaulting to system guidance of 40% for right pane but prompt asked left. I will use 35/65 split to balance) -->
-                        <section class="w-[35%] flex flex-col h-full bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
+                        <section class="w-[35%] p-5 flex flex-col h-full bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
                             <div class="row">
                                 <button type="button" class="btn btn-primary w-full" wire:click="addGensenFormDetail">Tambah Gensen</button>
                             </div>
-                            <div class="row my-3">
+                            <div class="row my-3 d-flex">
                                 @foreach ($tahun_gensen_details as $index_tahun_gensen => $tahun_gensen_detail)
-                                    <div class="col-md-12 my-2" wire:key="tahun_gensen_details_{{ $tahun_gensen_detail['id'] ? $tahun_gensen_detail['id'] : $tahun_gensen_detail['key'] }}">
-                                        <input
-                                                class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80"
-                                                id="tahun_gensen"
-                                                wire:model="tahun_gensen_details.{{ $index_tahun_gensen }}.tahun_gensen"
-                                                type="number"
-                                                placeholder="2025"
-                                            />
-                                        <input
-                                                class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80"
-                                                id="tahun_gensen"
-                                                wire:model="tahun_gensen_details.{{ $index_tahun_gensen }}.nominal_gensen"
-                                                type="number"
-                                                placeholder="Nominal Gensen"
-                                            />
+                                    <div class="my-2 d-flex justify-content-between w-full" wire:key="tahun_gensen_details_{{ $tahun_gensen_detail['id'] ? $tahun_gensen_detail['id'] : $tahun_gensen_detail['key'] }}">
+                                        <div class="col-auto">
+                                            <input
+                                                    class="form-control"
+                                                    wire:model="tahun_gensen_details.{{ $index_tahun_gensen }}.tahun_gensen"
+                                                    type="number"
+                                                    placeholder="Reiwa"
+                                                />
+                                        </div>
+                                        <div class="col">
+                                            <input
+                                                    class="form-control"
+                                                    wire:model="tahun_gensen_details.{{ $index_tahun_gensen }}.nominal_gensen"
+                                                    type="text"
+                                                    placeholder="Nominal Gensen"
+                                                />
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>
@@ -1854,16 +1856,26 @@
                             <div class="space-y-4">
                                 <h3 class="text-label-bold font-label-bold text-on-surface-variant uppercase border-b border-outline-variant pb-2 mt-4">Remittance Details</h3>
                                 @if ($remittance_extraction)
-                                    @foreach ($remittance_extraction_groups as $index => $remittance)
+                                    @foreach ($remittance_extraction_groups as $index_remittance_extraction => $remittance)
                                         <div class="flex items-start gap-md p-sm hover:bg-surface-container-lowest rounded-lg border border-transparent hover:border-outline-variant transition-colors group">
-                                            <input wire:model.live="remittance_extraction_groups.{{ $index }}.is_validate" class="mt-1 h-4 w-4 rounded border-outline text-primary focus:ring-primary-container bg-surface cursor-pointer" type="checkbox"/>
+                                            <input wire:model.live="remittance_extraction_groups.{{ $index_remittance_extraction }}.is_validate" class="mt-1 h-4 w-4 rounded border-outline text-primary focus:ring-primary-container bg-surface cursor-pointer" type="checkbox"/>
                                             <div class="flex-1">
                                                 <label class="text-label-sm font-label-sm text-on-surface-variant block mb-1">{{$remittance['receiver_name']}} - {{$remittance['transaction_year']}}</label>
-                                                <button type="button" data-bs-toggle="collapse" href="#collapse_remittance_groups_{{ $remittance['id'] }}" role="button" aria-expanded="false" aria-controls="#collapse_remittance_groups_{{ $remittance['id'] }}" 
-                                                    class="w-full text-body-md font-body-md text-on-surface bg-surface p-2 border border-outline-variant rounded flex justify-between items-center opacity-70">
-                                                    <span class="font-data-mono text-data-mono">@currency($remittance['total_amount']) - {{$remittance['currency']}}</span>
-                                                    <span class="material-symbols-outlined text-outline text-[16px]">check_circle</span>
-                                                </button >
+                                                <div class="row">
+                                                    <input
+                                                        class="form-control"
+                                                        wire:model.defer="remittance_extraction_groups.{{ $index_remittance_extraction }}.receiver_relationship"
+                                                        type="text"
+                                                        placeholder="Hubungan"
+                                                    />
+                                                </div>
+                                                <div class="row">
+                                                    <button type="button" data-bs-toggle="collapse" href="#collapse_remittance_groups_{{ $remittance['id'] }}" role="button" aria-expanded="false" aria-controls="#collapse_remittance_groups_{{ $remittance['id'] }}" 
+                                                        class="w-full text-body-md font-body-md text-on-surface bg-surface p-2 border border-outline-variant rounded flex justify-between items-center opacity-70 m-0">
+                                                        <span class="font-data-mono text-data-mono">@currency($remittance['total_amount']) - {{$remittance['currency']}}</span>
+                                                        <span class="material-symbols-outlined text-outline text-[16px]">check_circle</span>
+                                                    </button >
+                                                </div>
                                                 <div id="collapse_remittance_groups_{{ $remittance['id'] }}" class="collapse" aria-labelledby="headingOne" wire:ignore>
                                                     <div class="card-body py-0">
                                                         <ul class="list-group list-group-flush">

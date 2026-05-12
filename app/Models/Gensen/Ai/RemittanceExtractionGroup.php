@@ -26,6 +26,7 @@ class RemittanceExtractionGroup extends Model
         // THE AUDIT TRAIL: Store the individual amounts as a JSON array
         'amount_details',
         'is_validate',
+        'receiver_relationship',
     ];
 
     protected $guarded = ['id'];

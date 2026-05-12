@@ -159,7 +159,7 @@ class GensenForm extends Model
             self::STATUS_GENSEN_CAIR => '#E5C95F',
             self::STATUS_CANCEL => '#FFF6F6',
             self::STATUS_HONNIN => '#D1855C',
-            null => '#ffffff',
+            default => '#ffffff',
         };
     }
 
