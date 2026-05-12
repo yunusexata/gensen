@@ -38,7 +38,7 @@ class GensenFormObserver
                     'subject_id' => $gensenForm->id,
                     'email' => $gensenForm->email,
                     'mailable' => GensenFormStatusLengkapMail::class,
-                    'subject_line' => 'Gensen Update : Berkas Diterima',
+                    'subject_line' => 'Gensen Update',
                     'status' => EmailLogStatus::PENDING,
                     'queued_at' => now(),
                 ]
@@ -49,7 +49,7 @@ class GensenFormObserver
                     'subject_id' => $gensenForm->id,
                     'email' => $gensenForm->email,
                     'mailable' => GensenFormStatusVerifiedMail::class,
-                    'subject_line' => 'Gensen Update : Verifikasi Berhasil',
+                    'subject_line' => 'Gensen Update',
                     'status' => EmailLogStatus::PENDING,
                     'queued_at' => now(),
                 ]
@@ -60,7 +60,7 @@ class GensenFormObserver
                     'subject_id' => $gensenForm->id,
                     'email' => $gensenForm->email,
                     'mailable' => GensenFormStatusDalamPengajuanMail::class,
-                    'subject_line' => 'Gensen Update : Berkas Dalam Pengajuan ke Kantor Pajak Jepang',
+                    'subject_line' => 'Gensen Update',
                     'status' => EmailLogStatus::PENDING,
                     'queued_at' => now(),
                 ]
@@ -71,7 +71,7 @@ class GensenFormObserver
                     'subject_id' => $gensenForm->id,
                     'email' => $gensenForm->email,
                     'mailable' => GensenFormStatusCancelMail::class,
-                    'subject_line' => 'Gensen Update : Proses Pengajuan Gensen di Cancel',
+                    'subject_line' => 'Gensen Update',
                     'status' => EmailLogStatus::PENDING,
                     'queued_at' => now(),
                 ]
@@ -82,7 +82,7 @@ class GensenFormObserver
                     'subject_id' => $gensenForm->id,
                     'email' => $gensenForm->email,
                     'mailable' => GensenFormStatusGensenCairMail::class,
-                    'subject_line' => 'Gensen Update : Uang Gensen Berhasil Cair!',
+                    'subject_line' => 'Gensen Update',
                     'status' => EmailLogStatus::PENDING,
                     'queued_at' => now(),
                 ]
@@ -93,7 +93,7 @@ class GensenFormObserver
                     'subject_id' => $gensenForm->id,
                     'email' => $gensenForm->email,
                     'mailable' => GensenFormStatusHonninMail::class,
-                    'subject_line' => 'Gensen Update : Proses Pencairan gensen masuk kategori Honnin Kouza',
+                    'subject_line' => 'Gensen Update',
                     'status' => EmailLogStatus::PENDING,
                     'queued_at' => now(),
                 ]
