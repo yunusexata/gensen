@@ -357,6 +357,7 @@ class Datatable extends Component
                 'searchable' => false,
                 'name' => 'Tanggungan Keluarga',
                 'render' => function ($item) {
+                    dd($item->remittance_total_amounts);
                     $total_amounts = explode(';', explode('.', $item->remittance_total_amounts)[0]);
                     $receiver_names = explode(';', $item->remittance_receiver_names);
                     $html = "";
