@@ -38,7 +38,7 @@ class GensenFormStatusGensenCairMail extends Mailable
      */
     public function content(): Content
     {
-        logger('mail created');
+        logger('mail created cair');
         return new Content(
             view: 'app.gensen.emails.status_gensen_cair',
             with: [
