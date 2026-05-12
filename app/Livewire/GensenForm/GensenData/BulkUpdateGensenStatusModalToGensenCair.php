@@ -50,6 +50,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                 'nama_lengkap' => $row['nama'],
                 'no_input_jepang' => $row['no_input_jepang'],
                 'tanggal_pengajuan' => $row['tanggal_pengajuan'],
+                'tahun_gensen' => $row['tahun_gensen'],
                 'tanggal_cair' => $row['tanggal_cair'],
                 'nominal_cair' => $row['nominal_cair'],
             ];

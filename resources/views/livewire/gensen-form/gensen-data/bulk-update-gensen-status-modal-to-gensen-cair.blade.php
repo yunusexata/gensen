@@ -38,6 +38,7 @@
                                                     <th>Nama</th>
                                                     <th>No Input Jepang</th>
                                                     <th>Tanggal Pengajuan ke kantor pajak Jepang</th>
+                                                    <th>Tahun Gensen</th>
                                                     <th>Tanggal Cair</th>
                                                     <th>Nominal Cair</th>
                                                 </tr>
@@ -55,6 +56,7 @@
                                                                 <td>{{ $row['data']['nama_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['no_input_jepang'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_pengajuan'] }}</td>
+                                                                <td>{{ $row['data']['tahun_gensen'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_cair'] }}</td>
                                                                 <td>{{ $row['data']['nominal_cair'] }}</td>
                                                                 
@@ -75,6 +77,7 @@
                                                     <th>Nama</th>
                                                     <th>No Input Jepang</th>
                                                     <th>Tanggal Pengajuan ke kantor pajak Jepang</th>
+                                                    <th>Tahun Gensen</th>
                                                     <th>Tanggal Cair</th>
                                                     <th>Nominal Cair</th>
                                                     <th>Pesan Error System</th>
@@ -93,6 +96,7 @@
                                                                 <td>{{ $row['data']['nama_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['no_input_jepang'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_pengajuan'] }}</td>
+                                                                <td>{{ $row['data']['tahun_gensen'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_cair'] }}</td>
                                                                 <td>{{ $row['data']['nominal_cair'] }}</td>
                                                             <td>
