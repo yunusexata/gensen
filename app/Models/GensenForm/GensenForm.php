@@ -189,15 +189,18 @@ class GensenForm extends Model
         });
         self::updating(function ($model) {
             if ($model->isDirty('tanggal_lengkap') && $model->tanggal_lengkap) {
+                logger('dirty lengkap');
                 $model->status = self::STATUS_LENGKAP;
             }
             if ($model->isDirty('tanggal_verified') && $model->tanggal_verified) {
+                logger('dirty verif');
                 $model->status = self::STATUS_VERIFIED;
             }
-            if ($model->isDirty('tanggal_cair') && $model->tanggal_cair && $model->isDirty('nominal_cair') && $model->nominal_cair) {
-                $model->status = self::STATUS_GENSEN_CAIR;
-            }
+            // if ($model->isDirty('tanggal_cair') && $model->tanggal_cair && $model->isDirty('nominal_cair') && $model->nominal_cair) {
+            //     $model->status = self::STATUS_GENSEN_CAIR;
+            // }
             if ($model->isDirty('tanggal_pengajuan') && $model->tanggal_pengajuan) {
+                logger('dirty pengajuan');
                 $model->status = self::STATUS_DALAM_PENGAJUAN;
             }
             // if ($model->isDirty('no_input_jepang') && $model->no_input_jepang) {
