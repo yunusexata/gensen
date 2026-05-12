@@ -361,15 +361,7 @@ class Datatable extends Component
                     $total_amounts = explode(';', $item->remittance_total_amounts);
                     $receiver_names = explode(';', $item->remittance_receiver_names);
                     $receiver_years = explode(';', $item->remittance_receiver_years);
-                    if ($item->remittance_total_amounts) {
 
-                        dd(
-                            $total_amounts,
-                            $receiver_names,
-                            $receiver_years
-                        );
-                        dd($receiver_years);
-                    }
                     $html = "";
                     foreach ($total_amounts as $index => $amount) {
                         $html .= "<div class='text-nowrap'>" . $amount . " - {$receiver_names[$index]} - " . toReiwaYear($receiver_years[$index]) . "</div>";

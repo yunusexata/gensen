@@ -171,19 +171,19 @@ class GensenFormRepository extends MasterDataRepository
                         ',',
                         '.'
                     ),
-                    '; '
+                    ';'
                     ORDER BY reg.transaction_year
                 ) AS remittance_total_amounts,
 
                 STRING_AGG(
                     reg.receiver_name || ' - ' || reg.receiver_relationship,
-                    '; '
+                    ';'
                     ORDER BY reg.transaction_year
                 ) AS remittance_receiver_names,
 
                 STRING_AGG(
                     reg.transaction_year::text,
-                    '; '
+                    ';'
                     ORDER BY reg.transaction_year
                 ) AS remittance_receiver_years
             ")
@@ -199,7 +199,7 @@ class GensenFormRepository extends MasterDataRepository
                 ',',
                 '.'
             ),
-            '; '
+            ';'
             ORDER BY gfd.tahun_gensen
         ) AS details
     ")
@@ -220,7 +220,7 @@ class GensenFormRepository extends MasterDataRepository
                 '.'
             ) 
             || ',' || gfd.tanggal_cair::text,
-            '<br>; '
+            '<br>;'
             ORDER BY gfd.tahun_gensen
         ) AS details
     ")

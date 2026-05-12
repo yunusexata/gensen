@@ -28,15 +28,24 @@ if (!function_exists('simple_encrypt')) {
 if (!function_exists('toReiwaYear')) {
     function toReiwaYear($date)
     {
-        if (!$date) return null;
-
-        $carbon = Carbon::parse($date);
-
-        if ($carbon->lt(Carbon::create(2019, 5, 1))) {
-            return null; // before Reiwa
+        if (!$date) {
+            return null;
         }
 
-        return $carbon->year - 2018;
+        $date = trim((string) $date);
+
+        // if only year provided
+        if (preg_match('/^\d{4}$/', $date)) {
+            $year = (int) $date;
+        } else {
+            $year = Carbon::parse($date)->year;
+        }
+
+        if ($year < 2019) {
+            return null;
+        }
+
+        return $year - 2018;
     }
 }
 if (!function_exists('formatFileSize')) {
