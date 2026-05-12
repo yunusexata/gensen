@@ -47,6 +47,11 @@ class ExportGensenJob implements ShouldQueue
             $data = app(ExportService::class)
                 ->handle($history->job_key, $filters);
 
+            logger([
+                'data export',
+                $data
+            ]);
+
             $fileName = 'export_' . time() . '.xlsx';
             $filePath = 'exports/' . $fileName;
             logger(['data export', $data]);
