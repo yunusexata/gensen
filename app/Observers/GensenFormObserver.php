@@ -35,8 +35,8 @@ class GensenFormObserver
             'email katerogi',
             $gensenForm->status
         ]);
-        match ($gensenForm->status) {
-            GensenForm::STATUS_LENGKAP => SendEmailLogRepository::create(
+        match (trim($gensenForm->status)) {
+            trim(GensenForm::STATUS_LENGKAP) => SendEmailLogRepository::create(
                 [
                     'subject_type' => GensenForm::class,
                     'subject_id' => $gensenForm->id,
@@ -47,7 +47,7 @@ class GensenFormObserver
                     'queued_at' => now(),
                 ]
             ),
-            GensenForm::STATUS_VERIFIED => SendEmailLogRepository::create(
+            trim(GensenForm::STATUS_VERIFIED) => SendEmailLogRepository::create(
                 [
                     'subject_type' => GensenForm::class,
                     'subject_id' => $gensenForm->id,
@@ -58,7 +58,7 @@ class GensenFormObserver
                     'queued_at' => now(),
                 ]
             ),
-            GensenForm::STATUS_DALAM_PENGAJUAN => SendEmailLogRepository::create(
+            trim(GensenForm::STATUS_DALAM_PENGAJUAN) => SendEmailLogRepository::create(
                 [
                     'subject_type' => GensenForm::class,
                     'subject_id' => $gensenForm->id,
@@ -69,7 +69,7 @@ class GensenFormObserver
                     'queued_at' => now(),
                 ]
             ),
-            GensenForm::STATUS_CANCEL => SendEmailLogRepository::create(
+            trim(GensenForm::STATUS_CANCEL) => SendEmailLogRepository::create(
                 [
                     'subject_type' => GensenForm::class,
                     'subject_id' => $gensenForm->id,
@@ -80,7 +80,7 @@ class GensenFormObserver
                     'queued_at' => now(),
                 ]
             ),
-            GensenForm::STATUS_GENSEN_CAIR => SendEmailLogRepository::create(
+            trim(GensenForm::STATUS_GENSEN_CAIR) => SendEmailLogRepository::create(
                 [
                     'subject_type' => GensenForm::class,
                     'subject_id' => $gensenForm->id,
@@ -91,7 +91,7 @@ class GensenFormObserver
                     'queued_at' => now(),
                 ]
             ),
-            GensenForm::STATUS_HONNIN => SendEmailLogRepository::create(
+            trim(GensenForm::STATUS_HONNIN) => SendEmailLogRepository::create(
                 [
                     'subject_type' => GensenForm::class,
                     'subject_id' => $gensenForm->id,
