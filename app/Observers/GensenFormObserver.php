@@ -31,6 +31,10 @@ class GensenFormObserver
      */
     public function updated(GensenForm $gensenForm): void
     {
+        logger([
+            'email katerogi',
+            $gensenForm->status
+        ]);
         match ($gensenForm->status) {
             GensenForm::STATUS_LENGKAP => SendEmailLogRepository::create(
                 [
