@@ -261,14 +261,14 @@
                                                                     />
                                                                 </div>
                                                             </td>
-                                                            <td>
+                                                            {{-- <td>
                                                                 <label for="">nominal gensen</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="text" class="form-control currency" max="999999999999999" wire:model.defer="editingData.nominal_gensen"
                                                                     />
                                                                 </div>
-                                                            </td>
+                                                            </td> --}}
                                                             <td>
                                                                 <label for="">jumlah kirim uang</label>
                                                                 <div class="d-flex align-items-center">
@@ -301,7 +301,7 @@
                                                                     />
                                                                 </div>
                                                             </td>
-                                                            <td>
+                                                            {{-- <td>
                                                                 <label for="">tanggal cair</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
@@ -316,7 +316,7 @@
                                                                         type="text" class="form-control currency" max="999999999999999" wire:model.defer="editingData.nominal_cair"
                                                                     />
                                                                 </div>
-                                                            </td>
+                                                            </td> --}}
                                                             <td class="">
                                                                 <label class="truncate block" for="">Tanggal input</label>
                                                                 <input

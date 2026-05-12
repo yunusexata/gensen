@@ -367,6 +367,13 @@ class Datatable extends Component
                 }
             ],
             [
+                'key' => 'created_at',
+                'name' => 'Tanggal Input',
+                'render' => function ($item) {
+                    return $item->created_at->format('Y-m-d');
+                }
+            ],
+            [
                 'key' => 'tanggal_lengkap',
                 'name' => 'Tanggal Lengkap',
                 'render' => function ($item) {
@@ -391,27 +398,20 @@ class Datatable extends Component
                     return $item->tanggal_pengajuan ? Carbon::parse($item->tanggal_pengajuan)->format('Y-m-d') : '-';
                 }
             ],
-            [
-                'key' => 'tanggal_cair',
-                'name' => 'Tanggal Cair',
-                'render' => function ($item) {
-                    return $item->tanggal_cair ? Carbon::parse($item->tanggal_cair)->format('Y-m-d') : '-';
-                }
-            ],
-            [
-                'key' => 'nominal_cair',
-                'name' => 'Nominal Cair',
-                'render' => function ($item) {
-                    return $item->nominal_cair ? number_format($item->nominal_cair, 0, ',', '.') : '-';
-                }
-            ],
-            [
-                'key' => 'created_at',
-                'name' => 'Tanggal Input',
-                'render' => function ($item) {
-                    return $item->created_at->format('Y-m-d');
-                }
-            ],
+            // [
+            //     'key' => 'tanggal_cair',
+            //     'name' => 'Tanggal Cair',
+            //     'render' => function ($item) {
+            //         return $item->tanggal_cair ? Carbon::parse($item->tanggal_cair)->format('Y-m-d') : '-';
+            //     }
+            // ],
+            // [
+            //     'key' => 'nominal_cair',
+            //     'name' => 'Nominal Cair',
+            //     'render' => function ($item) {
+            //         return $item->nominal_cair ? number_format($item->nominal_cair, 0, ',', '.') : '-';
+            //     }
+            // ],
             [
                 'key' => 'tanggal_kepulangan',
                 'name' => 'Tanggal Kepulangan',
