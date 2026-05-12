@@ -101,7 +101,9 @@ class ExportService
             ->leftJoinSub($remittanceAgg, 'remittances', function ($join) {
                 $join->on('remittances.subject_id', '=', 'gensen_forms.id')
                     ->where('remittances.subject_type', '=', GensenForm::class)
-                    ->on('remittances.transaction_year', '=', 'gfd.tahun_gensen');
+                    ->whereRaw(
+                        'remittances.transaction_year = (gfd.tahun_gensen::int + 2018)'
+                    ); // yyyy compare reiwa
             })
 
             ->select([
@@ -129,13 +131,6 @@ class ExportService
 
     private function exportListDataBelumLengkap($filters)
     {
-        logger([
-            'export belum lengkap',
-            $this->query($filters)
-                ->where('gensen_forms.status', GensenForm::STATUS_BELUM_LENGKAP)
-                ->whereNull('gensen_forms.tanggal_lengkap')
-                ->get()
-        ]);
         return $this->query($filters)
             ->where('gensen_forms.status', GensenForm::STATUS_BELUM_LENGKAP)
             ->whereNull('gensen_forms.tanggal_lengkap')
