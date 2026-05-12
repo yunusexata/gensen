@@ -190,6 +190,21 @@ class GensenFormRepository extends MasterDataRepository
         ) AS details
     ")
             ->groupBy('gfd.gensen_form_id');
+        $gensenDetailCairAgg = DB::table('gensen_form_details as gfd')
+            ->whereNull('gfd.deleted_at')
+            ->whereNotNull('gfd.tanggal_cair')
+            ->wereNotNull('nominal_cair')
+            ->where('nominal_cair', '!=', 0)
+            ->selectRaw("
+        gfd.gensen_form_id,
+
+        STRING_AGG(
+            gfd.nominal_cair::text || '-' || gfd.tanggal_cair::text,
+            '<br>; '
+            ORDER BY gfd.tahun_gensen
+        ) AS details
+    ")
+            ->groupBy('gfd.gensen_form_id');
         return
             // dd(
             GensenForm::query()
@@ -204,9 +219,13 @@ class GensenFormRepository extends MasterDataRepository
             ->leftJoinSub($gensenDetailAgg, 'gfd', function ($join) {
                 $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id');
             })
+            ->leftJoinSub($gensenDetailCairAgg, 'gfd_cair', function ($join) {
+                $join->on('gfd_cair.gensen_form_id', '=', 'gensen_forms.id');
+            })
             ->select([
                 'gensen_forms.*',
                 'gfd.details',
+                'gfd_cair.details as cair_details',
                 'remittances.remittance_total_amounts',
                 'remittances.remittance_receiver_names',
             ])

@@ -90,20 +90,20 @@ return new class extends Migration
         $table->double('nominal_gensen', 20, 2, true)->nullable();
         $table->double('jumlah_kirim_uang', 20, 2, true)->nullable();
         $table->text('nama_penerima_dan_hubungan')->nullable();
-        $table->dateTime('tanggal_lengkap')->default(null)->nullable();
+        $table->date('tanggal_lengkap')->default(null)->nullable();
 
         // Step 2 - HS2
-        $table->dateTime('tanggal_verified')->default(null)->nullable();
+        $table->date('tanggal_verified')->default(null)->nullable();
 
         // Step 3 - Admin Jepang
         $table->string('no_input_jepang')->nullable();
 
         // Step 4 - Admin Jepang
-        $table->dateTime('tanggal_pengajuan')->nullable(); // Tanggal Pengajuan Ke Kantor Pajak
+        $table->date('tanggal_pengajuan')->nullable(); // Tanggal Pengajuan Ke Kantor Pajak
 
         // Step 5 - Acc Exata
         $table->double('nominal_cair', 20, 2, true)->nullable();
-        $table->dateTime('tanggal_cair')->nullable();
+        $table->date('tanggal_cair')->nullable();
 
         // MONDAI
         $table->text('keterangan_mondai')->nullable();

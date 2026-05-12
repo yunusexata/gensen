@@ -342,6 +342,19 @@ class Datatable extends Component
             [
                 'sortable' => false,
                 'searchable' => false,
+                'name' => 'Gensen Cair',
+                'render' => function ($item) {
+                    $cair_details = explode(';', $item->cair_details);
+                    $html = "";
+                    foreach ($cair_details as $index => $gensen) {
+                        $html .= "<div class='text-nowrap'>{$gensen}</div>";
+                    }
+                    return $html;
+                }
+            ],
+            [
+                'sortable' => false,
+                'searchable' => false,
                 'name' => 'Tanggungan Keluarga',
                 'render' => function ($item) {
                     $total_amounts = explode(';', explode('.', $item->remittance_total_amounts)[0]);
