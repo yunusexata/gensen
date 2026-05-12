@@ -122,6 +122,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                         'nominal_cair' => $value['data']['nominal_cair'],
                     ]);
 
+                    $gensenForm->onSubmitted();
                     if ($updated > 0) {
                         $successCount++;
                     }

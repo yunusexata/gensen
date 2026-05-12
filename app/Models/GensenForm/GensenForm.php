@@ -281,16 +281,23 @@ class GensenForm extends Model
 
     public function onSubmitted()
     {
-        // AUTOMATIC UPDATE STATUS LENGKAP WHEN GensenAttachmentType::completeIdentity() == true
-        // if (in_array($this->status, [
-        //     self::STATUS_LENGKAP,
-        //     self::STATUS_BELUM_LENGKAP,
-        //     null,
-        // ])) {
-        //     $this->status = $this->isAttachmentReady(GensenAttachmentType::completeIdentity()) ? self::STATUS_LENGKAP : self::STATUS_BELUM_LENGKAP;
-        // }
+        if ($this->allGensenDetailsCair()) {
+            $this->status = self::STATUS_GENSEN_CAIR;
+        }
         $this->is_should_filled = $this->isShouldFilled();
         $this->save();
+    }
+
+    public function allGensenDetailsCair(): bool
+    {
+        return ! $this->gensenFormDetails()
+            ->whereNull('deleted_at')
+            ->where(function ($q) {
+                $q->whereNull('tanggal_cair')
+                    ->orWhereNull('nominal_cair')
+                    ->orWhere('nominal_cair', 0);
+            })
+            ->exists();
     }
 
     public function isAttachmentReady($requiredTypes = false): bool
