@@ -28,6 +28,8 @@ if (!function_exists('simple_encrypt')) {
 if (!function_exists('toReiwaYear')) {
     function toReiwaYear($date): ?int
     {
+        if (!$date) return null;
+
         $carbon = Carbon::parse($date);
 
         if ($carbon->lt(Carbon::create(2019, 5, 1))) {
