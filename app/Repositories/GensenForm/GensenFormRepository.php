@@ -199,7 +199,7 @@ class GensenFormRepository extends MasterDataRepository
         gfd.gensen_form_id,
 
         STRING_AGG(
-            gfd.nominal_cair::text || '-' || gfd.tanggal_cair::text,
+            gfd.tahun_gensen::text || '-' || gfd.nominal_cair::text || ',' || gfd.tanggal_cair::text,
             '<br>; '
             ORDER BY gfd.tahun_gensen
         ) AS details
