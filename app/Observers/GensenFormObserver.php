@@ -10,7 +10,12 @@ class GensenFormObserver
     /**
      * Handle the GensenForm "created" event.
      */
-    public function created(GensenForm $gensenForm): void {}
+    public function created(GensenForm $gensenForm): void
+    {
+        if ($gensenForm->is_should_filled) {
+            SendGensenFormCreatedEmailJob::dispatch($gensenForm);
+        }
+    }
 
     /**
      * Handle the GensenForm "updated" event.

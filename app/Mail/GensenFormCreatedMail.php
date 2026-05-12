@@ -39,6 +39,7 @@ class GensenFormCreatedMail extends Mailable
      */
     public function content(): Content
     {
+        logger('mail created');
         return new Content(
             view: 'app.gensen.emails.created',
             with: [
