@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GensenForm;
 
+use App\Enums\Gensen\GensenAttachmentType;
 use App\Http\Controllers\Controller;
 use App\Models\GensenForm\GensenFormAttachment;
 use App\Models\GensenForm\GensenFormLink;
@@ -62,11 +63,16 @@ class GensenFormController extends Controller
             $disk->exists($attachment->path),
             404
         );
+        if ($attachment->type === GensenAttachmentType::SELURUH_BERKAS) {
+            $filename = $attachment->gensenForm->nama_lengkap . "." . $attachment->extension;
+        } else {
+            $filename = $attachment->original_name;
+        }
         return response()->file(
             $disk->path($attachment->path),
             [
                 'Content-Type' => $attachment->mime_type,
-                'Content-Disposition' => 'inline; filename="' . $attachment->original_name . '"',
+                'Content-Disposition' => 'inline; filename="' . $filename . '"',
             ]
         );
     }
