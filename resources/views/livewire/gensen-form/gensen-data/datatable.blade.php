@@ -203,7 +203,7 @@
                                                                     </div>
                                                                     <div class="col-auto m-0 p-0">
                                                                         <a href="{{route('gensen_data.attachment', ['id' => $editingData['id']])}}"
-                                                                            target="_BLANK" class="btn btn-primary btn-sm m-0">
+                                                                            class="btn btn-primary btn-sm m-0">
                                                                             <i class="ki-duotone ki-cube-2 text-sm">
                                                                             <span class="path1"></span>
                                                                             <span class="path2"></span>
