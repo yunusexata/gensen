@@ -110,11 +110,12 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                     $gensenForm = GensenFormRepository::findBy([
                         ['no_input_jepang', $value['data']['no_input_jepang']]
                     ]);
+                    preg_match('/^\d+/', trim($value['data']['tahun_gensen']), $tahun_reiwa);
                     $updated = GensenFormDetailRepository::updateBy([
                         // ['id_customer', $value['data']['id_customer']],
                         ['gensen_form_id', $gensenForm->id],
                         ['nama_lengkap', $value['data']['nama_lengkap']],
-                        ['tahun_gensen', $value['data']['tahun_gensen']],
+                        ['tahun_gensen', $tahun_reiwa[0]],
                         ['no_input_jepang', $value['data']['no_input_jepang']],
                         ['tanggal_pengajuan', $value['data']['tanggal_pengajuan']],
                     ], [
