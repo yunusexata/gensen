@@ -57,6 +57,9 @@ class GensenFormRepository extends MasterDataRepository
                 'remarks_id' => $gensen_form->remarks_id,
                 'remarks_type' => $gensen_form->remarks_type,
                 'pic_code' => $gensen_form->pic_code,
+
+                'is_should_filled' => true,
+                'is_submitted' => true,
             ]);
 
             /*
