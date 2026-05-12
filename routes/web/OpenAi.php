@@ -1,7 +1,9 @@
 <?php
 
 use App\Ai\Agents\DocumentClassificationEngine;
+use App\Jobs\SendGensenFormCreatedEmailJob;
 use App\Models\Ai\AiJob;
+use App\Models\GensenForm\GensenForm;
 use App\Repositories\GensenForm\GensenFormRepository;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -56,5 +58,7 @@ Route::get('/ai-test', function () {
     //         ]
     //     );
 
+    $gensen = GensenForm::first();
+    SendGensenFormCreatedEmailJob::dispatch($gensen);
     return 'oke';
 });

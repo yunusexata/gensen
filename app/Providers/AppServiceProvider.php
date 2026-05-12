@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\GensenForm\GensenForm;
+use App\Observers\GensenFormObserver;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -35,5 +37,6 @@ class AppServiceProvider extends ServiceProvider
             // return "<?php echo ($expression);";
             return "<?php echo App\Helpers\NumberFormatter::format($expression); ?>";
         });
+        GensenForm::observe(GensenFormObserver::class);
     }
 }
