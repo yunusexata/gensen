@@ -171,8 +171,11 @@ class ExportService
             ->whereNotNull('gensen_forms.tanggal_verified')
             ->whereNotNull('gensen_forms.no_input_jepang')
             ->whereNotNull('gensen_forms.tanggal_pengajuan')
+            ->where(function ($q) {
+                $q->whereNull('gensen_forms.nominal_cair')
+                    ->orWhere('gensen_forms.nominal_cair', 0);
+            })
             ->whereNull('gensen_forms.tanggal_cair')
-            ->whereNull('gensen_forms.nominal_cair')
             ->get();
     }
 }
