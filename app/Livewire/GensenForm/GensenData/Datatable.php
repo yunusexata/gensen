@@ -372,6 +372,13 @@ class Datatable extends Component
                 'name' => 'No Input Jepang',
             ],
             [
+                'key' => 'tanggal_pengajuan',
+                'name' => 'Tanggal Pengajuan',
+                'render' => function ($item) {
+                    return $item->tanggal_pengajuan ? Carbon::parse($item->tanggal_pengajuan)->format('Y-m-d') : '-';
+                }
+            ],
+            [
                 'key' => 'tanggal_cair',
                 'name' => 'Tanggal Cair',
                 'render' => function ($item) {
