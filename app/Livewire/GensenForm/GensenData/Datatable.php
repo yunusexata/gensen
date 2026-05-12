@@ -503,6 +503,7 @@ class Datatable extends Component
     {
         try {
             DB::transaction(function () {});
+            consoleLog($this, $this->editingData['status']);
             $validatedData = [
                 'status' => $this->editingData['status'],
                 'nama_lengkap' => $this->editingData['nama_lengkap'],
