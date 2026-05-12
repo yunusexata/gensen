@@ -106,7 +106,7 @@
             <table class="table table-bordered text-nowrap text-left border-collapse min-w-full">
                 <thead class="sticky top-0 bg-white z-10">
                     <tr class="bg-surface-container-low/50"> --}}
-        <div class="table-responsive" style="max-height:80vh; overflow:auto;">
+        <div class="table-responsive" style="max-height:80vh; overflow:auto;" id="tableWrapper">
             <table class="table table-row-bordered table-bordered" style="max-height:80vh;">
                 <thead class="sticky-top bg-white">
                     <tr class="bg-surface-container-low/50">
@@ -179,7 +179,7 @@
 
                             <tr wire:key="data-collapse-{{$item['id']}}"
                             class="hover:bg-surface-container-low transition-colors group">
-                                <td colspan="100" class="p-0 border-0">
+                                <td colspan="27" class="p-0 border-0">
 
                                     <div id="collapse-{{ $item['id'] }}" class="collapse" wire:ignore.self>
                                         <div class="table-responsive">
@@ -269,13 +269,23 @@
                                                                     />
                                                                 </div>
                                                             </td> --}}
-                                                            <td>
+                                                            {{-- <td>
                                                                 <label for="">jumlah kirim uang</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="text" class="form-control currency" max="999999999999999" wire:model.defer="editingData.jumlah_kirim_uang"
                                                                     />
                                                                 </div>
+                                                            </td> --}}
+
+                                                            <td class="">
+                                                                <label class="truncate block" for="">Tanggal input</label>
+                                                                <input
+                                                                    type="text" 
+                                                                    class="form-control w-[130px] py-3"  
+                                                                    value="{{$editingData['created_at']}}"
+                                                                    readonly
+                                                                />
                                                             </td>
                                                             <td>
                                                                 <label for="">tanggal lengkap</label>
@@ -295,7 +305,7 @@
                                                             </td>
                                                             <td>
                                                                 <label for="">no input Jepang</label>
-                                                                <div class="d-flex align-items-center">
+                                                                <div class="d-flex align-items-center col-auto">
                                                                     <input
                                                                         type="text" class="form-control" wire:model.defer="editingData.no_input_jepang"
                                                                     />
@@ -317,14 +327,13 @@
                                                                     />
                                                                 </div>
                                                             </td> --}}
-                                                            <td class="">
-                                                                <label class="truncate block" for="">Tanggal input</label>
-                                                                <input
-                                                                    type="text" 
-                                                                    class="form-control w-[130px] py-3"  
-                                                                    value="{{$editingData['created_at']}}"
-                                                                    readonly
-                                                                />
+                                                            <td>
+                                                                <label for="">tanggal pengajuan</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="date" class="form-control" wire:model.defer="editingData.tanggal_pengajuan"
+                                                                    />
+                                                                </div>
                                                             </td>
                                                             <td>
                                                                 <label for="">tanggal kepulangan</label>
@@ -390,14 +399,14 @@
                                                                     />
                                                                 </div>
                                                             </td> --}}
-                                                            <td>
+                                                            {{-- <td>
                                                                 <label for="">kode PIC</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="text" class="form-control" value="{{$editingData['pic_code']}}" readonly
                                                                     />
                                                                 </div>
-                                                            </td>
+                                                            </td> --}}
                                                             <td>
                                                                 <label for="">nama instagram</label>
                                                                 <div class="d-flex align-items-center">
@@ -454,14 +463,7 @@
                                                                     />
                                                                 </div>
                                                             </td>
-                                                            <td>
-                                                                <label for="">asal pembuatan</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" value="{{$editingData['remarks_type']}}" readonly
-                                                                    />
-                                                                </div>
-                                                            </td>
+
                                                             <td>
                                                                 <label for="">keterangan mondai</label>
                                                                 <div class="d-flex align-items-center">
@@ -470,6 +472,14 @@
                                                                     />
                                                                 </div>
                                                             </td>
+                                                            {{-- <td>
+                                                                <label for="">asal pembuatan</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" value="{{$editingData['remarks_type']}}" readonly
+                                                                    />
+                                                                </div>
+                                                            </td> --}}
                                                         </tr>
                                                     @endif
                                                     {{-- <tr>
@@ -483,11 +493,28 @@
                                     </div>
 
                                 </td>
+                                <td colspan="100"></td>
                             </tr>
                         @endforeach
                     {{-- @endfor --}}
                 </tbody>
             </table>
+        </div>
+        <div class="row d-flex justify-content-between">
+            <!-- LEFT BUTTON -->
+            <div class="col-auto position-relative">
+                <button id="scrollLeft"
+                    class="btn btn-light  top-50 start-0 translate-middle-y shadow">
+                    ←
+                </button>
+            </div>
+            <!-- RIGHT BUTTON -->
+            <div class="col-auto position-relative">
+                <button id="scrollRight"
+                    class="btn btn-light  top-50 end-0 translate-middle-y shadow">
+                    →
+                </button>
+            </div>
         </div>
         
 
@@ -504,7 +531,9 @@
 
 @push('css')
     <style>
-        
+        td:has(.form-control) {
+            /* width: 100px; */
+        }
         .collapse:not(table) {
             visibility: visible !important;
         }
@@ -515,3 +544,25 @@
 @endpush
 
 @include('js.imask')
+
+@push('js')
+    <script>
+    const wrapper = document.getElementById('tableWrapper');
+
+    document.getElementById('scrollLeft')
+        .addEventListener('click', () => {
+            wrapper.scrollTo({
+                left: 0,
+                behavior: 'smooth'
+            });
+        });
+
+    document.getElementById('scrollRight')
+        .addEventListener('click', () => {
+            wrapper.scrollTo({
+                left: wrapper.scrollWidth,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+@endpush

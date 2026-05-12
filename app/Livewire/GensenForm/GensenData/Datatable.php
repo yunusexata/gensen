@@ -327,49 +327,6 @@ class Datatable extends Component
                 'name' => 'Email',
             ],
             [
-                'sortable' => false,
-                'searchable' => false,
-                'name' => 'Gensen',
-                'render' => function ($item) {
-                    $details = explode(';', $item->details);
-                    $html = "";
-                    foreach ($details as $index => $gensen) {
-                        $html .= "<div class='text-nowrap'>{$gensen}</div>";
-                    }
-                    return $html;
-                }
-            ],
-            [
-                'sortable' => false,
-                'searchable' => false,
-                'name' => 'Gensen Cair',
-                'render' => function ($item) {
-                    $cair_details = explode(';', $item->cair_details);
-                    $html = "";
-                    foreach ($cair_details as $index => $gensen) {
-                        $html .= "<div class='text-nowrap'>{$gensen}</div>";
-                    }
-                    return $html;
-                }
-            ],
-            [
-                'sortable' => false,
-                'searchable' => false,
-                'name' => 'Tanggungan Keluarga',
-                'render' => function ($item) {
-
-                    $total_amounts = explode(';', $item->remittance_total_amounts);
-                    $receiver_names = explode(';', $item->remittance_receiver_names);
-                    $receiver_years = explode(';', $item->remittance_receiver_years);
-
-                    $html = "";
-                    foreach ($total_amounts as $index => $amount) {
-                        $html .= "<div class='text-nowrap'> " . toReiwaYear($receiver_years[$index]) . " - " . $amount . " - {$receiver_names[$index]}</div>";
-                    }
-                    return $html;
-                }
-            ],
-            [
                 'key' => 'created_at',
                 'name' => 'Tanggal Input',
                 'render' => function ($item) {
@@ -435,18 +392,15 @@ class Datatable extends Component
                 'key' => 'hubungan_penerima',
                 'name' => 'Hubungan Penerima',
             ],
-            [
-                'key' => 'tahun_gensen',
-                'name' => 'Tahun Gensen',
-            ],
-            [
-                'key' => 'tahun_transfer',
-                'name' => 'Tahun Transfer',
-            ],
-            [
-                'key' => 'pic_code',
-                'name' => 'Kode PIC',
-            ],
+            // [
+            //     'key' => 'tahun_gensen',
+            //     'name' => 'Tahun Gensen',
+            // ],
+            // [
+            //     'key' => 'tahun_transfer',
+            //     'name' => 'Tahun Transfer',
+            // ],
+
             [
                 'key' => 'nama_instagram',
                 'name' => 'Nama Instagram',
@@ -476,6 +430,10 @@ class Datatable extends Component
                 'name' => 'Nama LPK/SO/PT',
             ],
             [
+                'key' => 'keterangan_mondai',
+                'name' => 'Keterangan Mondai',
+            ],
+            [
                 'searchable' => false,
                 'key' => 'remarks_type',
                 'name' => 'Asal Pembuatan',
@@ -484,8 +442,51 @@ class Datatable extends Component
                 }
             ],
             [
-                'key' => 'keterangan_mondai',
-                'name' => 'Keterangan Mondai',
+                'sortable' => false,
+                'searchable' => false,
+                'name' => 'Gensen',
+                'render' => function ($item) {
+                    $details = explode(';', $item->details);
+                    $html = "";
+                    foreach ($details as $index => $gensen) {
+                        $html .= "<div class='text-nowrap'>{$gensen}</div>";
+                    }
+                    return $html;
+                }
+            ],
+            [
+                'sortable' => false,
+                'searchable' => false,
+                'name' => 'Tanggungan Keluarga',
+                'render' => function ($item) {
+
+                    $total_amounts = explode(';', $item->remittance_total_amounts);
+                    $receiver_names = explode(';', $item->remittance_receiver_names);
+                    $receiver_years = explode(';', $item->remittance_receiver_years);
+
+                    $html = "";
+                    foreach ($total_amounts as $index => $amount) {
+                        $html .= "<div class='text-nowrap'> " . toReiwaYear($receiver_years[$index]) . " - " . $amount . " - {$receiver_names[$index]}</div>";
+                    }
+                    return $html;
+                }
+            ],
+            [
+                'sortable' => false,
+                'searchable' => false,
+                'name' => 'Gensen Cair',
+                'render' => function ($item) {
+                    $cair_details = explode(';', $item->cair_details);
+                    $html = "";
+                    foreach ($cair_details as $index => $gensen) {
+                        $html .= "<div class='text-nowrap'>{$gensen}</div>";
+                    }
+                    return $html;
+                }
+            ],
+            [
+                'key' => 'pic_code',
+                'name' => 'Kode PIC',
             ],
         ];
     }
@@ -528,10 +529,11 @@ class Datatable extends Component
                 'tanggal_lengkap' => $this->editingData['tanggal_lengkap'] ? $this->editingData['tanggal_lengkap'] : null,
                 'tanggal_verified' => $this->editingData['tanggal_verified'] ? $this->editingData['tanggal_verified'] : null,
                 'no_input_jepang' => $this->editingData['no_input_jepang'],
+                'tanggal_pengajuan' => $this->editingData['tanggal_pengajuan'] ? $this->editingData['tanggal_pengajuan'] : null,
                 'tanggal_cair' => $this->editingData['tanggal_cair'] ? $this->editingData['tanggal_cair'] : null,
                 'nominal_cair' => imaskToValue($this->editingData['nominal_cair']),
                 'nominal_gensen' => imaskToValue($this->editingData['nominal_gensen']),
-                'jumlah_kirim_uang' => imaskToValue($this->editingData['jumlah_kirim_uang']),
+                // 'jumlah_kirim_uang' => imaskToValue($this->editingData['jumlah_kirim_uang']),
                 'tanggal_kepulangan' => $this->editingData['tanggal_kepulangan'] ? $this->editingData['tanggal_kepulangan'] : null,
                 // REK PENERIMA
                 'no_rekening_penerima' => $this->editingData['no_rekening_penerima'],
@@ -671,11 +673,12 @@ class Datatable extends Component
             'tanggal_lengkap' => $row['tanggal_lengkap'] ? Carbon::parse($row['tanggal_lengkap'])->format('Y-m-d') : null,
             'tanggal_verified' => $row['tanggal_verified'] ? Carbon::parse($row['tanggal_verified'])->format('Y-m-d') : null,
             'no_input_jepang' => $row['no_input_jepang'],
+            'tanggal_pengajuan' => $row['tanggal_pengajuan'] ? Carbon::parse($row['tanggal_pengajuan'])->format('Y-m-d') : null,
             'tanggal_cair' => $row['tanggal_cair'] ? Carbon::parse($row['tanggal_cair'])->format('Y-m-d') : null,
             'nominal_cair' => valueToImask($row['nominal_cair']),
             'created_at' => $row['created_at'] ? Carbon::parse($row['created_at'])->format('Y-m-d') : null,
             'nominal_gensen' => valueToImask($row['nominal_gensen']),
-            'jumlah_kirim_uang' => valueToImask($row['jumlah_kirim_uang']),
+            // 'jumlah_kirim_uang' => valueToImask($row['jumlah_kirim_uang']),
             'tanggal_kepulangan' => $row['tanggal_kepulangan'] ? Carbon::parse($row['tanggal_kepulangan'])->format('Y-m-d') : null,
             // REK PENERIMA
             'no_rekening_penerima' => $row['no_rekening_penerima'],
