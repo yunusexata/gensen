@@ -374,7 +374,7 @@
                                                                     />
                                                                 </div>
                                                             </td>
-                                                            <td>
+                                                            {{-- <td>
                                                                 <label for="">tahun gensen</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
@@ -389,7 +389,7 @@
                                                                         type="number" class="form-control" wire:model.defer="editingData.tahun_transfer"
                                                                     />
                                                                 </div>
-                                                            </td>
+                                                            </td> --}}
                                                             <td>
                                                                 <label for="">kode PIC</label>
                                                                 <div class="d-flex align-items-center">
