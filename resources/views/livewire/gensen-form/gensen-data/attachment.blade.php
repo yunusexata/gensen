@@ -2030,21 +2030,21 @@
                                 @if ($seluruh_berkas_old['isJobProcess'] && $seluruh_berkas_old['isJobProcess']->status == App\Enums\Gensen\JobStatus::DONE)
                                     @if ($seluruh_berkas_old['id'] == $showData['id'])
                                         <div class="bg-surface-container-lowest p-3 rounded-xl shadow-[0px_8px_32px_rgba(25,28,30,0.06)] border-l-4 border-primary group cursor-pointer transition-all duration-200"
-                                        wire:click="showFile('{{$seluruh_berkas_old['id']}}', '{{$seluruh_berkas_old['url']}}', '{{$seluruh_berkas_old['type']}}', '{{$seluruh_berkas_old['filename']}}', '{{$seluruh_berkas_old['created_at']}}')">
+                                        wire:click="showFile('{{$seluruh_berkas_old['id']}}', '{{$seluruh_berkas_old['url']}}', '{{$seluruh_berkas_old['type']}}', '{{$seluruh_berkas_old['nama_file']}}', '{{$seluruh_berkas_old['created_at']}}')">
                                             <div class="flex gap-3">
                                                 <div class="h-10 w-10 bg-primary/5 rounded-lg flex items-center justify-center text-primary">
                                                     <span class="material-symbols-outlined">picture_as_pdf</span>
                                                 </div>
                                     @else
                                         <div class="p-3 rounded-xl hover:bg-surface-container-lowest transition-all duration-200 group cursor-pointer" 
-                                        wire:click="showFile('{{$seluruh_berkas_old['id']}}', '{{$seluruh_berkas_old['url']}}', '{{$seluruh_berkas_old['type']}}', '{{$seluruh_berkas_old['filename']}}', '{{$seluruh_berkas_old['created_at']}}')">
+                                        wire:click="showFile('{{$seluruh_berkas_old['id']}}', '{{$seluruh_berkas_old['url']}}', '{{$seluruh_berkas_old['type']}}', '{{$seluruh_berkas_old['nama_file']}}', '{{$seluruh_berkas_old['created_at']}}')">
                                         <div class="flex gap-3">
                                             <div class="h-10 w-10 bg-secondary/5 rounded-lg flex items-center justify-center text-secondary-container">
                                                 <span class="material-symbols-outlined">description</span>
                                             </div>
                                     @endif
                                             <div class="flex-1 overflow-hidden">
-                                                <h6 class="text-[10px] text-on-surface">{{$seluruh_berkas_old['filename']}}</h6>
+                                                <h6 class="text-[10px] text-on-surface">{{$seluruh_berkas_old['nama_file']}}</h6>
                                                 <div class="flex items-center justify-between mt-1">
                                                     <span class="text-[10px] text-outline font-medium">{{ formatFileSize($seluruh_berkas_old['size']) }} • {{ Carbon\Carbon::parse($seluruh_berkas_old['created_at'])->format('M j, Y') }}</span>
                                                     <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>

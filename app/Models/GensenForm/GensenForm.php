@@ -444,6 +444,7 @@ class GensenForm extends Model
                             'uploaded' => (bool) $attachment,
                             'attachment' => $attachment,
                             'filename' => $attachment?->original_name,
+                            'nama_file' => $this->nama_lengkap . "." . $attachment?->extension,
                             'isJobProcess' => $attachment?->isJobProcess(),
                             'isJobProcessDone' => $attachment?->isJobProcessDone(),
                             'status' => $attachment?->status,

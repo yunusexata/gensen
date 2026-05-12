@@ -30,7 +30,6 @@ class ExportGensenJob implements ShouldQueue
 
     public function handle()
     {
-
         logger('START EXPORT');
         $history = GensenExportImportHistory::findOrFail($this->historyId);
         Log::info('Broadcasting event', [
@@ -47,14 +46,8 @@ class ExportGensenJob implements ShouldQueue
             $data = app(ExportService::class)
                 ->handle($history->job_key, $filters);
 
-            logger([
-                'data export',
-                $data
-            ]);
-
-            $fileName = 'export_' . time() . '.xlsx';
+            $fileName = $history->job_key . '_' . time() . '.xlsx';
             $filePath = 'exports/' . $fileName;
-            logger(['data export', $data]);
 
             // simpan file (pakai Laravel Excel atau manual)
             Excel::store(new CollectionExport(
