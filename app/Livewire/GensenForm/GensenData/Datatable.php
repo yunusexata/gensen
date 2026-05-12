@@ -364,7 +364,7 @@ class Datatable extends Component
 
                     $html = "";
                     foreach ($total_amounts as $index => $amount) {
-                        $html .= "<div class='text-nowrap'>" . $amount . " - {$receiver_names[$index]} - " . toReiwaYear($receiver_years[$index]) . "</div>";
+                        $html .= "<div class='text-nowrap'> " . toReiwaYear($receiver_years[$index]) . " - " . $amount . " - {$receiver_names[$index]}</div>";
                     }
                     return $html;
                 }
