@@ -166,13 +166,17 @@ class GensenFormRepository extends MasterDataRepository
                 re.subject_type,
 
                 STRING_AGG(
-                    reg.total_amount::text,
+                    REPLACE(
+                        TO_CHAR(reg.total_amount, 'FM999,999,999,999'),
+                        ',',
+                        '.'
+                    ),
                     '; '
                     ORDER BY reg.transaction_year
                 ) AS remittance_total_amounts,
 
                 STRING_AGG(
-                    reg.receiver_name || '-' || reg.receiver_relationship,
+                    reg.receiver_name || ' - ' || reg.receiver_relationship || ' - ' || reg.transaction_year,
                     '; '
                     ORDER BY reg.transaction_year
                 ) AS remittance_receiver_names
@@ -184,7 +188,7 @@ class GensenFormRepository extends MasterDataRepository
         gfd.gensen_form_id,
 
         STRING_AGG(
-            gfd.tahun_gensen::text || '-' ||REPLACE(
+            gfd.tahun_gensen::text || '-' || REPLACE(
                 TO_CHAR(gfd.nominal_gensen, 'FM999,999,999,999'),
                 ',',
                 '.'
