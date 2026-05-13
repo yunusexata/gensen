@@ -40,7 +40,7 @@ class GensenFormStatusDalamPengajuanMail extends Mailable
     {
         logger('mail created');
         return new Content(
-            view: 'app.gensen.emails.status_dalam_pengajuan',
+            view: 'app.gensen.emails.status_pengajuan',
             with: [
                 'form' => $this->log->subject,
             ],

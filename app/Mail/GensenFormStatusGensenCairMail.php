@@ -40,7 +40,7 @@ class GensenFormStatusGensenCairMail extends Mailable
     {
         logger('mail created cair');
         return new Content(
-            view: 'app.gensen.emails.status_gensen_cair',
+            view: 'app.gensen.emails.status_cair',
             with: [
                 'form' => $this->log->subject,
             ],
