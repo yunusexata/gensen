@@ -152,7 +152,7 @@
                                             $cell_style = is_callable($col['style'])
                                                 ? call_user_func($col['style'], $item, $loop->parent->iteration )
                                                 : $col['style'];
-                                            $cell_style = "style='{$cell_class}'";
+                                            $cell_style = "{$cell_class}";
                                         }
 
                                         $cell_class = '';
@@ -160,7 +160,7 @@
                                             $cell_class = is_callable($col['class'])
                                                 ? call_user_func($col['class'], $item, $loop->parent->iteration )
                                                 : $col['class'];
-                                            $cell_class = "class='{$cell_class}'";
+                                            $cell_class = "{$cell_class}";
                                         }
                                     @endphp
 
@@ -519,25 +519,6 @@
                                         >
                                             Loading more...
                                         </div>
-                                        {{-- <div 
-                                            x-data="{
-                                                observe() {
-                                                    const observer = new IntersectionObserver((entries) => {
-                                                        if (entries[0].isIntersecting) {
-                                                            @this.call('loadMore');
-                                                        }
-                                                    }, { threshold: 0.5 });
-                                                    observer.observe($el);
-                                                }
-                                            }"
-                                            x-init="observe()"
-                                            class="py-4 text-center"
-                                        >
-                                            <div wire:loading wire:target="loadMore">
-                                                <!-- Replace with a nice spinner -->
-                                                <span class="text-gray-500 border border-danger">Loading more data...</span>
-                                            </div>
-                                        </div> --}}
                                     </td>
                                 </tr>
                             @endif

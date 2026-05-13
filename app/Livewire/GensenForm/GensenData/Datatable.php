@@ -205,11 +205,12 @@ class Datatable extends Component
                 'name' => 'No',
                 'sortable' => true,
                 'searchable' => false,
+                // 'class' => 'd-flex  border border-danger',
                 'render' => function ($item, $index) {
                     $id = Crypt::encrypt($item->id);
 
                     $editHtml = "
-                        <div class='col-auto' x-data=\"{ open: false }\"
+                        <div class='col-auto m-0 p-0 d-flex d-inline flex-nowrap justify-content-center align-items-end' x-data=\"{ open: false }\"
                             wire:key='datatable_row_main_{$item['id']}'>
 
                             <button type='button'
@@ -228,7 +229,7 @@ class Datatable extends Component
                         </div>";
 
 
-                    $html = "<div class='row p-0 m-0 d-flex d-inline flex-nowrap justify-content-center'>
+                    $html = "<div class='row p-0 m-0 d-flex d-inline flex-nowrap justify-content-center align-items-center'>
                         
                         $editHtml 
                         <h1>{$index}</h1>
@@ -308,6 +309,7 @@ class Datatable extends Component
             [
                 'key' => 'status',
                 'name' => 'Status',
+                'class' => 'text-center',
                 'render' => function ($item) {
                     return "<p class='btn btn-sm py-1 mb-0 text-nowrap' style='background-color:" . $item->statusColor() . "'>" . $item->status . "</p>";
                 }
@@ -320,6 +322,7 @@ class Datatable extends Component
             [
                 'key' => 'no_input_jepang',
                 'name' => 'No Input Jepang',
+                'class' => 'text-center',
             ],
             [
                 'key' => 'nama_lengkap',
@@ -328,6 +331,7 @@ class Datatable extends Component
             [
                 'key' => 'tanggal_lahir',
                 'name' => 'Tanggal Lahir',
+                'class' => 'text-center',
             ],
             // [
             //     'key' => 'email',
@@ -336,6 +340,7 @@ class Datatable extends Component
             [
                 'key' => 'tanggal_kepulangan',
                 'name' => 'Tanggal Kepulangan',
+                'class' => 'text-center',
             ],
 
             [
@@ -345,6 +350,7 @@ class Datatable extends Component
             [
                 'key' => 'nama_bank_penerima',
                 'name' => 'Nama Bank Penerima',
+                'class' => 'text-center',
             ],
             [
                 'key' => 'nama_penerima',
@@ -353,6 +359,7 @@ class Datatable extends Component
             [
                 'key' => 'hubungan_penerima',
                 'name' => 'Hubungan Penerima',
+                'class' => 'text-center',
             ],
 
             [
@@ -389,6 +396,7 @@ class Datatable extends Component
                 'sortable' => false,
                 'searchable' => false,
                 'name' => 'Tanggal Cair',
+                'class' => 'text-center',
                 'render' => function ($item) {
                     $cair_details = explode(';', $item->tanggal_cair_details);
                     $html = "";
@@ -422,6 +430,7 @@ class Datatable extends Component
             [
                 'key' => 'kode_pos_jepang',
                 'name' => 'Kode POS Jepang',
+                'class' => 'text-center',
             ],
 
             [
@@ -432,6 +441,7 @@ class Datatable extends Component
             [
                 'key' => 'pic_code',
                 'name' => 'Kode PIC',
+                'class' => 'text-center',
             ],
             // [
             //     'key' => 'tanggal_lengkap',
