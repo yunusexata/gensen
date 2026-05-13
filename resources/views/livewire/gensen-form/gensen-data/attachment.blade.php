@@ -1900,17 +1900,22 @@
                             </div>
                             </div>
                             <!-- Action Bar -->
-                            <div class="p-md border-t border-outline-variant bg-surface-container-lowest flex justify-end gap-sm">
-                            
-                            <button wire:click="submitRemittanceExtractionJob" type="button" class="px-6 py-2 bg-primary text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
-                            AI extract
-                            </button>
-                            <button wire:click="getRemittanceExtraction" type="button" class="px-6 py-2 bg-warning text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
-                            Refresh Data
-                            </button>
-                            <button wire:click="confirmRemittanceValidation" type="button" class="px-6 py-2 bg-success text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
-                            Confirm
-                            </button>
+                            <div class="p-md border-t border-outline-variant bg-surface-container-lowest flex justify-end gap-sm row d-flex flex-nowrap justify-content-evenly">
+                            <div class="col-4">
+                                <button wire:click="submitRemittanceExtractionJob" type="button" class="px-6 py-2 bg-primary text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
+                                AI extract
+                                </button>
+                            </div>
+                            <div class="col-4">
+                                <button wire:click="getRemittanceExtraction" type="button" class="px-6 py-2 bg-warning text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
+                                Refresh Data
+                                </button>
+                            </div>
+                            <div class="col-4">
+                                <button wire:click="confirmRemittanceValidation" type="button" class="px-6 py-2 bg-success text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
+                                Confirm Data
+                                </button>
+                            </div>
                             </div>
                         </section>
                         <!-- Right Column: Document Preview (approx 65%) -->

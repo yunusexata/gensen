@@ -69,8 +69,6 @@
                     @php
                         $total_amounts = explode(';', $data['remittance_total_amounts']);
                         $receiver_names = explode(';', $data['remittance_receiver_names']);
-                        logger(['export total amounts', $total_amounts])
-                        logger(['export receivers', $receiver_names])
                     @endphp
                     <td>@foreach ($total_amounts as $total)
                         {{ $total }}/

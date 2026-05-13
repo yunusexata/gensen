@@ -131,8 +131,14 @@ class Attachment extends Component
     public function confirmRemittanceValidation()
     {
         try {
+            if (empty($this->tahun_gensen_details)) {
+                throw new Exception("Data Gensen harus di isi!");
+            }
             DB::transaction(function () {
                 foreach ($this->remittance_extraction_groups as $remittance) {
+                    if ($remittance['is_validate'] && !$remittance['receiver_relationship']) {
+                        throw new Exception("Jika Valid, Hubungan harus di isi!");
+                    }
                     RemittanceExtractionGroupRepository::update($remittance['id'], [
                         'is_validate' => $remittance['is_validate'],
                         'receiver_relationship' => $remittance['receiver_relationship'],
@@ -140,12 +146,16 @@ class Attachment extends Component
                 }
                 foreach ($this->tahun_gensen_details as $tahun_gensen) {
                     if ($tahun_gensen['id']) {
-                        GensenFormDetailRepository::update($tahun_gensen['id'], [
-                            'tahun_gensen' => $tahun_gensen['tahun_gensen'],
-                            'nominal_gensen' => $tahun_gensen['nominal_gensen'],
-                        ]);
+                        if (!$tahun_gensen['tahun_gensen'] && !$tahun_gensen['nominal_gensen']) {
+                            GensenFormDetailRepository::delete($tahun_gensen['id']);
+                        } else {
+                            GensenFormDetailRepository::update($tahun_gensen['id'], [
+                                'tahun_gensen' => $tahun_gensen['tahun_gensen'],
+                                'nominal_gensen' => $tahun_gensen['nominal_gensen'],
+                            ]);
+                        }
                     } else {
-                        if ($tahun_gensen['tahun_gensen']) {
+                        if ($tahun_gensen['tahun_gensen'] && $tahun_gensen['nominal_gensen']) {
                             GensenFormDetailRepository::create([
                                 'gensen_form_id' => Crypt::decrypt($this->objId),
                                 'tahun_gensen' => $tahun_gensen['tahun_gensen'],
@@ -154,12 +164,15 @@ class Attachment extends Component
                         }
                     }
                 }
+                $remittance_extraction = RemittanceExtractionRepository::findBy([
+                    ['subject_id', Crypt::decrypt($this->objId)],
+                    ['subject_type', GensenForm::class]
+                ]);
+                if ($remittance_extraction) {
+                    $remittance_extraction->syncSubjectTotal();
+                }
             });
-            $remittance_extraction = RemittanceExtractionRepository::findBy([
-                ['subject_id', Crypt::decrypt($this->objId)],
-                ['subject_type', GensenForm::class]
-            ]);
-            $remittance_extraction->syncSubjectTotal();
+            $this->getTahunGensenDetails();
             DB::commit();
             Alert::confirmation(
                 $this,
@@ -180,6 +193,7 @@ class Attachment extends Component
     public function submitRemittanceExtractionJob()
     {
         try {
+            $this->confirmRemittanceValidation();
             DB::transaction(function () {
                 $job = AiJob::firstOrCreate(
                     [
@@ -212,6 +226,16 @@ class Attachment extends Component
         } catch (Exception $e) {
             DB::rollBack();
             Alert::fail($this, "Gagal", $e->getMessage());
+        }
+    }
+
+    private function getTahunGensenDetails()
+    {
+
+        if ($this->objId) {
+            $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
+
+            $this->tahun_gensen_details = $gensen->gensenFormDetails->toArray();
         }
     }
 
@@ -341,7 +365,7 @@ class Attachment extends Component
     }
     public function getMergeAttachment($gensen_form_id = null)
     {
-        if ($gensen_form_id && Crypt::decrypt($this->objId) != $gensen_form_id) {
+        if (!$gensen_form_id && ($gensen_form_id && Crypt::decrypt($this->objId) != $gensen_form_id)) {
             return;
         }
 
