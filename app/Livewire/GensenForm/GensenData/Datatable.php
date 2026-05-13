@@ -643,6 +643,11 @@ class Datatable extends Component
     {
         $this->resetCursor();
     }
+    public function updatedLength()
+    {
+        consoleLog($this, 'update length');
+        $this->resetCursor();
+    }
     public function updated()
     {
         $this->resetCursor();
@@ -650,6 +655,7 @@ class Datatable extends Component
 
     protected function resetCursor()
     {
+        consoleLog($this, 'reset cursor');
         $this->cursor = null;
         $this->rows = collect();
         $this->loadedIds = [];
@@ -664,7 +670,10 @@ class Datatable extends Component
     }
 
     #[On('datatable-refresh')]
-    public function datatableRefresh() {}
+    public function datatableRefresh()
+    {
+        $this->resetCursor();
+    }
 
     public function datatablePaginate($query)
     {
