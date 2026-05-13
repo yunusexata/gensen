@@ -535,14 +535,14 @@
             <!-- LEFT BUTTON -->
             <div class="col-auto position-relative">
                 <button id="scrollLeft"
-                    class="btn btn-light start-0 shadow">
+                    class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary start-0 shadow">
                     ←
                 </button>
             </div>
             <!-- RIGHT BUTTON -->
             <div class="col-auto position-relative">
                 <button id="scrollRight"
-                    class="btn btn-light end-0 shadow">
+                    class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary end-0 shadow">
                     →
                 </button>
             </div>

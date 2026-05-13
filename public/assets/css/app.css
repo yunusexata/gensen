@@ -644,6 +644,10 @@ video {
   bottom: 1.5rem;
 }
 
+.end-0 {
+  inset-inline-end: 0px;
+}
+
 .left-0 {
   left: 0px;
 }
@@ -929,6 +933,10 @@ video {
   height: 1.5rem;
 }
 
+.h-8 {
+  height: 2rem;
+}
+
 .h-\[100px\] {
   height: 100px;
 }
@@ -943,10 +951,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-8 {
-  height: 2rem;
 }
 
 .max-h-\[42vw\] {
@@ -983,6 +987,10 @@ video {
 
 .w-6 {
   width: 1.5rem;
+}
+
+.w-8 {
+  width: 2rem;
 }
 
 .w-80 {
@@ -1047,10 +1055,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-8 {
-  width: 2rem;
 }
 
 .min-w-\[200px\] {
@@ -1737,6 +1741,11 @@ video {
   padding-bottom: 1.25rem;
 }
 
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
 .py-md {
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -1863,6 +1872,10 @@ video {
   font-size: 18px;
 }
 
+.text-\[20pt\] {
+  font-size: 20pt;
+}
+
 .text-\[20px\] {
   font-size: 20px;
 }
@@ -1921,10 +1934,6 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-\[20pt\] {
-  font-size: 20pt;
 }
 
 .font-bold {
@@ -2356,6 +2365,11 @@ video {
 
 .hover\:bg-white\/20:hover {
   background-color: rgb(255 255 255 / 0.2);
+}
+
+.hover\:bg-white:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:text-error:hover {
