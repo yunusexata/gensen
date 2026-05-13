@@ -35,8 +35,8 @@ class GensenFormObserver
             'email katerogi',
             $gensenForm->status
         ]);
-        match (trim($gensenForm->status)) {
-            trim(GensenForm::STATUS_LENGKAP) => SendEmailLogRepository::create(
+        match ($gensenForm->status) {
+            GensenForm::STATUS_LENGKAP => SendEmailLogRepository::create(
                 [
                     'subject_type' => GensenForm::class,
                     'subject_id' => $gensenForm->id,
@@ -47,7 +47,7 @@ class GensenFormObserver
                     'queued_at' => now(),
                 ]
             ),
-            trim(GensenForm::STATUS_VERIFIED) => SendEmailLogRepository::create(
+            GensenForm::STATUS_VERIFIED => SendEmailLogRepository::create(
                 [
                     'subject_type' => GensenForm::class,
                     'subject_id' => $gensenForm->id,
@@ -58,18 +58,19 @@ class GensenFormObserver
                     'queued_at' => now(),
                 ]
             ),
-            trim(GensenForm::STATUS_DALAM_PENGAJUAN) => SendEmailLogRepository::create(
+            GensenForm::STATUS_DALAM_PENGAJUAN => SendEmailLogRepository::create(
                 [
                     'subject_type' => GensenForm::class,
                     'subject_id' => $gensenForm->id,
                     'email' => $gensenForm->email,
-                    'mailable' => GensenFormStatusDalamPengajuanMail::class,
+                    // 'mailable' => GensenFormStatusDalamPengajuanMail::class,
+                    'mailable' => GensenFormStatusLengkapMail::class,
                     'subject_line' => 'Update Gensen : Berkas Dalam Pengajuan ke Kantor Pajak Jepang',
                     'status' => EmailLogStatus::PENDING,
                     'queued_at' => now(),
                 ]
             ),
-            trim(GensenForm::STATUS_CANCEL) => SendEmailLogRepository::create(
+            GensenForm::STATUS_CANCEL => SendEmailLogRepository::create(
                 [
                     'subject_type' => GensenForm::class,
                     'subject_id' => $gensenForm->id,
@@ -80,18 +81,19 @@ class GensenFormObserver
                     'queued_at' => now(),
                 ]
             ),
-            trim(GensenForm::STATUS_GENSEN_CAIR) => SendEmailLogRepository::create(
+            GensenForm::STATUS_GENSEN_CAIR => SendEmailLogRepository::create(
                 [
                     'subject_type' => GensenForm::class,
                     'subject_id' => $gensenForm->id,
                     'email' => $gensenForm->email,
-                    'mailable' => GensenFormStatusGensenCairMail::class,
+                    // 'mailable' => GensenFormStatusGensenCairMail::class,
+                    'mailable' => GensenFormStatusLengkapMail::class,
                     'subject_line' => 'Update Gensen : Uang Gensen Berhasil Cair!',
                     'status' => EmailLogStatus::PENDING,
                     'queued_at' => now(),
                 ]
             ),
-            trim(GensenForm::STATUS_HONNIN) => SendEmailLogRepository::create(
+            GensenForm::STATUS_HONNIN => SendEmailLogRepository::create(
                 [
                     'subject_type' => GensenForm::class,
                     'subject_id' => $gensenForm->id,
