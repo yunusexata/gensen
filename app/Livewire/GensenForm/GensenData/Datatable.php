@@ -333,7 +333,7 @@ class Datatable extends Component
                 'key' => 'created_at',
                 'name' => 'Tanggal Input',
                 'render' => function ($item) {
-                    return $item->created_at->format('Y-m-d');
+                    return $item->created_at->format('Y-m-d H:i:s');
                 }
             ],
             [
