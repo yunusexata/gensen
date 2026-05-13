@@ -177,7 +177,7 @@ class GensenForm extends Model
 
     public function isCanDelete()
     {
-        return $this->isDeletable() && UserRepository::authenticatedUser()->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_FORM, PermissionHelper::TYPE_DELETE));
+        return $this->isDeletable() && UserRepository::authenticatedUser()->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_DATA, PermissionHelper::TYPE_DELETE));
     }
 
     protected static function onBoot()

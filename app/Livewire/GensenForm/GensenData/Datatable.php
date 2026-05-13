@@ -234,18 +234,18 @@ class Datatable extends Component
                     }
                     // @click=\"\$dispatch('edit-data', { id: '" . $id . "' })\"
                     $editHtml = "";
-                    if ($this->isCanUpdate) {
-                        // $editHtml = "<div class='col-auto' wire:key='datatable_row_main_" . $item['id'] . "'>
-                        //     <button type='button' class='p-0 hover:bg-success/10 text-success rounded transition-colors'
 
-                        //         data-bs-toggle='collapse'
-                        //         data-bs-target='#collapse-" . $item['id'] . "'
-                        //         style='cursor: pointer;'
-                        //         wire:click=\" editRow('" . simple_encrypt($item['id']) . "')\">
-                        //         <span class='material-symbols-outlined text-lg' data-icon='edit_square'>edit_square</span>
-                        //     </button>
-                        // </div>";
-                        $editHtml = "
+                    // $editHtml = "<div class='col-auto' wire:key='datatable_row_main_" . $item['id'] . "'>
+                    //     <button type='button' class='p-0 hover:bg-success/10 text-success rounded transition-colors'
+
+                    //         data-bs-toggle='collapse'
+                    //         data-bs-target='#collapse-" . $item['id'] . "'
+                    //         style='cursor: pointer;'
+                    //         wire:click=\" editRow('" . simple_encrypt($item['id']) . "')\">
+                    //         <span class='material-symbols-outlined text-lg' data-icon='edit_square'>edit_square</span>
+                    //     </button>
+                    // </div>";
+                    $editHtml = "
 <div class='col-auto' x-data=\"{ open: false }\"
     wire:key='datatable_row_main_{$item['id']}'>
 
@@ -263,7 +263,7 @@ class Datatable extends Component
     <div x-show='open' x-collapse class='mt-2'></div>
 
 </div>";
-                    }
+
 
                     $html = "<div class='row p-0 m-0 d-flex d-inline flex-nowrap justify-content-center'>
                         

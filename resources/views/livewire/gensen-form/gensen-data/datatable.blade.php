@@ -1,6 +1,6 @@
 <div>
     <div class="row">
-        <div class="col-auto">
+        {{-- <div class="col-auto">
             <button
                 class="btn btn-success btn-sm"
                 x-data
@@ -17,7 +17,7 @@
                 <i class="fa fa-file-excel"></i>
                 Download Siap verifikasi
             </button>
-        </div>
+        </div> --}}
         {{-- <div class="col-auto" wire:ignore>
             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bulkUpdateGensenStatusModalToLengkap">
                 <i class="fa fa-upload"></i>
@@ -88,7 +88,7 @@
         </div>
         <div class="col-sm-6 mb-2 {{ !isset($keyword_filter) || $keyword_filter == true ? '' : 'd-none' }}">
             <label>Kata Kunci</label>
-            <input wire:model.live.debounce.300ms="search" type="text" class="form-control">
+            <input wire:model.live.debounce.500ms="search" type="text" class="form-control">
         </div>
     </div>
 
@@ -186,60 +186,21 @@
                                             <table class="table table-bordered text-nowrap w-100 m-0 p-0">
                                                 <tbody>
                                                     @if ($editingRowId && $editingRowId == $item['id'])
+                                                        
                                                         {{-- First Row --}}
                                                         <tr class="h-full d-flex align-items-center">
                                                             
-                                                            {{-- <td class="w-[350px]">
-                                                                <label for="">status</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <select class="form-control" wire:model.defer="editingData.status">
-                                                                        <option value="">-- ISI --</option>
-                                                                        @foreach (App\Models\GensenForm\GensenForm::STATUS_CHOICE as $status)
-                                                                            <option value="{{$status}}">{{$status}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </td> --}}
-                                                            {{-- 
-                                                            <td>
-                                                                <label for="">email</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="email" class="form-control" wire:model.defer="editingData.email"
-                                                                    />
-                                                                </div>
-                                                            </td> --}}
-                                                            {{-- <td>
-                                                                <label for="">nominal gensen</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control currency" max="999999999999999" wire:model.defer="editingData.nominal_gensen"
-                                                                    />
-                                                                </div>
-                                                            </td> --}}
-                                                            {{-- <td>
-                                                                <label for="">jumlah kirim uang</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control currency" max="999999999999999" wire:model.defer="editingData.jumlah_kirim_uang"
-                                                                    />
-                                                                </div>
-                                                            </td> --}}
-
-                                                            {{-- <td class="">
-                                                                <label class="truncate block" for="">Tanggal input</label>
-                                                                <input
-                                                                    type="text" 
-                                                                    class="form-control w-[130px] py-3"  
-                                                                    value="{{$editingData['created_at']}}"
-                                                                    readonly
-                                                                />
-                                                            </td> --}}
                                                             <td>
                                                                 <label for="">Tanggal Lengkap</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="date" class="form-control" wire:model.defer="editingData.tanggal_lengkap"
+                                                                        type="date" class="form-control" 
+                                                                        @if ($this->isCanUpdate && !$editingData['tanggal_lengkap'])
+                                                                        wire:model.defer="editingData.tanggal_lengkap"
+                                                                        @else
+                                                                        value="{{ $editingData['tanggal_lengkap'] }}"
+                                                                        readonly
+                                                                        @endif
                                                                     />
                                                                 </div>
                                                             </td>
@@ -247,31 +208,27 @@
                                                                 <label for="">Tanggal Verified</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="date" class="form-control" wire:model.defer="editingData.tanggal_verified"
+                                                                        type="date" class="form-control" 
+                                                                        @if ($this->isCanUpdate && !$editingData['tanggal_verified'])
+                                                                        wire:model.defer="editingData.tanggal_verified"
+                                                                        @else
+                                                                        value="{{ $editingData['tanggal_verified'] }}"
+                                                                        readonly
+                                                                        @endif
                                                                     />
                                                                 </div>
                                                             </td>
-                                                            {{-- <td>
-                                                                <label for="">tanggal cair</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="date" class="form-control" wire:model.defer="editingData.tanggal_cair"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">nominal cair</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control currency" max="999999999999999" wire:model.defer="editingData.nominal_cair"
-                                                                    />
-                                                                </div>
-                                                            </td> --}}
                                                             <td>
                                                                 <label for="">Tanggal Pengajuan</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="date" class="form-control" wire:model.defer="editingData.tanggal_pengajuan"
+                                                                        type="date" class="form-control" 
+                                                                        @if ($this->isCanUpdate && !$editingData['tanggal_pengajuan'])
+                                                                        wire:model.defer="editingData.tanggal_pengajuan"
+                                                                        @else
+                                                                        value="{{ $editingData['tanggal_pengajuan'] }}"
+                                                                        readonly
+                                                                        @endif
                                                                     />
                                                                 </div>
                                                             </td>
@@ -279,82 +236,27 @@
                                                                 <label for="">No Input Jepang</label>
                                                                 <div class="d-flex align-items-center col-auto">
                                                                     <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.no_input_jepang"
+                                                                        type="text" class="form-control" 
+                                                                        @if ($this->isCanUpdate && !$editingData['no_input_jepang'])
+                                                                        wire:model.defer="editingData.no_input_jepang"
+                                                                        @else
+                                                                        value="{{ $editingData['no_input_jepang'] }}"
+                                                                        readonly
+                                                                        @endif
                                                                     />
                                                                 </div>
                                                             </td>
-                                                            
-                                                            {{-- <td>
-                                                                <label for="">tahun gensen</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="number" class="form-control" wire:model.defer="editingData.tahun_gensen"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">tahun transfer</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="number" class="form-control" wire:model.defer="editingData.tahun_transfer"
-                                                                    />
-                                                                </div>
-                                                            </td> --}}
-                                                            {{-- <td>
-                                                                <label for="">kode PIC</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" value="{{$editingData['pic_code']}}" readonly
-                                                                    />
-                                                                </div>
-                                                            </td> --}}
-                                                            {{-- 
-                                                            <td>
-                                                                <label for="">alamat jepang</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.alamat_jepang"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">kode pos jepang</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.kode_pos_jepang"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">nama lpk/so/pt</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_lpk"
-                                                                    />
-                                                                </div>
-                                                            </td>
-
-                                                            <td>
-                                                                <label for="">keterangan mondai</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.keterangan_mondai"
-                                                                    />
-                                                                </div>
-                                                            </td> --}}
-                                                            {{-- <td>
-                                                                <label for="">asal pembuatan</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" value="{{$editingData['remarks_type']}}" readonly
-                                                                    />
-                                                                </div>
-                                                            </td> --}}
                                                             <td>
                                                                 <label for="">Instagram</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_instagram"
+                                                                        type="text" class="form-control" 
+                                                                        @if ($this->isCanUpdate)
+                                                                        wire:model.defer="editingData.nama_instagram"
+                                                                        @else
+                                                                        value="{{ $editingData['nama_instagram'] }}"
+                                                                        readonly
+                                                                        @endif
                                                                     />
                                                                 </div>
                                                             </td>
@@ -362,7 +264,13 @@
                                                                 <label for="">Tiktok</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_tiktok"
+                                                                        type="text" class="form-control" 
+                                                                        @if ($this->isCanUpdate)
+                                                                        wire:model.defer="editingData.nama_tiktok"
+                                                                        @else
+                                                                        value="{{ $editingData['nama_tiktok'] }}"
+                                                                        readonly
+                                                                        @endif
                                                                     />
                                                                 </div>
                                                             </td>
@@ -370,7 +278,13 @@
                                                                 <label for="">Nomor Whatsapp</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nomor_whatsapp"
+                                                                        type="text" class="form-control" 
+                                                                        @if ($this->isCanUpdate)
+                                                                        wire:model.defer="editingData.nomor_whatsapp"
+                                                                        @else
+                                                                        value="{{ $editingData['nomor_whatsapp'] }}"
+                                                                        readonly
+                                                                        @endif
                                                                     />
                                                                 </div>
                                                             </td>
@@ -378,7 +292,13 @@
                                                                 <label for="">Nomor Whatsapp Darurat</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nomor_whatsapp_darurat"
+                                                                        type="text" class="form-control" 
+                                                                        @if ($this->isCanUpdate)
+                                                                        wire:model.defer="editingData.nomor_whatsapp_darurat"
+                                                                        @else
+                                                                        value="{{ $editingData['nomor_whatsapp_darurat'] }}"
+                                                                        readonly
+                                                                        @endif
                                                                     />
                                                                 </div>
                                                             </td>
@@ -449,7 +369,13 @@
                                                                 <label>Nama Lengkap</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_lengkap"
+                                                                        type="text" class="form-control" 
+                                                                        @if ($this->isCanUpdate)
+                                                                        wire:model.defer="editingData.nama_lengkap"
+                                                                        @else
+                                                                        value="{{ $editingData['nama_lengkap'] }}"
+                                                                        readonly
+                                                                        @endif
                                                                     />
                                                                 </div>
                                                             </td>
@@ -457,7 +383,13 @@
                                                                 <label for="">Tanggal Lahir</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="date" class="form-control" wire:model.defer="editingData.tanggal_lahir"
+                                                                        type="date" class="form-control" 
+                                                                        @if ($this->isCanUpdate)
+                                                                        wire:model.defer="editingData.tanggal_lahir"
+                                                                        @else
+                                                                        value="{{ $editingData['tanggal_lahir'] }}"
+                                                                        readonly
+                                                                        @endif
                                                                     />
                                                                 </div>
                                                             </td>
@@ -465,7 +397,13 @@
                                                                 <label for="">No Rekening Penerima</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="text" class="form-control w-[200px]" wire:model.defer="editingData.no_rekening_penerima"
+                                                                        type="text" class="form-control w-[200px]" 
+                                                                        @if ($this->isCanUpdate)
+                                                                        wire:model.defer="editingData.no_rekening_penerima"
+                                                                        @else
+                                                                        value="{{ $editingData['no_rekening_penerima'] }}"
+                                                                        readonly
+                                                                        @endif
                                                                     />
                                                                 </div>
                                                             </td>
@@ -474,7 +412,13 @@
                                                                 <div class="d-flex align-items-center">
                                                                     <select
                                                                         id="nama_bank_penerima"
+                                                                        
                                                                         wire:model.defer="editingData.nama_bank_penerima"
+                                                                        @if (!$this->isCanUpdate)
+                                                                        readonly
+                                                                        disabled
+                                                                        @disabled(true)
+                                                                        @endif
                                                                         name="nama_bank_penerima"
                                                                         class="form-control"
                                                                     >
@@ -489,7 +433,13 @@
                                                                 <label for="">Nama Penerima</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="text" class="form-control w-[200px]" wire:model.defer="editingData.nama_penerima"
+                                                                        type="text" class="form-control w-[200px]" 
+                                                                        @if ($this->isCanUpdate)
+                                                                        wire:model.defer="editingData.nama_penerima"
+                                                                        @else
+                                                                        value="{{ $editingData['nama_penerima'] }}"
+                                                                        readonly
+                                                                        @endif
                                                                     />
                                                                 </div>
                                                             </td>
@@ -497,17 +447,18 @@
                                                                 <label for="">Hubungan Penerima</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.hubungan_penerima"
+                                                                        type="text" class="form-control" 
+                                                                        @if ($this->isCanUpdate)
+                                                                        wire:model.defer="editingData.hubungan_penerima"
+                                                                        @else
+                                                                        value="{{ $editingData['hubungan_penerima'] }}"
+                                                                        readonly
+                                                                        @endif
                                                                     />
                                                                 </div>
                                                             </td>
                                                         </tr>
                                                     @endif
-                                                    {{-- <tr>
-                                                        <td colspan="100">
-                                                            {{route('gensen_form.upload_attachment', ['id' => $editedRows[$item['id']]['id']])}}
-                                                        </td>
-                                                    </tr> --}}
                                                 </tbody>
                                             </table>
                                         </div>
