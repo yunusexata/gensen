@@ -246,7 +246,7 @@ class Datatable extends Component
                         //     </button>
                         // </div>";
                         $editHtml = "
-<div x-data=\"{ open: false }\"
+<div class='col-auto' x-data=\"{ open: false }\"
     wire:key='datatable_row_main_{$item['id']}'>
 
     <button type='button'
@@ -265,7 +265,7 @@ class Datatable extends Component
 </div>";
                     }
 
-                    $html = "<div class='row p-0 m-0 d-flex d-inline flex-nowrap'>
+                    $html = "<div class='row p-0 m-0 d-flex d-inline flex-nowrap justify-content-center'>
                         
                         $editHtml 
                         <h1>{$index}</h1>
