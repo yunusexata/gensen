@@ -236,7 +236,7 @@
                                                                 />
                                                             </td> --}}
                                                             <td>
-                                                                <label for="">tanggal lengkap</label>
+                                                                <label for="">Tanggal Lengkap</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="date" class="form-control" wire:model.defer="editingData.tanggal_lengkap"
@@ -244,18 +244,10 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <label for="">tanggal verified</label>
+                                                                <label for="">Tanggal Verified</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="date" class="form-control" wire:model.defer="editingData.tanggal_verified"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">no input Jepang</label>
-                                                                <div class="d-flex align-items-center col-auto">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.no_input_jepang"
                                                                     />
                                                                 </div>
                                                             </td>
@@ -276,10 +268,18 @@
                                                                 </div>
                                                             </td> --}}
                                                             <td>
-                                                                <label for="">tanggal pengajuan</label>
+                                                                <label for="">Tanggal Pengajuan</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="date" class="form-control" wire:model.defer="editingData.tanggal_pengajuan"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">No Input Jepang</label>
+                                                                <div class="d-flex align-items-center col-auto">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.no_input_jepang"
                                                                     />
                                                                 </div>
                                                             </td>
@@ -351,7 +351,7 @@
                                                                 </div>
                                                             </td> --}}
                                                             <td>
-                                                                <label for="">nama instagram</label>
+                                                                <label for="">Instagram</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="text" class="form-control" wire:model.defer="editingData.nama_instagram"
@@ -359,7 +359,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <label for="">nama tiktok</label>
+                                                                <label for="">Tiktok</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="text" class="form-control" wire:model.defer="editingData.nama_tiktok"
@@ -367,7 +367,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <label for="">nomor whatsapp</label>
+                                                                <label for="">Nomor Whatsapp</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="text" class="form-control" wire:model.defer="editingData.nomor_whatsapp"
@@ -375,7 +375,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <label for="">nomor whatsapp darurat</label>
+                                                                <label for="">Nomor Whatsapp Darurat</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="text" class="form-control" wire:model.defer="editingData.nomor_whatsapp_darurat"
@@ -446,7 +446,7 @@
                                                             </td>
                                                             
                                                             <td class="w-[300px]">
-                                                                <label>nama lengkap</label>
+                                                                <label>Nama Lengkap</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="text" class="form-control" wire:model.defer="editingData.nama_lengkap"
@@ -454,7 +454,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <label for="">tanggal lahir</label>
+                                                                <label for="">Tanggal Lahir</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="date" class="form-control" wire:model.defer="editingData.tanggal_lahir"
@@ -462,7 +462,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <label for="">no rekening penerima</label>
+                                                                <label for="">No Rekening Penerima</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="text" class="form-control w-[200px]" wire:model.defer="editingData.no_rekening_penerima"
@@ -470,7 +470,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <label for="">nama bank penerima</label>
+                                                                <label for="">Nama Bank Penerima</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <select
                                                                         id="nama_bank_penerima"
@@ -486,7 +486,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <label for="">nama penerima</label>
+                                                                <label for="">Nama Penerima</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="text" class="form-control w-[200px]" wire:model.defer="editingData.nama_penerima"
@@ -494,7 +494,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <label for="">hubungan penerima</label>
+                                                                <label for="">Hubungan Penerima</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
                                                                         type="text" class="form-control" wire:model.defer="editingData.hubungan_penerima"
