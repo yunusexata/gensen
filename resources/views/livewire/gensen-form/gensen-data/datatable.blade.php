@@ -189,7 +189,17 @@
                                                         
                                                         {{-- First Row --}}
                                                         <tr class="h-full d-flex align-items-center">
-                                                            
+                                                            <td class="w-[350px]">
+                                                                <label for="">status</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <select class="form-control" wire:model.defer="editingData.status">
+                                                                        <option value="">-- ISI --</option>
+                                                                        @foreach (App\Models\GensenForm\GensenForm::STATUS_CHOICE as $status)
+                                                                            <option value="{{$status}}">{{$status}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </td>
                                                             <td>
                                                                 <label for="">Tanggal Lengkap</label>
                                                                 <div class="d-flex align-items-center">
@@ -302,6 +312,23 @@
                                                                     />
                                                                 </div>
                                                             </td>
+
+                                                            {{-- <td rowspan="2" colspan="5">
+
+                                                                <label for="">Keterangan Mondai</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <textarea class="form-control" cols="30" rows="5"
+                                                                    placeholder="Keterangan Mondai"
+                                                                    @if ($this->isCanUpdate)
+                                                                        wire:model.defer="editingData.keterangan_mondai"
+                                                                        @else
+                                                                        value="{{ $editingData['keterangan_mondai'] }}"
+                                                                        readonly
+                                                                        @endif
+                                                                        ></textarea>
+                                                                    
+                                                                </div>
+                                                            </td> --}}
                                                         </tr>
                                                         {{-- Second Row --}}
                                                         <tr class="h-full d-flex align-items-center">
@@ -364,7 +391,6 @@
                                                                     
                                                                 </div>
                                                             </td>
-                                                            
                                                             <td class="w-[300px]">
                                                                 <label>Nama Lengkap</label>
                                                                 <div class="d-flex align-items-center">
