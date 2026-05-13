@@ -62,16 +62,7 @@ class Export extends Component
         $this->dispatch('onSuccessExportModal');
         $this->closeExportModal();
 
-        Alert::confirmation(
-            $this,
-            Alert::ICON_SUCCESS,
-            "Berhasil",
-            "Data Berhasil Diperbarui",
-            "on-dialog-confirm",
-            "on-dialog-cancel",
-            "Oke",
-            "Tutup",
-        );
+        Alert::information($this, 'Data berhasil disimpan');
         // $fileName = "Data Gensen " . Carbon::now()->format('Y-m-d H:i:s');
         // return ExportHelper::export(
         //     ExportHelper::TYPE_EXCEL,

@@ -215,16 +215,19 @@ class GensenFormRepository extends MasterDataRepository
         gfd.gensen_form_id,
 
         STRING_AGG(
-            gfd.tahun_gensen::text || '-' || 
             REPLACE(
                 TO_CHAR(gfd.nominal_cair, 'FM999,999,999,999'),
                 ',',
                 '.'
-            ) 
-            || ',' || gfd.tanggal_cair::text,
+            ),
             '<br>;'
             ORDER BY gfd.tahun_gensen
-        ) AS details
+        ) AS nominal_cair_details,
+        STRING_AGG(
+            gfd.tahun_gensen::text || '-' || gfd.tanggal_cair::text,
+            '<br>;'
+            ORDER BY gfd.tahun_gensen
+        ) AS tanggal_cair_details
     ")
             ->groupBy('gfd.gensen_form_id');
         return
@@ -247,7 +250,8 @@ class GensenFormRepository extends MasterDataRepository
             ->select([
                 'gensen_forms.*',
                 'gfd.details',
-                'gfd_cair.details as cair_details',
+                'gfd_cair.tanggal_cair_details as tanggal_cair_details',
+                'gfd_cair.nominal_cair_details as nominal_cair_details',
                 'remittances.remittance_total_amounts',
                 'remittances.remittance_receiver_names',
                 'remittances.remittance_receiver_years',

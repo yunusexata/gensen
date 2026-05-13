@@ -8,6 +8,7 @@ class Alert
 {
     const EVENT_INFO = 'SwalInfo';
     const EVENT_CONFIRMATION = 'SwalConfirm';
+    const EVENT_INFORMATION = 'SwalInformation';
     const EVENT_CONSOLE_LOG = 'ConsoleLog';
 
     const ICON_QUESTION = "question";
@@ -37,6 +38,12 @@ class Alert
         $cancelText = "Tidak",
     ) {
         $component->dispatch(self::EVENT_CONFIRMATION, $icon, $title, $message, $confirmText, $cancelText, $eventConfirmName, $eventCancelName);
+    }
+    public static function information(
+        Component $component,
+        $title,
+    ) {
+        $component->dispatch(self::EVENT_INFORMATION, self::ICON_SUCCESS, $title);
     }
     public static function consoleLog(
         Component $component,

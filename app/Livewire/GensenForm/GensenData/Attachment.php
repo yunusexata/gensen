@@ -174,16 +174,7 @@ class Attachment extends Component
             });
             $this->getTahunGensenDetails();
             DB::commit();
-            Alert::confirmation(
-                $this,
-                Alert::ICON_SUCCESS,
-                "Berhasil",
-                "Data Berhasil Diperbarui",
-                "on-dialog-confirm",
-                "on-dialog-cancel",
-                "Oke",
-                "Tutup",
-            );
+            Alert::information($this, 'Data berhasil disimpan');
         } catch (Exception $e) {
             DB::rollBack();
             Alert::fail($this, "Gagal", $e->getMessage());
@@ -213,16 +204,7 @@ class Attachment extends Component
             });
 
             DB::commit();
-            Alert::confirmation(
-                $this,
-                Alert::ICON_SUCCESS,
-                "Berhasil",
-                "Data Berhasil Diperbarui",
-                "on-dialog-confirm",
-                "on-dialog-cancel",
-                "Oke",
-                "Tutup",
-            );
+            Alert::information($this, 'Data berhasil disimpan');
         } catch (Exception $e) {
             DB::rollBack();
             Alert::fail($this, "Gagal", $e->getMessage());
@@ -438,7 +420,8 @@ class Attachment extends Component
         } elseif ($this->isCanDelete && $this->targetDeleteId != null) {
             $data = GensenFormAttachmentRepository::delete(Crypt::decrypt($this->targetDeleteId));
         }
-        Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
+
+        Alert::information($this, 'Data berhasil dihapus');
         $this->removeAttachmentFromGroups($this->targetDeleteId, $this->targetDeleteType);
 
         $this->targetDeleteId = null;
@@ -576,16 +559,8 @@ class Attachment extends Component
 
 
             DB::commit();
-            Alert::confirmation(
-                $this,
-                Alert::ICON_SUCCESS,
-                "Berhasil",
-                "Data Berhasil Diperbarui",
-                "on-dialog-confirm",
-                "on-dialog-cancel",
-                "Oke",
-                "Tutup",
-            );
+            $this->getData();
+            Alert::information($this, 'Data berhasil disimpan');
         } catch (Exception $e) {
             DB::rollBack();
             Alert::fail($this, "Gagal", $e->getMessage());
@@ -617,16 +592,8 @@ class Attachment extends Component
             });
 
             DB::commit();
-            Alert::confirmation(
-                $this,
-                Alert::ICON_SUCCESS,
-                "Berhasil",
-                "Data Berhasil Diperbarui",
-                "on-dialog-confirm",
-                "on-dialog-cancel",
-                "Oke",
-                "Tutup",
-            );
+            $this->getData();
+            Alert::information($this, 'Data berhasil disimpan');
         } catch (Exception $e) {
             DB::rollBack();
             Alert::fail($this, "Gagal", $e->getMessage());
@@ -643,16 +610,7 @@ class Attachment extends Component
             });
 
             DB::commit();
-            Alert::confirmation(
-                $this,
-                Alert::ICON_SUCCESS,
-                "Berhasil",
-                "Data Berhasil Diperbarui",
-                "on-dialog-confirm",
-                "on-dialog-cancel",
-                "Oke",
-                "Tutup",
-            );
+            Alert::information($this, 'Data berhasil disimpan');
         } catch (Exception $e) {
             DB::rollBack();
             Alert::fail($this, "Gagal", $e->getMessage());

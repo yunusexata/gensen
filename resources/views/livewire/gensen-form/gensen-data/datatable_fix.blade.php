@@ -150,7 +150,7 @@
                                         $cell_style = '';
                                         if (isset($col['style'])) {
                                             $cell_style = is_callable($col['style'])
-                                                ? call_user_func($col['style'], $item, $loop->parent->iteration )
+                                                ? call_user_func($col['style'], $item, $data->firstItem() + $index )
                                                 : $col['style'];
                                             $cell_style = "style='{$cell_class}'";
                                         }
@@ -158,7 +158,7 @@
                                         $cell_class = '';
                                         if (isset($col['class'])) {
                                             $cell_class = is_callable($col['class'])
-                                                ? call_user_func($col['class'], $item, $loop->parent->iteration )
+                                                ? call_user_func($col['class'], $item, $data->firstItem() + $index )
                                                 : $col['class'];
                                             $cell_class = "class='{$cell_class}'";
                                         }
@@ -166,7 +166,7 @@
 
                                     @if (isset($col['render']) && is_callable($col['render']))
                                         <td class="px-4 py-2 {!! $cell_class !!}" style="{!! $cell_style !!}">
-                                            {!! call_user_func($col['render'], $item, $loop->parent->iteration ) !!}
+                                            {!! call_user_func($col['render'], $item, $data->firstItem() + $index ) !!}
                                         </td>
                                     @elseif (isset($col['key']))
                                         <td class="px-4 py-2 {!! $cell_class !!}" style="{!! $cell_style !!}">
@@ -179,7 +179,7 @@
 
                             <tr wire:key="data-collapse-{{$item['id']}}"
                             class="hover:bg-surface-container-low transition-colors group">
-                                <td colspan="10" class="p-0 border-0">
+                                <td colspan="27" class="p-0 border-0">
 
                                     <div id="collapse-{{ $item['id'] }}" class="collapse" wire:ignore.self>
                                         <div class="table-responsive">
@@ -187,9 +187,48 @@
                                                 <tbody>
                                                     @if ($editingRowId && $editingRowId == $item['id'])
                                                         {{-- First Row --}}
-                                                        <tr class="h-full d-flex align-items-center">
-                                                            
-                                                            {{-- <td class="w-[350px]">
+                                                        <tr>
+                                                            <td class="w-[350px] ">
+                                                                <div class="row d-flex flex-nowrap gap-2 ">
+
+                                                                    <div class="col-auto m-0 p-0">
+                                                                        <button type="button" class="btn btn-success btn-sm m-0" wire:click="saveEditedRow">
+                                                                        <i class="ki-duotone ki-check text-sm">
+                                                                        <span class="path1"></span>
+                                                                        <span class="path2"></span>
+                                                                        <span class="path3"></span>
+                                                                        <span class="path4"></span>
+                                                                        <span class="path5"></span>
+                                                                        </i>
+                                                                        Simpan
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-auto m-0 p-0">
+                                                                        <a href="{{route('gensen_data.attachment', ['id' => $editingData['id']])}}"
+                                                                            class="btn btn-primary btn-sm m-0">
+                                                                            <i class="ki-duotone ki-cube-2 text-sm">
+                                                                            <span class="path1"></span>
+                                                                            <span class="path2"></span>
+                                                                            <span class="path3"></span>
+                                                                            <span class="path4"></span>
+                                                                            <span class="path5"></span>
+                                                                            </i>
+                                                                            Lampiran
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="col-auto m-0 p-0">
+                                                                        <button onclick="copyToClipboard('{{route('gensen_form.upload_attachment', ['id' => $editingData['id']])}}')"
+                                                                            type="button" class="btn btn-info btn-sm m-0">
+                                                                            <i class="ki-duotone ki-fasten text-sm">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                            </i>
+                                                                            Link upload
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="w-[350px]">
                                                                 <label for="">status</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <select class="form-control" wire:model.defer="editingData.status">
@@ -199,8 +238,23 @@
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
-                                                            </td> --}}
-                                                            {{-- 
+                                                            </td>
+                                                            <td class="w-[300px]">
+                                                                <label>nama lengkap</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_lengkap"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">tanggal lahir</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="date" class="form-control" wire:model.defer="editingData.tanggal_lahir"
+                                                                    />
+                                                                </div>
+                                                            </td>
                                                             <td>
                                                                 <label for="">email</label>
                                                                 <div class="d-flex align-items-center">
@@ -208,7 +262,7 @@
                                                                         type="email" class="form-control" wire:model.defer="editingData.email"
                                                                     />
                                                                 </div>
-                                                            </td> --}}
+                                                            </td>
                                                             {{-- <td>
                                                                 <label for="">nominal gensen</label>
                                                                 <div class="d-flex align-items-center">
@@ -226,7 +280,7 @@
                                                                 </div>
                                                             </td> --}}
 
-                                                            {{-- <td class="">
+                                                            <td class="">
                                                                 <label class="truncate block" for="">Tanggal input</label>
                                                                 <input
                                                                     type="text" 
@@ -234,7 +288,7 @@
                                                                     value="{{$editingData['created_at']}}"
                                                                     readonly
                                                                 />
-                                                            </td> --}}
+                                                            </td>
                                                             <td>
                                                                 <label for="">tanggal lengkap</label>
                                                                 <div class="d-flex align-items-center">
@@ -283,181 +337,11 @@
                                                                     />
                                                                 </div>
                                                             </td>
-                                                            
-                                                            {{-- <td>
-                                                                <label for="">tahun gensen</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="number" class="form-control" wire:model.defer="editingData.tahun_gensen"
-                                                                    />
-                                                                </div>
-                                                            </td>
                                                             <td>
-                                                                <label for="">tahun transfer</label>
+                                                                <label for="">tanggal kepulangan</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="number" class="form-control" wire:model.defer="editingData.tahun_transfer"
-                                                                    />
-                                                                </div>
-                                                            </td> --}}
-                                                            {{-- <td>
-                                                                <label for="">kode PIC</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" value="{{$editingData['pic_code']}}" readonly
-                                                                    />
-                                                                </div>
-                                                            </td> --}}
-                                                            {{-- 
-                                                            <td>
-                                                                <label for="">alamat jepang</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.alamat_jepang"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">kode pos jepang</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.kode_pos_jepang"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">nama lpk/so/pt</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_lpk"
-                                                                    />
-                                                                </div>
-                                                            </td>
-
-                                                            <td>
-                                                                <label for="">keterangan mondai</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.keterangan_mondai"
-                                                                    />
-                                                                </div>
-                                                            </td> --}}
-                                                            {{-- <td>
-                                                                <label for="">asal pembuatan</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" value="{{$editingData['remarks_type']}}" readonly
-                                                                    />
-                                                                </div>
-                                                            </td> --}}
-                                                            <td>
-                                                                <label for="">nama instagram</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_instagram"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">nama tiktok</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_tiktok"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">nomor whatsapp</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nomor_whatsapp"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">nomor whatsapp darurat</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nomor_whatsapp_darurat"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        {{-- Second Row --}}
-                                                        <tr class="h-full d-flex align-items-center">
-                                                            <td class="w-[350px] ">
-                                                                <div class="row d-flex flex-nowrap gap-2 justify-content-center">
-                                                                    
-                                                                    @if ($this->isCanCreate)
-                                                                        <div class='col-auto m-0 p-0'>
-                                                                            <button type='button' class='btn btn-sm btn-warning' wire:click=\"showCopyDialog('$id')\">
-                                                                               <span class='material-symbols-outlined text-sm' data-icon='save_as'>save_as</span> Copy
-                                                                            </button>
-                                                                        </div>
-                                                                    @endif
-                                                                    <div class="col-auto m-0 p-0">
-                                                                        <a href="{{route('gensen_data.attachment', ['id' => $editingData['id']])}}"
-                                                                            class="btn btn-primary btn-sm m-0">
-                                                                            <i class="ki-duotone ki-cube-2 text-sm">
-                                                                            <span class="path1"></span>
-                                                                            <span class="path2"></span>
-                                                                            <span class="path3"></span>
-                                                                            <span class="path4"></span>
-                                                                            <span class="path5"></span>
-                                                                            </i>
-                                                                            Lampiran
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="col-auto m-0 p-0">
-                                                                        <button onclick="copyToClipboard('{{route('gensen_form.upload_attachment', ['id' => $editingData['id']])}}')"
-                                                                            type="button" class="btn btn-info btn-sm m-0">
-                                                                            <i class="ki-duotone ki-fasten text-sm">
-                                                                                <span class="path1"></span>
-                                                                                <span class="path2"></span>
-                                                                            </i>
-                                                                            Link upload
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row d-flex flex-nowrap gap-2 justify-content-center mt-2">
-                                                                    @if ($this->isCanUpdate)
-                                                                        <div class="col-auto m-0 p-0">
-                                                                            <button type="button" class="btn btn-success btn-sm m-0" wire:click="saveEditedRow">
-                                                                            <i class="ki-duotone ki-check text-sm">
-                                                                            <span class="path1"></span>
-                                                                            <span class="path2"></span>
-                                                                            <span class="path3"></span>
-                                                                            <span class="path4"></span>
-                                                                            <span class="path5"></span>
-                                                                            </i>
-                                                                            Simpan
-                                                                            </button>
-                                                                        </div>
-                                                                    @endif
-                                                                    @if ($this->isCanDelete)
-                                                                        <div class='col-auto m-0 p-0'>
-                                                                            <button type='button' class='btn btn-sm btn-danger' wire:click=\"showDeleteDialog('$id')\">
-                                                                                <span class='material-symbols-outlined text-sm' data-icon='delete'>delete</span> Hapus
-                                                                            </button>
-                                                                        </div>
-                                                                    @endif
-                                                                    
-                                                                </div>
-                                                            </td>
-                                                            
-                                                            <td class="w-[300px]">
-                                                                <label>nama lengkap</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_lengkap"
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <label for="">tanggal lahir</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="date" class="form-control" wire:model.defer="editingData.tanggal_lahir"
+                                                                        type="date" class="form-control" wire:model.defer="editingData.tanggal_kepulangan"
                                                                     />
                                                                 </div>
                                                             </td>
@@ -501,6 +385,109 @@
                                                                     />
                                                                 </div>
                                                             </td>
+                                                            {{-- <td>
+                                                                <label for="">tahun gensen</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="number" class="form-control" wire:model.defer="editingData.tahun_gensen"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">tahun transfer</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="number" class="form-control" wire:model.defer="editingData.tahun_transfer"
+                                                                    />
+                                                                </div>
+                                                            </td> --}}
+                                                            {{-- <td>
+                                                                <label for="">kode PIC</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" value="{{$editingData['pic_code']}}" readonly
+                                                                    />
+                                                                </div>
+                                                            </td> --}}
+                                                            <td>
+                                                                <label for="">nama instagram</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_instagram"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">nama tiktok</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_tiktok"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">nomor whatsapp</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.nomor_whatsapp"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">nomor whatsapp darurat</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.nomor_whatsapp_darurat"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">alamat jepang</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.alamat_jepang"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">kode pos jepang</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.kode_pos_jepang"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <label for="">nama lpk/so/pt</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.nama_lpk"
+                                                                    />
+                                                                </div>
+                                                            </td>
+
+                                                            <td>
+                                                                <label for="">keterangan mondai</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" wire:model.defer="editingData.keterangan_mondai"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            {{-- <td>
+                                                                <label for="">asal pembuatan</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" value="{{$editingData['remarks_type']}}" readonly
+                                                                    />
+                                                                </div>
+                                                            </td> --}}
+                                                        </tr>
+                                                        {{-- Second Row --}}
+                                                        <tr>
+                                                            <td>
+
+                                                            </td>
                                                         </tr>
                                                     @endif
                                                     {{-- <tr>
@@ -520,16 +507,6 @@
                     {{-- @endfor --}}
                 </tbody>
             </table>
-
-            @if ($hasMore)
-                <div
-                    x-data
-                    x-intersect.full="$wire.loadMore()"
-                    class="py-6 text-center"
-                >
-                    Loading more...
-                </div>
-            @endif
         </div>
         <div class="row d-flex justify-content-between">
             <!-- LEFT BUTTON -->
@@ -546,6 +523,10 @@
                     →
                 </button>
             </div>
+        </div>
+        
+        <div class="col-auto">
+            {{ $data->links(data: ['scrollTo' => false]) }}
         </div>
     </div>
 </div>

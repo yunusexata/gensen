@@ -145,16 +145,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
             $this->dispatch('refresh-table');
             $this->closebulkUpdateGensenStatusModalToGensenCair();
 
-            Alert::confirmation(
-                $this,
-                Alert::ICON_SUCCESS,
-                "Berhasil",
-                "Data Berhasil Diperbarui",
-                "on-dialog-confirm",
-                "on-dialog-cancel",
-                "Oke",
-                "Tutup",
-            );
+            Alert::information($this, 'Data berhasil disimpan');
         } catch (\Exception $e) {
             DB::rollBack();
             Alert::fail($this, "Gagal", $e->getMessage());
