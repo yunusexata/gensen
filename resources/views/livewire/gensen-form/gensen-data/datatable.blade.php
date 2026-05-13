@@ -312,6 +312,20 @@
                                                                     />
                                                                 </div>
                                                             </td>
+                                                            <td>
+                                                                <label for="">Email</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input
+                                                                        type="text" class="form-control" 
+                                                                        @if ($this->isCanUpdate)
+                                                                        wire:model.defer="editingData.email"
+                                                                        @else
+                                                                        value="{{ $editingData['email'] }}"
+                                                                        readonly
+                                                                        @endif
+                                                                    />
+                                                                </div>
+                                                            </td>
 
                                                             {{-- <td rowspan="2" colspan="5">
 
