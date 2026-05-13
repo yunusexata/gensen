@@ -647,6 +647,14 @@ class Datatable extends Component
     {
         $this->resetCursor();
     }
+    public function updatedSortBy()
+    {
+        $this->resetCursor();
+    }
+    public function updatedSortDirection()
+    {
+        $this->resetCursor();
+    }
     public function updated()
     {
         $this->resetCursor();
