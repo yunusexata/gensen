@@ -531,18 +531,18 @@
                 </div>
             @endif
         </div>
-        <div class="row d-flex justify-content-between">
+        <div class="row d-flex justify-content-between mt-5">
             <!-- LEFT BUTTON -->
             <div class="col-auto position-relative">
                 <button id="scrollLeft"
-                    class="btn btn-light  top-50 start-0 translate-middle-y shadow">
+                    class="btn btn-light start-0 shadow">
                     ←
                 </button>
             </div>
             <!-- RIGHT BUTTON -->
             <div class="col-auto position-relative">
                 <button id="scrollRight"
-                    class="btn btn-light  top-50 end-0 translate-middle-y shadow">
+                    class="btn btn-light end-0 shadow">
                     →
                 </button>
             </div>
