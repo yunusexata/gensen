@@ -309,7 +309,7 @@ class Datatable extends Component
                 'key' => 'status',
                 'name' => 'Status',
                 'render' => function ($item) {
-                    return "<p class='btn btn-sm py-1 mb-0' style='background-color:" . $item->statusColor() . "'>" . $item->status . "</p>";
+                    return "<p class='btn btn-sm py-1 mb-0 text-nowrap' style='background-color:" . $item->statusColor() . "'>" . $item->status . "</p>";
                 }
             ],
             // [
