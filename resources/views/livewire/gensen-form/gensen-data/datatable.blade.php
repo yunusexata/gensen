@@ -107,7 +107,7 @@
                 <thead class="sticky top-0 bg-white z-10">
                     <tr class="bg-surface-container-low/50"> --}}
         <div class="table-responsive" style="max-height:80vh; overflow:auto;" id="tableWrapper">
-            <table class="table table-row-bordered table-bordered" style="max-height:80vh;">
+            <table class="table-default table table-row-bordered table-bordered" style="max-height:80vh;">
                 <thead class="sticky-top bg-white">
                     <tr class="bg-surface-container-low/50">
                         @foreach ($columns as $index => $col)

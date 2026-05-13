@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .table-default {
+        @apply min-w-full border border-gray-400 border-collapse;
+    }
+
+    .table-default thead th {
+        @apply px-4 py-2 text-left border-b border-gray-400 bg-gray-50;
+    }
+
+    .table-default tbody td {
+        @apply px-4 py-2 border-b border-gray-400;
+    }
+
+    .table-default tbody tr:hover {
+        @apply bg-gray-50;
+    }
+}

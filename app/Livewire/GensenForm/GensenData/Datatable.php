@@ -81,8 +81,8 @@ class Datatable extends Component
         $this->isCanUpdate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_DATA, PermissionHelper::TYPE_UPDATE));
         $this->isCanDelete = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_DATA, PermissionHelper::TYPE_DELETE));
 
-        $this->sortBy = 'id';
-        $this->sortDirection = 'ASC';
+        // $this->sortBy = 'id';
+        // $this->sortDirection = 'ASC';
         // $this->sortBy = 'created_at';
         // $this->sortDirection = 'DESC';
     }
@@ -725,6 +725,10 @@ class Datatable extends Component
             });
         });
 
+        consoleLog($this, [
+            $sortBy,
+            $sortDirection
+        ]);
         if ($sortBy) {
             $query->orderBy($sortBy, $sortDirection);
         }
