@@ -645,7 +645,6 @@ class Datatable extends Component
     }
     public function updatedLength()
     {
-        consoleLog($this, 'update length');
         $this->resetCursor();
     }
     public function updated()
@@ -655,7 +654,6 @@ class Datatable extends Component
 
     protected function resetCursor()
     {
-        consoleLog($this, 'reset cursor');
         $this->cursor = null;
         $this->rows = collect();
         $this->loadedIds = [];
