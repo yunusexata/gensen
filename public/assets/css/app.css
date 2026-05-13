@@ -1093,12 +1093,25 @@ video {
   width: 100%;
 }
 
+.w-\[100vw\] {
+  width: 100vw;
+}
+
+.w-\[60vw\] {
+  width: 60vw;
+}
+
 .min-w-\[200px\] {
   min-width: 200px;
 }
 
 .min-w-full {
   min-width: 100%;
+}
+
+.min-w-max {
+  min-width: -moz-max-content;
+  min-width: max-content;
 }
 
 .max-w-4xl {

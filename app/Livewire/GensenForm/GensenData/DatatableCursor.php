@@ -23,6 +23,7 @@ use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
+use Illuminate\Pagination\Cursor;
 
 class Datatable extends Component
 {
@@ -38,9 +39,7 @@ class Datatable extends Component
 
     public $pageName = "";
     public $lengthOptions = [10, 25, 50, 100];
-    public $page = 1;
-    public $length = 50;
-    public $perPage = 50;
+    public $length = 10;
     public $search;
     public $sortBy = '';
     public $sortDirection = 'asc';
@@ -59,7 +58,6 @@ class Datatable extends Component
     public ?string $editingRowId = null;
     public array $editingData = [];
 
-
     // FILTER
     public $filter_pic;
     public $filter_status;
@@ -68,7 +66,13 @@ class Datatable extends Component
     public $filter_tanggal_kepulangan_dari;
     public $filter_tanggal_kepulangan_sampai;
 
-    // public int $length = 5;
+    // public int $length = 25;
+
+    public ?string $cursor = null;
+
+    public array $loadedIds = []; // prevent duplicates
+    public $rows; // accumulated collection
+
     public function onMount()
     {
         $authUser = UserRepository::authenticatedUser();
@@ -77,8 +81,10 @@ class Datatable extends Component
         $this->isCanUpdate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_DATA, PermissionHelper::TYPE_UPDATE));
         $this->isCanDelete = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_DATA, PermissionHelper::TYPE_DELETE));
 
-        $this->sortBy = 'created_at';
-        $this->sortDirection = 'DESC';
+        // $this->sortBy = 'id';
+        // $this->sortDirection = 'ASC';
+        // $this->sortBy = 'created_at';
+        // $this->sortDirection = 'DESC';
     }
 
     #[On('export')]
@@ -197,6 +203,7 @@ class Datatable extends Component
     {
         $this->resetPage();
     }
+
     public function getColumns(): array
     {
         return [
@@ -208,24 +215,54 @@ class Datatable extends Component
                 'render' => function ($item, $index) {
                     $id = Crypt::encrypt($item->id);
 
-                    $editHtml = "
-                        <div class='col-auto' x-data=\"{ open: false }\"
-                            wire:key='datatable_row_main_{$item['id']}'>
-
-                            <button type='button'
-                                @click=\"open = !open; if(open){ \$wire.editRow('" . simple_encrypt($item['id']) . "') }\"
-                                class='p-0 hover:bg-success/10 text-success rounded transition-colors'
-                                data-bs-toggle='collapse'
-                                data-bs-target='#collapse-" . $item['id'] . "'
-                                style='cursor: pointer;'
-                                >
-
-                                <span class='material-symbols-outlined text-lg'>edit_square</span>
+                    $destroyHtml = "";
+                    if ($this->isCanDelete) {
+                        $destroyHtml = "<div class='col-auto'>
+                            <button type='button' class='btn py-1 px-2 btn-sm btn-danger' wire:click=\"showDeleteDialog('$id')\">
+                                Hapus
                             </button>
-
-                            <div x-show='open' x-collapse class='mt-2'></div>
-
                         </div>";
+                    }
+
+                    $copyHtml = "";
+                    if ($this->isCanCreate) {
+                        $copyHtml = "<div class='col-auto'>
+                            <button type='button' class='btn py-1 px-2 btn-sm btn-warning' wire:click=\"showCopyDialog('$id')\">
+                                Copy
+                            </button>
+                        </div>";
+                    }
+                    // @click=\"\$dispatch('edit-data', { id: '" . $id . "' })\"
+                    $editHtml = "";
+
+                    // $editHtml = "<div class='col-auto' wire:key='datatable_row_main_" . $item['id'] . "'>
+                    //     <button type='button' class='p-0 hover:bg-success/10 text-success rounded transition-colors'
+
+                    //         data-bs-toggle='collapse'
+                    //         data-bs-target='#collapse-" . $item['id'] . "'
+                    //         style='cursor: pointer;'
+                    //         wire:click=\" editRow('" . simple_encrypt($item['id']) . "')\">
+                    //         <span class='material-symbols-outlined text-lg' data-icon='edit_square'>edit_square</span>
+                    //     </button>
+                    // </div>";
+                    $editHtml = "
+<div class='col-auto' x-data=\"{ open: false }\"
+    wire:key='datatable_row_main_{$item['id']}'>
+
+    <button type='button'
+        @click=\"open = !open; if(open){ \$wire.editRow('" . simple_encrypt($item['id']) . "') }\"
+        class='p-0 hover:bg-success/10 text-success rounded transition-colors'
+        data-bs-toggle='collapse'
+        data-bs-target='#collapse-" . $item['id'] . "'
+        style='cursor: pointer;'
+        >
+
+        <span class='material-symbols-outlined text-lg'>edit_square</span>
+    </button>
+
+    <div x-show='open' x-collapse class='mt-2'></div>
+
+</div>";
 
 
                     $html = "<div class='row p-0 m-0 d-flex d-inline flex-nowrap justify-content-center'>
@@ -329,10 +366,6 @@ class Datatable extends Component
                 'key' => 'tanggal_lahir',
                 'name' => 'Tanggal Lahir',
             ],
-            // [
-            //     'key' => 'email',
-            //     'name' => 'Email',
-            // ],
             [
                 'key' => 'tanggal_kepulangan',
                 'name' => 'Tanggal Kepulangan',
@@ -433,75 +466,6 @@ class Datatable extends Component
                 'key' => 'pic_code',
                 'name' => 'Kode PIC',
             ],
-            // [
-            //     'key' => 'tanggal_lengkap',
-            //     'name' => 'Tanggal Lengkap',
-            //     'render' => function ($item) {
-            //         return $item->tanggal_lengkap ? Carbon::parse($item->tanggal_lengkap)->format('Y-m-d') : '-';
-            //     }
-            // ],
-            // [
-            //     'key' => 'tanggal_verified',
-            //     'name' => 'Tanggal Verified',
-            //     'render' => function ($item) {
-            //         return $item->tanggal_verified ? Carbon::parse($item->tanggal_verified)->format('Y-m-d') : '-';
-            //     }
-            // ],
-            // [
-            //     'key' => 'tanggal_pengajuan',
-            //     'name' => 'Tanggal Pengajuan',
-            //     'render' => function ($item) {
-            //         return $item->tanggal_pengajuan ? Carbon::parse($item->tanggal_pengajuan)->format('Y-m-d') : '-';
-            //     }
-            // ],
-            // [
-            //     'key' => 'tanggal_cair',
-            //     'name' => 'Tanggal Cair',
-            //     'render' => function ($item) {
-            //         return $item->tanggal_cair ? Carbon::parse($item->tanggal_cair)->format('Y-m-d') : '-';
-            //     }
-            // ],
-            // [
-            //     'key' => 'nominal_cair',
-            //     'name' => 'Nominal Cair',
-            //     'render' => function ($item) {
-            //         return $item->nominal_cair ? number_format($item->nominal_cair, 0, ',', '.') : '-';
-            //     }
-            // ],
-
-            // [
-            //     'key' => 'tahun_gensen',
-            //     'name' => 'Tahun Gensen',
-            // ],
-            // [
-            //     'key' => 'tahun_transfer',
-            //     'name' => 'Tahun Transfer',
-            // ],
-
-            // [
-            //     'key' => 'nama_instagram',
-            //     'name' => 'Nama Instagram',
-            // ],
-            // [
-            //     'key' => 'nama_tiktok',
-            //     'name' => 'Nama Tiktok',
-            // ],
-            // [
-            //     'key' => 'nomor_whatsapp',
-            //     'name' => 'Nomor Whatsapp',
-            // ],
-            // [
-            //     'key' => 'nomor_whatsapp_darurat',
-            //     'name' => 'Nomor Whatsapp Darurat',
-            // ],
-            // [
-            //     'searchable' => false,
-            //     'key' => 'remarks_type',
-            //     'name' => 'Asal Pembuatan',
-            //     'render' => function ($item) {
-            //         return $item->remarks_type == User::class ? 'Manual PIC' : 'Link Pengisian Clien';
-            //     }
-            // ],
         ];
     }
 
@@ -602,16 +566,37 @@ class Datatable extends Component
         }
     }
 
-    public function updated($property)
+    public function updatingSearch()
     {
-        if (in_array($property, ['search', 'sortBy', 'sortDirection', 'filter_status', 'filter_pic'])) {
-            $this->resetPage();
-        }
+        consoleLog($this, 'updated here');
+        $this->resetCursor();
+    }
+    public function updatedLength()
+    {
+        consoleLog($this, 'updated here');
+        $this->resetCursor();
+    }
+    public function updatedSortBy()
+    {
+        consoleLog($this, 'updated here');
+        $this->resetCursor();
+    }
+    public function updatedSortDirection()
+    {
+        consoleLog($this, 'updated here');
+        $this->resetCursor();
+    }
+    public function updated()
+    {
+        consoleLog($this, 'updated here');
+        $this->resetCursor();
     }
 
-    public function loadMore(): void
+    protected function resetCursor()
     {
-        $this->length += $this->perPage;
+        $this->cursor = null;
+        $this->rows = collect();
+        $this->loadedIds = [];
     }
 
     #[On('datatable-add-filter')]
@@ -623,7 +608,19 @@ class Datatable extends Component
     }
 
     #[On('datatable-refresh')]
-    public function datatableRefresh() {}
+    public function datatableRefresh()
+    {
+        $this->resetCursor();
+    }
+
+    public function datatablePaginate($query)
+    {
+        if ($this->pageName) {
+            return $query->paginate($this->length, pageName: $this->pageName);
+        } else {
+            return $query->paginate($this->length);
+        }
+    }
 
     public function datatableSort($field)
     {
@@ -642,6 +639,7 @@ class Datatable extends Component
     {
         $columns = $this->getColumns();
         $query = $this->getQuery();
+
         $search = $this->search;
         $sortBy = $this->sortBy;
         $sortDirection = $this->sortDirection;
@@ -650,8 +648,8 @@ class Datatable extends Component
             $query->where(function ($query) use ($columns, $search) {
                 foreach ($columns as $col) {
                     if (
-                        isset($col['key'])
-                        && (!isset($col['searchable']) || (isset($col['searchable']) && $col['searchable']))
+                        isset($col['key']) &&
+                        (!isset($col['searchable']) || $col['searchable'])
                     ) {
                         $query->orWhere($col['key'], 'ILIKE', "%$search%");
                     }
@@ -659,19 +657,59 @@ class Datatable extends Component
             });
         });
 
-        $query->when($sortBy, function ($query) use ($sortBy, $sortDirection) {
+        consoleLog($this, [
+            $sortBy,
+            $sortDirection
+        ]);
+        if ($sortBy) {
             $query->orderBy($sortBy, $sortDirection);
-        });
+        }
+
+        // REQUIRED FOR CURSOR
+        $query->orderBy('created_at');
 
         return $query;
     }
-
     public function datatableGetData()
     {
-        // return $this->datatablePaginate($this->datatableGetProcessedQuery());
-        return $this->datatableGetProcessedQuery()
-            ->cursorPaginate($this->length);
+        $query = $this->datatableGetProcessedQuery();
+
+        $paginator = $query->cursorPaginate(
+            $this->length,
+            ['*'],
+            'cursor',
+            $this->cursor
+                ? Cursor::fromEncoded($this->cursor)
+                : null
+        );
+
+        // initialize collection
+        if (!$this->rows) {
+            $this->rows = collect();
+        }
+
+        // prevent duplicates
+        $newRows = collect($paginator->items())
+            ->reject(fn($row) => in_array($row->id, $this->loadedIds));
+
+        $this->loadedIds = array_merge(
+            $this->loadedIds,
+            $newRows->pluck('id')->toArray()
+        );
+
+        $this->rows = $this->rows->concat($newRows);
+
+        return $paginator;
     }
+    public function loadMore()
+    {
+        $data = $this->datatableGetData();
+
+        if ($data->nextCursor()) {
+            $this->cursor = $data->nextCursor()->encode();
+        }
+    }
+
     public function editRow($id)
     {
         $row = GensenForm::findOrFail(simple_decrypt($id));
@@ -715,22 +753,12 @@ class Datatable extends Component
 
         ];
     }
-
-
-    public function hydrateEditedRows($data)
-    {
-        consoleLog($this, 'hidrate');
-        foreach ($data as $row) {
-            if (!isset($this->editedRows[$row['id']])) {
-            }
-        }
-    }
-
     public function render()
     {
         $data = $this->datatableGetData();
+
         return view($this->getView(), [
-            'data' => $data,
+            'data' => $this->rows,
             'hasMore' => $data->hasMorePages(),
             'columns' => $this->getColumns(),
         ]);

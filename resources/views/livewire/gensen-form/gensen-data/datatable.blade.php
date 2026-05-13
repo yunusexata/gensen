@@ -507,20 +507,58 @@
                                 </td>
                                 <td colspan="100"></td>
                             </tr>
+                            
                         @endforeach
+                        @if ($data->hasMorePages())
+                                <tr>
+                                    <td colspan="999">
+                                        <div
+                                            x-data
+                                            x-intersect.margin.300px="$wire.loadMore()"
+                                            class="py-6 text-center"
+                                        >
+                                            Loading more...
+                                        </div>
+                                        {{-- <div 
+                                            x-data="{
+                                                observe() {
+                                                    const observer = new IntersectionObserver((entries) => {
+                                                        if (entries[0].isIntersecting) {
+                                                            @this.call('loadMore');
+                                                        }
+                                                    }, { threshold: 0.5 });
+                                                    observer.observe($el);
+                                                }
+                                            }"
+                                            x-init="observe()"
+                                            class="py-4 text-center"
+                                        >
+                                            <div wire:loading wire:target="loadMore">
+                                                <!-- Replace with a nice spinner -->
+                                                <span class="text-gray-500 border border-danger">Loading more data...</span>
+                                            </div>
+                                        </div> --}}
+                                    </td>
+                                </tr>
+                            @endif
                     {{-- @endfor --}}
                 </tbody>
             </table>
-
-            @if ($hasMore)
-                <div
-                    x-data
-                    x-intersect.full="$wire.loadMore()"
-                    class="py-6 text-center"
-                >
-                    Loading more...
+            {{-- <div class="position-relative">
+                <div class="position-absolute">
+                    @if ($hasMore)
+                        <div
+                            x-data
+                            x-intersect.full="$wire.loadMore()"
+                            class="py-6 text-center border border-danger w-[60vw]"
+                        >
+                            Loading more...
+                        </div>
+                    @endif
                 </div>
-            @endif
+            </div> --}}
+
+
         </div>
         <div class="row d-flex justify-content-between mt-5">
             <!-- LEFT BUTTON -->
