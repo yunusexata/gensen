@@ -30,7 +30,7 @@ class DocumentClassificationEngine implements Agent, HasStructuredOutput, HasToo
 {
     use Promptable;
 
-    /**
+    /** halo
      * Get the instructions that the agent should follow.
      */
     public function instructions(): Stringable|string
