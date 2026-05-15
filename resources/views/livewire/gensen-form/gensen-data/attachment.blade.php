@@ -1895,6 +1895,13 @@
                                             </span>
                                         </div>
                                     </div>
+                                @else
+                                    <div class="">
+                                        <div class="btn text-white w-100" style="background-color: #5d2fc2; "> 
+                                            Data belum diproses
+                                            </span>
+                                        </div>
+                                    </div>
                                 @endif
                                 <h1 class="text-label-bold font-label-bold text-on-surface-variant text-[20pt] uppercase border-b border-outline-variant pb-2 mt-4 text-right">Total : @currency($remittance_validate_total)</h1>
                             </div>
