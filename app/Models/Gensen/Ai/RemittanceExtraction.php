@@ -65,7 +65,7 @@ class RemittanceExtraction extends Model
         return $this->hasMany(RemittanceExtractionGroup::class, 'remittance_extraction_id', 'id');
     }
 
-    public function aiJob()
+    public function aiJobs()
     {
         return $this->hasMany(AiJob::class, 'id', 'ai_job_id');
     }
