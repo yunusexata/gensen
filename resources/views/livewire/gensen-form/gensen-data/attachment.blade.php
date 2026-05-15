@@ -1897,7 +1897,7 @@
                                     </div>
                                 @else
                                     <div class="">
-                                        <div class="btn text-white w-100" style="background-color: #5d2fc2; "> 
+                                        <div class="btn text-white w-100" style="background-color: #e5a54b; "> 
                                             Data belum diproses
                                             </span>
                                         </div>
