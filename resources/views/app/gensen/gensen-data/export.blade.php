@@ -90,7 +90,7 @@
                         @endforeach</td>
                         <td>@foreach ($receiver_names as $name)
                             {{ $name }},
-                        @endforeach</td>s
+                        @endforeach</td>
                         <td></td>
                         <td>{{$data['nama_instagram']}}</td>
                         <td>{{$data['nomor_whatsapp']}}</td>
