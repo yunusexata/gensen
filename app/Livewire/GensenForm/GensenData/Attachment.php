@@ -325,24 +325,27 @@ class Attachment extends Component
         if (!$gensen) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
         }
-        $this->remittance_extraction = $gensen->remittanceExtraction;
-        // dd($this->remittance_extraction->remittanceExtractionGroups->toArray());
-        $this->remittance_extraction_groups = $this->remittance_extraction
-            ? $this->remittance_extraction
-            ->remittanceExtractionGroups
-            ->map(function ($group) {
-                $groupArray = $group->toArray();
-                if ($group->is_validate) {
-                    $this->remittance_validate_total += $group->total_amount;
-                }
-                $groupArray['amount_details'] =
-                    json_decode($group->amount_details, true) ?? [];
+        if ($gensen->remittanceExtraction && $gensen->remittanceExtraction->aiJob()->status != JobStatus::PENDING) {
 
-                return $groupArray;
-            })
-            ->values()
-            ->toArray()
-            : [];
+            $this->remittance_extraction = $gensen->remittanceExtraction;
+            // dd($this->remittance_extraction->remittanceExtractionGroups->toArray());
+            $this->remittance_extraction_groups = $this->remittance_extraction
+                ? $this->remittance_extraction
+                ->remittanceExtractionGroups
+                ->map(function ($group) {
+                    $groupArray = $group->toArray();
+                    if ($group->is_validate) {
+                        $this->remittance_validate_total += $group->total_amount;
+                    }
+                    $groupArray['amount_details'] =
+                        json_decode($group->amount_details, true) ?? [];
+
+                    return $groupArray;
+                })
+                ->values()
+                ->toArray()
+                : [];
+        }
         $this->onload = true;
     }
     public function getMergeAttachment($gensen_form_id = null)
