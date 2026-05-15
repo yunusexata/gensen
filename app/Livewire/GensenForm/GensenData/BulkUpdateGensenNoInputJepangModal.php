@@ -15,6 +15,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
@@ -49,6 +50,7 @@ class BulkUpdateGensenNoInputJepangModal extends Component
                 'tanggal_lengkap' => $row['tanggal_lengkap'],
                 'tanggal_verified' => $row['tanggal_verified'],
                 'no_input_jepang' => $row['no_input_jepang'],
+                'keterangan' => $row['keterangan'],
             ];
             $validator = Validator::make($d, [
                 'id_customer' => 'required|exists:gensen_forms,id_customer',
@@ -92,15 +94,34 @@ class BulkUpdateGensenNoInputJepangModal extends Component
             $successCount = 0;
             foreach ($this->previewBulkStatusRows as $key => $value) {
                 if (!$value['error']) {
+                    $validatedData = [];
+                    if (Str::lower(trim($value['data']['no_input_jepang'])) == 'cancel') {
+                        $validatedData = [
+                            'status' => GensenForm::STATUS_CANCEL,
+                            'keterangan' => $value['data']['keterangan'],
+                        ];
+                    } elseif (Str::lower(trim($value['data']['no_input_jepang'])) == 'honnin') {
+                        $validatedData = [
+                            'status' => GensenForm::STATUS_HONNIN,
+                            'keterangan' => $value['data']['keterangan'],
+                        ];
+                    } elseif (Str::lower(trim($value['data']['no_input_jepang'])) == 'mondai') {
+                        $validatedData = [
+                            'status' => GensenForm::STATUS_MONDAI,
+                            'keterangan' => $value['data']['keterangan'],
+                        ];
+                    } else {
+                        $validatedData = [
+                            'no_input_jepang' => $value['data']['no_input_jepang'],
+                        ];
+                    }
+
                     $updated = GensenFormRepository::updateBy([
                         ['id_customer', $value['data']['id_customer']],
                         ['nama_lengkap', $value['data']['nama_lengkap']],
                         ['tanggal_lengkap', '!=', null],
                         ['tanggal_verified', '!=', null],
-                        ['no_input_jepang', null],
-                    ], [
-                        'no_input_jepang' => $value['data']['no_input_jepang'],
-                    ]);
+                    ], $validatedData);
 
                     if ($updated > 0) {
                         $successCount++;

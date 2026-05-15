@@ -10,6 +10,7 @@ use App\Repositories\Account\UserRepository;
 use App\Repositories\Gensen\GensenExportImportHistoryRepository;
 use App\Traits\Livewire\WithDatatable as LivewireWithDatatable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -32,6 +33,14 @@ class DatatableHistory extends Component
 
     public function updateStatus($data)
     {
+        if ($data['created_by'] == Auth::user()->id && $data['status'] === JobStatus::DONE->value) {
+            $encryptedId = Crypt::encrypt($data['id']);
+            $this->dispatch(
+                'download-export',
+                // url: $data['url']
+                url: route('gensen_form_export_import.download', ['id' => $encryptedId])
+            );
+        }
         $this->statuses[$data['id']] = $data;
     }
 

@@ -38,7 +38,8 @@
                                                     <th>Nama</th>
                                                     <th>Tanggal Lengkap</th>
                                                     <th>Tanggal Verified</th>
-                                                    <th>No Input Jepang</th>
+                                                    <th>No Input Jepang/Status</th>
+                                                    <th>Keterangan</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -55,6 +56,7 @@
                                                                 <td>{{ $row['data']['tanggal_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_verified'] }}</td>
                                                                 <td>{{ $row['data']['no_input_jepang'] }}</td>
+                                                                <td>{{ $row['data']['keterangan'] }}</td>
                                                                 
                                                         </tr>
                                                     @endif
@@ -73,7 +75,8 @@
                                                     <th>Nama</th>
                                                     <th>Tanggal Lengkap</th>
                                                     <th>Tanggal Verified</th>
-                                                    <th>No Input Jepang</th>
+                                                    <th>No Input Jepang/Status</th>
+                                                    <th>Keterangan</th>
                                                     <th>Pesan Error System</th>
                                                 </tr>
                                             </thead>
@@ -91,6 +94,7 @@
                                                                 <td>{{ $row['data']['tanggal_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_verified'] }}</td>
                                                                 <td>{{ $row['data']['no_input_jepang'] }}</td>
+                                                                <td>{{ $row['data']['keterangan'] }}</td>
                                                             <td>
                                                                 @foreach($row['error'] as $field => $msg)
                                                                     <div>{{ json_encode($msg) }}</div>

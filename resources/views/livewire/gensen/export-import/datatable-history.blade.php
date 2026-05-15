@@ -130,6 +130,15 @@
                     console.log('EVENT MASUK:', e);
                     Livewire.dispatch('status-updated',{data: e.data});
                 });
+        Livewire.on('download-export', ({ url }) => {
+
+            const link = document.createElement('a');
+                link.href = url;
+                link.download = '';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+            });
         });
     </script>
 @endpush

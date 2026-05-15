@@ -4,6 +4,7 @@ namespace App\Http\Controllers\GensenForm;
 
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Http\Controllers\Controller;
+use App\Models\Gensen\GensenExportImportHistory;
 use App\Models\GensenForm\GensenFormAttachment;
 use App\Models\GensenForm\GensenFormLink;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
@@ -72,6 +73,29 @@ class GensenFormController extends Controller
             $disk->path($attachment->path),
             [
                 'Content-Type' => $attachment->mime_type,
+                'Content-Disposition' => 'inline; filename="' . $filename . '"',
+            ]
+        );
+    }
+    public function previewExportImport(GensenExportImportHistory $history)
+    {
+        // abort_unless(auth()->check(), 403);
+
+        $disk = Storage::disk($history->disk);
+
+        abort_unless(
+            $disk->exists($history->path),
+            404
+        );
+        if ($history->type === GensenAttachmentType::SELURUH_BERKAS) {
+            $filename = $history->job_key->value . "." . $history->extension;
+        } else {
+            $filename = $history->original_name;
+        }
+        return response()->file(
+            $disk->path($history->path),
+            [
+                'Content-Type' => $history->mime_type,
                 'Content-Disposition' => 'inline; filename="' . $filename . '"',
             ]
         );

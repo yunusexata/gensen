@@ -33,7 +33,7 @@ class RemittanceExtraction extends Model
     protected static function onBoot()
     {
         self::updated(function ($model) {
-            $model->subject->update(['jumlah_kirim_uang' => $model->total_transfer]);
+            // $model->subject->update(['jumlah_kirim_uang' => $model->total_transfer]);
         });
     }
     public function syncSubjectTotal()

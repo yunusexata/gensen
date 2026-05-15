@@ -159,7 +159,12 @@ class ExportService
     private function exportListDataNoInputJapan($filters)
     {
         return   $this->query($filters)
-            ->where('gensen_forms.status', GensenForm::STATUS_VERIFIED)
+            // ->where('gensen_forms.status', GensenForm::STATUS_VERIFIED)
+            ->whereNotIn('gensen_forms.status', [
+                GensenForm::STATUS_CANCEL,
+                GensenForm::STATUS_HONNIN,
+                GensenForm::STATUS_MONDAI,
+            ])
             ->whereNotNull('gensen_forms.tanggal_lengkap')
             ->whereNotNull('gensen_forms.tanggal_verified')
             ->whereNotNull('gensen_forms.no_input_jepang')

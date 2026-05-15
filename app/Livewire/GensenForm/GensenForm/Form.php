@@ -11,6 +11,7 @@ use App\Models\GensenForm\GensenFormAttachment;
 use App\Models\GensenForm\GensenFormLink;
 use App\Models\User;
 use App\Repositories\GensenForm\GensenFormAttachmentRepository;
+use App\Repositories\GensenForm\GensenFormDetailRepository;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
 use App\Repositories\GensenForm\GensenFormRepository;
 use Exception;
@@ -19,7 +20,9 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -73,9 +76,12 @@ class Form extends Component
 
     public $status;
     // #[Validate('required', message: 'Tahun Gensen Harus Diisi', onUpdate: false)]
-    public $tahun_gensen;
-    // #[Validate('required', message: 'Tahun Transfer Harus Diisi', onUpdate: false)]
-    public $tahun_transfer;
+    // public $tahun_gensen;
+    // public $tahun_transfer;
+    #[Validate('required|in:sudah,belum', message: 'Urus sendiri/konsultan lain Harus Diisi', onUpdate: false)]
+    public $is_previously_processed;
+
+    public $gensen_form_details = [];
     public $is_should_filled = false;
     public $is_submitted = false;
 
@@ -137,14 +143,35 @@ class Form extends Component
         'stepper-click-request' => 'handleStepClick',
     ];
 
+    protected $rules = [
+        // 'gensen_form_details' => ['required', 'array'],
+        // 'gensen_form_details.*.tahun_gensen' => ['required', 'integer'],
+    ];
+
+    protected $messages = [
+        // 'is_previously_processed.required' => 'Urus sendiri/konsultan lain Harus Diisi',
+        // 'is_previously_processed.in' => 'Urus sendiri/konsultan lain Harus Diisi',
+
+        // 'gensen_form_details.required' => 'Detail Gensen wajib diisi.',
+        // 'gensen_form_details.*.tahun_gensen.required' => 'Tahun gensen wajib diisi.',
+        // 'gensen_form_details.*.tahun_gensen.integer' => 'Tahun gensen harus angka.',
+    ];
+
     public function mount()
     {
+
         if ($this->isUploadAttachment) {
             $this->gensenFormId = Crypt::decrypt($this->gensenFormId);
             $this->authorized = true;
             $this->dispatch('onAuthorized');
             $this->validatationStepper(1);
         } else {
+            $this->gensen_form_details[] = [
+                'id' => null,
+                'key' => Str::random(10),
+                'tahun_gensen' => null,
+                'nominal_gensen' => null,
+            ];
             if ($this->isAdmin) {
                 $this->authorized = true;
                 $this->dispatch('onAuthorized');
@@ -181,6 +208,24 @@ class Form extends Component
         } catch (DecryptException $e) {
             abort(404, 'Form tidak tersedia');
         }
+    }
+
+    public function addGensenFormDetail()
+    {
+        $this->gensen_form_details[] = [
+            'id' => null,
+            'key' => Str::random(10),
+            'tahun_gensen' => null,
+            'nominal_gensen' => null,
+        ];
+    }
+
+    public function deleteGensenFormDetail($index)
+    {
+        unset($this->gensen_form_details[$index]);
+
+        // reindex array biar rapi (penting untuk Livewire)
+        $this->gensen_form_details = array_values($this->gensen_form_details);
     }
 
     #[On('on-dialog-confirm')]
@@ -256,51 +301,23 @@ class Form extends Component
     }
     private function validateStepPersonal()
     {
-        // consoleLog($this, [
-        //     'firstcheck',
-        //     $this->isFirstCheck
-        // ]);
+        consoleLog($this, [
+            'firstcheck',
+            $this->isFirstCheck
+        ]);
+        // try {
         if (!$this->isFirstCheck) {
             $this->firstCheck(); // your existing logic
         } else {
             $this->validate();
-            // $this->validate([
-            //     'nomor_whatsapp' => [
-            //         'required',
-            //         function ($attribute, $value, $fail) {
 
-            //             $number = preg_replace('/[^\d]/', '', $value);
-
-            //             if (str_starts_with($number, '62')) {
-            //                 $number = substr($number, 2);
-            //             }
-
-            //             if (!preg_match('/^8[0-9]{8,11}$/', $number)) {
-            //                 $fail('Format No Whatsapp tidak sesuai, contoh: +62 8XX-XXXX-XXXX');
-            //             }
-            //         },
-            //     ],
-
-            //     'nomor_whatsapp_darurat' => [
-            //         'nullable',
-            //         function ($attribute, $value, $fail) {
-
-            //             if (!$value) return;
-
-            //             $number = preg_replace('/[^\d]/', '', $value);
-
-            //             if (str_starts_with($number, '62')) {
-            //                 $number = substr($number, 2);
-            //             }
-
-            //             if (!preg_match('/^8[0-9]{8,11}$/', $number)) {
-            //                 $fail('Format No Whatsapp Darurat tidak sesuai, contoh: +62 8XX-XXXX-XXXX');
-            //             }
-            //         },
-            //     ],
-            // ]);
             $this->saveData(false);
         }
+        // } catch (\Illuminate\Validation\ValidationException $e) {
+
+        //     Alert::fail($this, "Gagal", $e->getMessage());
+        //     return;
+        // }
     }
 
     private function validateStepAttachment()
@@ -339,10 +356,10 @@ class Form extends Component
     }
     public function submitForm()
     {
+        consoleLog($this, 'submit dong');
         $this->validateStepPersonal();
         $this->validateStepAttachment();
         $this->validateStepReview();
-        consoleLog($this, 'submit dong');
         $this->saveData(true, true);
         Alert::confirmation(
             $this,
@@ -416,9 +433,10 @@ class Form extends Component
             $this->hubungan_penerima = $gensenForm->hubungan_penerima;
 
             $this->status = $gensenForm->status;
-            $this->tahun_gensen = $gensenForm->tahun_gensen;
-            $this->tahun_transfer = $gensenForm->tahun_transfer;
+            // $this->tahun_gensen = $gensenForm->tahun_gensen;
+            // $this->tahun_transfer = $gensenForm->tahun_transfer;
 
+            $this->is_previously_processed = $gensenForm->is_previously_processed ? 'sudah' : 'belum';
             $this->is_should_filled = $gensenForm->is_should_filled;
             $this->is_submitted = $gensenForm->is_submitted;
             // Lampiran
@@ -615,6 +633,7 @@ class Form extends Component
     public function saveData($withAttachment = false, $isSubmitted = null)
     {
         try {
+
             DB::transaction(function () use ($isSubmitted, $withAttachment) {
                 // $nomor_whatsapp = preg_replace('/[^\d]/', '', $this->nomor_whatsapp);
                 // $nomor_whatsapp_darurat = preg_replace('/[^\d]/', '', $this->nomor_whatsapp_darurat);
@@ -639,8 +658,10 @@ class Form extends Component
                     'nama_penerima' => $this->nama_penerima,
                     'hubungan_penerima' => $this->hubungan_penerima,
 
-                    'tahun_gensen' => $this->tahun_gensen,
-                    'tahun_transfer' => $this->tahun_transfer,
+                    'is_previously_processed' => $this->is_previously_processed === 'sudah',
+
+                    // 'tahun_gensen' => $this->tahun_gensen,
+                    // 'tahun_transfer' => $this->tahun_transfer,
 
                 ];
                 if ($this->gensenFormId) {
@@ -669,6 +690,17 @@ class Form extends Component
                     $gensenForm = GensenFormRepository::create($validateData);
                     $this->gensenFormId = $gensenForm->id;
                 }
+                foreach ($this->gensen_form_details as $gensen_form_detail) {
+                    if (!$gensen_form_detail['id']) {
+
+                        if ($gensen_form_detail['tahun_gensen']) {
+                            GensenFormDetailRepository::create([
+                                'gensen_form_id' => $this->gensenFormId,
+                                'tahun_gensen' => $gensen_form_detail['tahun_gensen'],
+                            ]);
+                        }
+                    }
+                }
                 consoleLog($this, $this->gensenFormId);
                 $gensenForm = GensenFormRepository::find($this->gensenFormId);
                 $this->is_should_filled = $gensenForm->is_should_filled;
@@ -688,6 +720,18 @@ class Form extends Component
         } catch (Exception $e) {
             DB::rollBack();
             Alert::fail($this, "Gagal", $e->getMessage());
+        } catch (ValidationException $e) {
+            DB::rollBack();
+
+            consoleLog($this, ['validation', $e->errors()]);
+
+            $message = collect($e->errors())
+                ->flatten()
+                ->first();
+
+            Alert::fail($this, "Gagal", $message);
+
+            return;
         }
     }
     public function store()

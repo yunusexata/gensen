@@ -420,8 +420,8 @@ class Datatable extends Component
                 }
             ],
             [
-                'key' => 'keterangan_mondai',
-                'name' => 'Keterangan Mondai',
+                'key' => 'keterangan',
+                'name' => 'Keterangan',
             ],
             [
                 'key' => 'alamat_jepang',

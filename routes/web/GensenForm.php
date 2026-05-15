@@ -17,8 +17,12 @@ Route::get(
     '/gensen/attachment/{attachment}/preview',
     [GensenFormController::class, 'preview']
 )
-    ->name('gensen.attachment.preview')
-;
+    ->name('gensen.attachment.preview');
+Route::get(
+    '/gensen/export-import/{history_id}/preview',
+    [GensenFormController::class, 'previewExportImport']
+)
+    ->name('gensen.attachment.preview-export-import');
 // ->middleware('signed');
 Route::get('/preview-temp-pdf/{filename}', function ($filename) {
 

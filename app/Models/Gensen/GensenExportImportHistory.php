@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Muhammadyunus1072\TrackHistory\HasTrackHistory;
+use Illuminate\Support\Facades\URL;
 
 class GensenExportImportHistory extends Model
 {
@@ -57,6 +58,14 @@ class GensenExportImportHistory extends Model
         });
     }
 
+    public function previewUrl(): string
+    {
+        return URL::temporarySignedRoute(
+            'gensen.attachment.preview-export-import',
+            now()->addMinutes(30),
+            ['history_id' => $this->id]
+        );
+    }
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by', 'id');

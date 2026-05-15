@@ -1831,7 +1831,7 @@
                                             <input
                                                     class="form-control"
                                                     wire:model="tahun_gensen_details.{{ $index_tahun_gensen }}.tahun_gensen"
-                                                    type="number"
+                                                    type="text"
                                                     placeholder="Reiwa"
                                                 />
                                         </div>

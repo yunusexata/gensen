@@ -41,7 +41,7 @@ class Export extends Component
         // );
 
         $filters = [
-            'status' => GensenForm::STATUS_BELUM_LENGKAP,
+            // 'status' => GensenForm::STATUS_BELUM_LENGKAP,
             'job_key' => $this->export_job_key->value,
             'pic_code' => $this->filter_pic,
             'tanggal_input' => $this->filter_tanggal_input_dari ?

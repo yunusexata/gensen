@@ -32,6 +32,10 @@ class ExportGensenJob implements ShouldQueue
     {
         logger('START EXPORT');
         $history = GensenExportImportHistory::findOrFail($this->historyId);
+
+        $history->update([
+            'started_at' => now(),
+        ]);
         Log::info('Broadcasting event', [
             'id' => $history->id,
             'job_key' => $history->job_key->value,
@@ -50,6 +54,7 @@ class ExportGensenJob implements ShouldQueue
             $filePath = 'exports/' . $fileName;
 
             // simpan file (pakai Laravel Excel atau manual)
+            $disk = 'private';
             Excel::store(new CollectionExport(
                 [
                     'title' => 'Data Gensen',
@@ -57,14 +62,17 @@ class ExportGensenJob implements ShouldQueue
                 ],
                 $data,
                 'app.gensen.gensen-data.export',
-            ), $filePath, 'private');
+            ), $filePath, $disk);
 
             $history->update([
                 'status' => JobStatus::DONE,
                 'file_name' => $fileName,
                 'file_path' => $filePath,
+                'disk' => $disk,
                 'amount' => $data?->count(),
+                'finish_at' => now(),
             ]);
+
             event(new ExportStatusUpdated($history));
             Log::info('Broadcasting event', [
                 'id' => $history->id,

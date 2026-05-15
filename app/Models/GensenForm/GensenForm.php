@@ -81,8 +81,8 @@ class GensenForm extends Model
         'no_input_jepang',
 
         // Step 4 - HS
-        'nominal_gensen',
-        'jumlah_kirim_uang',
+        // 'nominal_gensen',
+        // 'jumlah_kirim_uang',
         'nama_penerima_dan_hubungan',
 
         // Step 5 - Admin Jepang
@@ -93,7 +93,8 @@ class GensenForm extends Model
         'tanggal_cair',
 
         // MONDAI
-        'keterangan_mondai',
+        'keterangan',
+        'is_previously_processed',
     ];
 
     const PIC_AI = 'AI';
@@ -125,6 +126,7 @@ class GensenForm extends Model
     const STATUS_GENSEN_CAIR = 'GENSEN CAIR';
     const STATUS_CANCEL = 'CANCEL';
     const STATUS_HONNIN = 'HONNIN';
+    const STATUS_MONDAI = 'MONDAI';
     const STATUS_CHOICE = [
 
         self::STATUS_BELUM_LENGKAP => 'BELUM LENGKAP',
@@ -136,6 +138,7 @@ class GensenForm extends Model
         self::STATUS_GENSEN_CAIR => 'GENSEN CAIR',
         self::STATUS_CANCEL => 'CANCEL',
         self::STATUS_HONNIN => 'HONNIN',
+        self::STATUS_MONDAI => 'MONDAI',
     ];
 
     const ATTACHMENT_ORDER_BY = [
@@ -159,6 +162,7 @@ class GensenForm extends Model
             self::STATUS_GENSEN_CAIR => '#E5C95F',
             self::STATUS_CANCEL => '#FFF6F6',
             self::STATUS_HONNIN => '#D1855C',
+            self::STATUS_MONDAI => '#e80606',
             default => '#ffffff',
         };
     }
@@ -215,20 +219,20 @@ class GensenForm extends Model
         self::updated(function ($model) {
             if ($model->status === self::STATUS_LENGKAP) {
 
-                $aiJob = AiJob::create([
+                // $aiJob = AiJob::create([
 
-                    'provider' => 'gemini-ai',
+                //     'provider' => 'gemini-ai',
 
-                    'model' => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
+                //     'model' => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
 
-                    'job_type' => AiJob::JOB_TYPE_REMITTANCE_EXTRACTION,
+                //     'job_type' => AiJob::JOB_TYPE_REMITTANCE_EXTRACTION,
 
-                    'status' => 'pending',
+                //     'status' => 'pending',
 
-                    'subject_type' => $model::class,
+                //     'subject_type' => $model::class,
 
-                    'subject_id' => $model->id,
-                ]);
+                //     'subject_id' => $model->id,
+                // ]);
             }
         });
         self::deleted(function ($model) {

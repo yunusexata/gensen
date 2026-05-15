@@ -100,8 +100,8 @@ class UserSeeder extends Seeder
         $user->assignRole(User::ROLE_SALES);
 
         $user = User::create([
-            'name' => "Selamet Syafaruddin",
-            'username' => "Selamet Syafaruddin",
+            'name' => "Selamet",
+            'username' => "Selamet",
             'email' => "eza.exataindonesia2018@gmail.com",
             'pic_code' => 'SN',
             'password' => Hash::make("123exata"),
@@ -122,9 +122,9 @@ class UserSeeder extends Seeder
 
         // ADMIN JAPAN
         $user = User::create([
-            'name' => "Admin Japan",
-            'username' => "Admin Japan",
-            'email' => "adminjapan@gmail.com",
+            'name' => "Indy",
+            'username' => "Indy",
+            'email' => "Indy.exataindonesia@gmail.com",
             'password' => Hash::make("123exata"),
         ]);
 

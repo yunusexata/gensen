@@ -70,8 +70,8 @@ return new class extends Migration
         $table->string('hubungan_penerima')->nullable();
 
         // Gensen
-        $table->integer('tahun_gensen')->nullable();
-        $table->integer('tahun_transfer')->nullable();
+        // $table->integer('tahun_gensen')->nullable();
+        // $table->integer('tahun_transfer')->nullable();
 
         // Relasi History
         $table->unsignedBigInteger('remarks_id');
@@ -87,9 +87,9 @@ return new class extends Migration
         // ----------- //
 
         // Step 1 - HS
-        $table->double('nominal_gensen', 20, 2, true)->nullable();
-        $table->double('jumlah_kirim_uang', 20, 2, true)->nullable();
-        $table->text('nama_penerima_dan_hubungan')->nullable();
+        // $table->double('nominal_gensen', 20, 2, true)->nullable();
+        // $table->double('jumlah_kirim_uang', 20, 2, true)->nullable();
+        // $table->text('nama_penerima_dan_hubungan')->nullable();
         $table->date('tanggal_lengkap')->default(null)->nullable();
 
         // Step 2 - HS2
@@ -102,11 +102,12 @@ return new class extends Migration
         $table->date('tanggal_pengajuan')->nullable(); // Tanggal Pengajuan Ke Kantor Pajak
 
         // Step 5 - Acc Exata
-        $table->double('nominal_cair', 20, 2, true)->nullable();
-        $table->date('tanggal_cair')->nullable();
+        // $table->double('nominal_cair', 20, 2, true)->nullable();
+        // $table->date('tanggal_cair')->nullable();
 
         // MONDAI
-        $table->text('keterangan_mondai')->nullable();
+        $table->text('keterangan')->nullable();
+        $table->boolean('is_previously_processed')->default(false)->nullable(); // Gensen pernah diproses sebelumnya oleh pihak lain (belum/sudah)
 
         $table->bigInteger("created_by")->unsigned()->nullable();
         $table->bigInteger("updated_by")->unsigned()->nullable();

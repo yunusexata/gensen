@@ -40,6 +40,9 @@ return new class extends Migration
         $table->unsignedBigInteger('gensen_form_id');
 
         $table->integer('tahun_gensen');
+        $table->double('nominal_gensen', 20, 2, true)->nullable();
+        $table->date('tanggal_cair')->nullable();
+        $table->double('nominal_cair', 20, 2, true)->nullable();
 
         $table->bigInteger("created_by")->unsigned()->nullable();
         $table->bigInteger("updated_by")->unsigned()->nullable();

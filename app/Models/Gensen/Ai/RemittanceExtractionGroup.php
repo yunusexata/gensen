@@ -49,17 +49,17 @@ class RemittanceExtractionGroup extends Model
         if ($subject) {
             // Calculate the sum of all VALIDATED groups for this subject
             // We look through all extractions belonging to this subject
-            $newTotal = $this->remittanceExtraction->whereHas('remittanceExtraction', function ($query) use ($subject) {
-                $query->where('subject_id', $subject->id);
-            })
-                ->where('is_validate', true)
-                ->sum('total_amount');
-            logger([
-                'new_total',
-                $newTotal
-            ]);
+            // $newTotal = $this->remittanceExtraction->whereHas('remittanceExtraction', function ($query) use ($subject) {
+            //     $query->where('subject_id', $subject->id);
+            // })
+            //     ->where('is_validate', true)
+            //     ->sum('total_amount');
+            // logger([
+            //     'new_total',
+            //     $newTotal
+            // ]);
 
-            $subject->update(['jumlah_kirim_uang' => $newTotal]);
+            // $subject->update(['jumlah_kirim_uang' => $newTotal]);
         }
     }
 

@@ -34,7 +34,7 @@
                 <th class="text-center">TANGGAL PENGAJUAN</th>
                 <th class="text-center">TANGGAL CAIR</th>
                 <th class="text-center">NOMINAL CAIR</th>
-                <th class="text-center">KETERANGAN MONDAI</th>
+                <th class="text-center">KETERANGAN</th>
                 <th class="text-center">NAMA</th>
                 <th class="text-center">TGL LAHIR</th>
                 <th class="text-center">TGL PULANG</th>
@@ -71,7 +71,7 @@
                         <td>{{ $data['tanggal_pengajuan'] ? Carbon\Carbon::parse($data['tanggal_pengajuan'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['tanggal_cair'] ? Carbon\Carbon::parse($data['tanggal_cair'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['nominal_cair'] }}</td>
-                        <td>{{ $data['keterangan_mondai']}}</td>
+                        <td>{{ $data['keterangan']}}</td>
                         <td>{{ $data['nama_lengkap'] }}</td>
                         <td>{{ $data['tanggal_lahir'] ? Carbon\Carbon::parse($data['tanggal_lahir'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['tanggal_kepulangan'] ? Carbon\Carbon::parse($data['tanggal_kepulangan'])->format('ymd') : '' }}</td>

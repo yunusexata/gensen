@@ -196,11 +196,11 @@ class GensenFormRepository extends MasterDataRepository
         gfd.gensen_form_id,
 
         STRING_AGG(
-            gfd.tahun_gensen::text || '-' || REPLACE(
+            gfd.tahun_gensen::text || '-' || COALESCE(REPLACE(
                 TO_CHAR(gfd.nominal_gensen, 'FM999,999,999,999'),
                 ',',
                 '.'
-            ),
+            ), ''),
             ';'
             ORDER BY gfd.tahun_gensen
         ) AS details

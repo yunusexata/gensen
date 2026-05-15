@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Gensen\GensenExportImportHistory;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -21,13 +22,16 @@ class ExportStatusUpdated implements ShouldBroadcastNow
     /**
      * Create a new event instance.
      */
-    public function __construct($history)
+    public function __construct(GensenExportImportHistory $history)
     {
         $this->data = [
             'id' => $history->id,
+            'created_by' => $history->created_by,
             'status' => $history->status->value,
             'file_path' => $history->file_path,
+            'disk' => $history->disk,
             'file_name' => $history->file_name,
+            'url' => $history->previewUrl(),
         ];
     }
 
