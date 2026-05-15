@@ -382,7 +382,7 @@ class GensenForm extends Model
             ->every(fn($field) => filled($this->{$field}));
     }
 
-    public function attachmentGroups($types)
+    public function attachmentGroups($types = null)
     {
         $attachments = $this->attachments
             ->where('status', '!=', GensenAttachmenStatus::STATUS_CONVERTED)
