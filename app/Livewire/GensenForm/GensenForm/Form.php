@@ -691,7 +691,15 @@ class Form extends Component
                     $this->gensenFormId = $gensenForm->id;
                 }
                 foreach ($this->gensen_form_details as $gensen_form_detail) {
-                    if (!$gensen_form_detail['id']) {
+                    if ($gensen_form_detail['id']) {
+
+                        if ($gensen_form_detail['tahun_gensen']) {
+                            GensenFormDetailRepository::update($gensen_form_detail['id'], [
+                                'gensen_form_id' => $this->gensenFormId,
+                                'tahun_gensen' => $gensen_form_detail['tahun_gensen'],
+                            ]);
+                        }
+                    } else {
 
                         if ($gensen_form_detail['tahun_gensen']) {
                             GensenFormDetailRepository::create([
