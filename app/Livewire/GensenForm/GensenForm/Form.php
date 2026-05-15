@@ -150,7 +150,7 @@ class Form extends Component
 
     protected $messages = [
         // 'is_previously_processed.required' => 'Urus sendiri/konsultan lain Harus Diisi',
-        // 'is_previously_processed.in' => 'Urus sendiri/konsultan lain Harus Diisi',
+        'is_previously_processed.in' => 'Urus sendiri/konsultan lain Harus Diisi',
 
         // 'gensen_form_details.required' => 'Detail Gensen wajib diisi.',
         // 'gensen_form_details.*.tahun_gensen.required' => 'Tahun gensen wajib diisi.',
