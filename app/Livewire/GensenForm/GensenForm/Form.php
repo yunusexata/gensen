@@ -78,7 +78,7 @@ class Form extends Component
     // #[Validate('required', message: 'Tahun Gensen Harus Diisi', onUpdate: false)]
     // public $tahun_gensen;
     // public $tahun_transfer;
-    #[Validate('required|in:sudah,belum', message: 'Urus sendiri/konsultan lain Harus Diisi', onUpdate: false)]
+    #[Validate('required', message: 'Urus sendiri/konsultan lain Harus Diisi', onUpdate: false)]
     public $is_previously_processed;
 
     public $gensen_form_details = [];
@@ -144,7 +144,7 @@ class Form extends Component
     ];
 
     protected $rules = [
-        // 'gensen_form_details' => ['required', 'array'],
+        'is_previously_processed' => ['in:sudah,belum'],
         // 'gensen_form_details.*.tahun_gensen' => ['required', 'integer'],
     ];
 
