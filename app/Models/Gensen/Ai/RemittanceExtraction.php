@@ -69,4 +69,11 @@ class RemittanceExtraction extends Model
     {
         return $this->hasMany(AiJob::class, 'id', 'ai_job_id');
     }
+
+    public function hasPendingAiJob(): bool
+    {
+        return $this->aiJobs()
+            ->where('status', JobStatus::PENDING)
+            ->exists();
+    }
 }
