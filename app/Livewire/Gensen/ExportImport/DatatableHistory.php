@@ -33,7 +33,11 @@ class DatatableHistory extends Component
 
     public function updateStatus($data)
     {
-        if ($data['created_by'] == Auth::user()->id && $data['status'] === JobStatus::DONE->value) {
+        consoleLog($this, [
+            'data masuk',
+            $data
+        ]);
+        if ($data['type'] === 'export' && $data['created_by'] == Auth::user()->id && $data['status'] === JobStatus::DONE->value) {
             $encryptedId = Crypt::encrypt($data['id']);
             $this->dispatch(
                 'download-export',
