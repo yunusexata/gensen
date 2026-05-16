@@ -69,7 +69,7 @@ class ImportGensenJob implements ShouldQueue
             $data = app(ImportService::class)
                 ->handle($history->job_key, $import);
 
-            GensenExportImportHistory::updateById(
+            GensenExportImportHistory::updateBy(
                 $this->historyId,
                 [
                     'status' => JobStatus::DONE,
@@ -89,7 +89,7 @@ class ImportGensenJob implements ShouldQueue
 
             // DB::rollBack();
 
-            GensenExportImportHistory::updateById(
+            GensenExportImportHistory::updateBy(
                 $this->historyId,
                 [
                     'status' => JobStatus::FAILED,
