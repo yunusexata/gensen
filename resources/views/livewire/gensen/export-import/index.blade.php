@@ -119,7 +119,7 @@
         @endCan
     </div>
     <div class="row mt-5">
-        <livewire:gensen.export-import.datatable-history />
+        {{-- <livewire:gensen.export-import.datatable-history /> --}}
     </div>
         
     <livewire:gensen.export-import.export />
