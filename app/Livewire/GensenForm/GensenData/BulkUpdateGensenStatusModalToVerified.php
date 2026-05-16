@@ -11,6 +11,7 @@ use App\Repositories\GensenForm\GensenFormRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
@@ -80,34 +81,35 @@ class BulkUpdateGensenStatusModalToVerified extends Component
     {
         try {
             DB::beginTransaction();
-            $path = $this->inputFileBulkStatus->getRealPath();
-            $successCount = 0;
-            foreach ($this->previewBulkStatusRows as $key => $value) {
-                if (!$value['error']) {
-                    $updated = GensenFormRepository::updateBy([
-                        ['id_customer', $value['data']['id_customer']],
-                        ['nama_lengkap', $value['data']['nama_lengkap']],
-                        ['tanggal_lengkap', '!=', null],
-                    ], [
-                        'tanggal_verified' => $value['data']['tanggal_verified'],
-                    ]);
+            $disk = 'private';
 
-                    if ($updated > 0) {
-                        $successCount++;
-                    }
-                }
-            }
-            unlink($path);
-            DB::commit();
+            $extension = $this->inputFileBulkStatus
+                ->extension();
+
+            $fileName = Str::uuid() . '.' . $extension;
+
+            $filePath = $this->inputFileBulkStatus
+                ->storeAs(
+                    'imports/gensen',
+                    $fileName,
+                    $disk
+                );
+
             $history = GensenExportImportHistoryRepository::create([
                 'role' => Auth::user()->roles->pluck('name')->first(),
                 'created_by' => auth()->id(),
                 'job_key' => ExportImportJobKey::IMPORT_LIST_DATA_VERIFIED->value,
                 'type' => 'import',
                 'filters' => json_encode([], true),
-                'status' => JobStatus::DONE,
-                'amount' => $successCount,
+                'status' => JobStatus::PROCESSING,
+                'file_name' => $fileName,
+                'file_path' => $filePath,
+                'disk' => $disk,
+                'start_at' => now(),
             ]);
+            $path = $this->inputFileBulkStatus->getRealPath();
+            unlink($path);
+            DB::commit();
 
             $this->dispatch('datatable-refresh');
             $this->dispatch('onSuccessImportBulkStatusDataToVerified');

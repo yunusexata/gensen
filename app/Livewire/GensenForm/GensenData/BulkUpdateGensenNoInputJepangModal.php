@@ -112,62 +112,8 @@ class BulkUpdateGensenNoInputJepangModal extends Component
                 'start_at' => now(),
             ]);
             $path = $this->inputFileBulkStatus->getRealPath();
-            $successCount = 0;
-            // foreach ($this->previewBulkStatusRows as $key => $value) {
-            //     if (!$value['error']) {
-            //         $validatedData = [];
-            //         if (Str::lower(trim($value['data']['no_input_jepang'])) == 'cancel') {
-            //             $validatedData = [
-            //                 'status' => GensenForm::STATUS_CANCEL,
-            //                 'keterangan' => $value['data']['keterangan'],
-            //             ];
-            //         } elseif (Str::lower(trim($value['data']['no_input_jepang'])) == 'honnin') {
-            //             $validatedData = [
-            //                 'status' => GensenForm::STATUS_HONNIN,
-            //                 'keterangan' => $value['data']['keterangan'],
-            //             ];
-            //         } elseif (Str::lower(trim($value['data']['no_input_jepang'])) == 'mondai') {
-            //             $validatedData = [
-            //                 'status' => GensenForm::STATUS_MONDAI,
-            //                 'keterangan' => $value['data']['keterangan'],
-            //             ];
-            //         } else {
-            //             $validatedData = [
-            //                 'no_input_jepang' => $value['data']['no_input_jepang'],
-            //             ];
-            //         }
-
-            //         $updated = GensenFormRepository::updateBy([
-            //             ['id_customer', $value['data']['id_customer']],
-            //             ['nama_lengkap', $value['data']['nama_lengkap']],
-            //             ['tanggal_lengkap', '!=', null],
-            //             ['tanggal_verified', '!=', null],
-            //         ], $validatedData);
-
-            //         if ($updated > 0) {
-            //             $successCount++;
-            //         }
-            //     }
-            // }
-            // unlink($path);
+            unlink($path);
             DB::commit();
-            // $history = GensenExportImportHistoryRepository::create([
-            //     'role' => Auth::user()->roles->pluck('name')->first(),
-            //     'created_by' => auth()->id(),
-            //     'job_key' => ExportImportJobKey::IMPORT_LIST_DATA_NO_INPUT_JAPAN->value,
-            //     'type' => 'import',
-            //     'filters' => json_encode([], true),
-            //     'status' => JobStatus::DONE,
-            //     'amount' => $successCount,
-            // ]);
-            // $history->update([
-            //     'status' => JobStatus::DONE,
-            //     'file_name' => $fileName,
-            //     'file_path' => $filePath,
-            //     'disk' => $disk,
-            //     'amount' => $data?->count(),
-            //     'finish_at' => now(),
-            // ]);
 
             $this->dispatch('datatable-refresh');
             $this->dispatch('onSuccessImportBulkUpdateGensenNoInputJepang');

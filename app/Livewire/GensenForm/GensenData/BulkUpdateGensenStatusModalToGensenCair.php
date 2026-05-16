@@ -12,10 +12,11 @@ use App\Repositories\GensenForm\GensenFormRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Validation\Rule;
 
 class BulkUpdateGensenStatusModalToGensenCair extends Component
 {
@@ -100,42 +101,35 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
     {
         try {
             DB::beginTransaction();
-            $path = $this->inputFileBulkStatus->getRealPath();
-            $successCount = 0;
-            foreach ($this->previewBulkStatusRows as $key => $value) {
-                if (!$value['error']) {
-                    $gensenForm = GensenFormRepository::findBy([
-                        ['no_input_jepang', $value['data']['no_input_jepang']],
-                        ['nama_lengkap', $value['data']['nama_lengkap']],
-                    ]);
-                    preg_match('/^\d+/', trim($value['data']['tahun_gensen']), $tahun_reiwa);
-                    $updated = GensenFormDetailRepository::updateBy([
-                        // ['id_customer', $value['data']['id_customer']],
-                        ['gensen_form_id', $gensenForm->id],
-                        ['tahun_gensen', $tahun_reiwa[0]],
-                    ], [
-                        'tanggal_cair' => $value['data']['tanggal_cair'],
-                        'nominal_cair' => $value['data']['nominal_cair'],
-                    ]);
+            $disk = 'private';
 
-                    $gensenForm->onSubmitted();
-                    if ($updated > 0) {
-                        $successCount++;
-                    }
-                }
-            }
-            unlink($path);
-            DB::commit();
+            $extension = $this->inputFileBulkStatus
+                ->extension();
+
+            $fileName = Str::uuid() . '.' . $extension;
+
+            $filePath = $this->inputFileBulkStatus
+                ->storeAs(
+                    'imports/gensen',
+                    $fileName,
+                    $disk
+                );
+
             $history = GensenExportImportHistoryRepository::create([
                 'role' => Auth::user()->roles->pluck('name')->first(),
                 'created_by' => auth()->id(),
-                'type' => 'import',
                 'job_key' => ExportImportJobKey::IMPORT_LIST_DATA_GENSEN_CAIR->value,
+                'type' => 'import',
                 'filters' => json_encode([], true),
-                'status' => JobStatus::DONE,
-                'amount' => $successCount
+                'status' => JobStatus::PROCESSING,
+                'file_name' => $fileName,
+                'file_path' => $filePath,
+                'disk' => $disk,
+                'start_at' => now(),
             ]);
-
+            $path = $this->inputFileBulkStatus->getRealPath();
+            unlink($path);
+            DB::commit();
             $this->dispatch('datatable-refresh');
             $this->dispatch('onSuccessImportBulkStatusDataToGensenCair');
             $this->dispatch('refresh-table');
