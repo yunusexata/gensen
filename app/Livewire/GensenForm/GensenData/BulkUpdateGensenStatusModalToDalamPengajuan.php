@@ -42,7 +42,7 @@ class BulkUpdateGensenStatusModalToDalamPengajuan extends Component
         foreach ($import->rows as $index => $row) {
             $d = [
                 'id_customer' => $row['id_customer'],
-                'nama_lengkap' => $row['nama'],
+                'nama_lengkap' => $row['nama_lengkap'],
                 'no_input_jepang' => $row['no_input_jepang'],
                 'tanggal_pengajuan' => $row['tanggal_pengajuan'],
             ];

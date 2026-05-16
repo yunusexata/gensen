@@ -42,7 +42,7 @@ class BulkUpdateGensenStatusModalToLengkap extends Component
         foreach ($import->rows as $index => $row) {
             $d = [
                 'id_customer' => $row['id_customer'],
-                'nama_lengkap' => $row['nama'],
+                'nama_lengkap' => $row['nama_lengkap'],
                 'tanggal_lengkap' => $row['tanggal_lengkap'],
             ];
             $validator = Validator::make($d, [
