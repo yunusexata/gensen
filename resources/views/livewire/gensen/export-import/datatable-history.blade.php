@@ -126,9 +126,20 @@
             //     });
             window.Echo.channel('export-import-status')
                 .subscribed(() => console.log('SUBSCRIBED'))
-                .listen('.export-import.status.updated', (e) => {
-                    console.log('EVENT MASUK:', e);
-                    Livewire.dispatch('status-updated',{data: e.data});
+                // .listen('.export-import.status.updated', (e) => {
+                //     console.log('EVENT MASUK:', e);
+                //     Livewire.dispatch('status-updated',{data: e.data});
+                // });
+                  .listen('.export-import.status.updated', (e) => {
+                    console.log('DOT EVENT:', e);
+                })
+
+                .listen('ExportImportStatusUpdated', (e) => {
+                    console.log('CLASS EVENT:', e);
+                })
+
+                .listen('App\\Events\\ExportImportStatusUpdated', (e) => {
+                    console.log('FULL CLASS EVENT:', e);
                 });
         Livewire.on('download-export', ({ url }) => {
 
