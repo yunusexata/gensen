@@ -49,7 +49,14 @@ class ImportGensenJob implements ShouldQueue
                 'started_at' => now(),
                 'status' => JobStatus::PROCESSING
             ]);
-            broadcast(new ExportImportStatusUpdated($history));
+            DB::afterCommit(function () use ($history) {
+
+                broadcast(
+                    new ExportImportStatusUpdated(
+                        $history->fresh()
+                    )
+                );
+            });
             Log::info('Broadcasting event', [
                 'id' => $history->id,
                 'job_key' => $history->job_key->value,
@@ -74,10 +81,16 @@ class ImportGensenJob implements ShouldQueue
                     'finish_at' => now(),
                 ]
             );
-
-            broadcast(new ExportImportStatusUpdated($history));
-
             DB::commit();
+
+            DB::afterCommit(function () use ($history) {
+
+                broadcast(
+                    new ExportImportStatusUpdated(
+                        $history->fresh()
+                    )
+                );
+            });
         } catch (\Throwable $e) {
 
             DB::rollBack();
@@ -90,6 +103,7 @@ class ImportGensenJob implements ShouldQueue
                     'error_message' => $e->getMessage(),
                 ]
             );
+            $history->refresh();
 
             broadcast(new ExportImportStatusUpdated($history));
             Log::info('Broadcasting event', [
