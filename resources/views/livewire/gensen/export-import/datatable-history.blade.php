@@ -117,4 +117,39 @@
 @endpush
 
 @push('js')
+    <script>
+        document.addEventListener('livewire:init', () => {
+            // Echo.channel('export-status')
+            //     .listen('ExportImportStatusUpdated', (e) => {
+            //         console.log(e);
+            //         Livewire.dispatch('status-updated', e.data);
+            //     });
+            window.Echo.channel('export-import-status')
+                .subscribed(() => console.log('SUBSCRIBED'))
+                .listen('.export-import.status.updated', (e) => {
+                    console.log('EVENT MASUK:', e);
+                    Livewire.dispatch('status-updated',{data: e.data});
+                });
+                //   .listen('.export-import.status.updated', (e) => {
+                //     console.log('DOT EVENT:', e);
+                // })
+
+                .listen('ExportImportStatusUpdated', (e) => {
+                    console.log('CLASS EVENT:', e);
+                })
+
+                .listen('App\\Events\\ExportImportStatusUpdated', (e) => {
+                    console.log('FULL CLASS EVENT:', e);
+                });
+        Livewire.on('download-export', ({ url }) => {
+
+            const link = document.createElement('a');
+                link.href = url;
+                link.download = '';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+            });
+        });
+    </script>
 @endpush
