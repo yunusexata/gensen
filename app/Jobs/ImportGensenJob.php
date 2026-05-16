@@ -38,7 +38,7 @@ class ImportGensenJob implements ShouldQueue
      */
     public function handle(): void
     {
-        DB::beginTransaction();
+        // DB::beginTransaction();
 
         logger('START IMPORT');
         $history = GensenExportImportHistory::findOrFail($this->historyId);
@@ -49,14 +49,11 @@ class ImportGensenJob implements ShouldQueue
                 'started_at' => now(),
                 'status' => JobStatus::PROCESSING
             ]);
-            DB::afterCommit(function () use ($history) {
-
-                broadcast(
-                    new ExportImportStatusUpdated(
-                        $history->fresh()
-                    )
-                );
-            });
+            broadcast(
+                new ExportImportStatusUpdated(
+                    $history->fresh()
+                )
+            );
             Log::info('Broadcasting event', [
                 'id' => $history->id,
                 'job_key' => $history->job_key->value,
@@ -81,19 +78,16 @@ class ImportGensenJob implements ShouldQueue
                     'finish_at' => now(),
                 ]
             );
-            DB::commit();
+            // DB::commit();
 
-            DB::afterCommit(function () use ($history) {
-
-                broadcast(
-                    new ExportImportStatusUpdated(
-                        $history->fresh()
-                    )
-                );
-            });
+            broadcast(
+                new ExportImportStatusUpdated(
+                    $history->fresh()
+                )
+            );
         } catch (\Throwable $e) {
 
-            DB::rollBack();
+            // DB::rollBack();
 
             GensenExportImportHistory::updateById(
                 $this->historyId,
