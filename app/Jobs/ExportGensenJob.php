@@ -81,7 +81,7 @@ class ExportGensenJob implements ShouldQueue
 
             broadcast(
                 new ExportImportStatusUpdated(
-                    $history->fresh()
+                    $history
                 )
             );
         } catch (\Throwable $e) {
@@ -91,8 +91,6 @@ class ExportGensenJob implements ShouldQueue
                 'status' => JobStatus::FAILED,
                 'error_message' => $e->getMessage(),
             ]);
-
-            $history->refresh();
 
             broadcast(new ExportImportStatusUpdated($history));
             Log::info('Broadcasting event', [

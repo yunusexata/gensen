@@ -49,11 +49,6 @@ class ImportGensenJob implements ShouldQueue
                 'started_at' => now(),
                 'status' => JobStatus::PROCESSING
             ]);
-            broadcast(
-                new ExportImportStatusUpdated(
-                    $history->fresh()
-                )
-            );
             Log::info('Broadcasting event', [
                 'id' => $history->id,
                 'job_key' => $history->job_key->value,
@@ -69,35 +64,27 @@ class ImportGensenJob implements ShouldQueue
             $data = app(ImportService::class)
                 ->handle($history->job_key, $import);
 
-            GensenExportImportHistory::updateBy(
-                $this->historyId,
-                [
-                    'status' => JobStatus::DONE,
-                    'amount' => $data['success_count'],
-                    'error_message' => json_encode($data['errors']),
-                    'finish_at' => now(),
-                ]
-            );
+            $history->update([
+                'status' => JobStatus::DONE,
+                'amount' => $data['success_count'],
+                'error_message' => json_encode($data['errors']),
+                'finish_at' => now(),
+            ]);
             // DB::commit();
 
             broadcast(
                 new ExportImportStatusUpdated(
-                    $history->fresh()
+                    $history
                 )
             );
         } catch (\Throwable $e) {
 
             // DB::rollBack();
 
-            GensenExportImportHistory::updateBy(
-                $this->historyId,
-                [
-                    'status' => JobStatus::FAILED,
-                    'finish_at' => now(),
-                    'error_message' => $e->getMessage(),
-                ]
-            );
-            $history->refresh();
+            $history->update([
+                'status' => JobStatus::FAILED,
+                'error_message' => $e->getMessage(),
+            ]);
 
             broadcast(new ExportImportStatusUpdated($history));
             Log::info('Broadcasting event', [
