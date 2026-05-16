@@ -53,7 +53,7 @@ class GensenExportImportHistory extends Model
         });
         self::created(function ($model) {
             if ($model->type === 'export') {
-                ExportGensenJob::dispatch($model->id);
+                ExportGensenJob::dispatch($model->id)->onQueue('default');
             }
         });
     }

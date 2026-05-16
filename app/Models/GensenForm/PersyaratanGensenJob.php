@@ -36,7 +36,7 @@ class PersyaratanGensenJob extends Model
     {
         self::creating(function ($model) {});
         self::created(function ($model) {
-            MergePersyaratanPengurusanGensen::dispatch($model->id, $model->gensen_form_id);
+            MergePersyaratanPengurusanGensen::dispatch($model->id, $model->gensen_form_id)->onQueue('pdf');;
         });
     }
 }

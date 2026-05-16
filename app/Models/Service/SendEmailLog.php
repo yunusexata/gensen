@@ -53,7 +53,7 @@ class SendEmailLog extends Model
     protected static function onBoot()
     {
         self::created(function ($model) {
-            SendEmailJob::dispatch($model);
+            SendEmailJob::dispatch($model)->onQueue('default');
         });
     }
     public function subject()

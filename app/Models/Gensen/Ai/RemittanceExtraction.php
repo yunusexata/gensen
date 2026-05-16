@@ -4,8 +4,6 @@ namespace App\Models\Gensen\Ai;
 
 use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
-use App\Jobs\ExportGensenJob;
-use App\Jobs\MergePersyaratanPengurusanGensen;
 use App\Models\Ai\AiJob;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

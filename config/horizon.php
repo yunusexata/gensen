@@ -281,6 +281,27 @@ return [
 
             'nice' => 0,
         ],
+        'supervisor-excel' => [
+            'connection' => 'redis',
+
+            'queue' => ['excel'],
+
+            'balance' => 'simple',
+
+            'maxProcesses' => 1,
+            'minProcesses' => 1,
+
+            'memory' => 512,
+
+            'timeout' => 300,
+
+            'tries' => 1,
+
+            'maxTime' => 0,
+            'maxJobs' => 100,
+
+            'nice' => 5,
+        ],
     ],
 
     /*

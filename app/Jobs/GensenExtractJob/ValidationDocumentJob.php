@@ -2,19 +2,13 @@
 
 namespace App\Jobs\GensenExtractJob;
 
-use App\Enums\Gensen\JobStatus;
-use App\Events\ExportStatusUpdated;
-use App\Exports\CollectionExport;
-use App\Helpers\ExportHelper;
-use App\Models\Gensen\GensenExportImportHistory;
-use App\Services\ExportService;
-use Exception;
+use App\AiServices\Manager\AiManager;
+use App\Models\Ai\AiJob;
+use App\Models\Ai\AiResult;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Facades\Excel;
 use Throwable;
 
 class ValidationDocumentJob implements ShouldQueue

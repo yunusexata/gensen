@@ -3,7 +3,6 @@
 namespace App\Models\GensenForm;
 
 use App\Enums\Gensen\JobStatus;
-use App\Jobs\MergePersyaratanPengurusanGensen;
 use App\Jobs\MergeSeluruhBerkas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,7 +35,7 @@ class SeluruhBerkasJob extends Model
     {
         self::creating(function ($model) {});
         self::created(function ($model) {
-            MergeSeluruhBerkas::dispatch($model->id, $model->gensen_form_id);
+            MergeSeluruhBerkas::dispatch($model->id, $model->gensen_form_id)->onQueue('pdf');
         });
     }
 }

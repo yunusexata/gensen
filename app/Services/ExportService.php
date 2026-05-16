@@ -134,7 +134,7 @@ class ExportService
         return $this->query($filters)
             ->where('gensen_forms.status', GensenForm::STATUS_BELUM_LENGKAP)
             ->whereNull('gensen_forms.tanggal_lengkap')
-            ->get();
+            ->query();
     }
 
     private function exportListDataSiapVerifikasi($filters)
@@ -143,7 +143,7 @@ class ExportService
             ->where('gensen_forms.status', GensenForm::STATUS_LENGKAP)
             ->whereNotNull('gensen_forms.tanggal_lengkap')
             ->whereNull('gensen_forms.tanggal_verified')
-            ->get();
+            ->query();
     }
 
     private function exportListDataVerified($filters)
@@ -153,7 +153,7 @@ class ExportService
             ->whereNotNull('gensen_forms.tanggal_lengkap')
             ->whereNotNull('gensen_forms.tanggal_verified')
             ->whereNull('gensen_forms.no_input_jepang')
-            ->get();
+            ->query();
     }
 
     private function exportListDataNoInputJapan($filters)
@@ -169,7 +169,7 @@ class ExportService
             ->whereNotNull('gensen_forms.tanggal_verified')
             ->whereNotNull('gensen_forms.no_input_jepang')
             ->whereNull('gensen_forms.tanggal_pengajuan')
-            ->get();
+            ->query();
     }
 
     private function exportListDataDalamPengajuan($filters)
@@ -185,6 +185,6 @@ class ExportService
                     ->orWhere('gensen_forms.nominal_cair', 0);
             })
             ->whereNull('gensen_forms.tanggal_cair')
-            ->get();
+            ->query();
     }
 }

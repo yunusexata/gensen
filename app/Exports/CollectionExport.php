@@ -4,20 +4,28 @@ namespace App\Exports;
 
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 
-class CollectionExport implements FromView, ShouldAutoSize
+class CollectionExport implements FromView, WithColumnWidths
 {
     private $view;
 
-    private $collection;
+    private $query;
 
     private $request;
 
-    public function __construct($request, $collection, $view)
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 15,
+            'B' => 30,
+            'C' => 20,
+        ];
+    }
+    public function __construct($request, $query, $view)
     {
         $this->request = $request;
-        $this->collection = $collection;
+        $this->query = $query;
         $this->view = $view;
     }
 
@@ -25,7 +33,7 @@ class CollectionExport implements FromView, ShouldAutoSize
     {
         return view($this->view, [
             'request' => $this->request,
-            'collection' => $this->collection,
+            'collection' => $this->query->get(),
             'number_format' => false,
         ]);
     }

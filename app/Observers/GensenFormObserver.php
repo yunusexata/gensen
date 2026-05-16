@@ -3,8 +3,6 @@
 namespace App\Observers;
 
 use App\Enums\Gensen\EmailLogStatus;
-use App\Jobs\SendEmailJob;
-use App\Jobs\SendGensenFormCreatedEmailJob;
 use App\Mail\GensenFormStatusCancelMail;
 use App\Mail\GensenFormStatusDalamPengajuanMail;
 use App\Mail\GensenFormStatusGensenCairMail;
