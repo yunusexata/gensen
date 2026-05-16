@@ -509,7 +509,7 @@ class Datatable extends Component
             //     'key' => 'remarks_type',
             //     'name' => 'Asal Pembuatan',
             //     'render' => function ($item) {
-            //         return $item->remarks_type == User::class ? 'Manual PIC' : 'Link Pengisian Clien';
+            //         return $item->remarks_type == User::class ? 'Manual' : 'Client';
             //     }
             // ],
         ];

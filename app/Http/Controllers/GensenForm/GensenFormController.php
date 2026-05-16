@@ -8,6 +8,7 @@ use App\Models\Gensen\GensenExportImportHistory;
 use App\Models\GensenForm\GensenFormAttachment;
 use App\Models\GensenForm\GensenFormLink;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -65,7 +66,7 @@ class GensenFormController extends Controller
             404
         );
         if ($attachment->type === GensenAttachmentType::SELURUH_BERKAS) {
-            $filename = $attachment->gensenForm->nama_lengkap . " " . $attachment->gensenForm->tanggal_lahir . "." . $attachment->extension;
+            $filename = "G " . $attachment->gensenForm->nama_lengkap . " " . Carbon::parse($attachment->gensenForm->tanggal_lahir)->format('Ymd') . "." . $attachment->extension;
         } else {
             $filename = $attachment->original_name;
         }
@@ -87,11 +88,11 @@ class GensenFormController extends Controller
             $disk->exists($history->path),
             404
         );
-        if ($history->type === GensenAttachmentType::SELURUH_BERKAS) {
-            $filename = $history->job_key->value . "." . $history->extension;
-        } else {
-            $filename = $history->original_name;
-        }
+        // if ($history->type === GensenAttachmentType::SELURUH_BERKAS) {
+        $filename = $history->job_key->value . "." . $history->extension;
+        // } else {
+        //     $filename = $history->original_name;
+        // }
         return response()->file(
             $disk->path($history->path),
             [
