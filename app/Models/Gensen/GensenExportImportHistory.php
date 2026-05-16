@@ -5,6 +5,7 @@ namespace App\Models\Gensen;
 use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Jobs\ExportGensenJob;
+use App\Jobs\ImportGensenJob;
 use App\Jobs\MergePersyaratanPengurusanGensen;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,7 +54,10 @@ class GensenExportImportHistory extends Model
         });
         self::created(function ($model) {
             if ($model->type === 'export') {
-                ExportGensenJob::dispatch($model->id)->onQueue('default');
+                ExportGensenJob::dispatch($model->id)->onQueue('excel');
+            }
+            if ($model->type === 'import') {
+                ImportGensenJob::dispatch($model->id)->onQueue('excel');
             }
         });
     }

@@ -120,7 +120,7 @@
     <script>
         document.addEventListener('livewire:init', () => {
             // Echo.channel('export-status')
-            //     .listen('ExportStatusUpdated', (e) => {
+            //     .listen('ExportImportStatusUpdated', (e) => {
             //         console.log(e);
             //         Livewire.dispatch('status-updated', e.data);
             //     });

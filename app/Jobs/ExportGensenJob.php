@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Enums\Gensen\JobStatus;
-use App\Events\ExportStatusUpdated;
+use App\Events\ExportImportStatusUpdated;
 use App\Exports\CollectionExport;
 use App\Helpers\ExportHelper;
 use App\Models\Gensen\GensenExportImportHistory;
@@ -13,6 +13,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Throwable;
@@ -30,19 +31,21 @@ class ExportGensenJob implements ShouldQueue
 
     public function handle()
     {
+        DB::beginTransaction();
+
         logger('START EXPORT');
         $history = GensenExportImportHistory::findOrFail($this->historyId);
 
-        $history->update([
-            'started_at' => now(),
-        ]);
-        Log::info('Broadcasting event', [
-            'id' => $history->id,
-            'job_key' => $history->job_key->value,
-        ]);
         try {
-            $history->update(['status' => JobStatus::PROCESSING]);
-            event(new ExportStatusUpdated($history));
+            $history->update([
+                'started_at' => now(),
+                'status' => JobStatus::PROCESSING
+            ]);
+            event(new ExportImportStatusUpdated($history));
+            Log::info('Broadcasting event', [
+                'id' => $history->id,
+                'job_key' => $history->job_key->value,
+            ]);
 
             $filters = json_decode($history->filters, true);
 
@@ -73,17 +76,21 @@ class ExportGensenJob implements ShouldQueue
                 'finish_at' => now(),
             ]);
 
-            event(new ExportStatusUpdated($history));
+            event(new ExportImportStatusUpdated($history));
             Log::info('Broadcasting event', [
                 'id' => $history->id,
                 'job_key' => $history->job_key->value,
             ]);
+
+            DB::commit();
         } catch (\Throwable $e) {
+
+            DB::rollBack();
             $history->update([
                 'status' => JobStatus::FAILED,
                 'error_message' => $e->getMessage(),
             ]);
-            event(new ExportStatusUpdated($history));
+            event(new ExportImportStatusUpdated($history));
             Log::info('Broadcasting event', [
                 'id' => $history->id,
                 'job_key' => $history->job_key->value,
