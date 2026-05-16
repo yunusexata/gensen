@@ -267,7 +267,7 @@ return [
             'timeout' => 600,
             'tries' => 1,
 
-            'balance' => 'auto',
+            'balance' => 'simple',
             'autoScalingStrategy' => 'time',
 
             'minProcesses' => 1,
