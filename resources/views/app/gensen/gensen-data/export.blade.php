@@ -35,7 +35,7 @@
                 <th class="text-center">TANGGAL CAIR</th>
                 <th class="text-center">NOMINAL CAIR</th>
                 <th class="text-center">KETERANGAN</th>
-                <th class="text-center">NAMA</th>
+                <th class="text-center">NAMA LENGKAP</th>
                 <th class="text-center">TGL LAHIR</th>
                 <th class="text-center">TGL PULANG</th>
                 <th class="text-center">NOMOR REKENING</th>
