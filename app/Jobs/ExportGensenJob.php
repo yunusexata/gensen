@@ -41,7 +41,7 @@ class ExportGensenJob implements ShouldQueue
                 'started_at' => now(),
                 'status' => JobStatus::PROCESSING
             ]);
-            event(new ExportImportStatusUpdated($history));
+            broadcast(new ExportImportStatusUpdated($history));
             Log::info('Broadcasting event', [
                 'id' => $history->id,
                 'job_key' => $history->job_key->value,
@@ -76,7 +76,7 @@ class ExportGensenJob implements ShouldQueue
                 'finish_at' => now(),
             ]);
 
-            event(new ExportImportStatusUpdated($history));
+            broadcast(new ExportImportStatusUpdated($history));
             Log::info('Broadcasting event', [
                 'id' => $history->id,
                 'job_key' => $history->job_key->value,
@@ -90,7 +90,7 @@ class ExportGensenJob implements ShouldQueue
                 'status' => JobStatus::FAILED,
                 'error_message' => $e->getMessage(),
             ]);
-            event(new ExportImportStatusUpdated($history));
+            broadcast(new ExportImportStatusUpdated($history));
             Log::info('Broadcasting event', [
                 'id' => $history->id,
                 'job_key' => $history->job_key->value,

@@ -49,7 +49,7 @@ class ImportGensenJob implements ShouldQueue
                 'started_at' => now(),
                 'status' => JobStatus::PROCESSING
             ]);
-            event(new ExportImportStatusUpdated($history));
+            broadcast(new ExportImportStatusUpdated($history));
             Log::info('Broadcasting event', [
                 'id' => $history->id,
                 'job_key' => $history->job_key->value,
@@ -75,7 +75,7 @@ class ImportGensenJob implements ShouldQueue
                 ]
             );
 
-            event(new ExportImportStatusUpdated($history));
+            broadcast(new ExportImportStatusUpdated($history));
 
             DB::commit();
         } catch (\Throwable $e) {
@@ -91,7 +91,7 @@ class ImportGensenJob implements ShouldQueue
                 ]
             );
 
-            event(new ExportImportStatusUpdated($history));
+            broadcast(new ExportImportStatusUpdated($history));
             Log::info('Broadcasting event', [
                 'id' => $history->id,
                 'job_key' => $history->job_key->value,
