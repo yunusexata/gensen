@@ -203,7 +203,7 @@ class DatatableHistory extends Component
         </div>
     ";
                     $html = "";
-                    if ($item->status === JobStatus::DONE && $item->type == 'export') {
+                    if ($item->status === JobStatus::DONE) {
                         $html .= $download;
                     }
                     return $html;
