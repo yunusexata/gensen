@@ -122,13 +122,13 @@
         {{-- <livewire:gensen.export-import.datatable-history /> --}}
     </div>
         
-    <livewire:gensen.export-import.export />
+    {{-- <livewire:gensen.export-import.export />
 
     <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-lengkap />
     <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-verified />
     <livewire:gensen-form.gensen-data.bulk-update-gensen-no-input-jepang-modal />
     <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-dalam-pengajuan />
-    <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-gensen-cair />
+    <livewire:gensen-form.gensen-data.bulk-update-gensen-status-modal-to-gensen-cair /> --}}
 </div>
 
 @push('css')
