@@ -51,4 +51,11 @@ class ExportImportStatusUpdated implements ShouldBroadcastNow
     {
         return 'export-import.status.updated';
     }
+
+    public function broadcastWith(): array
+    {
+        return [
+            'data' => $this->data,
+        ];
+    }
 }
