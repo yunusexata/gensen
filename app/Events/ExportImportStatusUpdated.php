@@ -26,10 +26,10 @@ class ExportImportStatusUpdated implements ShouldBroadcastNow
             'type' => $history->type,
             'created_by' => $history->created_by,
             'status' => $history->status->value,
-            'file_path' => $history->file_path,
-            'disk' => $history->disk,
-            'file_name' => $history->file_name,
-            'url' => $history->previewUrl(),
+            // 'file_path' => $history->file_path,
+            // 'disk' => $history->disk,
+            // 'file_name' => $history->file_name,
+            // 'url' => $history->previewUrl(),
         ];
     }
 
