@@ -212,95 +212,97 @@ return [
             'nice' => 0,
         ],
     ],
+    'environments' => [
 
-    'production' => [
-        'supervisor-default' => [
-            'connection' => 'redis',
-            'queue' => ['default'],
-            'maxProcesses' => 1,
-            'memory' => 512,
-            'timeout' => 120,
-            'tries' => 1,
+        'production' => [
+            'supervisor-default' => [
+                'connection' => 'redis',
+                'queue' => ['default'],
+                'maxProcesses' => 1,
+                'memory' => 512,
+                'timeout' => 120,
+                'tries' => 1,
 
-            'balance' => 'auto',
-            'autoScalingStrategy' => 'time',
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
 
-            'minProcesses' => 1,
+                'minProcesses' => 1,
 
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 5,
-
-
-            'maxTime' => 0,
-            'maxJobs' => 100,
-
-            'nice' => 0,
-        ],
-        'supervisor-pdf' => [
-            'connection' => 'redis',
-            'queue' => ['pdf'],
-            'maxProcesses' => 1,
-            'memory' => 1024,
-            'timeout' => 600,
-            'tries' => 1,
-
-            'balance' => 'auto',
-            'autoScalingStrategy' => 'time',
-
-            'minProcesses' => 1,
-
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 5,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 5,
 
 
-            'maxTime' => 0,
-            'maxJobs' => 100,
+                'maxTime' => 0,
+                'maxJobs' => 100,
 
-            'nice' => 0,
-        ],
+                'nice' => 0,
+            ],
+            'supervisor-pdf' => [
+                'connection' => 'redis',
+                'queue' => ['pdf'],
+                'maxProcesses' => 1,
+                'memory' => 1024,
+                'timeout' => 600,
+                'tries' => 1,
 
-        'supervisor-extract' => [
-            'connection' => 'redis',
-            'queue' => ['extract'],
-            'maxProcesses' => 1,
-            'memory' => 768,
-            'timeout' => 600,
-            'tries' => 1,
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
 
-            'balance' => 'simple',
-            'autoScalingStrategy' => 'time',
+                'minProcesses' => 1,
 
-            'minProcesses' => 1,
-
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 5,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 5,
 
 
-            'maxTime' => 0,
-            'maxJobs' => 100,
+                'maxTime' => 0,
+                'maxJobs' => 100,
 
-            'nice' => 0,
-        ],
-        'supervisor-excel' => [
-            'connection' => 'redis',
+                'nice' => 0,
+            ],
 
-            'queue' => ['excel'],
+            'supervisor-extract' => [
+                'connection' => 'redis',
+                'queue' => ['extract'],
+                'maxProcesses' => 1,
+                'memory' => 768,
+                'timeout' => 600,
+                'tries' => 1,
 
-            'balance' => 'simple',
+                'balance' => 'simple',
+                'autoScalingStrategy' => 'time',
 
-            'maxProcesses' => 1,
-            'minProcesses' => 1,
+                'minProcesses' => 1,
 
-            'memory' => 512,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 5,
 
-            'timeout' => 300,
 
-            'tries' => 1,
+                'maxTime' => 0,
+                'maxJobs' => 100,
 
-            'maxTime' => 0,
-            'maxJobs' => 100,
+                'nice' => 0,
+            ],
+            'supervisor-excel' => [
+                'connection' => 'redis',
 
-            'nice' => 5,
+                'queue' => ['excel'],
+
+                'balance' => 'simple',
+
+                'maxProcesses' => 1,
+                'minProcesses' => 1,
+
+                'memory' => 512,
+
+                'timeout' => 300,
+
+                'tries' => 1,
+
+                'maxTime' => 0,
+                'maxJobs' => 100,
+
+                'nice' => 5,
+            ],
         ],
     ],
 
