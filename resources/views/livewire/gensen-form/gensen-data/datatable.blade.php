@@ -382,7 +382,7 @@
                                                                     @endif
                                                                     @if ($this->isCanDelete)
                                                                         <div class='col-auto m-0 p-0'>
-                                                                            <button type='button' class='btn btn-sm btn-danger' wire:click=\"showDeleteDialog('$id')\">
+                                                                            <button type='button' class='btn btn-sm btn-danger' wire:click=\"showDeleteDialog('{{$editingData['id']}}')\">
                                                                                 <span class='material-symbols-outlined text-sm' data-icon='delete'>delete</span> Hapus
                                                                             </button>
                                                                         </div>
