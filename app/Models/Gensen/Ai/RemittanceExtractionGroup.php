@@ -2,6 +2,7 @@
 
 namespace App\Models\Gensen\Ai;
 
+use App\Traits\Models\UppercaseAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +11,7 @@ use Muhammadyunus1072\TrackHistory\HasTrackHistory;
 class RemittanceExtractionGroup extends Model
 {
     // php artisan reverb:start
-    use HasFactory, SoftDeletes, HasTrackHistory;
+    use HasFactory, SoftDeletes, HasTrackHistory, UppercaseAttributes;
 
     protected $fillable = [
 
@@ -27,6 +28,11 @@ class RemittanceExtractionGroup extends Model
         'amount_details',
         'is_validate',
         'receiver_relationship',
+    ];
+
+    protected array $uppercase = [
+        'receiver_name',
+        'receiver_relationship'
     ];
 
     protected $guarded = ['id'];
