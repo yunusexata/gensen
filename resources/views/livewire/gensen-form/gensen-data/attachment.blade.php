@@ -1848,7 +1848,7 @@
                             </div>
                             <div class="bg-surface-container px-lg py-md border-b border-outline-variant flex justify-between items-center">
                             <h2 class="text-headline-md font-headline-md text-on-surface">Data Extraction Results</h2>
-                            <span class="bg-secondary-container text-on-primary-fixed-variant fw-bold px-2 py-1 rounded-full text-label-sm font-label-sm">CONFIDENCE {{ $remittance_extraction ? $remittance_extraction['confidence_score'] : '-'}}</span>
+                            <span class="bg-secondary-container text-on-primary-fixed-variant fw-bold px-2 py-1 rounded-full text-label-sm font-label-sm">CONFIDENCE {{ $remittance_extraction_confidence }}</span>
                             </div>
                             <div class="flex-1 overflow-y-auto p-lg flex flex-col gap-lg">
                             
