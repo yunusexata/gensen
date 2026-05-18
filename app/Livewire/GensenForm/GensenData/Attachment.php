@@ -316,7 +316,7 @@ class Attachment extends Component
         if (!$gensen) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
         }
-        if (!count($gensen->remittanceExtraction) && $gensen->hasPendingAiJob()) {
+        if (!count($gensen->remittanceExtraction()) && $gensen->hasPendingAiJob()) {
 
             $this->gensen_has_pending_ai_jobs = true;
             $this->remittance_validate_total = 0;
