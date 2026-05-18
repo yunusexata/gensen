@@ -320,6 +320,7 @@ class Attachment extends Component
 
             $this->gensen_has_pending_ai_jobs = true;
             $this->remittance_validate_total = 0;
+            $this->remittance_extraction_confidence = null;
             return;
         } else {
             $this->gensen_has_pending_ai_jobs = false;
