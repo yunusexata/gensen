@@ -70,7 +70,6 @@ class Attachment extends Component
     public $tahun_gensen_details = [];
     public $nominal_gensen;
     public $gensen_has_ai_jobs = false;
-    public $gensen_has_ai_jobs = false;
     public $gensen_has_pending_ai_jobs = false;
     public $remittance_extraction_confidence = 0;
     public $remittance_validate_total = 0;
@@ -329,8 +328,8 @@ class Attachment extends Component
             $this->gensen_has_pending_ai_jobs = true;
             $this->remittance_validate_total = 0;
             $this->remittance_extraction_confidence = null;
-            return;
         } else {
+            $this->gensen_has_ai_jobs = true;
             $this->gensen_has_pending_ai_jobs = false;
             $this->remittance_extraction_confidence = $gensen->remittanceExtraction->confidence_score;
             $this->remittance_validate_total = 0;
