@@ -170,6 +170,7 @@ class Form extends Component
             $this->gensenFormId = Crypt::decrypt($this->gensenFormId);
             $this->authorized = true;
             $this->dispatch('onAuthorized');
+            consoleLog($this, 'upload att');
             $this->validatationStepper(1);
         } else {
             $this->gensen_form_details[] = [
@@ -315,9 +316,7 @@ class Form extends Component
         if (!$this->isFirstCheck) {
             $this->firstCheck(); // your existing logic
         } else {
-            if (!$this->isUploadAttachment) {
-                $this->validate();
-            }
+            $this->validate();
 
             $this->saveData(false);
         }
