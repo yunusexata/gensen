@@ -69,6 +69,8 @@ class Attachment extends Component
 
     public $tahun_gensen_details = [];
     public $nominal_gensen;
+    public $gensen_has_ai_jobs = false;
+    public $gensen_has_ai_jobs = false;
     public $gensen_has_pending_ai_jobs = false;
     public $remittance_extraction_confidence = 0;
     public $remittance_validate_total = 0;
@@ -200,6 +202,7 @@ class Attachment extends Component
                     ]
                 );
                 if ($job) {
+                    $this->gensen_has_ai_jobs = true;
                     $this->gensen_has_pending_ai_jobs = true;
                 }
             });
@@ -316,11 +319,13 @@ class Attachment extends Component
         if (!$gensen) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
         }
-        if (
+        if (!$gensen->aiJobs()->exists()) {
+            $this->gensen_has_ai_jobs = false;
+        } elseif (
             !$gensen->remittanceExtraction()->exists()
-            && ($gensen->hasPendingAiJob() && $gensen->aiJobs()->exist())
+            && $gensen->hasPendingAiJob()
         ) {
-
+            $this->gensen_has_ai_jobs = true;
             $this->gensen_has_pending_ai_jobs = true;
             $this->remittance_validate_total = 0;
             $this->remittance_extraction_confidence = null;
