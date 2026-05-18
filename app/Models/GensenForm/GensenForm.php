@@ -606,6 +606,7 @@ class GensenForm extends Model
     {
         return $this->hasMany(AiJob::class, 'subject_id', 'id')->where('subject_type', self::class);
     }
+
     public function hasPendingAiJob(): bool
     {
         return $this->aiJobs()

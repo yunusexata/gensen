@@ -318,7 +318,7 @@ class Attachment extends Component
         }
         if (
             !$gensen->remittanceExtraction()->exists()
-            && $gensen->hasPendingAiJob()
+            && ($gensen->hasPendingAiJob() && $gensen->aiJobs()->exist())
         ) {
 
             $this->gensen_has_pending_ai_jobs = true;
@@ -329,26 +329,27 @@ class Attachment extends Component
             $this->gensen_has_pending_ai_jobs = false;
             $this->remittance_extraction_confidence = $gensen->remittanceExtraction->confidence_score;
             $this->remittance_validate_total = 0;
+            $this->remittance_extraction_groups = $gensen->remittanceExtraction
+                ? $gensen->remittanceExtraction
+                ->remittanceExtractionGroups
+                ->map(function ($group) {
+                    $groupArray = $group->toArray();
+                    if ($group->is_validate) {
+                        $this->remittance_validate_total += $group->total_amount;
+                    }
+                    $groupArray['amount_details'] =
+                        json_decode($group->amount_details, true) ?? [];
+
+                    return $groupArray;
+                })
+                ->values()
+                ->toArray()
+                : [];
         }
         // if ($gensen->remittanceExtraction && $gensen->remittanceExtraction->aiJob()->status != JobStatus::PENDING) {
 
         // dd($this->remittance_extraction->remittanceExtractionGroups->toArray());
-        $this->remittance_extraction_groups = $gensen->remittanceExtraction
-            ? $gensen->remittanceExtraction
-            ->remittanceExtractionGroups
-            ->map(function ($group) {
-                $groupArray = $group->toArray();
-                if ($group->is_validate) {
-                    $this->remittance_validate_total += $group->total_amount;
-                }
-                $groupArray['amount_details'] =
-                    json_decode($group->amount_details, true) ?? [];
 
-                return $groupArray;
-            })
-            ->values()
-            ->toArray()
-            : [];
         // }
         $this->onload = true;
     }
