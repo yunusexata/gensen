@@ -415,11 +415,15 @@ class Form extends Component
                 //     return redirect()->route('gensen_form.success', $this->objId);
                 // }
             }
+            consoleLog($this, [
+                'status gensen',
+                $gensenForm->status
+            ]);
             if ($gensenForm->status !== GensenForm::STATUS_BELUM_LENGKAP) {
-                return redirect()->route(
-                    'gensen_form.success_default',
-                    ['phone' => $gensenForm->getPicAttribute()->phone],
-                );
+                // return redirect()->route(
+                //     'gensen_form.success_default',
+                //     ['phone' => $gensenForm->getPicAttribute()->phone],
+                // );
             }
             $this->gensenFormId = $gensenForm->id;
 
