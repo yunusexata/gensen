@@ -315,7 +315,9 @@ class Form extends Component
         if (!$this->isFirstCheck) {
             $this->firstCheck(); // your existing logic
         } else {
-            $this->validate();
+            if (!$this->isUploadAttachment) {
+                $this->validate();
+            }
 
             $this->saveData(false);
         }
