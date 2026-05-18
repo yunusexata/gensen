@@ -316,7 +316,7 @@ class Attachment extends Component
         if (!$gensen) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
         }
-        if (count($gensen->remittanceExtraction) && $gensen->hasPendingAiJob()) {
+        if (!count($gensen->remittanceExtraction) && $gensen->hasPendingAiJob()) {
 
             $this->gensen_has_pending_ai_jobs = true;
             $this->remittance_validate_total = 0;
@@ -324,7 +324,7 @@ class Attachment extends Component
             return;
         } else {
             $this->gensen_has_pending_ai_jobs = false;
-            $this->remittance_extraction_confidence = $gensen->remittanceExtraction->confidencescore;
+            $this->remittance_extraction_confidence = $gensen->remittanceExtraction->confidence_score;
             $this->remittance_validate_total = 0;
         }
         // if ($gensen->remittanceExtraction && $gensen->remittanceExtraction->aiJob()->status != JobStatus::PENDING) {
