@@ -311,8 +311,10 @@ class Attachment extends Component
     {
 
         if ($gensen_form_id && Crypt::decrypt($this->objId) != $gensen_form_id) {
+            consoleLog($this, 'g sama');
             return;
         }
+        consoleLog($this, 'sama id');
 
         if (!$gensen) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
