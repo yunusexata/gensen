@@ -1855,7 +1855,7 @@
                             <!-- Group 2: Financials -->
                             <div class="space-y-4">
                                 <h3 class="text-label-bold font-label-bold text-on-surface-variant uppercase border-b border-outline-variant pb-2 mt-4">Remittance Details</h3>
-                                @if ($remittance_extraction && !$remittance_extraction->hasPendingAiJob())
+                                @if ($remittance_extraction_groups && $gensen_has_pending_ai_jobs)
                                     @foreach ($remittance_extraction_groups as $index_remittance_extraction => $remittance)
                                         <div class="flex items-start gap-md p-sm hover:bg-surface-container-lowest rounded-lg border border-transparent hover:border-outline-variant transition-colors group">
                                             <input wire:model.live="remittance_extraction_groups.{{ $index_remittance_extraction }}.is_validate" class="mt-1 h-4 w-4 rounded border-outline text-primary focus:ring-primary-container bg-surface cursor-pointer" type="checkbox"/>
@@ -1888,7 +1888,7 @@
                                             </div>
                                         </div>
                                     @endforeach
-                                @elseif($remittance_extraction && $remittance_extraction->hasPendingAiJob())
+                                @elseif($gensen_has_pending_ai_jobs)
                                     <div class="">
                                         <div class="btn text-white w-100" style="background-color: #5d2fc2; "> 
                                             Sedang Memproses <i class="fa-solid fa-wand-magic-sparkles text-white animate-wand"></i>

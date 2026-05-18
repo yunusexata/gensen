@@ -69,7 +69,7 @@ class Attachment extends Component
 
     public $tahun_gensen_details = [];
     public $nominal_gensen;
-    public $remittance_extraction;
+    public $gensen_has_pending_ai_jobs = false;
     public $remittance_validate_total = 0;
     public $remittance_extraction_groups = [];
     public $onload = false;
@@ -199,7 +199,7 @@ class Attachment extends Component
                     ]
                 );
                 if ($job) {
-                    $this->remittance_extraction = null;
+                    $this->gensen_has_pending_ai_jobs = true;
                 }
             });
 
@@ -310,27 +310,25 @@ class Attachment extends Component
         if ($gensen_form_id && Crypt::decrypt($this->objId) != $gensen_form_id) {
             return;
         }
-        if (AiJobRepository::findBy([
-            ['subject_type', GensenForm::class],
-            ['subject_id', Crypt::decrypt($this->objId)],
-            ['job_type', AiJob::JOB_TYPE_REMITTANCE_EXTRACTION],
-            ['status', 'pending'],
-        ])) {
 
-            $this->remittance_extraction = null;
-            $this->remittance_validate_total = 0;
-            return;
-        }
 
         if (!$gensen) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
         }
+        if ($gensen->hasPendingAiJob()) {
+
+            $this->gensen_has_pending_ai_jobs = true;
+            $this->remittance_validate_total = 0;
+            return;
+        } else {
+            $this->gensen_has_pending_ai_jobs = false;
+            $this->remittance_validate_total = 0;
+        }
         // if ($gensen->remittanceExtraction && $gensen->remittanceExtraction->aiJob()->status != JobStatus::PENDING) {
 
-        $this->remittance_extraction = $gensen->remittanceExtraction;
         // dd($this->remittance_extraction->remittanceExtractionGroups->toArray());
-        $this->remittance_extraction_groups = $this->remittance_extraction
-            ? $this->remittance_extraction
+        $this->remittance_extraction_groups = $gensen->remittanceExtraction
+            ? $gensen->remittanceExtraction
             ->remittanceExtractionGroups
             ->map(function ($group) {
                 $groupArray = $group->toArray();
