@@ -52,7 +52,7 @@ class ExportGensenJob implements ShouldQueue
                 ->handle($history->job_key, $filters);
 
             $fileName = $history->job_key->value . '_' . time() . '.xlsx';
-            $filePath = 'exports/' . $fileName;
+            $filePath = 'exports/gensen' . $fileName;
 
             // simpan file (pakai Laravel Excel atau manual)
             $disk = 'private';
