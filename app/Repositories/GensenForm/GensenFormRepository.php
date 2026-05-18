@@ -51,8 +51,8 @@ class GensenFormRepository extends MasterDataRepository
                 'nama_penerima' => $gensen_form->nama_penerima,
                 'hubungan_penerima' => $gensen_form->hubungan_penerima,
 
-                'tahun_gensen' => $gensen_form->tahun_gensen,
-                'tahun_transfer' => $gensen_form->tahun_transfer,
+                // 'tahun_gensen' => $gensen_form->tahun_gensen,
+                // 'tahun_transfer' => $gensen_form->tahun_transfer,
 
                 'remarks_id' => $gensen_form->remarks_id,
                 'remarks_type' => $gensen_form->remarks_type,
