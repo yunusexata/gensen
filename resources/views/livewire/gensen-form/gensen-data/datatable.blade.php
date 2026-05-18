@@ -336,7 +336,7 @@
                                                                     
                                                                     @if ($this->isCanCreate)
                                                                         <div class='col-auto m-0 p-0'>
-                                                                            <button type='button' class='btn btn-sm btn-warning' wire:click=\"showCopyDialog('$id')\">
+                                                                            <button type='button' class='btn btn-sm btn-warning' wire:click="showCopyDialog('{{ $editingData['id'] }}')">
                                                                                <span class='material-symbols-outlined text-sm' data-icon='save_as'>save_as</span> Copy
                                                                             </button>
                                                                         </div>
@@ -382,7 +382,7 @@
                                                                     @endif
                                                                     @if ($this->isCanDelete)
                                                                         <div class='col-auto m-0 p-0'>
-                                                                            <button type='button' class='btn btn-sm btn-danger' wire:click=\"showDeleteDialog('{{$editingData['id']}}')\">
+                                                                            <button type='button' class='btn btn-sm btn-danger' wire:click="showDeleteDialog('{{$editingData['id']}}')">
                                                                                 <span class='material-symbols-outlined text-sm' data-icon='delete'>delete</span> Hapus
                                                                             </button>
                                                                         </div>
