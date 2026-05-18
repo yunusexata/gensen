@@ -407,7 +407,7 @@ class Form extends Component
                 ['status', '!=', GensenForm::STATUS_GENSEN_CAIR],
             ]);
         }
-        consoleLog($this, $gensenForm);
+        consoleLog($this, ['gensen_form firstcheck', $gensenForm]);
         if ($gensenForm) {
             if ($gensenForm->is_submitted) {
                 // if ($this->isAdmin) {
