@@ -12,7 +12,7 @@ use App\Models\Gensen\Ai\RemittanceExtraction;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\GensenForm\PersyaratanGensenJobRepository;
 use App\Repositories\GensenForm\SeluruhBerkasJobRepository;
-use App\Traits\Models\LowercaseAttribute;
+use App\Traits\Models\LowercaseAttributes;
 use App\Traits\Models\UppercaseAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,7 +26,7 @@ class GensenForm extends Model
     //  Import excel (bulk update)
     //  poin of recommendation
     //  max 3
-    use HasFactory, SoftDeletes, HasTrackHistory, UppercaseAttributes, LowercaseAttribute;
+    use HasFactory, SoftDeletes, HasTrackHistory, UppercaseAttributes, LowercaseAttributes;
 
     protected $fillable = [
         // Sistem

@@ -2,7 +2,7 @@
 
 namespace App\Traits\Models;
 
-trait LowercaseAttribute
+trait LowercaseAttributes
 {
     protected static function bootLowercaseAttributes()
     {
