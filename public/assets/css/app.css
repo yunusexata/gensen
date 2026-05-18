@@ -107,7 +107,7 @@
 }
 
 /*
-! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -1077,6 +1077,10 @@ video {
   width: 60px;
 }
 
+.w-\[60vw\] {
+  width: 60vw;
+}
+
 .w-\[65\%\] {
   width: 65%;
 }
@@ -1093,12 +1097,8 @@ video {
   width: 100%;
 }
 
-.w-\[100vw\] {
-  width: 100vw;
-}
-
-.w-\[60vw\] {
-  width: 60vw;
+.w-\[400px\] {
+  width: 400px;
 }
 
 .min-w-\[200px\] {
@@ -1107,11 +1107,6 @@ video {
 
 .min-w-full {
   min-width: 100%;
-}
-
-.min-w-max {
-  min-width: -moz-max-content;
-  min-width: max-content;
 }
 
 .max-w-4xl {

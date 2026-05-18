@@ -19,6 +19,7 @@ class SendEmailLog extends Model
         // polymorphic relation
         'subject_id',
         'subject_type',
+        'data',
 
         // recipient
         'email',

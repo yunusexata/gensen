@@ -21,6 +21,7 @@ class GensenFormAttachment extends Model
 
     protected $fillable = [
         'gensen_form_id',
+        'upload_batch_id',
         'type',
         'original_name',       // KK_andi.jpg
         'stored_name',         // uuid filename

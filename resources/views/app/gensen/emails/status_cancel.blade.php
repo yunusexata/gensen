@@ -81,9 +81,9 @@
 </head>
 <body>
     <div class="container">
-        {{-- <div class="header">
+        <div class="header">
             <h1>Update Status Pengajuan Gensen</h1>
-        </div> --}}
+        </div>
 
         <div class="content">
             <div class="greeting">Yth. Bapak/Ibu/Sdr/i {{ $form->nama_lengkap }},</div>

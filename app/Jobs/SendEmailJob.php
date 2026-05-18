@@ -29,9 +29,7 @@ class SendEmailJob implements ShouldQueue
         ]);
 
         try {
-            $class =
-
-                Mail::to($this->log->email)->send(new $this->log->mailable($this->log));
+            Mail::to($this->log->email)->send(new $this->log->mailable($this->log));
 
             $this->log->update([
                 'status' => EmailLogStatus::SENT,

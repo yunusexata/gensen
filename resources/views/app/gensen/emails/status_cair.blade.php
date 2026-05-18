@@ -72,9 +72,9 @@
 <body>
     <div class="container">
         <!-- Header -->
-        {{-- <div class="header">
+        <div class="header">
             <h1>PEMBERITAHUAN PENCAIRAN GENSEN</h1>
-        </div> --}}
+        </div>
 
         <!-- Main Content -->
         <div class="content">

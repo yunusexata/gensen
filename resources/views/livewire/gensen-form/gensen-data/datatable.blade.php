@@ -188,18 +188,20 @@
                                                     @if ($editingRowId && $editingRowId == $item['id'])
                                                         
                                                         {{-- First Row --}}
-                                                        <tr class="h-full d-flex align-items-center">
-                                                            <td class="w-[350px]">
-                                                                <label for="">status</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <select class="form-control" wire:model.defer="editingData.status">
-                                                                        <option value="">-- ISI --</option>
-                                                                        @foreach (App\Models\GensenForm\GensenForm::STATUS_CHOICE as $status)
-                                                                            <option value="{{$status}}">{{$status}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </td>
+                                                        <tr>
+                                                            @if (Auth::user()->hasRole(App\Models\User::ROLE_SUPER_ADMIN))
+                                                                <td>
+                                                                    <label for="">status</label>
+                                                                    <div class="d-flex align-items-center">
+                                                                        <select class="form-control" wire:model.defer="editingData.status">
+                                                                            <option value="">-- ISI --</option>
+                                                                            @foreach (App\Models\GensenForm\GensenForm::STATUS_CHOICE as $status)
+                                                                                <option value="{{$status}}">{{$status}}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                            @endif
                                                             <td>
                                                                 <label for="">Tanggal Lengkap</label>
                                                                 <div class="d-flex align-items-center">
@@ -316,7 +318,7 @@
                                                                 <label for="">Email</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="text" class="form-control" 
+                                                                        type="text" class="form-control w-[200px]" 
                                                                         @if ($this->isCanUpdate)
                                                                         wire:model.defer="editingData.email"
                                                                         @else
@@ -326,27 +328,10 @@
                                                                     />
                                                                 </div>
                                                             </td>
-
-                                                            {{-- <td rowspan="2" colspan="5">
-
-                                                                <label for="">Keterangan Mondai</label>
-                                                                <div class="d-flex align-items-center">
-                                                                    <textarea class="form-control" cols="30" rows="5"
-                                                                    placeholder="Keterangan Mondai"
-                                                                    @if ($this->isCanUpdate)
-                                                                        wire:model.defer="editingData.keterangan_mondai"
-                                                                        @else
-                                                                        value="{{ $editingData['keterangan_mondai'] }}"
-                                                                        readonly
-                                                                        @endif
-                                                                        ></textarea>
-                                                                    
-                                                                </div>
-                                                            </td> --}}
                                                         </tr>
                                                         {{-- Second Row --}}
-                                                        <tr class="h-full d-flex align-items-center">
-                                                            <td class="w-[350px] ">
+                                                        <tr>
+                                                            <td colspan="2">
                                                                 <div class="row d-flex flex-nowrap gap-2 justify-content-center">
                                                                     
                                                                     @if ($this->isCanCreate)
@@ -405,7 +390,7 @@
                                                                     
                                                                 </div>
                                                             </td>
-                                                            <td class="w-[300px]">
+                                                            <td>
                                                                 <label>Nama Lengkap</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
@@ -495,6 +480,22 @@
                                                                         readonly
                                                                         @endif
                                                                     />
+                                                                </div>
+                                                            </td>
+                                                            <td colspan="5">
+
+                                                                <label for="">Keterangan Mondai</label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <textarea class="form-control w-[400px]" cols="30" rows="5"
+                                                                    placeholder="Keterangan Mondai"
+                                                                    @if ($this->isCanUpdate)
+                                                                        wire:model.defer="editingData.keterangan_mondai"
+                                                                    @else
+                                                                        value="{{ $editingData['keterangan_mondai'] }}"
+                                                                        readonly
+                                                                    @endif
+                                                                    ></textarea>
+                                                                    
                                                                 </div>
                                                             </td>
                                                         </tr>

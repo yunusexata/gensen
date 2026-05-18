@@ -43,7 +43,6 @@ return new class extends Migration
         $table->text('description')->nullable()->default(null);
         $table->string('remittance_type')->nullable();                // Attachment Note
 
-
         $table->string('disk');                // local / s3
         $table->text('path');                // storage path
         $table->text('note')->nullable();                // Attachment Note

@@ -2,18 +2,24 @@
 
 namespace App\Livewire\GensenForm\GensenForm;
 
+use App\Enums\Gensen\EmailLogStatus;
 use App\Enums\Gensen\GensenAttachmentRemittanceType;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Helpers\Alert;
+use App\Mail\Admin\ClientAttachmentUploaded;
+use App\Mail\Admin\ClientNewSubmission;
+use App\Mail\GensenFormStatusLengkapMail;
 use App\Models\Exata\Exata;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\GensenFormAttachment;
+use App\Models\GensenForm\GensenFormDetail;
 use App\Models\GensenForm\GensenFormLink;
 use App\Models\User;
 use App\Repositories\GensenForm\GensenFormAttachmentRepository;
 use App\Repositories\GensenForm\GensenFormDetailRepository;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
 use App\Repositories\GensenForm\GensenFormRepository;
+use App\Repositories\Service\SendEmailLogRepository;
 use Exception;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -392,7 +398,7 @@ class Form extends Component
                 'tanggal_lahir' => 'required',
             ]);
             $gensenForm = GensenFormRepository::findBy([
-                ['nama_lengkap', $this->nama_lengkap],
+                ['nama_lengkap', Str::upper($this->nama_lengkap)],
                 ['email', $this->email],
                 ['tanggal_lahir', $this->tanggal_lahir],
                 ['status', '!=', GensenForm::STATUS_GENSEN_CAIR],
@@ -702,7 +708,10 @@ class Form extends Component
                     } else {
 
                         if ($gensen_form_detail['tahun_gensen']) {
-                            GensenFormDetailRepository::create([
+                            GensenFormDetail::updateOrCreate([
+                                'gensen_form_id' => $this->gensenFormId,
+                                'tahun_gensen' => $gensen_form_detail['tahun_gensen'],
+                            ], [
                                 'gensen_form_id' => $this->gensenFormId,
                                 'tahun_gensen' => $gensen_form_detail['tahun_gensen'],
                             ]);
@@ -718,7 +727,38 @@ class Form extends Component
 
                 consoleLog($this, ['gensenForm nih', $gensenForm]);
                 if ($withAttachment) {
-                    $this->storeAttachments($gensenForm);
+
+                    $batchId = Str::uuid();
+                    $this->storeAttachments($gensenForm, $batchId);
+
+                    if ($this->isUploadAttachment && !$this->isAdmin) {
+                        SendEmailLogRepository::create(
+                            [
+                                'subject_type' => GensenForm::class,
+                                'subject_id' => $gensenForm->id,
+                                'data' => json_encode([
+                                    'upload_batch_id' => $batchId
+                                ], true),
+                                'email' => $gensenForm->getPicAttribute()->email,
+                                'mailable' => ClientAttachmentUploaded::class,
+                                'subject_line' => "[{$gensenForm->getPicAttribute()->name}] Dokumen Baru Diunggah: {$gensenForm->nama_lengkap}",
+                                'status' => EmailLogStatus::PENDING,
+                                'queued_at' => now(),
+                            ]
+                        );
+                    } elseif (!$this->isUploadAttachment && !$this->isAdmin) {
+                        SendEmailLogRepository::create(
+                            [
+                                'subject_type' => GensenForm::class,
+                                'subject_id' => $gensenForm->id,
+                                'email' => $gensenForm->getPicAttribute()->email,
+                                'mailable' => ClientNewSubmission::class,
+                                'subject_line' => "[{$gensenForm->getPicAttribute()->name}] Notifikasi Form Submission Sukses: {$gensenForm->nama_lengkap}",
+                                'status' => EmailLogStatus::PENDING,
+                                'queued_at' => now(),
+                            ]
+                        );
+                    }
                 }
                 $gensenForm->onSubmitted();
                 $this->isFirstCheck = true;
@@ -742,23 +782,10 @@ class Form extends Component
             return;
         }
     }
-    public function store()
+
+    protected function storeAttachments(GensenForm $gensenForm, $batchId = null): void
     {
-        $this->saveData(true, true);
-        Alert::confirmation(
-            $this,
-            Alert::ICON_SUCCESS,
-            "Berhasil",
-            "Data Berhasil Disimpan",
-            "on-dialog-confirm",
-            "on-dialog-cancel",
-            "Oke",
-            "Tutup",
-        );
-    }
-    protected function storeAttachments(GensenForm $gensenForm): void
-    {
-        DB::transaction(function () use ($gensenForm) {
+        DB::transaction(function () use ($gensenForm, $batchId) {
             consoleLog($this, $gensenForm);
 
             foreach ($this->attachmentInputs() as $input) {
@@ -780,17 +807,17 @@ class Form extends Component
                     if ($type === GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
                         foreach ($file['file'] as $item) {
                             $filePath = "gensen/{$gensenForm->id}/{$type->value}/" . $file['remittance_type'];
-                            $this->handleGensenFormAttachemntStore($item, $type, $gensenForm, $filePath, $file['remittance_type'], $action);
+                            $this->handleGensenFormAttachemntStore($item, $type, $gensenForm, $filePath, $file['remittance_type'], $action, $batchId);
                         }
                     } else {
-                        $this->handleGensenFormAttachemntStore($file, $type, $gensenForm, null, null, $action);
+                        $this->handleGensenFormAttachemntStore($file, $type, $gensenForm, null, null, $action, $batchId);
                     }
                 }
             }
         });
     }
 
-    private function handleGensenFormAttachemntStore($file, $type, $gensenForm, $path = null, $remittance_type = GensenAttachmentRemittanceType::REMITTANCE_NOT_REKAP_PENGIRIMAN, $action = 'update')
+    private function handleGensenFormAttachemntStore($file, $type, $gensenForm, $path = null, $remittance_type = GensenAttachmentRemittanceType::REMITTANCE_NOT_REKAP_PENGIRIMAN, $action = 'update', $batchId = null)
     {
         $storedName = Str::uuid() . '.' . $file->extension();
 
@@ -800,8 +827,10 @@ class Form extends Component
             $storedName,
             'private'
         );
+
         $validatedData = [
             'gensen_form_id' => $gensenForm->id,
+            'upload_batch_id' => $batchId,
 
             'type' => $type,
             'disk' => 'private',

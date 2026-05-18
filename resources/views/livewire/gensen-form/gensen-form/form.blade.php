@@ -779,7 +779,7 @@
                                         <!-- Actions -->
                                         <div class="absolute top-1 right-1 z-10">
                                             <button type="button"
-                                                wire:click.stop="showDialogDeleteFile('{{ $zairyou_card_back_old['id'] }}', , 'zairyou_card_back_old')"
+                                                wire:click.stop="showDialogDeleteFile('{{ $zairyou_card_back_old['id'] }}','zairyou_card_back_old')"
                                                 class="p-1 bg-white/80 hover:bg-error/10 text-error rounded">
                                                 <span class="material-symbols-outlined text-[20]">delete</span>
                                             </button>
