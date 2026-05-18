@@ -484,14 +484,14 @@
                                                             </td>
                                                             <td colspan="5">
 
-                                                                <label for="">Keterangan Mondai</label>
+                                                                <label for="">Keterangan</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <textarea class="form-control w-[400px]" cols="30" rows="5"
-                                                                    placeholder="Keterangan Mondai"
+                                                                    placeholder="Keterangan"
                                                                     @if ($this->isCanUpdate)
-                                                                        wire:model.defer="editingData.keterangan_mondai"
+                                                                        wire:model.defer="editingData.keterangan"
                                                                     @else
-                                                                        value="{{ $editingData['keterangan_mondai'] }}"
+                                                                        value="{{ $editingData['keterangan'] }}"
                                                                         readonly
                                                                     @endif
                                                                     ></textarea>

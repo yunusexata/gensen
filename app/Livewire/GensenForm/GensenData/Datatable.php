@@ -575,7 +575,7 @@ class Datatable extends Component
                 // 'alamat_jepang' => $this->editingData['alamat_jepang'],
                 // 'kode_pos_jepang' => $this->editingData['kode_pos_jepang'],
                 // 'nama_lpk' => $this->editingData['nama_lpk'],
-                // 'keterangan_mondai' => $this->editingData['keterangan_mondai'],
+                'keterangan' => $this->editingData['keterangan'],
             ];
             GensenFormRepository::update($this->editingRowId, $validatedData);
 
@@ -722,7 +722,7 @@ class Datatable extends Component
             'kode_pos_jepang' => $row['kode_pos_jepang'],
             'nama_lpk' => $row['nama_lpk'],
             'remarks_type' => $row['remarks_type'] == User::class ? 'Manual PIC' : 'Link Pengisian Clien',
-            'keterangan_mondai' => $row['keterangan_mondai'],
+            'keterangan' => $row['keterangan'],
 
         ];
     }
