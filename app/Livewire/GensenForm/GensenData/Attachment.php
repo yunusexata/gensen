@@ -314,21 +314,29 @@ class Attachment extends Component
             return;
         }
 
-
         if (!$gensen) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
         }
+        // dd($gensen->with('aiJobs')->first());
+        // dd($gensen->aiJobs()->exists());
+
+        $this->onload = true;
         if (!$gensen->aiJobs()->exists()) {
+            consoleLog($this, 'step A');
             $this->gensen_has_ai_jobs = false;
-        } elseif (
-            !$gensen->remittanceExtraction()->exists()
-            && $gensen->hasPendingAiJob()
-        ) {
+            $this->gensen_has_pending_ai_jobs = false;
+            return;
+        }
+        if ($gensen->aiJobs()->exists() && $gensen->hasPendingAiJob()) {
+            consoleLog($this, 'step B');
             $this->gensen_has_ai_jobs = true;
             $this->gensen_has_pending_ai_jobs = true;
-            $this->remittance_validate_total = 0;
-            $this->remittance_extraction_confidence = null;
-        } else {
+            return;
+        }
+        if (
+            $gensen->remittanceExtraction()->exists()
+        ) {
+            consoleLog($this, 'step C');
             $this->gensen_has_ai_jobs = true;
             $this->gensen_has_pending_ai_jobs = false;
             $this->remittance_extraction_confidence = $gensen->remittanceExtraction->confidence_score;
@@ -355,7 +363,6 @@ class Attachment extends Component
         // dd($this->remittance_extraction->remittanceExtractionGroups->toArray());
 
         // }
-        $this->onload = true;
     }
     public function getMergeAttachment($gensen_form_id = null)
     {
