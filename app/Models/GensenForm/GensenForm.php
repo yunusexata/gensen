@@ -12,6 +12,8 @@ use App\Models\Gensen\Ai\RemittanceExtraction;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\GensenForm\PersyaratanGensenJobRepository;
 use App\Repositories\GensenForm\SeluruhBerkasJobRepository;
+use App\Traits\Models\LowercaseAttribute;
+use App\Traits\Models\UppercaseAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,7 +26,7 @@ class GensenForm extends Model
     //  Import excel (bulk update)
     //  poin of recommendation
     //  max 3
-    use HasFactory, SoftDeletes, HasTrackHistory;
+    use HasFactory, SoftDeletes, HasTrackHistory, UppercaseAttributes, LowercaseAttribute;
 
     protected $fillable = [
         // Sistem
@@ -151,7 +153,15 @@ class GensenForm extends Model
         GensenAttachmentType::REKAP_PENGIRIMAN_UANG->value,
         GensenAttachmentType::KARTU_KELUARGA->value,
     ];
-
+    protected array $uppercase = [
+        'nama_lengkap',
+        'nama_lpk',
+        'nama_penerima',
+        'hubungan_penerima',
+    ];
+    protected array $lowercase = [
+        'email',
+    ];
     public function statusColor()
     {
         return match ($this->status) {
