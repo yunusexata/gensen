@@ -14,6 +14,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
@@ -166,12 +167,10 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 //     fopen($file, 'r')
                 // );
 
-                Storage::disk($disk)->put(
-                    $targetPath,
-                    fopen($file, 'r'),
-                    [
-                        'visibility' => 'private', // or 'public'
-                    ]
+                Storage::disk($disk)->putFileAs(
+                    dirname($targetPath),
+                    new File($file),
+                    basename($targetPath)
                 );
 
                 GensenFormAttachmentRepository::create([
