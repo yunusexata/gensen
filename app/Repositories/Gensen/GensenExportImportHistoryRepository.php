@@ -4,6 +4,7 @@ namespace App\Repositories\Gensen;
 
 use App\Models\Gensen\GensenExportImportHistory;
 use App\Repositories\MasterDataRepository;
+use Illuminate\Support\Facades\Auth;
 
 class GensenExportImportHistoryRepository extends MasterDataRepository
 {
@@ -14,6 +15,11 @@ class GensenExportImportHistoryRepository extends MasterDataRepository
 
     public static function datatable()
     {
-        return GensenExportImportHistory::query();
+
+        $pic_code = Auth::user()->pic_code;
+        return GensenExportImportHistory::query()
+            ->when($pic_code, function ($q) use ($pic_code) {
+                $q->where('created_by', Auth::user()->id);
+            });
     }
 }
