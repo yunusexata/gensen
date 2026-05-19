@@ -39,6 +39,11 @@ class GeminiService
 
             $path = Storage::disk($file['disk'])
                 ->path($file['path']);
+
+            logger([
+                'path to blob 49',
+                $path
+            ]);
             return new Blob(
                 mimeType: $this->getMimeType($file['extension']),
                 data: base64_encode(file_get_contents($path))
