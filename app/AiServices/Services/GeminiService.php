@@ -6,6 +6,7 @@ use App\Enums\Gensen\GensenAttachmenStatus;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Models\Ai\AiJob;
 use App\Models\GensenForm\GensenForm;
+use Exception;
 use Gemini\Data\Blob;
 use Gemini\Data\Content;
 use Gemini\Data\GenerationConfig;
@@ -37,23 +38,27 @@ class GeminiService
 
         $blobs = collect($attachments)->map(function ($file) {
 
-            $path = Storage::disk($file['disk'])
-                ->path($file['path']);
+            $storage = Storage::disk($file['disk']);
 
-            logger([
-                'path to blob 49',
-                $path
-            ]);
+            if (!$storage->exists($file['path'])) {
+                throw new Exception("File missing: {$file['path']}");
+            }
+
+            $stream = $storage->readStream($file['path']);
+
+            if ($stream === false) {
+                throw new Exception("Cannot read file stream");
+            }
+
+            $data = stream_get_contents($stream);
+
+            fclose($stream);
+
             return new Blob(
                 mimeType: $this->getMimeType($file['extension']),
-                data: base64_encode(file_get_contents($path))
+                data: base64_encode($data)
             );
         })->toArray();
-
-        logger([
-            'blob att 49',
-            $blobs
-        ]);
 
         // High-precision configuration for tax data
         $responseSchema = new Schema(
