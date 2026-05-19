@@ -11,6 +11,21 @@
             //         initStepper();
             //     }, 300);
             // }
+            
+            Livewire.on('stepper-go-next', () => {
+                stepper.goNext();
+            });
+
+            Livewire.on('stepper-go-to', (index) => {
+                console.log(['goto', index])
+                stepper.goTo(index);
+            });
+            Livewire.on('onAuthorized', () => {
+                setTimeout(() => {
+                    console.log('init')
+                    initStepper();
+                }, 300);
+            });
         });
 
 function initStepper() {
@@ -82,19 +97,5 @@ function initStepper() {
 |--------------------------------------------------------------------------
 */
 
-Livewire.on('stepper-go-next', () => {
-    stepper.goNext();
-});
-
-Livewire.on('stepper-go-to', (index) => {
-    console.log(['goto', index])
-    stepper.goTo(index);
-});
-Livewire.on('onAuthorized', () => {
-    setTimeout(() => {
-        console.log('init')
-        initStepper();
-    }, 300);
-});
     </script>
 @endpush
