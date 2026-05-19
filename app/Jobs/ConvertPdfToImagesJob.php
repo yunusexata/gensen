@@ -59,7 +59,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
             if (method_exists($storage, 'path') && $storage->exists($relativePath)) {
 
                 try {
-                    $localSourcePath = Storage::disk('private')->path('app/private/' . $relativePath);
+                    $localSourcePath = Storage::disk('private')->path($relativePath);
                 } catch (\Throwable $e) {
 
                     /**
