@@ -9,6 +9,7 @@ use App\Models\Ai\AiJob;
 use App\Models\GensenForm\GensenForm;
 use App\Repositories\GensenForm\GensenFormAttachmentRepository;
 use App\Services\TemporaryFile;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -30,8 +31,39 @@ class ConvertPdfToImagesJob implements ShouldQueue
         $attachments = $this->ai_job->subject->attachmentsToConvert;
 
         foreach ($attachments as $attachment) {
+            $disk = $attachment->disk ?? 'private';
 
-            $tmpPdfPath = TemporaryFile::fromAttachment($attachment);
+            $storage = Storage::disk($disk);
+
+            if (!$storage->exists($attachment->path)) {
+                throw new Exception("File missing: {$attachment->path}");
+            }
+
+            $tmpDir = storage_path('app/private/gensen/temp_' . $attachment->type->value);
+
+            if (!is_dir($tmpDir)) {
+                mkdir($tmpDir, 0777, true);
+            }
+
+            $tmpPdfPath = $tmpDir . '/' . basename($attachment->path);
+
+            /*
+|--------------------------------------------------------------------------
+| STREAM DOWNLOAD (Supabase → Local)
+|--------------------------------------------------------------------------
+*/
+            $readStream = $storage->readStream($attachment->path);
+
+            if ($readStream === false) {
+                throw new Exception("Failed to read remote file");
+            }
+
+            $writeStream = fopen($tmpPdfPath, 'w');
+
+            stream_copy_to_stream($readStream, $writeStream);
+
+            fclose($readStream);
+            fclose($writeStream);
 
             $extension = strtolower(pathinfo($tmpPdfPath, PATHINFO_EXTENSION));
 
@@ -137,7 +169,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
                     'convert_image' => true,
                 ]);
             }
-            TemporaryFile::cleanup($tmpPdfPath);
+            // TemporaryFile::cleanup($tmpPdfPath);
         }
 
         /*
