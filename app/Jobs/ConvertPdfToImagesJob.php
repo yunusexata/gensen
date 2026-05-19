@@ -115,7 +115,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
             $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
 
             $process = new Process([
-                'C:\Program Files\gs\gs10.07.0\bin\gswin64c.exe', // IMPORTANT
+                'gs', // IMPORTANT
                 '-sDEVICE=jpeg',
                 '-r200',
                 '-dNOPAUSE',
