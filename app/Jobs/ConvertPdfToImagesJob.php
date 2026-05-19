@@ -86,7 +86,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
         | STEP 4 — Ghostscript Convert
         |--------------------------------------------------------------------------
         */
-            $dir = "gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}/";
+            $dir = "gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}";
 
             $outputDir = storage_path("app/private/{$dir}");
 
