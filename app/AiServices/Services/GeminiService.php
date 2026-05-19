@@ -51,6 +51,7 @@ class GeminiService
             }
 
             $data = stream_get_contents($stream);
+            logger(['data stream', $stram]);
 
             fclose($stream);
 
