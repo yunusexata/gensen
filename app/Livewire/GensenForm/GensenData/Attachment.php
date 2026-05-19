@@ -24,6 +24,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
@@ -643,16 +644,24 @@ class Attachment extends Component
         $storedName = Str::uuid() . '.' . $file->extension();
 
         $filePath = $path ? $path :  "gensen/{$gensenFormId}/{$type->value}";
-        $path = $file->storeAs(
+        // $path = $file->storeAs(
+        //     $filePath,
+        //     $storedName,
+        //     'private'
+        // );
+        $path = Storage::disk('supabase')->putFileAs(
             $filePath,
+            $file,
             $storedName,
-            'private'
+            [
+                'visibility' => 'private',
+            ]
         );
 
 
         $validatedData =  [
             'type' => $type,
-            'disk' => 'private',
+            'disk' => 'supabase',
             'path' => $path,
 
             'stored_name' => $storedName,
@@ -769,16 +778,24 @@ class Attachment extends Component
         $storedName = Str::uuid() . '.' . $file->extension();
 
         $filePath = $path ? $path :  "gensen/{$gensenForm->id}/{$type->value}";
-        $path = $file->storeAs(
+        // $path = $file->storeAs(
+        //     $filePath,
+        //     $storedName,
+        //     'private'
+        // );
+        $path = Storage::disk('supabase')->putFileAs(
             $filePath,
+            $file,
             $storedName,
-            'private'
+            [
+                'visibility' => 'private',
+            ]
         );
         $validatedData = [
             'gensen_form_id' => $gensenForm->id,
 
             'type' => $type,
-            'disk' => 'private',
+            'disk' => 'supabase',
             'path' => $path,
             'remittance_type' => $remittance_type,
 

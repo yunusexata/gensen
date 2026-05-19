@@ -7,6 +7,7 @@ use App\Enums\Gensen\JobStatus;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\PersyaratanGensenJob;
 use App\Services\GensenAttachmentService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,7 +16,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Throwable;
 
 
 class MergePersyaratanPengurusanGensen implements ShouldQueue
@@ -29,6 +30,7 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
      */
     public function __construct($processId, $gensenFormId)
     {
+        logger('construct merge persyaratan');
         $this->processId = $processId;
         $this->gensenFormId = $gensenFormId;
     }
@@ -83,6 +85,10 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
             $files = $gensen->attachments
                 ->keyBy(fn($item) => $item->type->value);
 
+            logger([
+                'files attachment line 89',
+                $files
+            ]);
             $this->merge(
                 $this->attachmentPath($files, GensenAttachmentType::ZAIRYOU_CARD_FRONT),
                 $this->attachmentPath($files, GensenAttachmentType::ZAIRYOU_CARD_BACK),
@@ -120,23 +126,88 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
             throw $e; // allow queue retry
         }
     }
+
+    public function failed(?Throwable $e): void
+    {
+
+        $process = PersyaratanGensenJob::findOrFail($this->processId);
+        $process->update([
+            'status' => JobStatus::FAILED,
+            'error_message' => $e->getMessage(),
+        ]);
+    }
+
     private function attachmentPath($files, GensenAttachmentType $type)
     {
         $attachment = $files->get($type->value);
 
+        logger([
+            'detail att line 145',
+            $attachment
+        ]);
         if (!$attachment) {
             logger("Attachment {$type->label()} not found");
             return false;
         }
 
+        // $disk = $attachment->disk ?? 'private';
+
+        // $path = Storage::disk($disk)->path($attachment->path);
+
+        // if (!file_exists($path)) {
+        //     throw new \Exception("File missing: {$path}");
+        // }
         $disk = $attachment->disk ?? 'private';
 
-        $path = Storage::disk($disk)->path($attachment->path);
+        $storage = Storage::disk($disk);
 
-        if (!file_exists($path)) {
-            throw new \Exception("File missing: {$path}");
+        if (!$storage->exists($attachment->path)) {
+            throw new Exception("File missing: {$attachment->path}");
         }
 
+        $tmpDir = storage_path('app/tmp/merge_persyaratan');
+
+        if (!is_dir($tmpDir)) {
+            mkdir($tmpDir, 0777, true);
+        }
+
+        $tmpPath = $tmpDir . '/' . basename($attachment->path);
+
+        /*
+|--------------------------------------------------------------------------
+| STREAM DOWNLOAD (Supabase → Local)
+|--------------------------------------------------------------------------
+*/
+        $readStream = $storage->readStream($attachment->path);
+
+        if ($readStream === false) {
+            throw new Exception("Failed to read remote file");
+        }
+
+        $writeStream = fopen($tmpPath, 'w');
+
+        stream_copy_to_stream($readStream, $writeStream);
+
+        fclose($readStream);
+        fclose($writeStream);
+
+        $path = $tmpPath;
+
+
+        // $path = $tmpDir . '/' . basename($attachment->path);
+
+        // // ⭐ STREAM COPY (VERY IMPORTANT)
+        // $readStream = $disk->readStream($attachment->path);
+        // $writeStream = fopen($path, 'w');
+
+        // stream_copy_to_stream($readStream, $writeStream);
+
+        // fclose($readStream);
+        // fclose($writeStream);
+        logger([
+            'attachment path line 169',
+            $path
+        ]);
         return $path;
     }
 
@@ -357,6 +428,8 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
     */
         $A4_WIDTH  = 2480;
         $A4_HEIGHT = 3508;
+        // $A4_WIDTH  = 1240;
+        // $A4_HEIGHT = 1754;
 
         $TOP_AREA_HEIGHT = $A4_HEIGHT / 2;
 
@@ -525,8 +598,15 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
     | Cleanup Memory
     |--------------------------------------------------------------------------
     */
-        unset($img1, $img2, $img3, $img4, $img5, $canvas);
 
+        // unlink($ktpFront);
+        // unlink($ktpBack);
+        // unlink($zaryouFront);
+        // unlink($zaryouBack);
+        // unlink($rekeningIndonesia);
+        // unlink($outputPath);
+
+        unset($img1, $img2, $img3, $img4, $img5, $canvas);
         unlink($tempImage);
 
         gc_collect_cycles();

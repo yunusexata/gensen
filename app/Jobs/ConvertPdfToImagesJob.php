@@ -30,7 +30,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
         $imagePaths = [];
         foreach ($attachments as $attachment) {
 
-            $pdfPath = Storage::disk('private')->path($attachment['path']);
+            $pdfPath = Storage::disk($attachment['disk'])->path($attachment['path']);
 
             $dir = "gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}/" . Str::random(6);
             logger([

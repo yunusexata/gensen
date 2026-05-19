@@ -9,6 +9,7 @@ use App\Imports\ExcelImportBulkStatusGensen;
 use App\Repositories\Gensen\GensenExportImportHistoryRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -85,19 +86,27 @@ class BulkUpdateGensenNoInputJepangModal extends Component
         try {
             DB::beginTransaction();
 
-            $disk = 'private';
+            $disk = 'supabase';
 
             $extension = $this->inputFileBulkStatus
                 ->extension();
 
-            $fileName = Str::uuid() . '.' . $extension;
+            $fileName = ExportImportJobKey::IMPORT_LIST_DATA_NO_INPUT_JAPAN->value . '-' . now()->format('Ymd') . '.' . $extension;
 
-            $filePath = $this->inputFileBulkStatus
-                ->storeAs(
-                    'imports/gensen',
-                    $fileName,
-                    $disk
-                );
+            // $filePath = $this->inputFileBulkStatus
+            //     ->storeAs(
+            //         '',
+            //         $fileName,
+            //         $disk
+            //     );
+            $filePath = Storage::disk('supabase')->putFileAs(
+                'imports/gensen',
+                $this->inputFileBulkStatus,
+                $fileName,
+                [
+                    'visibility' => 'private',
+                ]
+            );
 
             $history = GensenExportImportHistoryRepository::create([
                 'role' => Auth::user()->roles->pluck('name')->first(),

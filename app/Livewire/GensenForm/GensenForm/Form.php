@@ -26,6 +26,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -825,10 +826,18 @@ class Form extends Component
         $storedName = Str::uuid() . '.' . $file->extension();
 
         $filePath = $path ? $path :  "gensen/{$gensenForm->id}/{$type->value}";
-        $path = $file->storeAs(
+        // $path = $file->storeAs(
+        //     $filePath,
+        //     $storedName,
+        //     'private'
+        // );
+        $path = Storage::disk('supabase')->putFileAs(
             $filePath,
+            $file,
             $storedName,
-            'private'
+            [
+                'visibility' => 'private',
+            ]
         );
 
         $validatedData = [
@@ -836,7 +845,7 @@ class Form extends Component
             'upload_batch_id' => $batchId,
 
             'type' => $type,
-            'disk' => 'private',
+            'disk' => 'supabase',
             'path' => $path,
             'remittance_type' => $remittance_type,
 

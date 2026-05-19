@@ -78,6 +78,35 @@ class GensenFormController extends Controller
             ]
         );
     }
+    // public function previewSuabase(GensenFormAttachment $attachment)
+    // {
+    //     $disk = Storage::disk($attachment->disk);
+
+    //     abort_unless(
+    //         $disk->exists($attachment->path),
+    //         404
+    //     );
+
+    //     if ($attachment->type === GensenAttachmentType::SELURUH_BERKAS) {
+    //         $filename =
+    //             "G {$attachment->gensenForm->nama_lengkap} " .
+    //             Carbon::parse($attachment->gensenForm->tanggal_lahir)->format('Ymd') .
+    //             ".{$attachment->extension}";
+    //     } else {
+    //         $filename = $attachment->original_name;
+    //     }
+
+    //     $temporaryUrl = $disk->temporaryUrl(
+    //         $attachment->path,
+    //         now()->addMinutes(30),
+    //         [
+    //             'ResponseContentDisposition' => 'inline; filename="' . $filename . '"',
+    //             'ResponseContentType' => $attachment->mime_type,
+    //         ]
+    //     );
+
+    //     return redirect()->away($temporaryUrl);
+    // }
     public function previewExportImport(GensenExportImportHistory $history)
     {
         // abort_unless(auth()->check(), 403);

@@ -193,15 +193,15 @@ class DatatableHistory extends Component
                     $download = "<a download='$item->filename' href='{$url}' class='btn btn-success btn-sm'>
                     Download
                 </a>";
-                    $html = "
-        <div x-data>
-            <template x-if=\"\$wire.statuses[{$item->id}]?.status === 'done' && $item->type == 'export'\">
-                <a download='$item->filename' href='{$url}' class='btn btn-success btn-sm'>
-                    Download
-                </a>
-            </template>
-        </div>
-    ";
+                    //                 $html = "
+                    //     <div x-data>
+                    //         <template x-if=\"\$wire.statuses[{$item->id}]?.status === 'done' && $item->type == 'export'\">
+                    //             <a download='$item->filename' href='{$url}' class='btn btn-success btn-sm'>
+                    //                 Download
+                    //             </a>
+                    //         </template>
+                    //     </div>
+                    // ";
                     $html = "";
                     if ($item->status === JobStatus::DONE) {
                         $html .= $download;

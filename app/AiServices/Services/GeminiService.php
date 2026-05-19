@@ -37,7 +37,7 @@ class GeminiService
 
         $blobs = collect($attachments)->map(function ($file) {
 
-            $path = Storage::disk('private')
+            $path = Storage::disk($file['disk'])
                 ->path($file['path']);
             return new Blob(
                 mimeType: $this->getMimeType($file['extension']),

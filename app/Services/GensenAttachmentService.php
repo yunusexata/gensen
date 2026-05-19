@@ -10,28 +10,31 @@ class GensenAttachmentService
 {
     public function storeGenerated(
         int $gensenFormId,
-        $path,
+        $filePath,
         GensenAttachmentType $type,
     ) {
 
-        $disk = 'private';
-        $fullPath = Storage::disk('private')->path($path);
 
-        GensenFormAttachmentRepository::deleteBy([
-            ['gensen_form_id', $gensenFormId],
-            ['type', $type],
-        ]);
+        $localDisk = 'private';
+        $remoteDisk = 'supabase';
 
-        return GensenFormAttachmentRepository::create([
+        $fullPath = Storage::disk($localDisk)->path($filePath);
+        // $storedName = basename($filePath);
+
+        Storage::disk($remoteDisk)->put(
+            $filePath,
+            fopen($fullPath, 'r')
+        );
+        GensenFormAttachmentRepository::create([
             'gensen_form_id' => $gensenFormId,
 
             'type' => $type,
 
-            'disk' => $disk,
-            'path' => $path,
+            'disk' => $remoteDisk,
+            'path' => $filePath,
 
             'original_name' => $type->label() . '.pdf',
-            'stored_name' => basename($path),
+            'stored_name' => basename($filePath),
 
             'extension' => pathinfo($fullPath, PATHINFO_EXTENSION),
             'mime_type' => mime_content_type($fullPath),
@@ -39,5 +42,8 @@ class GensenAttachmentService
 
             'checksum' => hash_file('sha256', $fullPath),
         ]);
+
+        Storage::disk($localDisk)->delete($filePath);
+        return;
     }
 }

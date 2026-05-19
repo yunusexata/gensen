@@ -10,7 +10,9 @@ use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\PersyaratanGensenJob;
 use App\Models\GensenForm\SeluruhBerkasJob;
 use App\Services\GensenAttachmentService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
+use iio\libmergepdf\Merger;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -18,10 +20,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Barryvdh\DomPDF\Facade\Pdf;
-use iio\libmergepdf\Merger;
-use setasign\Fpdi\Tcpdf\Fpdi;
 use setasign\Fpdi\PdfParser\StreamReader;
+use setasign\Fpdi\Tcpdf\Fpdi;
+use Throwable;
 
 
 class MergeSeluruhBerkas implements ShouldQueue
@@ -132,6 +133,15 @@ class MergeSeluruhBerkas implements ShouldQueue
         }
     }
 
+    public function failed(?Throwable $e): void
+    {
+
+        $process = PersyaratanGensenJob::findOrFail($this->processId);
+        $process->update([
+            'status' => JobStatus::FAILED,
+            'error_message' => $e->getMessage(),
+        ]);
+    }
     /*
     |--------------------------------------------------------------------------
     | LOAD ATTACHMENTS

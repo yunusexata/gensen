@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Gensen\GensenExportImportHistory;
 use App\Models\GensenForm\GensenForm;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class GensenFormExportImportController extends Controller
 {
@@ -29,12 +30,24 @@ class GensenFormExportImportController extends Controller
     {
         $history = GensenExportImportHistory::findOrFail(decrypt($id));
 
-        if ($history->status !== JobStatus::DONE) {
-            abort(403);
+        $disk = Storage::disk($history->disk);
+
+        if ($history->disk === 'private') {
+            $path = storage_path('app/private/' . $history->file_path);
+
+            return response()->download($path);
         }
 
-        return response()->download(
-            storage_path('app/private/' . $history->file_path)
-        );
+        $tmpPath = storage_path('app/tmp/' . basename($history->file_path));
+
+        $stream = $disk->readStream($history->file_path);
+        $target = fopen($tmpPath, 'w');
+
+        stream_copy_to_stream($stream, $target);
+
+        fclose($stream);
+        fclose($target);
+
+        return response()->download($tmpPath)->deleteFileAfterSend(true);
     }
 }

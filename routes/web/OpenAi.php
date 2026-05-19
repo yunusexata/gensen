@@ -58,7 +58,16 @@ Route::get('/ai-test', function () {
     //         ]
     //     );
 
-    $gensen = GensenForm::first();
-    SendGensenFormCreatedEmailJob::dispatch($gensen);
-    return 'oke';
+    // $gensen = GensenForm::first();
+    // SendGensenFormCreatedEmailJob::dispatch($gensen);
+    $url = Storage::disk('supabase')->temporaryUrl(
+        'test.txt',
+        now()->addMinutes(5)
+    );
+    // $url = 'oke';
+    Storage::disk('supabase')->put(
+        'test.txt',
+        'Hello Supabase Storage'
+    );
+    return $url;
 });

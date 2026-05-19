@@ -10,6 +10,7 @@ use App\Models\GensenForm\GensenForm;
 use App\Repositories\Gensen\GensenExportImportHistoryRepository;
 use App\Repositories\GensenForm\GensenFormRepository;
 use App\Services\ImportService;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
@@ -54,11 +55,29 @@ class ImportGensenJob implements ShouldQueue
                 'job_key' => $history->job_key->value,
             ]);
             $import = new ExcelImportBulkStatusGensen();
+            $disk = Storage::disk($history->disk);
+            $tmpDir = storage_path('app/private/imports/gensen');
 
-            Excel::import(
-                $import,
-                Storage::disk($history->disk)->path($history->file_path)
-            );
+            if (!is_dir($tmpDir)) {
+                mkdir($tmpDir, 0777, true);
+            }
+
+            $fileName = $history->job_key->value . '_' . time() . '.xlsx';
+
+            $tmpPath = $tmpDir . '/' . $fileName;
+            $readStream = $disk->readStream($history->file_path);
+
+            if (!is_resource($readStream)) {
+                throw new Exception("Cannot read remote Excel file");
+            }
+
+            $writeStream = fopen($tmpPath, 'w');
+
+            stream_copy_to_stream($readStream, $writeStream);
+
+            fclose($readStream);
+            fclose($writeStream);
+            Excel::import($import, $tmpPath);
 
             // ambil data sesuai role + filter
             $data = app(ImportService::class)

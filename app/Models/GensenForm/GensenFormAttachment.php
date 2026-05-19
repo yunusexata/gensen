@@ -67,13 +67,30 @@ class GensenFormAttachment extends Model
     {
         return str_starts_with($this->mime_type, 'image/');
     }
+    // public function previewUrl(): string
+    // {
+    //     return URL::temporarySignedRoute(
+    //         'gensen.attachment.preview',
+    //         now()->addMinutes(30),
+    //         ['attachment' => $this->id]
+    //     );
+    // }
     public function previewUrl(): string
     {
-        return URL::temporarySignedRoute(
-            'gensen.attachment.preview',
-            now()->addMinutes(30),
-            ['attachment' => $this->id]
-        );
+        return $this->disk === 'supabase' ? Storage::disk($this->disk)
+            ->temporaryUrl(
+                $this->path,
+                now()->addMinutes(10),
+                [
+                    'ResponseCacheControl' => 'private, max-age=3600',
+                    'ResponseContentDisposition' =>
+                    'inline; filename="' . $this->original_name . '"',
+                ]
+            ) :  URL::temporarySignedRoute(
+                'gensen.attachment.preview',
+                now()->addMinutes(30),
+                ['attachment' => $this->id]
+            );
     }
 
     public function saveInfo($object, $data = false, $prefix = "")
