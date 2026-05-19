@@ -157,7 +157,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 ]);
                 $targetPath = "{$dir}/{$stored_name}";
 
-                $disk = 'supabase';
+                $disk = 'private';
                 /**
                  * Upload using SAME disk as original
                  */
