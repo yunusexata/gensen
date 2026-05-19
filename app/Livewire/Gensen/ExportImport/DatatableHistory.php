@@ -140,6 +140,13 @@ class DatatableHistory extends Component
                 }
             ],
             [
+                'key' => 'job_key',
+                'name' => 'Nama Task',
+                'render' => function ($item) {
+                    return $item->job_key;
+                }
+            ],
+            [
                 'key' => 'created_at',
                 'name' => 'Tanggal Dibuat',
                 'render' => function ($item) {
