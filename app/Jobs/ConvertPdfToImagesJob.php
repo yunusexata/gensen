@@ -41,12 +41,21 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
             $tmpDir = storage_path('app/private/gensen/temp_' . $attachment->type->value);
 
+            logger([
+                'tmp dir 45',
+                $tmpDir
+            ]);
             if (!is_dir($tmpDir)) {
                 mkdir($tmpDir, 0777, true);
             }
 
             $tmpPdfPath = $tmpDir . '/' . basename($attachment->path);
 
+
+            logger([
+                'tmp pdf path 56',
+                $tmpPdfPath
+            ]);
             /*
 |--------------------------------------------------------------------------
 | STREAM DOWNLOAD (Supabase → Local)
@@ -64,8 +73,9 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
             fclose($readStream);
             fclose($writeStream);
+            $local_path = $tmpPdfPath;
 
-            $extension = strtolower(pathinfo($tmpPdfPath, PATHINFO_EXTENSION));
+            $extension = strtolower(pathinfo($local_path, PATHINFO_EXTENSION));
 
             if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
                 continue;
@@ -82,6 +92,11 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
             $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
             $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
+
+            logger([
+                'stored name 97',
+                $storedName
+            ]);
 
             $process = new Process([
                 // '/usr/local/bin/gs',
@@ -135,6 +150,11 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 $info = pathinfo($file);
                 $stored_name = $info['filename'] . '.' . $info['extension'];
 
+
+                logger([
+                    'stored name 155',
+                    $stored_name
+                ]);
                 $targetPath = "{$dir}/{$stored_name}";
 
                 $disk = 'supabase';
