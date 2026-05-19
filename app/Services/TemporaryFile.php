@@ -24,7 +24,7 @@ class TemporaryFile
         |--------------------------------------------------------------------------
         */
         $tmpDir = storage_path(
-            'app/tmp/' . now()->format('Ymd') . '/' . Str::random(12)
+            'app/tmp/' . now()->format('Ymd') . '/' . Str::random(12) . "/"
         );
 
         if (!is_dir($tmpDir)) {
