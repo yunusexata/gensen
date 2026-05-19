@@ -41,13 +41,13 @@ class GeminiService
             $storage = Storage::disk($file['disk']);
 
             if (!$storage->exists($file['path'])) {
-                throw new Exception("File missing: {$file['path']}");
+                logger("File missing: {$file['path']}");
             }
 
             $stream = $storage->readStream($file['path']);
 
             if ($stream === false) {
-                throw new Exception("Cannot read file stream");
+                logger("Cannot read file stream");
             }
 
             $data = stream_get_contents($stream);
