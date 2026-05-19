@@ -60,6 +60,7 @@ class GeminiService
                 data: base64_encode($data)
             );
         })->toArray();
+        return [];
 
         // High-precision configuration for tax data
         $responseSchema = new Schema(
