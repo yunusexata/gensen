@@ -113,9 +113,12 @@
 
     @push('js')
         <script>
+            
+        document.addEventListener('livewire:init', () => {
             Livewire.on('onSuccessImportBulkStatusDataToLengkap', () => {
             $('#bulkUpdateGensenStatusModalToLengkap').modal('hide');
             $('#inputFileBulkStatus').val(null);
         })
+    });
         </script>
     @endpush

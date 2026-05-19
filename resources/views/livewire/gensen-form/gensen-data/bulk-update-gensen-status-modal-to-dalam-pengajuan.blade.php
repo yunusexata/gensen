@@ -117,9 +117,12 @@
 
     @push('js')
         <script>
-            Livewire.on('onSuccessImportBulkStatusDataToDalamPengajuan', () => {
-            $('#bulkUpdateGensenStatusModalToDalamPengajuan').modal('hide');
-            $('#inputFileBulkStatus').val(null);
-        })
+            
+        document.addEventListener('livewire:init', () => {
+                Livewire.on('onSuccessImportBulkStatusDataToDalamPengajuan', () => {
+                $('#bulkUpdateGensenStatusModalToDalamPengajuan').modal('hide');
+                $('#inputFileBulkStatus').val(null);
+            })
+        });
         </script>
     @endpush

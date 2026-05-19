@@ -9,10 +9,12 @@
         const config = @json($config);
         const chart = new Chart(document.getElementById('{{ $canvasId }}'), config);
 
-        Livewire.on('js-chart-update', (data) => {
-            chart.data.datasets = data.datasets;
-            chart.data.labels = data.labels;
-            chart.update();
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('js-chart-update', (data) => {
+                chart.data.datasets = data.datasets;
+                chart.data.labels = data.labels;
+                chart.update();
+            });
         });
     </script>
 @endpush

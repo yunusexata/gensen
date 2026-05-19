@@ -121,44 +121,48 @@
 
     @livewireScripts
     <script>
-        Livewire.on("{{ Alert::EVENT_INFO }}", (event) => {
-            Swal.fire({
-                icon: event[0],
-                title: event[1],
-                html: event[2],
-            }).then((result) => {
-               if(event[3])
-               {
-                  Livewire.dispatch(event[3]);
-               }
-            });;
-        });
-
-        Livewire.on("{{ Alert::EVENT_CONFIRMATION }}", (event) => {
-            Swal.fire({
-                icon: event[0],
-                title: event[1],
-                html: event[2],
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: event[3],
-                cancelButtonText: event[4],
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Livewire.dispatch(event[5]);
-                } else {
-                    Livewire.dispatch(event[6]);
+        
+        document.addEventListener('livewire:init', () => {
+            
+            Livewire.on("{{ Alert::EVENT_INFO }}", (event) => {
+                Swal.fire({
+                    icon: event[0],
+                    title: event[1],
+                    html: event[2],
+                }).then((result) => {
+                if(event[3])
+                {
+                    Livewire.dispatch(event[3]);
                 }
+                });;
             });
-        });
 
-        Livewire.on('refresh-page', (data) => {
-            location.reload();
-        });
+            Livewire.on("{{ Alert::EVENT_CONFIRMATION }}", (event) => {
+                Swal.fire({
+                    icon: event[0],
+                    title: event[1],
+                    html: event[2],
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: event[3],
+                    cancelButtonText: event[4],
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.dispatch(event[5]);
+                    } else {
+                        Livewire.dispatch(event[6]);
+                    }
+                });
+            });
 
-        Livewire.on('consoleLog', (data) => {
-            console.log(data)
+            Livewire.on('refresh-page', (data) => {
+                location.reload();
+            });
+
+            Livewire.on('consoleLog', (data) => {
+                console.log(data)
+            });
         });
     </script>
     @stack('js')

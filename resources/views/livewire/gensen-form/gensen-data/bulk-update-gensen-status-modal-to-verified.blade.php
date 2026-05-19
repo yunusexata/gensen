@@ -117,9 +117,12 @@
 
     @push('js')
         <script>
+            
+        document.addEventListener('livewire:init', () => {
             Livewire.on('onSuccessImportBulkStatusDataToVerified', () => {
             $('#bulkUpdateGensenStatusModalToVerified').modal('hide');
             $('#inputFileBulkStatus').val(null);
         })
+    });
         </script>
     @endpush

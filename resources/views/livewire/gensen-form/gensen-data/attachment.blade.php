@@ -2455,6 +2455,8 @@
         const rotateDegree = 5;
 
         const image = document.getElementById('preview');
+        
+        document.addEventListener('livewire:init', () => {
             Livewire.on('handleCropper', (data) => {
                 setTimeout(() => {
                 const image = document.getElementById('preview');
@@ -2482,6 +2484,7 @@
                     // });
                 }, 200);
             });
+        });
         document.getElementById('rotateLeft90')
             .addEventListener('click', () => {
                 console.log('click')

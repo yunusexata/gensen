@@ -125,9 +125,12 @@
 
     @push('js')
         <script>
-            Livewire.on('onSuccessImportBulkUpdateGensenNoInputJepang', () => {
-            $('#bulkUpdateGensenNoInputJepangModal').modal('hide');
-            $('#inputFileBulkStatus').val(null);
-        })
+            
+        document.addEventListener('livewire:init', () => {
+                Livewire.on('onSuccessImportBulkUpdateGensenNoInputJepang', () => {
+                $('#bulkUpdateGensenNoInputJepangModal').modal('hide');
+                $('#inputFileBulkStatus').val(null);
+            })
+        });
         </script>
     @endpush

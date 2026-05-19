@@ -129,9 +129,12 @@
 
     @push('js')
         <script>
+            
+        document.addEventListener('livewire:init', () => {
             Livewire.on('onSuccessImportBulkStatusDataToGensenCair', () => {
             $('#bulkUpdateGensenStatusModalToGensenCair').modal('hide');
             $('#inputFileBulkStatus').val(null);
         })
+    });
         </script>
     @endpush
