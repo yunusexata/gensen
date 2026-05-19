@@ -167,10 +167,17 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 //     fopen($file, 'r')
                 // );
 
-                Storage::disk($disk)->putFileAs(
-                    dirname($targetPath),
-                    new File($file),
-                    basename($targetPath)
+                // Storage::disk($disk)->putFileAs(
+                //     dirname($targetPath),
+                //     new File($file),
+                //     basename($targetPath)
+                // );
+                Storage::disk($disk)->put(
+                    $targetPath,
+                    fopen($file, 'r'),
+                    [
+                        'visibility' => 'private', // or 'public'
+                    ]
                 );
 
                 GensenFormAttachmentRepository::create([
