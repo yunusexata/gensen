@@ -20,6 +20,10 @@ class GensenAttachmentService
 
         $fullPath = Storage::disk($localDisk)->path($filePath);
         // $storedName = basename($filePath);
+        GensenFormAttachmentRepository::deleteBy([
+            ['gensen_form_id', $gensenFormId],
+            ['type', $type],
+        ]);
 
         Storage::disk($remoteDisk)->put(
             $filePath,
