@@ -13,16 +13,16 @@
 
         <div class="col-md-6 mb-4">
             <label>Kode PIC</label>
-            @if ($role == App\Models\User::ROLE_SALES)
-                <input type="text" class="form-control" wire:model.blur="pic_code" placeholder="Kode PIC"/>
-            @else
+            {{-- @if ($role == App\Models\User::ROLE_SALES) --}}
+            <input type="text" class="form-control" value="{{$pic_code}}" placeholder="Kode PIC" disabled/>
+            {{-- @else
                 <select class="form-select" wire:model="pic_code">
                     <option value="">-- ISI --</option>
                     @foreach ($pic_code_choice as $item)
                         <option value="{{$item}}">{{$item}}</option>
                     @endforeach
                 </select>
-            @endif
+            @endif --}}
         </div>
         @if ($role == App\Models\User::ROLE_SALES)
             <div class="col-md-6 mb-4">
