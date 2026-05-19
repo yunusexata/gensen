@@ -27,6 +27,203 @@ class ConvertPdfToImagesJob implements ShouldQueue
     public function handle(): void
     {
         $attachments = $this->ai_job->subject->attachmentsToConvert;
+
+        foreach ($attachments as $attachment) {
+
+            /*
+        |--------------------------------------------------------------------------
+        | STEP 1 — Prepare LOCAL SOURCE FILE
+        |--------------------------------------------------------------------------
+        */
+
+            $disk = $attachment->disk;
+            $relativePath = $attachment->path;
+
+            $storage = Storage::disk($disk);
+
+            // temp working directory
+            $workingDir = storage_path(
+                'app/tmp/' . Str::uuid()
+            );
+
+            if (!is_dir($workingDir)) {
+                mkdir($workingDir, 0777, true);
+            }
+
+            // local temporary file
+            $localSourcePath = $workingDir . '/' . basename($relativePath);
+
+            /**
+             * LOCAL disk
+             */
+            if (method_exists($storage, 'path') && $storage->exists($relativePath)) {
+
+                try {
+                    $localSourcePath = $storage->path($relativePath);
+                } catch (\Throwable $e) {
+
+                    /**
+                     * REMOTE DISK (Supabase S3)
+                     */
+                    file_put_contents(
+                        $localSourcePath,
+                        $storage->get($relativePath)
+                    );
+                }
+            }
+
+            logger([
+                'source_file' => $localSourcePath,
+                'disk' => $disk,
+            ]);
+
+            /*
+        |--------------------------------------------------------------------------
+        | STEP 2 — Prepare OUTPUT DIRECTORY
+        |--------------------------------------------------------------------------
+        */
+
+            $dir = "gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}/" . Str::random(6);
+
+            $outputDir = storage_path("app/tmp/{$dir}");
+
+            if (!is_dir($outputDir)) {
+                mkdir($outputDir, 0777, true);
+            }
+
+            $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
+
+            $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
+
+            /*
+        |--------------------------------------------------------------------------
+        | STEP 3 — Skip if already image
+        |--------------------------------------------------------------------------
+        */
+
+            $extension = strtolower(pathinfo($localSourcePath, PATHINFO_EXTENSION));
+
+            if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
+                continue;
+            }
+
+            /*
+        |--------------------------------------------------------------------------
+        | STEP 4 — Ghostscript Convert
+        |--------------------------------------------------------------------------
+        */
+            $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
+
+            $process = new Process([
+                'C:\Program Files\gs\gs10.07.0\bin\gswin64c.exe', // IMPORTANT
+                '-sDEVICE=jpeg',
+                '-r200',
+                '-dNOPAUSE',
+                '-dBATCH',
+                '-dSAFER',
+                '-dFirstPage=1',
+                '-dINTERPOLATE',
+                '-dJPEGQ=85',
+                '-sColorConversionStrategy=Gray',
+                '-sOutputFile',
+                $outputPattern,
+                $localSourcePath,
+            ]);
+            $process->run();
+
+            logger($process->getCommandLine());
+
+            if (!$process->isSuccessful()) {
+                throw new \Exception(
+                    'PDF conversion failed: ' . $process->getErrorOutput()
+                );
+            }
+
+            /*
+        |--------------------------------------------------------------------------
+        | STEP 5 — Collect Generated Images
+        |--------------------------------------------------------------------------
+        */
+
+            $generatedFiles = glob(
+                "{$outputDir}/{$storedName}_page-*.jpg"
+            );
+
+            if ($attachment->type !== GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
+                GensenFormAttachmentRepository::update($attachment->id, [
+                    'convert_image' => true
+                ]);
+            }
+
+            /*
+        |--------------------------------------------------------------------------
+        | STEP 6 — Upload BACK to STORAGE (SUPABASE OR LOCAL)
+        |--------------------------------------------------------------------------
+        */
+
+            foreach ($generatedFiles as $file) {
+
+                $info = pathinfo($file);
+                $stored_name = $info['filename'] . '.' . $info['extension'];
+
+                $targetPath = "{$dir}/{$stored_name}";
+
+                /**
+                 * Upload using SAME disk as original
+                 */
+                Storage::disk($disk)->put(
+                    $targetPath,
+                    fopen($file, 'r')
+                );
+
+                GensenFormAttachmentRepository::create([
+                    'gensen_form_id' => $this->ai_job->subject->id,
+                    'type' => $attachment->type,
+                    'original_name' => $attachment->original_name,
+                    'stored_name' => $stored_name,
+                    'description' => $attachment->description,
+
+                    'disk' => $disk,
+                    'path' => $targetPath,
+
+                    'checksum' => hash_file('sha256', $file),
+
+                    'note' => $attachment->note,
+                    'remittance_type' => $attachment->remittance_type,
+
+                    'extension' => 'jpg',
+                    'mime_type' => 'image/jpeg',
+                    'file_size' => filesize($file),
+
+                    'status' => GensenAttachmenStatus::STATUS_CONVERTED,
+                    'convert_image' => true,
+                ]);
+            }
+
+            /*
+        |--------------------------------------------------------------------------
+        | STEP 7 — CLEAN TEMP FILES (VERY IMPORTANT)
+        |--------------------------------------------------------------------------
+        */
+
+            collect(glob("{$workingDir}/*"))->each(fn($f) => @unlink($f));
+            @rmdir($workingDir);
+
+            collect(glob("{$outputDir}/*"))->each(fn($f) => @unlink($f));
+            @rmdir($outputDir);
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | NEXT JOB
+    |--------------------------------------------------------------------------
+    */
+
+        ExtractionDocumentJob::dispatch($this->ai_job);
+    }
+    public function handleOld(): void
+    {
+        $attachments = $this->ai_job->subject->attachmentsToConvert;
         $imagePaths = [];
         foreach ($attachments as $attachment) {
 
