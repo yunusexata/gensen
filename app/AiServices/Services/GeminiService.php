@@ -50,8 +50,17 @@ class GeminiService
                 logger("Cannot read file stream");
             }
 
-            $data = file_get_contents($stream);
-            logger(['data stream', $stream]);
+            $stream = $storage->readStream($file['path']);
+
+            if (!is_resource($stream)) {
+                logger("Unable to open stream: {$file['path']}");
+            }
+
+            $data = stream_get_contents($stream);
+
+            fclose($stream);
+            // $data = file_get_contents($stream);
+            // logger(['data stream', $stream]);
             logger(['data get', $data]);
 
             return new Blob(
