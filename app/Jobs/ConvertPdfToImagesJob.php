@@ -115,18 +115,18 @@ class ConvertPdfToImagesJob implements ShouldQueue
             $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
 
             $process = new Process([
-                'gs', // IMPORTANT
+                // '/usr/local/bin/gs',
+                'gs',
                 '-sDEVICE=jpeg',
-                '-r200',
+                '-r200',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
                 '-dNOPAUSE',
                 '-dBATCH',
                 '-dSAFER',
-                '-dFirstPage=1',
-                '-dINTERPOLATE',
-                '-dJPEGQ=85',
-                '-sColorConversionStrategy=Gray',
-                '-sOutputFile',
-                $outputPattern,
+                '-dFirstPage=1',        // Secure: Process only what you need
+                '-dINTERPOLATE',        // Smoother scaling
+                '-dJPEGQ=85',           // Q=100 is wasteful; 85 is indistinguishable for AI
+                '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
+                "-sOutputFile={$outputPattern}",
                 $localSourcePath,
             ]);
             $process->run();
