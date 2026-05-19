@@ -203,6 +203,7 @@ class MergeSeluruhBerkas implements ShouldQueue
     | MERGE PDF FILES (FPDI + TCPDF)
     |--------------------------------------------------------------------------
     */
+
     private function mergePdfFiles($files, string $outputPath): void
     {
         $pdf = new Fpdi();
@@ -211,50 +212,107 @@ class MergeSeluruhBerkas implements ShouldQueue
         $pdf->setPrintFooter(false);
         $pdf->SetAutoPageBreak(false);
 
+        $tempFiles = []; // ⭐ track temp files for cleanup
+
         foreach ($files as $file) {
+
+            $disk = $file->disk ?? 'private';
 
             try {
 
-                $fullPath = Storage::disk($file->disk)
-                    ->path($file->path);
+                /**
+                 * -----------------------------------------------------------------
+                 * STEP 1: Resolve file into LOCAL PATH (Supabase-safe)
+                 * -----------------------------------------------------------------
+                 */
+                if ($disk === 'supabase') {
+
+                    $tmpDir = storage_path('app/tmp/merge');
+                    if (!is_dir($tmpDir)) {
+                        mkdir($tmpDir, 0755, true);
+                    }
+
+                    $tmpPath = $tmpDir . '/' . Str::random(40) . '.pdf';
+
+                    $stream = Storage::disk('supabase')->readStream($file->path);
+
+                    if ($stream === false) {
+                        throw new \Exception("Cannot read Supabase file: {$file->path}");
+                    }
+
+                    $target = fopen($tmpPath, 'w');
+
+                    stream_copy_to_stream($stream, $target);
+
+                    fclose($stream);
+                    fclose($target);
+
+                    $fullPath = $tmpPath;
+
+                    $tempFiles[] = $tmpPath; // ⭐ mark for cleanup
+
+                } else {
+
+                    /**
+                     * Local disk (fast path)
+                     */
+                    $fullPath = Storage::disk($disk)->path($file->path);
+                }
 
                 if (!file_exists($fullPath)) {
                     logger()->warning("Missing file: {$fullPath}");
                     continue;
                 }
-                /*
-                |--------------------------------------------------------------------------
-                | NEW: ensure file is PDF
-                |--------------------------------------------------------------------------
-                */
+
+                /**
+                 * -----------------------------------------------------------------
+                 * STEP 2: Prepare (PDF or image → PDF)
+                 * -----------------------------------------------------------------
+                 */
                 $preparedPdf = $this->prepareFileForMerge($fullPath);
 
-                /*
-                |--------------------------------------------------------------------------
-                | Normalize PDF (your existing logic)
-                |--------------------------------------------------------------------------
-                */
+                /**
+                 * -----------------------------------------------------------------
+                 * STEP 3: Normalize PDF
+                 * -----------------------------------------------------------------
+                 */
                 $normalizedPath = $this->normalizePdf($preparedPdf);
 
-                /*
-                |--------------------------------------------------------------------------
-                | Import pages
-                |--------------------------------------------------------------------------
-                */
+                /**
+                 * -----------------------------------------------------------------
+                 * STEP 4: Import into FPDI
+                 * -----------------------------------------------------------------
+                 */
                 $this->importPdf($pdf, $normalizedPath);
             } catch (\Throwable $e) {
 
-                logger()->error('PDF IMPORT FAILED', [
+                logger()->error('PDF MERGE FAILED', [
                     'file' => $file->path,
+                    'disk' => $disk,
                     'error' => $e->getMessage(),
                 ]);
 
-                // ⭐ skip bad PDF
                 continue;
             }
         }
 
+        /**
+         * ---------------------------------------------------------------------
+         * OUTPUT FINAL PDF
+         * ---------------------------------------------------------------------
+         */
         $pdf->Output($outputPath, 'F');
+
+        /**
+         * ---------------------------------------------------------------------
+         * CLEANUP TEMP FILES (Supabase staging)
+         * ---------------------------------------------------------------------
+         */
+        foreach ($tempFiles as $tmp) {
+            if (file_exists($tmp)) {
+                @unlink($tmp);
+            }
+        }
     }
     private function prepareFileForMerge(string $path): string
     {
