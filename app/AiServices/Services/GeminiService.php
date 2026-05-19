@@ -44,13 +44,13 @@ class GeminiService
                 logger("File missing: {$file['path']}");
             }
 
-            $stream = $storage->readStream($file['path']);
+            $stream = $storage->path($file['path']);
 
             if ($stream === false) {
                 logger("Cannot read file stream");
             }
 
-            $data = stream_get_contents($stream);
+            $data = file_get_contents($stream);
             logger(['data stream', $stream]);
 
             fclose($stream);
