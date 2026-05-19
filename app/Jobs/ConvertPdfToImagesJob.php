@@ -8,6 +8,7 @@ use App\Jobs\GensenExtractJob\ExtractionDocumentJob;
 use App\Models\Ai\AiJob;
 use App\Models\GensenForm\GensenForm;
 use App\Repositories\GensenForm\GensenFormAttachmentRepository;
+use App\Services\TemporaryFile;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -30,78 +31,9 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
         foreach ($attachments as $attachment) {
 
-            /*
-        |--------------------------------------------------------------------------
-        | STEP 1 — Prepare LOCAL SOURCE FILE
-        |--------------------------------------------------------------------------
-        */
+            $tmpPdfPath = TemporaryFile::fromAttachment($attachment);
 
-            $disk = $attachment->disk;
-            $relativePath = $attachment->path;
-
-            $storage = Storage::disk($disk);
-
-            // temp working directory
-            $workingDir = storage_path(
-                'app/tmp/' . Str::uuid()
-            );
-
-            if (!is_dir($workingDir)) {
-                mkdir($workingDir, 0777, true);
-            }
-
-            // local temporary file
-            $localSourcePath = $workingDir . '/' . basename($relativePath);
-
-            /**
-             * LOCAL disk
-             */
-            if (method_exists($storage, 'path') && $storage->exists($relativePath)) {
-
-                try {
-                    $localSourcePath = Storage::disk('private')->path($relativePath);
-                } catch (\Throwable $e) {
-
-                    /**
-                     * REMOTE DISK (Supabase S3)
-                     */
-                    file_put_contents(
-                        $localSourcePath,
-                        $storage->get($relativePath)
-                    );
-                }
-            }
-
-            logger([
-                'source_file' => $localSourcePath,
-                'disk' => $disk,
-            ]);
-
-            /*
-        |--------------------------------------------------------------------------
-        | STEP 2 — Prepare OUTPUT DIRECTORY
-        |--------------------------------------------------------------------------
-        */
-
-            $dir = "gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}/" . Str::random(6);
-
-            $outputDir = storage_path("app/tmp/{$dir}");
-
-            if (!is_dir($outputDir)) {
-                mkdir($outputDir, 0777, true);
-            }
-
-            $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
-
-            $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
-
-            /*
-        |--------------------------------------------------------------------------
-        | STEP 3 — Skip if already image
-        |--------------------------------------------------------------------------
-        */
-
-            $extension = strtolower(pathinfo($localSourcePath, PATHINFO_EXTENSION));
+            $extension = strtolower(pathinfo($tmpPdfPath, PATHINFO_EXTENSION));
 
             if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
                 continue;
@@ -112,6 +44,11 @@ class ConvertPdfToImagesJob implements ShouldQueue
         | STEP 4 — Ghostscript Convert
         |--------------------------------------------------------------------------
         */
+            $dir = "gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}/" . Str::random(6);
+
+            $outputDir = storage_path("app/tmp/{$dir}");
+
+            $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
             $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
 
             $process = new Process([
@@ -127,7 +64,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 '-dJPEGQ=85',           // Q=100 is wasteful; 85 is indistinguishable for AI
                 '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
                 "-sOutputFile={$outputPattern}",
-                $localSourcePath,
+                $tmpPdfPath,
             ]);
             $process->run();
 
@@ -168,6 +105,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
                 $targetPath = "{$dir}/{$stored_name}";
 
+                $disk = 'supabase';
                 /**
                  * Upload using SAME disk as original
                  */
@@ -199,18 +137,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
                     'convert_image' => true,
                 ]);
             }
-
-            /*
-        |--------------------------------------------------------------------------
-        | STEP 7 — CLEAN TEMP FILES (VERY IMPORTANT)
-        |--------------------------------------------------------------------------
-        */
-
-            collect(glob("{$workingDir}/*"))->each(fn($f) => @unlink($f));
-            @rmdir($workingDir);
-
-            collect(glob("{$outputDir}/*"))->each(fn($f) => @unlink($f));
-            @rmdir($outputDir);
+            TemporaryFile::cleanup($tmpPdfPath);
         }
 
         /*
