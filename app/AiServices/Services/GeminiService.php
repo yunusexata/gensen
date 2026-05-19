@@ -53,8 +53,6 @@ class GeminiService
             $data = file_get_contents($stream);
             logger(['data stream', $stream]);
 
-            fclose($stream);
-
             return new Blob(
                 mimeType: $this->getMimeType($file['extension']),
                 data: base64_encode($data)
