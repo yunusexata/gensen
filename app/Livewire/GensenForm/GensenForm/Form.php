@@ -403,7 +403,7 @@ class Form extends Component
             ]);
             $gensenForm = GensenFormRepository::findBy([
                 ['nama_lengkap', Str::upper($this->nama_lengkap)],
-                ['email', $this->email],
+                ['email', Str::upper($this->email)],
                 ['tanggal_lahir', $this->tanggal_lahir],
                 ['status', '!=', GensenForm::STATUS_GENSEN_CAIR],
             ]);
