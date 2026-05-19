@@ -45,6 +45,11 @@ class GeminiService
             );
         })->toArray();
 
+        logger([
+            'blob att 49',
+            $blobs
+        ]);
+
         // High-precision configuration for tax data
         $responseSchema = new Schema(
             type: DataType::OBJECT,
