@@ -40,11 +40,11 @@ Route::get('/preview-temp-pdf/{filename}', function ($filename) {
     ]);
 })->name('preview.temp.pdf');
 Route::get('/preview-temp-image/{filename}', function ($filename) {
-    $path = storage_path('app/livewire-tmp/' . $filename);
     logger([
         'preview tmp image 42 route',
         $filename
     ]);
+    $path = storage_path('app/livewire-tmp/' . $filename);
     abort_unless(file_exists($path), 404);
 
     // Automatically detect the correct MIME type (image/png, image/jpeg, etc.)
