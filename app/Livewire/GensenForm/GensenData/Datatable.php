@@ -439,11 +439,12 @@ class Datatable extends Component
             ],
 
             [
+                'searchable' => false,
                 'key' => 'is_previously_processed',
                 'name' => 'Urus Sendiri/Konsultan Lain',
                 'class' => 'text-center',
                 'render' => function ($item) {
-                    return $item->is_previously_processed ? 'Sudah' : 'Belum';
+                    return $item->is_previously_processed ? "<p class='btn btn-sm py-1 mb-0 text-nowrap bg-warning'>Sudah</p>" : "<p class='btn btn-sm py-1 mb-0 text-nowrap bg-success'>Belum</p>";
                 }
             ],
 
