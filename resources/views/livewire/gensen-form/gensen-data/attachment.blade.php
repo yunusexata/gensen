@@ -1353,7 +1353,7 @@
                                             $filename = $zairyou_card_front->getClientOriginalName();
                                             // $url = $zairyou_card_front->temporaryUrl();
                                             
-                                                        $url = route('preview.temp.image', $item->getFileName());
+                                                        $url = route('preview.temp.image', $zairyou_card_front->getFileName());
                                             }elseif(in_array($ext, ['pdf'])){
                                             $url = route('preview.temp.pdf', $zairyou_card_front->getFileName());
                                             $filename = $zairyou_card_front->getClientOriginalName();
@@ -1442,7 +1442,7 @@
                                             $filename = $zairyou_card_back->getClientOriginalName();
                                             // $url = $zairyou_card_back->temporaryUrl();
                                             
-                                                        $url = route('preview.temp.image', $item->getFileName());
+                                                        $url = route('preview.temp.image', $zairyou_card_back->getFileName());
                                             }elseif(in_array($ext, ['pdf'])){
                                             $url = route('preview.temp.pdf', $zairyou_card_back->getFileName());
                                             $filename = $zairyou_card_back->getClientOriginalName();
