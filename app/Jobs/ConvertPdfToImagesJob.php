@@ -47,8 +47,8 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 $tmpDir
             ]);
 
-            if (!file_exists(dirname($tmpDir))) {
-                mkdir($tmpDir, 0777, true);
+            if (!Storage::disk('private')->exists($tmpDir)) {
+                Storage::disk('private')->makeDirectory($tmpDir);
             }
 
             $tmpPdfPath = $tmpDir . '/' . basename($attachment->path);
