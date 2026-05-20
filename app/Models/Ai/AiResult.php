@@ -40,7 +40,7 @@ class AiResult extends Model
     protected static function onBoot()
     {
         self::created(function ($model) {
-
+            logger(['model result', $model->result_type]);
             if ($model->result_type == AiJob::JOB_TYPE_REMITTANCE_EXTRACTION) {
                 $result = json_decode($model->result_json, true);
                 logger(['model result all', $model]);
