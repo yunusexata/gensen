@@ -88,6 +88,9 @@ class ConvertPdfToImagesJob implements ShouldQueue
         |--------------------------------------------------------------------------
         */
             $dir = "gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}";
+            if (!is_dir($dir)) {
+                mkdir($dir, 0777, true);
+            }
 
             $outputDir = storage_path("app/private/{$dir}");
 
