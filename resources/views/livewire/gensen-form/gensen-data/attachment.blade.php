@@ -1541,7 +1541,7 @@
                                             $filename = $my_number_front->getClientOriginalName();
                                             // $url = $my_number_front->temporaryUrl();
                                             
-                                                        $url = route('preview.temp.image', $item->getFileName());
+                                                        $url = route('preview.temp.image', $my_number_front->getFileName());
                                             }elseif(in_array($ext, ['pdf'])){
                                             $url = route('preview.temp.pdf', $my_number_front->getFileName());
                                             $filename = $my_number_front->getClientOriginalName();
@@ -1630,7 +1630,7 @@
                                             $filename = $my_number_back->getClientOriginalName();
                                             // $url = $my_number_back->temporaryUrl();
                                             
-                                                        $url = route('preview.temp.image', $item->getFileName());
+                                                        $url = route('preview.temp.image', $my_number_back->getFileName());
                                             }elseif(in_array($ext, ['pdf'])){
                                             $url = route('preview.temp.pdf', $my_number_back->getFileName());
                                             $filename = $my_number_back->getClientOriginalName();
@@ -1727,7 +1727,7 @@
                                             $filename = $rekening_indonesia->getClientOriginalName();
                                             // $url = $rekening_indonesia->temporaryUrl();
                                             
-                                                        $url = route('preview.temp.image', $item->getFileName());
+                                                        $url = route('preview.temp.image', $rekening_indonesia->getFileName());
                                             }elseif(in_array($ext, ['pdf'])){
                                             $url = route('preview.temp.pdf', $rekening_indonesia->getFileName());
                                             $filename = $rekening_indonesia->getClientOriginalName();
