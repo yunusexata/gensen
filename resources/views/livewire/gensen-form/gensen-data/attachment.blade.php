@@ -479,7 +479,7 @@
                                                     
                                                 @endphp
                                                 @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
-                        
+                                                    {{ $url }}
                                                     <img src="{{ $url }}" class="img-fluid rounded img-thumbnail">
                                                 @elseif(in_array($ext, ['pdf']))
                                                     <embed src="{{ $url }}" type="application/pdf" width="100%">
