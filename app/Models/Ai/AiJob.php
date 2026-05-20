@@ -106,38 +106,6 @@ class AiJob extends Model
                 )->onQueue('default');
             }
         });
-        self::updated(function ($model) {
-            if ($model->status == JobStatus::DONE) {
-                if ($model->job_type === self::JOB_TYPE_REMITTANCE_EXTRACTION) {
-                    $result = json_decode($model->result->result_json, true);
-                    logger(['model result all', $model->result]);
-                    logger(['model result', $result]);
-                    $remittance = RemittanceExtraction::create(
-                        [
-                            'subject_id' => $model->subject_id,
-                            'subject_type' => $model->subject_type,
-                            'ai_job_id' => $model->id,
-                            'confidence_score' => $result['confidence_score'],
-                            'confidence_note' => isset($result['confidence_note']) ? $result['confidence_note'] : null,
-                        ]
-                    );
-                    foreach ($result['groups'] as $data) {
-                        RemittanceExtractionGroup::create(
-                            [
-                                'remittance_extraction_id' => $remittance->id,
-                                'receiver_name' => $data['receiver_name'],
-                                'transaction_year' => $data['transaction_year'],
-                                'total_amount' => $data['total_amount'],
-                                'amount_details' => json_encode($data['amount_details'], true),
-                                'currency' => $data['currency'],
-                                'is_validate' => false,
-                                'transfer_transaction_count' => $data['transfer_transaction_count'],
-                            ]
-                        );
-                    }
-                }
-                event(new RemittanceExtractionFinished($model->subject_id));
-            }
-        });
+        self::updated(function ($model) {});
     }
 }
