@@ -1865,7 +1865,7 @@
                             <div class="row my-3 d-flex">
                                 @foreach ($tahun_gensen_details as $index_tahun_gensen => $tahun_gensen_detail)
                                     <div class="my-2 d-flex justify-content-between w-full" wire:key="tahun_gensen_details_{{ $tahun_gensen_detail['id'] ? $tahun_gensen_detail['id'] : $tahun_gensen_detail['key'] }}">
-                                        <div class="col-auto">
+                                        <div class="col-md-2">
                                             <input
                                                     class="form-control"
                                                     wire:model="tahun_gensen_details.{{ $index_tahun_gensen }}.tahun_gensen"
