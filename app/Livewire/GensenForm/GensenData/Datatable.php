@@ -439,6 +439,15 @@ class Datatable extends Component
             ],
 
             [
+                'key' => 'is_previously_processed',
+                'name' => 'Urus Sendiri/Konsultan Lain',
+                'class' => 'text-center',
+                'render' => function ($item) {
+                    return $item->is_previously_processed ? 'Sudah' : 'Belum';
+                }
+            ],
+
+            [
                 'key' => 'pic_code',
                 'name' => 'Kode PIC',
                 'class' => 'text-center',
