@@ -41,7 +41,7 @@ class AiResult extends Model
     {
         self::created(function ($model) {
 
-            if ($model->job_type === AiJob::JOB_TYPE_REMITTANCE_EXTRACTION) {
+            if ($model->result_type === AiJob::JOB_TYPE_REMITTANCE_EXTRACTION) {
                 $result = json_decode($model->result_json, true);
                 logger(['model result all', $model]);
                 logger(['model result', $result]);
