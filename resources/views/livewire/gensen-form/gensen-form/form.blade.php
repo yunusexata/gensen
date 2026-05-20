@@ -361,7 +361,7 @@
                                             <label class="font-label text-xs font-medium text-on-surface-variant" for="state">State / Province</label>
                                             <input class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full" id="state" name="state" placeholder="CA" type="text"/>
                                         </div> --}}
-                                            <div class="flex flex-col gap-2 md:col-span-6">
+                                            <div class="flex flex-col gap-2 md:col-span-4">
                                                 <label class="font-label text-xs font-medium text-on-surface-variant"
                                                     for="kode_pos_jepang">Kode Pos Jepang (Tanpa Strip)<span
                                                         class="text-red-500">*</span></label>
