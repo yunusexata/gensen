@@ -123,7 +123,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 '-dJPEGQ=85',           // Q=100 is wasteful; 85 is indistinguishable for AI
                 '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
                 "-sOutputFile={$outputPattern}",
-                $tmpPdfPath,
+                storage_path('app/private/' . $tmpPdfPath),
             ]);
             $process->run();
 
