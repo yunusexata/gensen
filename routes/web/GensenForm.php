@@ -35,7 +35,7 @@ Route::get('/preview-temp-pdf/{filename}', function ($filename) {
 
     abort_unless(file_exists($path), 404);
 
-    if($)
+    // if($)
     return response()->file($path, [
         'Content-Type' => 'application/pdf',
         'Content-Disposition' => 'inline'
