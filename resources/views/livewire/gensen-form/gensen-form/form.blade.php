@@ -344,12 +344,8 @@
                                                 <label class="font-label text-xs font-medium text-on-surface-variant"
                                                     for="alamat_jepang">Alamat Jepang<span
                                                         class="text-red-500">*</span></label>
-                                                <input
-                                                    class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('alamat_jepang') is-invalid border border-red-500 @enderror"
-                                                    id="alamat_jepang" wire:model="alamat_jepang"
-                                                    name="alamat_jepang"
-                                                    placeholder="shizuoka-ken hamamatsu-shi nakayama tokiwa building"
-                                                    type="text" />
+                                                        <textarea class="form-control @error('alamat_jepang') is-invalid border border-red-500 @enderror" id="alamat_jepang" wire:model="alamat_jepang"
+                                                    name="alamat_jepang" placeholder="Shizuoka-ken, Hamamatsu-shi, Chuo-ku, Tokiwacho 123-4, Leo pallace No.302" col="4"></textarea>
 
                                                 @error('alamat_jepang')
                                                     <div class="invalid-feedback">
@@ -365,14 +361,14 @@
                                             <label class="font-label text-xs font-medium text-on-surface-variant" for="state">State / Province</label>
                                             <input class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full" id="state" name="state" placeholder="CA" type="text"/>
                                         </div> --}}
-                                            <div class="flex flex-col gap-2 md:col-span-4">
+                                            <div class="flex flex-col gap-2 md:col-span-6">
                                                 <label class="font-label text-xs font-medium text-on-surface-variant"
-                                                    for="kode_pos_jepang">Kode Pos Jepang<span
+                                                    for="kode_pos_jepang">Kode Pos Jepang (Tanpa Strip)<span
                                                         class="text-red-500">*</span></label>
                                                 <input
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('kode_pos_jepang') is-invalid border border-red-500 @enderror"
                                                     id="kode_pos_jepang" wire:model="kode_pos_jepang"
-                                                    name="kode_pos_jepang" placeholder="Kode Pos Jepang"
+                                                    name="kode_pos_jepang" placeholder="Kode Pos Jepang (Tanpa Strip)"
                                                     type="text" />
 
                                                 @error('kode_pos_jepang')
@@ -388,7 +384,7 @@
                                         <div class="flex items-center gap-3 mb-5">
                                             <span class="material-symbols-outlined text-primary"
                                                 data-icon="account_balance">account_balance</span>
-                                            <h2 class="font-headline font-bold text-2xl">Data Bank</h2>
+                                            <h2 class="font-headline font-bold text-2xl">Data Bank Indonesia</h2>
                                         </div>
 
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
