@@ -484,6 +484,7 @@
                                                     $ext = strtolower($ext);
                                                     
                                                 @endphp
+                                                {{ $my_number_front->temporaryUrl() }}
                                                 @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
                                                     <img src="{{ $url }}" class="img-fluid rounded img-thumbnail">
                                                 @elseif(in_array($ext, ['pdf']))
