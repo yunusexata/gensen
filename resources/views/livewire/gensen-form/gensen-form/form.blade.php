@@ -368,7 +368,7 @@
                                                 <input
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('kode_pos_jepang') is-invalid border border-red-500 @enderror"
                                                     id="kode_pos_jepang" wire:model="kode_pos_jepang"
-                                                    name="kode_pos_jepang" placeholder="Kode Pos Jepang (Tanpa Strip)"
+                                                    name="kode_pos_jepang" placeholder="(Tanpa Strip)"
                                                     type="text" />
 
                                                 @error('kode_pos_jepang')
