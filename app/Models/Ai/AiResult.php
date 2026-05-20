@@ -47,9 +47,9 @@ class AiResult extends Model
                 logger(['model result', $result]);
                 $remittance = RemittanceExtraction::create(
                     [
-                        'subject_id' => $model->subject_id,
-                        'subject_type' => $model->subject_type,
-                        'ai_job_id' => $model->id,
+                        'subject_id' => $model->aiJob->subject_id,
+                        'subject_type' => $model->aiJob->subject_type,
+                        'ai_job_id' => $model->aiJob->id,
                         'confidence_score' => $result['confidence_score'],
                         'confidence_note' => isset($result['confidence_note']) ? $result['confidence_note'] : null,
                     ]
@@ -72,5 +72,10 @@ class AiResult extends Model
                 event(new RemittanceExtractionFinished($model->subject_id));
             };
         });
+    }
+
+    public function aiJob()
+    {
+        return $this->belongsTo(AiJob::class, 'ai_job_id', 'id');
     }
 }
