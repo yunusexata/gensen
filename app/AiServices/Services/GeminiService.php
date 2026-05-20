@@ -52,6 +52,7 @@ class GeminiService
 
             $stream = $storage->readStream($file['path']);
 
+            logger(['data attachment to blob', $file['path']]);
             if (!is_resource($stream)) {
                 logger("Unable to open stream: {$file['path']}");
             }
