@@ -470,7 +470,11 @@
                                                 @php
                                                     $ext = $my_number_front->getClientOriginalExtension();
                                                     if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                                        $url = route('preview.temp.image', $my_number_front->getFileName());
+                                                        // $url = route('preview.temp.image', $my_number_front->getFileName());
+                                                        $fullPath = $my_number_front->getRealPath();
+    $relativePath = Str::after($fullPath, 'livewire-tmp/');
+
+    $url = route('preview.temp.file', $relativePath);
                                                     }elseif(in_array($ext, ['pdf'])){
                                                         $url = route('preview.temp.pdf', $my_number_front->getFileName());
                                                         $filename = $my_number_front->getClientOriginalName();
@@ -825,7 +829,7 @@
                                             if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
                                                 // $url = $item->temporaryUrl();
                                                 
-                                                        $url = route('preview.temp.image', $item->getFileName());
+                                                $url = route('preview.temp.image', $item->getFileName());
                                             }elseif(in_array($ext, ['pdf'])){
                                                 $url = route('preview.temp.pdf', $item->getFileName());
                                                 $filename = $item->getClientOriginalName();
@@ -1541,7 +1545,11 @@
                                             $filename = $my_number_front->getClientOriginalName();
                                             // $url = $my_number_front->temporaryUrl();
                                             
-                                                        $url = route('preview.temp.image', $my_number_front->getFileName());
+                                                        // $url = route('preview.temp.image', $my_number_front->getFileName());
+                                                        $fullPath = $my_number_front->getRealPath();
+    $relativePath = Str::after($fullPath, 'livewire-tmp/');
+
+    $url = route('preview.temp.file', $relativePath);
                                             }elseif(in_array($ext, ['pdf'])){
                                             $url = route('preview.temp.pdf', $my_number_front->getFileName());
                                             $filename = $my_number_front->getClientOriginalName();
