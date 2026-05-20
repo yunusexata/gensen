@@ -344,8 +344,8 @@ class Attachment extends Component
             $this->gensen_has_pending_ai_jobs = false;
             $this->remittance_extraction_confidence = $gensen->remittanceExtraction->confidence_score;
             $this->remittance_validate_total = 0;
-            dd($gensen->remittanceExtraction
-                ->remittanceExtractionGroups);
+            consoleLog($this, [$gensen->remittanceExtraction
+                ->remittanceExtractionGroups->toArray()]);
             $this->remittance_extraction_groups = $gensen->remittanceExtraction
                 ? $gensen->remittanceExtraction
                 ->remittanceExtractionGroups
