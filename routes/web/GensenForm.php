@@ -35,6 +35,7 @@ Route::get('/preview-temp-pdf/{filename}', function ($filename) {
 
     abort_unless(file_exists($path), 404);
 
+    if($)
     return response()->file($path, [
         'Content-Type' => 'application/pdf',
         'Content-Disposition' => 'inline'
@@ -47,7 +48,7 @@ Route::get('/preview-temp-file/{path}', function ($path) {
         abort(403);
     }
 
-    $fullPath = 'livewire-tmp/' . $path;
+    $fullPath = 'app/livewire-tmp/' . $path;
 
     if (!Storage::exists($fullPath)) {
         abort(404);

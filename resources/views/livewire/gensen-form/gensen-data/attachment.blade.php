@@ -225,7 +225,9 @@
                                                 @php
                                                     $ext = $zairyou_card_front->getClientOriginalExtension();
                                                     if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                                        $url = route('preview.temp.image', $zairyou_card_front->getFileName());
+                                                        $url = $zairyou_card_front->temporaryUrl();
+                                                        // $url = route('preview.temp.image', $zairyou_card_front->getFileName());
+                                                        $filename = $zairyou_card_front->getClientOriginalName();
                                                     }elseif(in_array($ext, ['pdf'])){
                                                         $url = route('preview.temp.pdf', $zairyou_card_front->getFileName());
                                                         $filename = $zairyou_card_front->getClientOriginalName();
@@ -348,8 +350,8 @@
                                                     $ext = $zairyou_card_back->getClientOriginalExtension();
                                                     if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
                                                         // $url = $zairyou_card_back->temporaryUrl();
-                                                        
-                                                        $url = route('preview.temp.image', $zairyou_card_back->getFileName());
+                                                        $url = $zairyou_card_back->temporaryUrl();
+                                                        // $url = route('preview.temp.image', $zairyou_card_back->getFileName());
                                                     }elseif(in_array($ext, ['pdf'])){
                                                         $url = route('preview.temp.pdf', $zairyou_card_back->getFileName());
                                                         $filename = $zairyou_card_back->getClientOriginalName();
@@ -470,11 +472,13 @@
                                                 @php
                                                     $ext = $my_number_front->getClientOriginalExtension();
                                                     if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                                        $url = $my_number_front->temporaryUrl();
                                                         // $url = route('preview.temp.image', $my_number_front->getFileName());
-                                                        $fullPath = $my_number_front->getRealPath();
-    $relativePath = Str::after($fullPath, 'livewire-tmp/');
+    //                                                     $fullPath = $my_number_front->getRealPath();
+    // $relativePath = Str::after($fullPath, 'livewire-tmp/');
 
-    $url = route('preview.temp.file', $relativePath);
+    // $url = route('preview.temp.file', $relativePath);
+    $filename = $my_number_front->getClientOriginalName();
                                                     }elseif(in_array($ext, ['pdf'])){
                                                         $url = route('preview.temp.pdf', $my_number_front->getFileName());
                                                         $filename = $my_number_front->getClientOriginalName();
@@ -484,7 +488,7 @@
                                                     $ext = strtolower($ext);
                                                     
                                                 @endphp
-                                                {{ $my_number_front->temporaryUrl() }}
+                                                {{-- {{ $my_number_front->temporaryUrl() }} --}}
                                                 @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
                                                     <img src="{{ $url }}" class="img-fluid rounded img-thumbnail">
                                                 @elseif(in_array($ext, ['pdf']))
@@ -596,8 +600,9 @@
                                                     $ext = $my_number_back->getClientOriginalExtension();
                                                     if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
                                                         // $url = $my_number_back->temporaryUrl();
-                                                        
-                                                        $url = route('preview.temp.image', $my_number_back->getFileName());
+                                                        $url = $my_number_back->temporaryUrl();
+                                                        // $url = route('preview.temp.image', $my_number_back->getFileName());
+                                                        $filename = $my_number_back->getClientOriginalName();
                                                     }elseif(in_array($ext, ['pdf'])){
                                                         $url = route('preview.temp.pdf', $my_number_back->getFileName());
                                                         $filename = $my_number_back->getClientOriginalName();
@@ -717,9 +722,10 @@
                                                 @php
                                                     $ext = $rekening_indonesia->getClientOriginalExtension();
                                                     if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                                        // $url = $rekening_indonesia->temporaryUrl();
+                                                        $url = $rekening_indonesia->temporaryUrl();
                                                         
-                                                        $url = route('preview.temp.image', $rekening_indonesia->getFileName());
+                                                        // $url = route('preview.temp.image', $rekening_indonesia->getFileName());
+                                                        $filename = $rekening_indonesia->getClientOriginalName();
                                                     }elseif(in_array($ext, ['pdf'])){
                                                         $url = route('preview.temp.pdf', $rekening_indonesia->getFileName());
                                                         $filename = $rekening_indonesia->getClientOriginalName();
@@ -828,9 +834,10 @@
                                         @php
                                             $ext = $item->getClientOriginalExtension();
                                             if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                                // $url = $item->temporaryUrl();
+                                                $url = $item->temporaryUrl();
                                                 
-                                                $url = route('preview.temp.image', $item->getFileName());
+                                                // $url = route('preview.temp.image', $item->getFileName());
+                                                $filename = $item->getClientOriginalName();
                                             }elseif(in_array($ext, ['pdf'])){
                                                 $url = route('preview.temp.pdf', $item->getFileName());
                                                 $filename = $item->getClientOriginalName();
@@ -1018,9 +1025,10 @@
                                                         @php
                                                             $ext = $item->getClientOriginalExtension();
                                                             if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                                            // $url = $item->temporaryUrl();
+                                                            $url = $item->temporaryUrl();
                                                             
-                                                        $url = route('preview.temp.image', $item->getFileName());
+                                                        // $url = route('preview.temp.image', $item->getFileName());
+                                                        $filename = $item->getClientOriginalName();
                                                             }elseif(in_array($ext, ['pdf'])){
                                                             $url = route('preview.temp.pdf', $item->getFileName());
                                                             $filename = $item->getClientOriginalName();
@@ -1173,9 +1181,9 @@
                                         @php
                                             $ext = $item->getClientOriginalExtension();
                                             if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                                // $url = $item->temporaryUrl();
+                                                $url = $item->temporaryUrl();
                                                 
-                                                        $url = route('preview.temp.image', $item->getFileName());
+                                                        // $url = route('preview.temp.image', $item->getFileName());
                                                 $filename = $item->getClientOriginalName();
                                             }elseif(in_array($ext, ['pdf'])){
                                                 $url = route('preview.temp.pdf', $item->getFileName());
@@ -1356,9 +1364,9 @@
                                             $ext = $zairyou_card_front->getClientOriginalExtension();
                                             if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
                                             $filename = $zairyou_card_front->getClientOriginalName();
-                                            // $url = $zairyou_card_front->temporaryUrl();
+                                            $url = $zairyou_card_front->temporaryUrl();
                                             
-                                                        $url = route('preview.temp.image', $zairyou_card_front->getFileName());
+                                                        // $url = route('preview.temp.image', $zairyou_card_front->getFileName());
                                             }elseif(in_array($ext, ['pdf'])){
                                             $url = route('preview.temp.pdf', $zairyou_card_front->getFileName());
                                             $filename = $zairyou_card_front->getClientOriginalName();
@@ -1445,9 +1453,9 @@
                                             $ext = $zairyou_card_back->getClientOriginalExtension();
                                             if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
                                             $filename = $zairyou_card_back->getClientOriginalName();
-                                            // $url = $zairyou_card_back->temporaryUrl();
+                                            $url = $zairyou_card_back->temporaryUrl();
                                             
-                                                        $url = route('preview.temp.image', $zairyou_card_back->getFileName());
+                                                        // $url = route('preview.temp.image', $zairyou_card_back->getFileName());
                                             }elseif(in_array($ext, ['pdf'])){
                                             $url = route('preview.temp.pdf', $zairyou_card_back->getFileName());
                                             $filename = $zairyou_card_back->getClientOriginalName();
@@ -1544,13 +1552,13 @@
                                             $ext = $my_number_front->getClientOriginalExtension();
                                             if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
                                             $filename = $my_number_front->getClientOriginalName();
-                                            // $url = $my_number_front->temporaryUrl();
+                                            $url = $my_number_front->temporaryUrl();
                                             
                                                         // $url = route('preview.temp.image', $my_number_front->getFileName());
-                                                        $fullPath = $my_number_front->getRealPath();
-    $relativePath = Str::after($fullPath, 'livewire-tmp/');
+    //                                                     $fullPath = $my_number_front->getRealPath();
+    // $relativePath = Str::after($fullPath, 'livewire-tmp/');
 
-    $url = route('preview.temp.file', $relativePath);
+    // $url = route('preview.temp.file', $relativePath);
                                             }elseif(in_array($ext, ['pdf'])){
                                             $url = route('preview.temp.pdf', $my_number_front->getFileName());
                                             $filename = $my_number_front->getClientOriginalName();
@@ -1637,9 +1645,9 @@
                                             $ext = $my_number_back->getClientOriginalExtension();
                                             if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
                                             $filename = $my_number_back->getClientOriginalName();
-                                            // $url = $my_number_back->temporaryUrl();
+                                            $url = $my_number_back->temporaryUrl();
                                             
-                                                        $url = route('preview.temp.image', $my_number_back->getFileName());
+                                                        // $url = route('preview.temp.image', $my_number_back->getFileName());
                                             }elseif(in_array($ext, ['pdf'])){
                                             $url = route('preview.temp.pdf', $my_number_back->getFileName());
                                             $filename = $my_number_back->getClientOriginalName();
@@ -1734,9 +1742,9 @@
                                             $ext = $rekening_indonesia->getClientOriginalExtension();
                                             if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
                                             $filename = $rekening_indonesia->getClientOriginalName();
-                                            // $url = $rekening_indonesia->temporaryUrl();
+                                            $url = $rekening_indonesia->temporaryUrl();
                                             
-                                                        $url = route('preview.temp.image', $rekening_indonesia->getFileName());
+                                                        // $url = route('preview.temp.image', $rekening_indonesia->getFileName());
                                             }elseif(in_array($ext, ['pdf'])){
                                             $url = route('preview.temp.pdf', $rekening_indonesia->getFileName());
                                             $filename = $rekening_indonesia->getClientOriginalName();
