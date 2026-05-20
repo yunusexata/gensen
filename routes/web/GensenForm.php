@@ -4,6 +4,7 @@ use App\Http\Controllers\GensenForm\GensenDataController;
 use App\Http\Controllers\GensenForm\GensenFormController;
 use App\Http\Controllers\GensenForm\GensenFormExportImportController;
 use App\Http\Controllers\GensenForm\GensenFormLinkController;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 
@@ -35,6 +36,22 @@ Route::get('/preview-temp-pdf/{filename}', function ($filename) {
         'Content-Disposition' => 'inline'
     ]);
 })->name('preview.temp.pdf');
+Route::get('/preview-temp-image/{filename}', function ($filename) {
+    $path = storage_path('app/livewire-tmp/' . $filename);
+
+    abort_unless(file_exists($path), 404);
+
+    // Automatically detect the correct MIME type (image/png, image/jpeg, etc.)
+    $mimeType = File::mimeType($path);
+
+    // Optional: Security check to ensure it's actually an image
+    abort_unless(str_starts_with($mimeType, 'image/'), 400, 'File is not a valid image.');
+
+    return response()->file($path, [
+        'Content-Type' => $mimeType,
+        'Content-Disposition' => 'inline'
+    ]);
+})->name('preview.temp.image');
 Route::middleware(['auth', 'access_permission'])->group(function () {
     Route::group(["controller" => GensenDataController::class, "prefix" => "gensen_data", "as" => "gensen_data."], function () {
         Route::get('/', 'index')->name('index');

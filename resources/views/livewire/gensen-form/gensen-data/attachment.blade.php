@@ -468,7 +468,7 @@
                                                 @php
                                                     $ext = $my_number_front->getClientOriginalExtension();
                                                     if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                                        $url = $my_number_front->temporaryUrl();
+                                                        $url = route('preview.temp.image', $my_number_front->getFileName());
                                                     }elseif(in_array($ext, ['pdf'])){
                                                         $url = route('preview.temp.pdf', $my_number_front->getFileName());
                                                         $filename = $my_number_front->getClientOriginalName();
@@ -479,7 +479,6 @@
                                                     
                                                 @endphp
                                                 @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
-                                                    {{ $url }}
                                                     <img src="{{ $url }}" class="img-fluid rounded img-thumbnail">
                                                 @elseif(in_array($ext, ['pdf']))
                                                     <embed src="{{ $url }}" type="application/pdf" width="100%">
