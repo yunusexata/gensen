@@ -40,7 +40,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 throw new Exception("File missing: {$attachment->path}");
             }
 
-            $tmpDir = storage_path("app/private/gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}");
+            $tmpDir = "app/private/gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}";
 
             logger([
                 'tmp dir 45',
