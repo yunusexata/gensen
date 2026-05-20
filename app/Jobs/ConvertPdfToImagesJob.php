@@ -46,7 +46,8 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 'tmp dir 45',
                 $tmpDir
             ]);
-            if (!is_dir($tmpDir)) {
+
+            if (!file_exists(dirname($tmpDir))) {
                 mkdir($tmpDir, 0777, true);
             }
 
@@ -88,8 +89,15 @@ class ConvertPdfToImagesJob implements ShouldQueue
         |--------------------------------------------------------------------------
         */
             $dir = "gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}";
-            if (!is_dir($dir)) {
-                mkdir($dir, 0777, true);
+
+
+            logger([
+                'dir convert',
+                $dir
+            ]);
+
+            if (!Storage::disk('private')->exists($dir)) {
+                Storage::disk('private')->makeDirectory($dir);
             }
 
             $outputDir = storage_path("app/private/{$dir}");
