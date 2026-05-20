@@ -110,6 +110,7 @@ class AiJob extends Model
             if ($model->status == JobStatus::DONE) {
                 if ($model->job_type === self::JOB_TYPE_REMITTANCE_EXTRACTION) {
                     $result = json_decode($model->result->result_json, true);
+                    logger(['model result all', $model->result]);
                     logger(['model result', $result]);
                     $remittance = RemittanceExtraction::create(
                         [
