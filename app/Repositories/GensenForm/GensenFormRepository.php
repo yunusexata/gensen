@@ -90,15 +90,26 @@ class GensenFormRepository extends MasterDataRepository
                 $newPath = "gensen/{$newForm->id}/{$attachment->type->value}/{$newStoredName}";
 
                 /*
-            |--------------------------------------------------------------------------
-            | Copy Physical File
-            |--------------------------------------------------------------------------
-            */
+                |--------------------------------------------------------------------------
+                | Copy File (Driver Safe)
+                |--------------------------------------------------------------------------
+                */
 
-                Storage::disk($disk)->copy(
-                    $attachment->path,
-                    $newPath
-                );
+                $sourceDisk = Storage::disk($disk);
+
+                // stream prevents memory explosion + works for S3/Supabase/local
+                $stream = $sourceDisk->readStream($attachment->path);
+
+                if ($stream === false) {
+                    continue;
+                }
+
+                Storage::disk($disk)->writeStream($newPath, $stream);
+
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+
 
                 /*
             |--------------------------------------------------------------------------
