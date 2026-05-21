@@ -402,10 +402,13 @@ class ImportService
                 ['tahun_gensen', $tahun_reiwa[0]],
             ], $validatedData);
 
+            $gensenForm->onSubmitted();
+
             if ($updated > 0) {
                 $successCount++;
             }
         }
+
         return [
             'success_count' => $successCount,
             'errors' => $errorRows
