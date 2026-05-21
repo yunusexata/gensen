@@ -318,8 +318,11 @@ class GensenForm extends Model
         return !$q
             ->where(function ($q) {
                 $q->whereNull('tanggal_cair')
-                    ->orWhereNull('nominal_cair')
-                    ->orWhere('nominal_cair', 0);
+                    ->where(function ($qu) {
+                        $qu
+                            ->whereNull('nominal_cair')
+                            ->orWhere('nominal_cair', 0);
+                    });
             })->exists() && $q->count() > 0;
     }
 
