@@ -91,6 +91,8 @@ class BulkUpdateGensenStatusModalToDalamPengajuan extends Component
 
             $fileName = ExportImportJobKey::IMPORT_LIST_DATA_DALAM_PENGAJUAN->value . '-' . now()->format('Ymd') . '.' . $extension;
 
+            consoleLog($this, ['filename dalam pengajuan', $fileName]);
+
             // $filePath = $this->inputFileBulkStatus
             //     ->storeAs(
             //         'imports/gensen',
