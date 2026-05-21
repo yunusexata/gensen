@@ -120,6 +120,8 @@ class BulkUpdateGensenStatusModalToDalamPengajuan extends Component
                 'disk' => $disk,
                 'start_at' => now(),
             ]);
+
+            consoleLog($this, ['filename store pengajuan', $history]);
             $path = $this->inputFileBulkStatus->getRealPath();
             unlink($path);
 
