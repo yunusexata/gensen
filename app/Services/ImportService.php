@@ -404,6 +404,16 @@ class ImportService
                 ],
                 $validatedData
             ]);
+            $data = GensenFormDetailRepository::findBy([
+                // ['id_customer', $row['id_customer']],
+                ['gensen_form_id', $gensenForm->id],
+                ['tahun_gensen', $tahun_reiwa[0]],
+            ]);
+            logger([
+                'jika data',
+                $data
+            ]);
+
             $updated = GensenFormDetailRepository::updateBy([
                 // ['id_customer', $row['id_customer']],
                 ['gensen_form_id', $gensenForm->id],
