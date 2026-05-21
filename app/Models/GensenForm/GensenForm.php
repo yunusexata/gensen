@@ -315,14 +315,10 @@ class GensenForm extends Model
         $q = $this->gensenFormDetails()
             ->whereNull('deleted_at');
 
-        return !$q
+        return !$q->whereNull('tanggal_cair')
             ->where(function ($q) {
-                $q->whereNull('tanggal_cair')
-                    ->where(function ($qu) {
-                        $qu
-                            ->whereNull('nominal_cair')
-                            ->orWhere('nominal_cair', 0);
-                    });
+                $q->whereNull('nominal_cair')
+                    ->orWhere('nominal_cair', 0);
             })->exists() && $q->count() > 0;
     }
 
