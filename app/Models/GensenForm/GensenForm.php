@@ -315,6 +315,14 @@ class GensenForm extends Model
         $query = $this->gensenFormDetails()
             ->whereNull('deleted_at');
 
+        logger([
+            'get all details',
+            $query->whereNull('tanggal_cair')
+                ->where(function ($q) {
+                    $q->whereNull('nominal_cair')
+                        ->orWhere('nominal_cair', 0);
+                })->get()
+        ]);
         return !$query->whereNull('tanggal_cair')
             ->where(function ($q) {
                 $q->whereNull('nominal_cair')
