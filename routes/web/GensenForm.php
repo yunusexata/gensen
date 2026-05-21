@@ -60,6 +60,10 @@ Route::get('/preview-temp-file/{path}', function ($path) {
 Route::get('/preview-image/{attachment}', function ($attachmentId) {
 
     $attachment = GensenFormAttachment::findOrFail($attachmentId);
+    logger([
+        'preview image attachment',
+        $attachment
+    ]);
 
     $disk = Storage::disk($attachment->disk);
 
