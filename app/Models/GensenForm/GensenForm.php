@@ -2,16 +2,19 @@
 
 namespace App\Models\GensenForm;
 
+use App\Enums\Gensen\EmailLogStatus;
 use App\Enums\Gensen\GensenAttachmenStatus;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\NumberGenerator;
 use App\Helpers\PermissionHelper;
+use App\Mail\Admin\ClientNewSubmission;
 use App\Models\Ai\AiJob;
 use App\Models\Gensen\Ai\RemittanceExtraction;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\GensenForm\PersyaratanGensenJobRepository;
 use App\Repositories\GensenForm\SeluruhBerkasJobRepository;
+use App\Repositories\Service\SendEmailLogRepository;
 use App\Traits\Models\LowercaseAttributes;
 use App\Traits\Models\UppercaseAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -303,6 +306,20 @@ class GensenForm extends Model
             $this->status = self::STATUS_GENSEN_CAIR;
         }
         $this->is_should_filled = $this->isShouldFilled();
+        if ($this->is_submitted) {
+
+            SendEmailLogRepository::create(
+                [
+                    'subject_type' => GensenForm::class,
+                    'subject_id' => $this->id,
+                    'email' => $this->getPicAttribute()->email,
+                    'mailable' => ClientNewSubmission::class,
+                    'subject_line' => "[{$this->getPicAttribute()->name}] Dokumen Baru: {$this->nama_lengkap}",
+                    'status' => EmailLogStatus::PENDING,
+                    'queued_at' => now(),
+                ]
+            );
+        }
         $this->save();
     }
 
