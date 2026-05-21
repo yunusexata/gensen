@@ -420,25 +420,25 @@ class ImportService
                 ['tahun_gensen', $tahun_reiwa[0]],
             ], $validatedData);
 
-            $query = $gensenForm->gensenFormDetails();
-            $query_belum_cair = $query
+            $query_belum_cair = $gensenForm->gensenFormDetails()
                 ->whereNull('tanggal_cair')
                 ->where(function ($q) {
                     $q->whereNull('nominal_cair')
                         ->orWhere('nominal_cair', 0);
                 });
-            logger([
-                'query belum cair',
-                $query_belum_cair->get()
-            ]);
-            logger([
-                'query count',
-                $query->count(),
-                $gensenForm->gensenFormDetails()->count()
-            ]);
-            // if (!$query_belum_cair->exists() && $query->count() > 0) {
-            // }
-            // $gensenForm->onSubmitted();
+            // logger([
+            //     'query belum cair',
+            //     $query_belum_cair->get()
+            // ]);
+            // logger([
+            //     'query count',
+            //     $query->count(),
+            // ]);
+            if (!$query_belum_cair->exists() && $gensenForm->gensenFormDetails()->count() > 0) {
+                $gensenForm->update([
+                    'status' => GensenForm::STATUS_GENSEN_CAIR
+                ]);
+            }
 
             if ($updated > 0) {
                 $successCount++;
