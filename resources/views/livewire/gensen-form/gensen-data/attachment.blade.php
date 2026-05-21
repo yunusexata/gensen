@@ -1947,11 +1947,13 @@
                             </div>
                             <!-- Action Bar -->
                             <div class="p-md border-t border-outline-variant bg-surface-container-lowest flex justify-end gap-sm row d-flex flex-nowrap justify-content-evenly">
-                            <div class="col-4">
-                                <button wire:click="submitRemittanceExtractionJob" type="button" class="px-6 py-2 bg-primary text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
-                                AI extract
-                                </button>
-                            </div>
+                                @if (!empty($rekap_pengiriman_uang_old['groups']))
+                                    <div class="col-4">
+                                        <button wire:click="submitRemittanceExtractionJob" type="button" class="px-6 py-2 bg-primary text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
+                                        AI extract
+                                        </button>
+                                    </div>
+                                @endif
                             <div class="col-4">
                                 <button wire:click="getRemittanceExtraction" type="button" class="px-6 py-2 bg-warning text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
                                 Refresh Data
