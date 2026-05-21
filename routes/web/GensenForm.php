@@ -4,6 +4,7 @@ use App\Http\Controllers\GensenForm\GensenDataController;
 use App\Http\Controllers\GensenForm\GensenFormController;
 use App\Http\Controllers\GensenForm\GensenFormExportImportController;
 use App\Http\Controllers\GensenForm\GensenFormLinkController;
+use App\Models\GensenForm\GensenFormAttachment;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -56,6 +57,30 @@ Route::get('/preview-temp-file/{path}', function ($path) {
 
     return Storage::response($fullPath);
 })->name('preview.temp.file')->where('path', '.*');
+Route::get('/preview-image/{attachment}', function ($attachmentId) {
+
+    $attachment = GensenFormAttachment::findOrFail($attachmentId);
+
+    $disk = Storage::disk($attachment->disk);
+
+    if (!$disk->exists($attachment->path)) {
+        abort(404);
+    }
+
+    return response()->stream(function () use ($disk, $attachment) {
+
+        $stream = $disk->readStream($attachment->path);
+
+        fpassthru($stream);
+
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+    }, 200, [
+        'Content-Type' => $attachment->mime_type,
+        'Cache-Control' => 'private, max-age=3600',
+    ]);
+})->name('preview.crop.image')->middleware(['auth']);
 Route::middleware(['auth', 'access_permission'])->group(function () {
     Route::group(["controller" => GensenDataController::class, "prefix" => "gensen_data", "as" => "gensen_data."], function () {
         Route::get('/', 'index')->name('index');

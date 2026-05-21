@@ -499,7 +499,7 @@ class Attachment extends Component
 
     public function clickFile($id, $name, $type)
     {
-        $url = $this->{$name}['url'];
+        $url = route('preview.crop.image', Crypt::decrypt($id));
         consoleLog($this,  $url);
         $this->editedData = [
             'id' => $id,
