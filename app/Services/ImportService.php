@@ -420,8 +420,7 @@ class ImportService
                 ['tahun_gensen', $tahun_reiwa[0]],
             ], $validatedData);
 
-            $query = $gensenForm->gensenFormDetails()
-                ->whereNull('deleted_at');
+            $query = $gensenForm->gensenFormDetails();
             $query_belum_cair = $query
                 ->whereNull('tanggal_cair')
                 ->where(function ($q) {
