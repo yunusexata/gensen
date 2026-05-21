@@ -60,10 +60,6 @@ Route::get('/preview-temp-file/{path}', function ($path) {
 Route::get('/preview-image/{attachment}', function ($attachmentId) {
 
     $attachment = GensenFormAttachment::findOrFail($attachmentId);
-    logger([
-        'preview image attachment',
-        $attachment
-    ]);
 
     $disk = Storage::disk($attachment->disk);
 
@@ -82,7 +78,6 @@ Route::get('/preview-image/{attachment}', function ($attachmentId) {
         }
     }, 200, [
         'Content-Type' => $attachment->mime_type,
-        'Cache-Control' => 'private, max-age=3600',
     ]);
 })->name('preview.crop.image')->middleware(['auth']);
 Route::middleware(['auth', 'access_permission'])->group(function () {
