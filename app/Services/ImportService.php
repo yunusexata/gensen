@@ -428,15 +428,20 @@ class ImportService
                     $q->whereNull('nominal_cair')
                         ->orWhere('nominal_cair', 0);
                 });
-            if (!$query_belum_cair->exists() && $query->count() > 0) {
-                logger([
-                    ' cair lah',
-                ]);
-            } else {
-                logger([
-                    'belum cair',
-                ]);
-            }
+            logger([
+                'query belum cair',
+                $query_belum_cair->get()
+            ]);
+            logger([
+                'query count',
+                $query->count()
+            ]);
+            // if (!$query_belum_cair->exists() && $query->count() > 0) {
+            // } else {
+            //     logger([
+            //         'belum cair',
+            //     ]);
+            // }
             // $gensenForm->onSubmitted();
 
             if ($updated > 0) {
