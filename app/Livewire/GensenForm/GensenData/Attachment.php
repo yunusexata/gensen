@@ -497,8 +497,9 @@ class Attachment extends Component
         consoleLog($this, $this->{$property});
     }
 
-    public function clickFile($id, $url, $type)
+    public function clickFile($id, $name, $type)
     {
+        $url = $this->{$name}['url'];
         $this->editedData = [
             'id' => $id,
             'type' => $type,
