@@ -570,9 +570,11 @@ class Attachment extends Component
 
     public function store()
     {
+        consoleLog($this, 'store start');
         $this->validate();
         try {
             DB::transaction(function () {
+                consoleLog($this, 'store ac');
                 $gensenForm = GensenFormRepository::find(Crypt::decrypt($this->objId));
                 $this->handleGensenFormAttachemntStore(
                     $this->photo,
