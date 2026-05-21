@@ -180,6 +180,6 @@ class ExportService
                 $q->whereNull('gfd.nominal_cair')
                     ->orWhere('gfd.nominal_cair', 0);
             })
-            ->whereNull('gensen_forms.tanggal_cair');
+            ->whereNull('gfd.tanggal_cair');
     }
 }
