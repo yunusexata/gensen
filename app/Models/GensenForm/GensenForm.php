@@ -312,14 +312,14 @@ class GensenForm extends Model
 
     public function allGensenDetailsCair(): bool
     {
-        $q = $this->gensenFormDetails()
+        $query = $this->gensenFormDetails()
             ->whereNull('deleted_at');
 
-        return !$q->whereNull('tanggal_cair')
+        return !$query->whereNull('tanggal_cair')
             ->where(function ($q) {
                 $q->whereNull('nominal_cair')
                     ->orWhere('nominal_cair', 0);
-            })->exists() && $q->count() > 0;
+            })->exists() && $query->count() > 0;
     }
 
     public function isAttachmentReady($requiredTypes = false): bool
