@@ -433,13 +433,9 @@ class ImportService
             ]);
             logger([
                 'query count',
-                $query->get()
+                $query->count()
             ]);
             // if (!$query_belum_cair->exists() && $query->count() > 0) {
-            // } else {
-            //     logger([
-            //         'belum cair',
-            //     ]);
             // }
             // $gensenForm->onSubmitted();
 
