@@ -433,7 +433,7 @@ class ImportService
             ]);
             logger([
                 'query count',
-                $query->count()
+                $gensenForm->gensenFormDetails()->count()
             ]);
             // if (!$query_belum_cair->exists() && $query->count() > 0) {
             // }
