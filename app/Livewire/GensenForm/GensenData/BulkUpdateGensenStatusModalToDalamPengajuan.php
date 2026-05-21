@@ -91,7 +91,6 @@ class BulkUpdateGensenStatusModalToDalamPengajuan extends Component
 
             $fileName = ExportImportJobKey::IMPORT_LIST_DATA_DALAM_PENGAJUAN->value . '-' . now()->format('Ymd') . '.' . $extension;
 
-            consoleLog($this, ['filename dalam pengajuan', $fileName]);
 
             // $filePath = $this->inputFileBulkStatus
             //     ->storeAs(
@@ -121,10 +120,9 @@ class BulkUpdateGensenStatusModalToDalamPengajuan extends Component
                 'start_at' => now(),
             ]);
 
-            consoleLog($this, ['filename store pengajuan', $history]);
             $path = $this->inputFileBulkStatus->getRealPath();
             unlink($path);
-
+            DB::commit();
             $this->dispatch('datatable-refresh');
             $this->dispatch('onSuccessImportBulkStatusDataToDalamPengajuan');
             $this->dispatch('refresh-table');
