@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Enums\Gensen\EmailLogStatus;
+use App\Mail\Admin\ClientNewSubmission;
 use App\Mail\GensenFormStatusCancelMail;
 use App\Mail\GensenFormStatusDalamPengajuanMail;
 use App\Mail\GensenFormStatusGensenCairMail;
@@ -19,9 +20,17 @@ class GensenFormObserver
      */
     public function created(GensenForm $gensenForm): void
     {
-        if ($gensenForm->is_should_filled) {
-            // SendEmailJob::dispatch($gensenForm);
-        }
+        SendEmailLogRepository::create(
+            [
+                'subject_type' => GensenForm::class,
+                'subject_id' => $gensenForm->id,
+                'email' => $gensenForm->getPicAttribute()->email,
+                'mailable' => ClientNewSubmission::class,
+                'subject_line' => "{$gensenForm->getPicAttribute()->name} Data Dibuat: {$gensenForm->nama_lengkap}",
+                'status' => EmailLogStatus::PENDING,
+                'queued_at' => now(),
+            ]
+        );
     }
 
     /**
