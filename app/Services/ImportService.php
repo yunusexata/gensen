@@ -420,7 +420,18 @@ class ImportService
                 ['tahun_gensen', $tahun_reiwa[0]],
             ], $validatedData);
 
-            $gensenForm->onSubmitted();
+            $data_cair = $gensenForm->gensenFormDetails()
+                ->whereNull('deleted_at')
+                ->whereNull('tanggal_cair')
+                ->where(function ($q) {
+                    $q->whereNull('nominal_cair')
+                        ->orWhere('nominal_cair', 0);
+                })->get();
+            logger([
+                'get data cair',
+                $data_cair
+            ]);
+            // $gensenForm->onSubmitted();
 
             if ($updated > 0) {
                 $successCount++;
