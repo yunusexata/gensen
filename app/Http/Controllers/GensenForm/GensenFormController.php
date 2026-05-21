@@ -67,7 +67,7 @@ class GensenFormController extends Controller
         );
         if ($attachment->type === GensenAttachmentType::SELURUH_BERKAS) {
             $filename = "G " . $attachment->gensenForm->nama_lengkap . " " . Carbon::parse($attachment->gensenForm->tanggal_lahir)->format('Ymd') . "." . $attachment->extension;
-            dd($filename);
+            logger(['preview filename', $filename]);
         } else {
             $filename = $attachment->original_name;
         }
