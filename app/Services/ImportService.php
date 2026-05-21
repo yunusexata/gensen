@@ -396,6 +396,14 @@ class ImportService
                 'nominal_cair' => $row['nominal_cair'],
             ];
 
+            logger([
+                'cair',
+                [
+                    ['gensen_form_id', $gensenForm->id],
+                    ['tahun_gensen', $tahun_reiwa[0]],
+                ],
+                $validatedData
+            ]);
             $updated = GensenFormDetailRepository::updateBy([
                 // ['id_customer', $row['id_customer']],
                 ['gensen_form_id', $gensenForm->id],
