@@ -271,6 +271,10 @@ class ImportService
         $errorRows = [];
 
         foreach ($import->rows as $index => $row) {
+            logger([
+                'data row',
+                $row
+            ]);
             $validator = $this->validateListDataNoInputJapan($row->toArray());
 
             if ($validator->fails()) {
