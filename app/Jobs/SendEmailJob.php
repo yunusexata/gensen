@@ -22,6 +22,7 @@ class SendEmailJob implements ShouldQueue
 
     public function handle()
     {
+        logger('email sending');
         $this->log->update([
             'status' => EmailLogStatus::SENDING,
             'started_at' => now(),
@@ -29,6 +30,8 @@ class SendEmailJob implements ShouldQueue
         ]);
 
         try {
+
+            logger(['email process', $this->log->email]);
             Mail::to($this->log->email)->send(new $this->log->mailable($this->log));
 
             $this->log->update([
