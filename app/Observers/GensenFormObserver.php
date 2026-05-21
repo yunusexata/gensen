@@ -100,17 +100,6 @@ class GensenFormObserver
                     'queued_at' => now(),
                 ]
             ),
-            GensenForm::STATUS_MONDAI => SendEmailLogRepository::create(
-                [
-                    'subject_type' => GensenForm::class,
-                    'subject_id' => $gensenForm->id,
-                    'email' => $gensenForm->email,
-                    'mailable' => GensenFormStatusHonninMail::class,
-                    'subject_line' => 'Update Gensen : Proses Pencairan gensen masuk kategori Honnin Kouza',
-                    'status' => EmailLogStatus::PENDING,
-                    'queued_at' => now(),
-                ]
-            ),
             default => null,
         };
     }

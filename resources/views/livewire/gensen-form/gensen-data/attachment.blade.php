@@ -2505,6 +2505,7 @@
                     }
 
                     url = data[0].url;
+                    console.log(['url',url]);
                     image.src = url;
                     // preview_type.innerHTML = url;
 
