@@ -8,6 +8,7 @@ use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
 use App\Models\Ai\AiJob;
 use App\Repositories\GensenForm\GensenFormAttachmentHistoryRepository;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -77,6 +78,11 @@ class GensenFormAttachment extends Model
     // }
     public function previewUrl(): string
     {
+        if ($this->type === GensenAttachmentType::SELURUH_BERKAS) {
+            $filename = "G " . $this->gensenForm->nama_lengkap . " " . Carbon::parse($this->gensenForm->tanggal_lahir)->format('Ymd') . "." . $this->extension;
+        } else {
+            $filename = $this->original_name;
+        }
         return $this->disk === 'supabase' ? Storage::disk($this->disk)
             ->temporaryUrl(
                 $this->path,
@@ -84,7 +90,7 @@ class GensenFormAttachment extends Model
                 [
                     'ResponseCacheControl' => 'private, max-age=3600',
                     'ResponseContentDisposition' =>
-                    'inline; filename="' . $this->original_name . '"',
+                    'inline; filename="' . $filename . '"',
                 ]
             ) :  URL::temporarySignedRoute(
                 'gensen.attachment.preview',
