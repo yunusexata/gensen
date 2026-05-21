@@ -434,7 +434,7 @@ class ImportService
             ]);
             logger([
                 'query count',
-                $query->count()
+                $query->get()
             ]);
             // if (!$query_belum_cair->exists() && $query->count() > 0) {
             // } else {
