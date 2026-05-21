@@ -495,6 +495,7 @@ class Attachment extends Component
             }
         }
         consoleLog($this, $this->{$property});
+        $this->dispatch('initializeFileInputs');
     }
 
     public function clickFile($id, $name, $type)

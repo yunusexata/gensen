@@ -2589,6 +2589,14 @@
                     initializeFileInputs();
                     // initializeFormSubmits();
                 }, 200); 
+                Livewire.on('initializeFileInputs', (data) => {
+                    setTimeout(() => {
+                        // updateSubstepDescription();
+                        // showUploadedFilesSummary();
+                        initializeFileInputs();
+                        // initializeFormSubmits();
+                    }, 200); 
+                });
                 window.Echo.channel('export-remittance-extranction')
                     .subscribed(() => console.log('SUBSCRIBED'))
                     .listen('.export.remittance-extraction.finished', (e) => {
