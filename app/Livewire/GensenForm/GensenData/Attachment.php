@@ -682,6 +682,7 @@ class Attachment extends Component
 
             'uploaded_by' => auth()->id(),
         ];
+        consoleLog($this, $validatedData);
         if ($attachment_id) {
             GensenFormAttachmentRepository::update($attachment_id, $validatedData);
         } elseif ($action == 'update') {
