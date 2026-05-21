@@ -500,6 +500,7 @@ class Attachment extends Component
     public function clickFile($id, $name, $type)
     {
         $url = $this->{$name}['url'];
+        consoleLog(['url click ', $url]);
         $this->editedData = [
             'id' => $id,
             'type' => $type,
