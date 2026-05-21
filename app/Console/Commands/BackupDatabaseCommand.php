@@ -39,6 +39,10 @@ class BackupDatabaseCommand extends Command
         );
 
         exec($command);
+        collect(glob(storage_path('app/backups/*.sql')))
+            ->sort()
+            ->slice(0, -14)
+            ->each(fn($file) => unlink($file));
 
         $this->info('Backup completed: ' . $filename);
     }
