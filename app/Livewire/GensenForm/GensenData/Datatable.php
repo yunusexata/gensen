@@ -367,10 +367,11 @@ class Datatable extends Component
                 'searchable' => false,
                 'name' => 'Nominal Gensen',
                 'render' => function ($item) {
-                    $details = explode(';', $item->details);
+                    $tahun_gensen_details = explode(';', $item->tahun_gensen_details);
+                    $nominal_gensen_details = explode(';', $item->nominal_gensen_details);
                     $html = "";
-                    foreach ($details as $index => $gensen) {
-                        $html .= "<div class='text-nowrap'>{$gensen}</div>";
+                    foreach ($tahun_gensen_details as $index => $tahun_gensen) {
+                        $html .= "<div class='text-nowrap'>{$tahun_gensen} / " . fromReiwaToYear($tahun_gensen) . " - {$nominal_gensen_details[$index]}</div>";
                     }
                     return $html;
                 }
@@ -387,7 +388,7 @@ class Datatable extends Component
 
                     $html = "";
                     foreach ($total_amounts as $index => $amount) {
-                        $html .= "<div class='text-nowrap'> " . toReiwaYear($receiver_years[$index]) . " - " . $amount . " - {$receiver_names[$index]}</div>";
+                        $html .= "<div class='text-nowrap'> " . toReiwaYear($receiver_years[$index]) . "/" . $receiver_years[$index] . " - " . $amount . " - {$receiver_names[$index]}</div>";
                     }
                     return $html;
                 }
