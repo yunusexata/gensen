@@ -37,6 +37,10 @@ class AppServiceProvider extends ServiceProvider
             // return "<?php echo ($expression);";
             return "<?php echo App\Helpers\NumberFormatter::format($expression); ?>";
         });
+        Blade::directive('fromReiwaToYear', function ($expression) {
+            // return "<?php echo ($expression);";
+            return "<?php echo App\Helpers\GlobalHelper::fromReiwaToYear($expression); ?>";
+        });
         GensenForm::observe(GensenFormObserver::class);
     }
 }

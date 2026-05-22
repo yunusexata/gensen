@@ -55,7 +55,8 @@
                                                                 <td>{{ $row['data']['id_customer'] }}</td>
                                                                 <td>{{ $row['data']['nama_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_lengkap'] }}</td>
-                                                                <td>{{ $row['data']['tahun_gensen'] }}</td>
+                                                                <td>{{ $row['data']['tahun_gensen'] }} / 
+                                                                     @fromReiwaToYear($row['data']['tahun_gensen'])</td>
                                                                 <td>{{ $row['data']['nominal_gensen'] }}</td>
                                                                 <td>{{ $row['data']['jumlah_kirim_uang'] }}</td>
                                                                 <td>{{ $row['data']['hubungan_keluarga'] }}</td>
@@ -95,7 +96,8 @@
                                                                 <td>{{ $row['data']['id_customer'] }}</td>
                                                                 <td>{{ $row['data']['nama_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_lengkap'] }}</td>
-                                                                <td>{{ $row['data']['tahun_gensen'] }}</td>
+                                                                <td>{{ $row['data']['tahun_gensen'] }} / 
+                                                                     @fromReiwaToYear($row['data']['tahun_gensen'])</td>
                                                                 <td>{{ $row['data']['nominal_gensen'] }}</td>
                                                                 <td>{{ $row['data']['jumlah_kirim_uang'] }}</td>
                                                                 <td>{{ $row['data']['hubungan_keluarga'] }}</td>
