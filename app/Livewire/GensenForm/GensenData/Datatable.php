@@ -371,7 +371,7 @@ class Datatable extends Component
                     $nominal_gensen_details = explode(';', $item->nominal_gensen_details);
                     $html = "";
                     foreach ($tahun_gensen_details as $index => $tahun_gensen) {
-                        $html .= "<div class='text-nowrap'>{$tahun_gensen} / " . fromReiwaToYear($tahun_gensen) . " - {$nominal_gensen_details[$index]}</div>";
+                        $html .= "<div class='text-nowrap'>{$tahun_gensen}/" . fromReiwaToYear($tahun_gensen) . " - {$nominal_gensen_details[$index]}</div>";
                     }
                     return $html;
                 }
