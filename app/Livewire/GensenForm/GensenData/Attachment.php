@@ -106,9 +106,9 @@ class Attachment extends Component
     public function updatedRemittanceExtractionGroups($value, $index)
     {
         try {
-            consoleLog($this, $value);
+            // consoleLog($this, $value);
             $el = explode('.', $index);
-            consoleLog($this, $el);
+            // consoleLog($this, $el);
             if ($el[1] == 'is_validate') {
                 if ($value) {
                     $this->remittance_validate_total += $this->remittance_extraction_groups[$el[0]]['total_amount'];
@@ -117,7 +117,7 @@ class Attachment extends Component
                 }
             }
         } catch (Exception $e) {
-            consoleLog($this, $e->getMessage());
+            // consoleLog($this, $e->getMessage());
         }
     }
 
@@ -225,7 +225,7 @@ class Attachment extends Component
         }
     }
 
-    private function getData()
+    public function getData()
     {
         if ($this->objId) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
@@ -235,13 +235,7 @@ class Attachment extends Component
             $this->tahun_gensen_details = $gensen->gensenFormDetails->toArray();
             $this->nominal_gensen = $gensen->nominal_gensen;
 
-            $attachments = $gensen->attachmentGroups([
-                GensenAttachmentType::MY_NUMBER_FRONT,
-                GensenAttachmentType::MY_NUMBER_BACK,
-                GensenAttachmentType::ZAIRYOU_CARD_FRONT,
-                GensenAttachmentType::ZAIRYOU_CARD_BACK,
-                GensenAttachmentType::REKENING_INDONESIA,
-            ]);
+            $attachments = $gensen->attachmentGroups();
             // dd($this->remittance_extraction_groups);
             if ($this->kertas_gensen) {
                 $this->kertas_gensen_old = $attachments[GensenAttachmentType::KERTAS_GENSEN->value];
@@ -287,7 +281,7 @@ class Attachment extends Component
     }
     public function getOnload()
     {
-        consoleLog($this, 'onload');
+        // consoleLog($this, 'onload');
         $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
         $this->nama_lengkap = $gensen->nama_lengkap;
         $this->tanggal_lahir = $gensen->tanggal_lahir;
@@ -312,10 +306,10 @@ class Attachment extends Component
     {
 
         if ($gensen_form_id && Crypt::decrypt($this->objId) != $gensen_form_id) {
-            consoleLog($this, 'g sama');
+            // consoleLog($this, 'g sama');
             return;
         }
-        consoleLog($this, 'sama id');
+        // consoleLog($this, 'sama id');
 
         if (!$gensen) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
@@ -325,13 +319,13 @@ class Attachment extends Component
 
         $this->onload = true;
         if (!$gensen->aiJobs()->exists()) {
-            consoleLog($this, 'step A');
+            // consoleLog($this, 'step A');
             $this->gensen_has_ai_jobs = false;
             $this->gensen_has_pending_ai_jobs = false;
             return;
         }
         if ($gensen->aiJobs()->exists() && $gensen->hasPendingAiJob()) {
-            consoleLog($this, 'step B');
+            // consoleLog($this, 'step B');
             $this->gensen_has_ai_jobs = true;
             $this->gensen_has_pending_ai_jobs = true;
             return;
@@ -339,13 +333,13 @@ class Attachment extends Component
         if (
             $gensen->remittanceExtraction()->exists()
         ) {
-            consoleLog($this, 'step C');
+            // consoleLog($this, 'step C');
             $this->gensen_has_ai_jobs = true;
             $this->gensen_has_pending_ai_jobs = false;
             $this->remittance_extraction_confidence = $gensen->remittanceExtraction->confidence_score;
             $this->remittance_validate_total = 0;
-            consoleLog($this, [$gensen->remittanceExtraction
-                ->remittanceExtractionGroups->toArray()]);
+            // consoleLog($this, [$gensen->remittanceExtraction
+            //     ->remittanceExtractionGroups->toArray()]);
             $this->remittance_extraction_groups = $gensen->remittanceExtraction
                 ? $gensen->remittanceExtraction
                 ->remittanceExtractionGroups
@@ -402,7 +396,7 @@ class Attachment extends Component
     }
     public function refreshData()
     {
-        consoleLog($this, 'refresh data brok');
+        // consoleLog($this, 'refresh data brok');
         if (
             !$this->seluruh_berkas_old['isJobProcessDone']
             || !$this->persyaratan_pengurusan_gensen_old['isJobProcessDone']
@@ -415,7 +409,7 @@ class Attachment extends Component
     {
         $this->targetDeleteId = $id;
         $this->targetDeleteType = $type . "_old";
-        consoleLog($this, $this->targetDeleteType);
+        // consoleLog($this, $this->targetDeleteType);
         Alert::confirmation(
             $this,
             Alert::ICON_QUESTION,
@@ -457,10 +451,10 @@ class Attachment extends Component
     {
 
         $property = Str::lower($property);
-        consoleLog($this, [
-            'property',
-            $property
-        ]);
+        // consoleLog($this, [
+        //     'property',
+        //     $property
+        // ]);
         if (isset($this->{$property})) {
             $data = $this->{$property};
 
@@ -480,32 +474,49 @@ class Attachment extends Component
                     ->toArray();
 
                 $data['uploaded'] = count($data['groups']) > 0;
-                consoleLog($this, $data);
-                consoleLog($this, $this->{$property});
+                // consoleLog($this, $data);
+                // consoleLog($this, $this->{$property});
                 $this->{$property} = $data;
                 return;
             }
 
             // CASE 2: single file
             if (isset($data['id']) && $data['id'] === $attachmentId) {
-                consoleLog($this, 'GAK GROUPS');
+                // consoleLog($this, 'GAK GROUPS');
                 $this->{$property}['id'] = null;
                 $this->{$property}['uploaded'] = false;
                 $this->{$property}['url'] = null;
             }
         }
-        consoleLog($this, $this->{$property});
+        // consoleLog($this, $this->{$property});
         $this->dispatch('initializeFileInputs');
     }
 
     public function clickFile($id, $name, $type)
     {
-        $url = route('preview.crop.image', Crypt::decrypt($id));
-        consoleLog($this,  $url);
+        $attachmentData = $this->{$name};
+
+        // Package path and mime_type into a single, URL-safe base64 string
+        $payload = base64_encode(json_encode([
+            'path' => $attachmentData['path'],
+            'mime_type' => $attachmentData['mime_type']
+        ]));
+
+        // Generate the clean URL
+        $url = route('preview.crop.image', [
+            'disk' => $attachmentData['disk'],
+            'payload' => $payload
+        ]);
+        // $disk = Storage::disk('supabase');
+        // $url = $disk->temporaryUrl(
+        //     $path,
+        //     now()->addMinutes(20)
+        // );
+        // consoleLog($this,  $url);
         $this->editedData = [
             'id' => $id,
             'type' => $type,
-            'src' => $url,
+            // 'src' => $url,
         ];
         $this->dispatch('handleCropper', ['url' => $url]);
     }
@@ -570,11 +581,12 @@ class Attachment extends Component
 
     public function store()
     {
-        consoleLog($this, 'store start');
+        // consoleLog($this, 'store start');
         $this->validate();
         try {
             DB::transaction(function () {
-                consoleLog($this, 'store ac');
+
+                // consoleLog($this, 'store ac');
                 $gensenForm = GensenFormRepository::find(Crypt::decrypt($this->objId));
                 $this->handleGensenFormAttachemntStore(
                     $this->photo,
@@ -588,8 +600,10 @@ class Attachment extends Component
 
 
             DB::commit();
-            $this->getData();
             Alert::information($this, 'Data berhasil disimpan');
+            // $this->getData();
+
+            $this->dispatch('handleGetData');
         } catch (Exception $e) {
             DB::rollBack();
             Alert::fail($this, "Gagal", $e->getMessage());
@@ -598,21 +612,25 @@ class Attachment extends Component
     #[On('on-dialog-confirm')]
     public function onDialogConfirm()
     {
-        $this->getData();
+
+        $this->dispatch('handleGetData');
+        // $this->getData();
         // $this->redirectRoute('gensen_data.attachment', [$this->objId]);
     }
 
     #[On('on-dialog-cancel')]
     public function onDialogCancel()
     {
-        $this->getData();
+
+        $this->dispatch('handleGetData');
+        // $this->getData();
         // $this->redirectRoute('gensen_data.attachment', [$this->objId]);
     }
 
     public function submitChange()
     {
 
-        consoleLog($this, 'create save');
+        // consoleLog($this, 'create save');
         try {
             DB::transaction(function () {
                 $this->saveData(true);
@@ -621,7 +639,8 @@ class Attachment extends Component
             });
 
             DB::commit();
-            $this->getData();
+            $this->dispatch('handleGetData');
+
             Alert::information($this, 'Data berhasil disimpan');
         } catch (Exception $e) {
             DB::rollBack();
@@ -682,7 +701,7 @@ class Attachment extends Component
 
             'uploaded_by' => auth()->id(),
         ];
-        consoleLog($this, ['store new photo', $validatedData]);
+        // consoleLog($this, ['store new photo', $validatedData]);
         if ($attachment_id) {
             GensenFormAttachmentRepository::update($attachment_id, $validatedData);
         } elseif ($action == 'update') {
@@ -693,14 +712,14 @@ class Attachment extends Component
                 'type' => $type->value,
             ], $validatedData);
 
-            $this->dispatch('consoleLog', [
-                $try,
-                $validatedData,
-                [
-                    ['gensen_form_id', $gensenFormId],
-                    ['type', $type->value],
-                ]
-            ]);
+            // $this->dispatch('consoleLog', [
+            //     $try,
+            //     $validatedData,
+            //     [
+            //         ['gensen_form_id', $gensenFormId],
+            //         ['type', $type->value],
+            //     ]
+            // ]);
         } else {
             GensenFormAttachmentRepository::create($validatedData);
         }
@@ -824,14 +843,14 @@ class Attachment extends Component
                 'type' => $type->value,
             ], $validatedData);
 
-            $this->dispatch('consoleLog', [
-                $try,
-                $validatedData,
-                [
-                    ['gensen_form_id', $gensenForm->id],
-                    ['type', $type->value],
-                ]
-            ]);
+            // $this->dispatch('consoleLog', [
+            //     $try,
+            //     $validatedData,
+            //     [
+            //         ['gensen_form_id', $gensenForm->id],
+            //         ['type', $type->value],
+            //     ]
+            // ]);
         } else {
             GensenFormAttachmentRepository::create($validatedData);
         }

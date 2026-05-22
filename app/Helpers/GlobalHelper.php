@@ -48,6 +48,31 @@ if (!function_exists('toReiwaYear')) {
         return $year - 2018;
     }
 }
+if (!function_exists('fromReiwaToYear')) {
+    function fromReiwaToYear($reiwa)
+    {
+        if (!$reiwa) {
+            return null;
+        }
+
+        $reiwa = trim((string) $reiwa);
+
+        // extract number from R6 / 令和6 / Reiwa 6
+        preg_match('/(\d+)/', $reiwa, $matches);
+
+        if (!isset($matches[1])) {
+            return null;
+        }
+
+        $reiwaYear = (int) $matches[1];
+
+        if ($reiwaYear < 1) {
+            return null;
+        }
+
+        return $reiwaYear + 2018;
+    }
+}
 if (!function_exists('formatFileSize')) {
     function formatFileSize(int $bytes, int $precision = 2): string
     {

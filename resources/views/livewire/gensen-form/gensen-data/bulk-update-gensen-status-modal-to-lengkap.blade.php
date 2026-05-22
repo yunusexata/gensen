@@ -30,13 +30,17 @@
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="imported-bulk-status-pane" role="tabpanel" aria-labelledby="imported" tabindex="0">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered text-nowrap">
+                                        <table class="table table-bordered text-nowrap w-auto">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>ID Customer</th>
                                                     <th>Nama</th>
                                                     <th>Tanggal Lengkap</th>
+                                                    <th>Tahun Gensen</th>
+                                                    <th>Nominal Gensen</th>
+                                                    <th>Jumlah Kirim Uang</th>
+                                                    <th>Hubungan Keluarga</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -51,6 +55,10 @@
                                                                 <td>{{ $row['data']['id_customer'] }}</td>
                                                                 <td>{{ $row['data']['nama_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_lengkap'] }}</td>
+                                                                <td>{{ $row['data']['tahun_gensen'] }}</td>
+                                                                <td>{{ $row['data']['nominal_gensen'] }}</td>
+                                                                <td>{{ $row['data']['jumlah_kirim_uang'] }}</td>
+                                                                <td>{{ $row['data']['hubungan_keluarga'] }}</td>
                                                                 
                                                         </tr>
                                                     @endif
@@ -61,13 +69,17 @@
                                 </div>
                                 <div class="tab-pane fade" id="invalid-bulk-status-pane" role="tabpanel" aria-labelledby="invalid" tabindex="0">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered text-nowrap">
+                                        <table class="table table-bordered text-nowrap  w-auto">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>ID Customer</th>
                                                     <th>Nama</th>
                                                     <th>Tanggal Lengkap</th>
+                                                    <th>Tahun Gensen</th>
+                                                    <th>Nominal Gensen</th>
+                                                    <th>Jumlah Kirim Uang</th>
+                                                    <th>Hubungan Keluarga</th>
                                                     <th>Pesan Error System</th>
                                                 </tr>
                                             </thead>
@@ -83,6 +95,10 @@
                                                                 <td>{{ $row['data']['id_customer'] }}</td>
                                                                 <td>{{ $row['data']['nama_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_lengkap'] }}</td>
+                                                                <td>{{ $row['data']['tahun_gensen'] }}</td>
+                                                                <td>{{ $row['data']['nominal_gensen'] }}</td>
+                                                                <td>{{ $row['data']['jumlah_kirim_uang'] }}</td>
+                                                                <td>{{ $row['data']['hubungan_keluarga'] }}</td>
                                                             <td>
                                                                 @foreach($row['error'] as $field => $msg)
                                                                     <div>{{ json_encode($msg) }}</div>

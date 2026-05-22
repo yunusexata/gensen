@@ -45,6 +45,10 @@ class BulkUpdateGensenStatusModalToLengkap extends Component
                 'id_customer' => $row['id_customer'],
                 'nama_lengkap' => $row['nama_lengkap'],
                 'tanggal_lengkap' => $row['tanggal_lengkap'],
+                'tahun_gensen' => $row['tahun_gensen'],
+                'nominal_gensen' => $row['nominal_gensen'],
+                'jumlah_kirim_uang' => $row['jumlah_kirim_uang'],
+                'hubungan_keluarga' => $row['hubungan_keluarga'],
             ];
             $validator = Validator::make($d, [
                 'id_customer' => 'required|exists:gensen_forms,id_customer',

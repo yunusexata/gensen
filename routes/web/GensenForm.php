@@ -57,19 +57,23 @@ Route::get('/preview-temp-file/{path}', function ($path) {
 
     return Storage::response($fullPath);
 })->name('preview.temp.file')->where('path', '.*');
-Route::get('/preview-image/{attachment}', function ($attachmentId) {
+Route::get('/preview-image/{disk}/{payload}', function ($disk, $payload) {
+    $decoded = json_decode(base64_decode($payload), true);
 
-    $attachment = GensenFormAttachment::findOrFail($attachmentId);
-
-    $disk = Storage::disk($attachment->disk);
-
-    if (!$disk->exists($attachment->path)) {
-        abort(404);
+    if (!$decoded || !isset($decoded['path'], $decoded['mime_type'])) {
+        abort(404, 'Invalid payload');
     }
 
-    return response()->stream(function () use ($disk, $attachment) {
+    $path = $decoded['path'];
+    $mimeType = $decoded['mime_type'];
 
-        $stream = $disk->readStream($attachment->path);
+    $disk = Storage::disk($disk);
+    if (!$disk->exists($path)) {
+        abort(404);
+    }
+    return response()->stream(function () use ($disk, $path) {
+
+        $stream = $disk->readStream($path);
 
         fpassthru($stream);
 
@@ -77,9 +81,9 @@ Route::get('/preview-image/{attachment}', function ($attachmentId) {
             fclose($stream);
         }
     }, 200, [
-        'Content-Type' => $attachment->mime_type,
+        'Content-Type' => $mimeType,
     ]);
-})->name('preview.crop.image')->middleware(['auth']);
+})->name('preview.crop.image');
 Route::middleware(['auth', 'access_permission'])->group(function () {
     Route::group(["controller" => GensenDataController::class, "prefix" => "gensen_data", "as" => "gensen_data."], function () {
         Route::get('/', 'index')->name('index');

@@ -129,7 +129,7 @@
                                             <input
                                                 class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('nama_lengkap') is-invalid border border-red-500 @enderror"
                                                 id="nama_lengkap" wire:model="nama_lengkap" name="nama_lengkap"
-                                                placeholder="Nama lengkap" type="text" />
+                                                placeholder="exata indonesia" type="text" />
 
                                             @error('nama_lengkap')
                                                 <div class="invalid-feedback">
@@ -143,7 +143,7 @@
                                             <input
                                                 class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('email') is-invalid border border-red-500 @enderror"
                                                 id="email" wire:model="email" name="email"
-                                                placeholder="jane.smith@example.com" type="email" />
+                                                placeholder="exata@gmail.com" type="email" />
 
                                             @error('email')
                                                 <div class="invalid-feedback">
@@ -188,7 +188,7 @@
                                                 <input
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('nama_instagram') is-invalid border border-red-500 @enderror"
                                                     id="nama_instagram" wire:model="nama_instagram"
-                                                    name="nama_instagram" type="text" placeholder="Nama Instagram" />
+                                                    name="nama_instagram" type="text" placeholder="exata" />
 
                                                 @error('nama_instagram')
                                                     <div class="invalid-feedback">
@@ -203,7 +203,7 @@
                                                 <input
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('nama_tiktok') is-invalid border border-red-500 @enderror"
                                                     id="nama_tiktok" wire:model="nama_tiktok" name="nama_tiktok"
-                                                    type="text" placeholder="Nama Tiktok" />
+                                                    type="text" placeholder="exata" />
 
                                                 @error('nama_tiktok')
                                                     <div class="invalid-feedback">
@@ -217,7 +217,7 @@
                                                         class="text-red-500">*</span></label>
                                                 <input type="text"
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 @error('nomor_whatsapp') is-invalid border border-red-500 @enderror"
-                                                    required name="nomor_whatsapp" placeholder="Nomor Whatsapp"
+                                                    required name="nomor_whatsapp" placeholder="08123456789"
                                                     aria-label="nomor_whatsapp" aria-describedby="basic-addon1"
                                                     wire:model="nomor_whatsapp">
                                                 @error('nomor_whatsapp')
@@ -230,12 +230,12 @@
                                             </div>
                                             <div class="flex flex-col gap-2">
                                                 <label class="font-label text-xs font-medium text-on-surface-variant"
-                                                    for="nomor_whatsapp_darurat">Nomor Whatsapp Darurat<span
+                                                    for="nomor_whatsapp_darurat">Nomor Whatsapp Darurat (hubungan)<span
                                                         class="text-red-500">*</span></label>
                                                 <input type="text"
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 @error('nomor_whatsapp') is-invalid border border-red-500 @enderror"
                                                     required name="nomor_whatsapp_darurat"
-                                                    placeholder="Nomor Whatsapp Darurat"
+                                                    placeholder="08123456789 (Kakak)"
                                                     aria-label="nomor_whatsapp_darurat"
                                                     aria-describedby="basic-addon1"
                                                     wire:model="nomor_whatsapp_darurat">
@@ -252,7 +252,7 @@
                                                 <input
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('nama_lpk') is-invalid border border-red-500 @enderror"
                                                     id="nama_lpk" wire:model="nama_lpk" name="nama_lpk"
-                                                    type="text" placeholder="Nama LPK/SO/PT" />
+                                                    type="text" placeholder="LPK Minori" />
 
                                                 @error('nama_lpk')
                                                     <div class="invalid-feedback">
@@ -280,19 +280,22 @@
                                                     <!-- Tahun Gensen -->
                                                     <label class="font-label text-xs font-medium text-on-surface-variant"
                                                         for="tahun_gensen">
-                                                        Tahun Gensen (Reiwa)<span
-                                                            class="text-red-500">*</span>
+                                                        Tahun Gensen (Reiwa)
                                                     </label>
 
                                                     <div class="row d-flex flex-nowrap justify-content-between gap-2" wire:key="gensen_form_detail_key_{{ $gensen_detail['key'] }}">
                                                         <div class="col">
+                                                            <select wire:model="gensen_form_details.{{$index_form_detail}}.tahun_gensen"
+                                                                name="gensen_form_details.{{$index_form_detail}}.tahun_gensen"
+                                                                class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus w-full @error('gensen_form_details.{{$index_form_detail}}.tahun_gensen') is-invalid border border-red-500 @enderror">
+                                                                <option value="">-- ISI --</option>
+                                                                @foreach ($tahun_gensen_choice as $choice)
+                                                                    <option value="{{ $choice['value'] }}">{{ $choice['label'] }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
 
-                                                            <input
-                                                                class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('gensen_form_details.' . $index_form_detail . '.tahun_gensen') is-invalid border border-red-500 @enderror"
-                                                                 wire:model="gensen_form_details.{{$index_form_detail}}.tahun_gensen"
-                                                                type="text" placeholder="7" />
-        
-                                                            @error('gensen_form_details.' . $index_form_detail . '.tahun_gensen')
+                                                            @error('gensen_form_details.{{$index_form_detail}}.tahun_gensen')
                                                                 <div class="invalid-feedback">
                                                                     {{ $message }}
                                                                 </div>
@@ -361,14 +364,14 @@
                                             <label class="font-label text-xs font-medium text-on-surface-variant" for="state">State / Province</label>
                                             <input class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full" id="state" name="state" placeholder="CA" type="text"/>
                                         </div> --}}
-                                            <div class="flex flex-col gap-2 md:col-span-4">
+                                            <div class="flex flex-col gap-2 md:col-span-5">
                                                 <label class="font-label text-xs font-medium text-on-surface-variant"
                                                     for="kode_pos_jepang">Kode Pos Jepang (Tanpa Strip)<span
                                                         class="text-red-500">*</span></label>
                                                 <input
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('kode_pos_jepang') is-invalid border border-red-500 @enderror"
                                                     id="kode_pos_jepang" wire:model="kode_pos_jepang"
-                                                    name="kode_pos_jepang" placeholder="(Tanpa Strip)"
+                                                    name="kode_pos_jepang" placeholder="1000001 (Tanpa Strip)"
                                                     type="text" />
 
                                                 @error('kode_pos_jepang')
@@ -381,10 +384,17 @@
                                     </section>
                                     <!-- Section: Account Balance -->
                                     <section class="mt-5">
-                                        <div class="flex items-center gap-3 mb-5">
+                                        <div class="flex items-center gap-3">
                                             <span class="material-symbols-outlined text-primary"
                                                 data-icon="account_balance">account_balance</span>
                                             <h2 class="font-headline font-bold text-2xl">Data Bank Indonesia</h2>
+                                        </div>
+                                        <div class="flex justify-center items-center gap-3">
+                                            <h5 class=" font-normal text-lg text-center">(Untuk pencairan uang gensen)</h5>
+                                            
+                                        </div>
+                                        <div class="flex justify-center items-center gap-3 mb-5">
+                                            <h5 class=" font-normal text-lg text-center">Boleh menggunakan rek keluarga jika tidak memiliki rek pribadi</h5>
                                         </div>
 
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
@@ -415,7 +425,7 @@
                                                 <input
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('no_rekening_penerima') is-invalid border border-red-500 @enderror"
                                                     id="no_rekening_penerima" wire:model="no_rekening_penerima"
-                                                    name="first_name" placeholder="No Rekening" type="text" />
+                                                    name="first_name" placeholder="1234567890" type="text" />
 
                                                 @error('no_rekening_penerima')
                                                     <div class="invalid-feedback">
@@ -430,7 +440,7 @@
                                                 <input
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('nama_penerima') is-invalid border border-red-500 @enderror"
                                                     id="nama_penerima" wire:model="nama_penerima" name="first_name"
-                                                    placeholder="Nama Pemilik" type="text" />
+                                                    placeholder="exata" type="text" />
 
                                                 @error('nama_penerima')
                                                     <div class="invalid-feedback">
@@ -444,7 +454,9 @@
                                                 <input
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('hubungan_penerima') is-invalid border border-red-500 @enderror"
                                                     id="hubungan_penerima" wire:model="hubungan_penerima"
-                                                    name="first_name" placeholder="Hubungan" type="text" />
+                                                    name="first_name" placeholder="Istri" type="text" />
+                                                
+                                                <div class="form-text" id="basic-addon4">Kosongkan jika menggunakan rek pribadi</div>
 
                                                 @error('hubungan_penerima')
                                                     <div class="invalid-feedback">
@@ -1779,7 +1791,7 @@
 
 
         {{-- Compress File Upload --}}
-        const MAX_FILE_SIZE = 10 * 1024 * 1024; // 50MB in bytes (before compression)
+        const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes (before compression)
         const TARGET_FILE_SIZE = 2 * 1024 * 1024; // Target 2MB after compression
         const MAX_UPLOAD_SIZE = 3 * 1024 * 1024; // Maximum 3MB after compression
         const formId = '7035';

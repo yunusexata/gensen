@@ -97,7 +97,7 @@
                                 <img
                                     id="preview"
                                     class="w-full object-cover"
-                                    src="{{ $editedData['src'] ?: asset(config('template.logo_panel')) }}"
+                                    src="{{ asset(config('template.logo_panel'))  }}"
                                 />
                             </div>
                             <!-- Bottom Controls -->
@@ -2496,36 +2496,6 @@
 
         const image = document.getElementById('preview');
         
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('handleCropper', (data) => {
-                setTimeout(() => {
-                const image = document.getElementById('preview');
-                const preview_type = document.getElementById('preview_type');
-
-                    if (cropper) {
-                        cropper.destroy();
-                    }
-
-                    url = data[0].url;
-                    console.log(['url',url]);
-                    image.src = url;
-                    // preview_type.innerHTML = url;
-
-                    image.onload = () => {
-                        cropper = new Cropper(image, {
-                        viewMode:0,
-                        autoCropArea:1,
-                        responsive:true
-                        });
-                    };
-                    // cropper = new Cropper(image,{
-                    //     viewMode:0,
-                    //     autoCropArea:1,
-                    //     responsive:true
-                    // });
-                }, 200);
-            });
-        });
         document.getElementById('rotateLeft90')
             .addEventListener('click', () => {
                 console.log('click')
@@ -2591,6 +2561,46 @@
                     initializeFileInputs();
                     // initializeFormSubmits();
                 }, 200); 
+                Livewire.on('handleCropper', (data) => {
+                setTimeout(() => {
+                const image = document.getElementById('preview');
+                const preview_type = document.getElementById('preview_type');
+
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+
+                    url = data[0].url;
+                    // console.log(['url',url]);
+                    image.src = url;
+                    // preview_type.innerHTML = url;
+
+                    // image.onload = () => {
+                        cropper = new Cropper(image, {
+                        viewMode:0,
+                        autoCropArea:1,
+                        responsive:true
+                        });
+                    // };
+                    // cropper = new Cropper(image,{
+                    //     viewMode:0,
+                    //     autoCropArea:1,
+                    //     responsive:true
+                    // });
+                },50);
+            });
+            Livewire.on('handleGetData',async (data) => {
+                console.log('Fetching data asynchronously...');
+
+                try {
+                    // This runs asynchronously without blocking the browser UI thread
+                    const result = await @this.call('getData'); 
+                    
+                    console.log('Data fetched successfully!', result);
+                } catch (error) {
+                    console.error('Failed to fetch data:', error);
+                }
+            });
                 Livewire.on('initializeFileInputs', (data) => {
                     setTimeout(() => {
                         // updateSubstepDescription();

@@ -89,6 +89,7 @@ class Form extends Component
     public $is_previously_processed;
 
     public $gensen_form_details = [];
+    public $tahun_gensen_choice = [];
     public $is_should_filled = false;
     public $is_submitted = false;
 
@@ -167,6 +168,13 @@ class Form extends Component
     public function mount()
     {
 
+        $this->tahun_gensen_choice =  collect(range(now()->year, now()->year - 4))
+            ->map(function ($year) {
+                return [
+                    'value' => toReiwaYear($year),
+                    'label' => toReiwaYear($year) . " / " . $year,
+                ];
+            })->values();
         if ($this->isUploadAttachment) {
             $this->gensenFormId = Crypt::decrypt($this->gensenFormId);
             $this->authorized = true;

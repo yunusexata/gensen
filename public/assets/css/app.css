@@ -1073,6 +1073,10 @@ video {
   width: 350px;
 }
 
+.w-\[400px\] {
+  width: 400px;
+}
+
 .w-\[60px\] {
   width: 60px;
 }
@@ -1097,8 +1101,8 @@ video {
   width: 100%;
 }
 
-.w-\[400px\] {
-  width: 400px;
+.w-auto {
+  width: auto;
 }
 
 .min-w-\[200px\] {

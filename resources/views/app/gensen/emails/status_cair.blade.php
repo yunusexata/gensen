@@ -102,7 +102,7 @@
             <div class="signature">
                 Otsukaresamadeshita. Arigatou gozaimashita.<br><br>
                 <strong>Best Regards,</strong><br>
-                <span style="color: #1a2a6c; font-weight: bold;">{{ $form->getPicAttribute()->name }}</span><br>
+                <span style="color: #1a2a6c; font-weight: bold;">{{ $form->getPicAttribute()->name }} Exata</span><br>
                 Exata Indonesia
             </div>
         </div>

@@ -104,7 +104,7 @@
             <div class="signature">
                 Terima kasih atas kerja sama dan kepercayaan Anda.<br><br>
                 Best Regards,<br>
-                <strong>{{ $form->getPicAttribute()->name }}</strong><br>
+                <strong>{{ $form->getPicAttribute()->name }} Exata</strong><br>
                 Exata Indonesia
             </div>
 

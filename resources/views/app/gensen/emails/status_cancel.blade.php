@@ -102,7 +102,7 @@
 
             <div class="signature">
                 Hormat kami,<br><br>
-                <strong>{{ $form->getPicAttribute()->name }}</strong><br>
+                <strong>{{ $form->getPicAttribute()->name }} Exata</strong><br>
                 Exata Indonesia
             </div>
 
