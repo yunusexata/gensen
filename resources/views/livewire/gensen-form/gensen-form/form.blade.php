@@ -290,7 +290,7 @@
                                                             <input
                                                                 class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('gensen_form_details.' . $index_form_detail . '.tahun_gensen') is-invalid border border-red-500 @enderror"
                                                                  wire:model="gensen_form_details.{{$index_form_detail}}.tahun_gensen"
-                                                                type="number" placeholder="7" />
+                                                                type="text" placeholder="7" />
         
                                                             @error('gensen_form_details.' . $index_form_detail . '.tahun_gensen')
                                                                 <div class="invalid-feedback">
