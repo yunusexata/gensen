@@ -659,7 +659,8 @@ class Form extends Component
                     'nomor_whatsapp_darurat' => $this->nomor_whatsapp_darurat,
                     'email' => $this->email,
                     'alamat_jepang' => $this->alamat_jepang,
-                    'kode_pos_jepang' => $this->kode_pos_jepang,
+                    // 'kode_pos_jepang' => $this->kode_pos_jepang,
+                    'kode_pos_jepang' => str_replace('-', '', $this->kode_pos_jepang),
                     'nama_lpk' => $this->nama_lpk,
 
                     // REK PENERIMA
