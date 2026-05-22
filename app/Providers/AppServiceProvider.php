@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
         });
         Blade::directive('fromReiwaToYear', function ($expression) {
             // return "<?php echo ($expression);";
-            return "<?php echo App\Helpers\GlobalHelper::fromReiwaToYear($expression); ?>";
+            return "<?php echo fromReiwaToYear($expression); ?>";
         });
         GensenForm::observe(GensenFormObserver::class);
     }
