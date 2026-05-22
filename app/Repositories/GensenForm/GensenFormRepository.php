@@ -207,7 +207,7 @@ class GensenFormRepository extends MasterDataRepository
         gfd.gensen_form_id,
 
         STRING_AGG(
-            gfd.tahun_gensen::text
+            gfd.tahun_gensen::text,
             ';'
             ORDER BY gfd.tahun_gensen
         ) AS tahun_gensen_details,
