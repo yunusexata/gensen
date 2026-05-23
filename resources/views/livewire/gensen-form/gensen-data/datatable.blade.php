@@ -369,8 +369,8 @@
                                                                                 Link upload
                                                                             </button>
                                                                         </div>
+                                                                    @endif
                                                                     
-                                                                    @if ($this->isCanUpdate)
                                                                 </div>
                                                                 <div class="row d-flex flex-nowrap gap-2 justify-content-center mt-2">
                                                                     @if ($this->isCanUpdate)
