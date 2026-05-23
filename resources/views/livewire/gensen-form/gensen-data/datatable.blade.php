@@ -341,29 +341,36 @@
                                                                             </button>
                                                                         </div>
                                                                     @endif
-                                                                    <div class="col-auto m-0 p-0">
-                                                                        <a href="{{route('gensen_data.attachment', ['id' => $editingData['id']])}}"
-                                                                            class="btn btn-primary btn-sm m-0">
-                                                                            <i class="ki-duotone ki-cube-2 text-sm">
-                                                                            <span class="path1"></span>
-                                                                            <span class="path2"></span>
-                                                                            <span class="path3"></span>
-                                                                            <span class="path4"></span>
-                                                                            <span class="path5"></span>
-                                                                            </i>
-                                                                            Lampiran
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="col-auto m-0 p-0">
-                                                                        <button onclick="copyToClipboard('{{route('gensen_form.upload_attachment', ['id' => $editingData['id']])}}')"
-                                                                            type="button" class="btn btn-info btn-sm m-0">
-                                                                            <i class="ki-duotone ki-fasten text-sm">
+                                                                    
+                                                                    @if ($this->isCanUpdate)
+                                                                        <div class="col-auto m-0 p-0">
+                                                                            <a href="{{route('gensen_data.attachment', ['id' => $editingData['id']])}}"
+                                                                                class="btn btn-primary btn-sm m-0">
+                                                                                <i class="ki-duotone ki-cube-2 text-sm">
                                                                                 <span class="path1"></span>
                                                                                 <span class="path2"></span>
-                                                                            </i>
-                                                                            Link upload
-                                                                        </button>
-                                                                    </div>
+                                                                                <span class="path3"></span>
+                                                                                <span class="path4"></span>
+                                                                                <span class="path5"></span>
+                                                                                </i>
+                                                                                Lampiran
+                                                                            </a>
+                                                                        </div>
+                                                                    @endif
+                                                                    
+                                                                    @if ($this->isCanUpdate)
+                                                                        <div class="col-auto m-0 p-0">
+                                                                            <button onclick="copyToClipboard('{{route('gensen_form.upload_attachment', ['id' => $editingData['id']])}}')"
+                                                                                type="button" class="btn btn-info btn-sm m-0">
+                                                                                <i class="ki-duotone ki-fasten text-sm">
+                                                                                    <span class="path1"></span>
+                                                                                    <span class="path2"></span>
+                                                                                </i>
+                                                                                Link upload
+                                                                            </button>
+                                                                        </div>
+                                                                    
+                                                                    @if ($this->isCanUpdate)
                                                                 </div>
                                                                 <div class="row d-flex flex-nowrap gap-2 justify-content-center mt-2">
                                                                     @if ($this->isCanUpdate)
