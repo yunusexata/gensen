@@ -24,6 +24,7 @@
     "test": "tests"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.106.1",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/forms": "^0.5.11",
     "asynckit": "^0.4.0",

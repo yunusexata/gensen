@@ -2468,45 +2468,89 @@
         .addEventListener('click', () => {
             if(cropper) cropper.rotate(rotateDegree);
         });
-        document.getElementById('cropBtn')
-        .addEventListener('click', () => {
-
-            if(!cropper) return;
-
-            const canvas = cropper.getCroppedCanvas({
-                maxWidth:1500,
-                maxHeight:1500,
-            });
-
-            canvas.toBlob(blob => {
-
-                const file = new File(
-                    [blob],
-                    'cropped.jpg',
-                    { type:'image/jpeg' }
-                );
-                @this.upload(
-                    'photo',
-                    file,
-                    () => {
-                        console.log('uploaded');
-                        // ✅ NOW file exists
-                        @this.call('store');
-                    },
-
-                    () => console.log('error'),
-
-                    (progress) => console.log(progress.detail.progress)
-                );
-
-            }, 'image/jpeg', 1);
-        });
     </script>
     @script
         <script>
             document.addEventListener('livewire:initialized', () => {
                 $wire.$set('onload', true);
                 $wire.getOnload();
+                
+                document.getElementById('cropBtn')
+                .addEventListener('click', () => {
+
+                    if(!cropper) return;
+
+                    const canvas = cropper.getCroppedCanvas({
+                        maxWidth:1500,
+                        maxHeight:1500,
+                    });
+
+                    canvas.toBlob(async (blob) => {
+                        if (!blob) return;
+
+                        const file = new File([blob], 'cropped.jpg', { type: 'image/jpeg' });
+                        const type = $wire.editedData['type']; 
+
+                        console.log(type)
+                        return;
+                        try {
+                            // ✅ Native, official JavaScript UUID generation (Matches Laravel's Str::uuid())
+                            const uuid = crypto.randomUUID();
+                            const storedName = `${uuid}.jpg`;
+
+                            const formId = @this.objId;
+
+                            const path = `gensen/${formId}/${previewTypeLabel}/${storedName}`;
+                            
+
+                            // Proceed to upload via your window.supabase instance...
+                            const { data, error } = await window.supabase.storage
+                                .from('gensen-exata')
+                                .upload(path, file, {
+                                    cacheControl: '3600',
+                                    upsert: true
+                                });
+
+                            if (error) throw new Error(error.message);
+
+                            // Pass metadata to Livewire
+                            const fileMetadata = {
+                                stored_name: storedName,
+                                file_size: file.size,
+                                extension: 'jpg',
+                                mime_type: 'image/jpeg',
+                                original_name: 'cropped.jpg'
+                            };
+
+                            @this.call('storeDirectMeta', fileMetadata);
+
+                        } catch (error) {
+                            console.error('Upload cycle error:', error);
+                        }
+                    }, 'image/jpeg', 1);
+                    // canvas.toBlob(blob => {
+
+                    //     const file = new File(
+                    //         [blob],
+                    //         'cropped.jpg',
+                    //         { type:'image/jpeg' }
+                    //     );
+                    //     @this.upload(
+                    //         'photo',
+                    //         file,
+                    //         () => {
+                    //             console.log('uploaded');
+                    //             // ✅ NOW file exists
+                    //             @this.call('store');
+                    //         },
+
+                    //         () => console.log('error'),
+
+                    //         (progress) => console.log(progress.detail.progress)
+                    //     );
+
+                    // }, 'image/jpeg', 1);
+                });
                 setTimeout(() => {
                     // updateSubstepDescription();
                     // showUploadedFilesSummary();
