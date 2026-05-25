@@ -23,6 +23,8 @@
     <div class="card">
         <div class="card-body">
             <livewire:dashboard.monthly-summary />
+        </div>
+        <div class="card-body">
             <livewire:dashboard.monthly-achiev-pic />
         </div>
     </div>
