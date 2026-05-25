@@ -2500,16 +2500,7 @@
 
                             const path = `gensen/${formId}/${type}/${storedName}`;
                             
-
-                            // Proceed to upload via your window.supabase instance...
-                            const { data, error } = await window.supabase.storage
-                                .from('gensen-exata')
-                                .upload(path, file, {
-                                    cacheControl: '3600',
-                                    upsert: true
-                                });
-
-                            if (error) throw new Error(error.message);
+                            uploadFileToSupabase(file);
 
                             // Pass metadata to Livewire
                             const fileMetadata = {
@@ -2520,7 +2511,7 @@
                                 original_name: 'cropped.jpg'
                             };
 
-                            @this.call('storeDirectMeta', fileMetadata);
+                            // @this.call('storeDirectMeta', fileMetadata);
 
                         } catch (error) {
                             console.error('Upload cycle error:', error);
@@ -2549,6 +2540,17 @@
 
                     // }, 'image/jpeg', 1);
                 });
+                
+                async function uploadFileToSupabase(file) {
+                    const { data, error } = await supabase.storage.from('gensen-exata').upload(path, file)
+                    if (error) {
+                        console.log('upload error');
+                        // Handle error
+                    } else {
+                        console.log('upload berhasil');
+                        // Handle success
+                    }
+                }
                 setTimeout(() => {
                     // updateSubstepDescription();
                     // showUploadedFilesSummary();
