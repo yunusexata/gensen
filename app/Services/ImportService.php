@@ -313,6 +313,12 @@ class ImportService
                     'status' => GensenForm::STATUS_MONDAI,
                     'keterangan' => $row['keterangan'],
                 ];
+            } elseif ($status === 'verified') {
+
+                $validatedData = [
+                    'status' => GensenForm::STATUS_VERIFIED,
+                    'keterangan' => $row['keterangan'],
+                ];
             }
 
             $validatedData = array_merge($validatedData, [
