@@ -74,7 +74,6 @@ class MonthlyAchievPic extends Component
     public function getData(): array
     {
         $monthlyData = DashboardRepository::transactionAchievementMonthly();
-        dd($monthlyData->toArray());
         $data = $this->formatChartData($monthlyData);
 
         return $data;
