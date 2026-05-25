@@ -28,7 +28,7 @@ class MonthlySummary extends Component
                     ],
                     'title' => [
                         'display' => true,
-                        'text' => 'Data Submission 1 Bulan Terakhir'
+                        'text' => 'Data Submission Bulan ' . now()->translatedFormat('F')
                     ]
                 ]
             ]
