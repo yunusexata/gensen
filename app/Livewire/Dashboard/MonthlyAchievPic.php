@@ -38,8 +38,7 @@ class MonthlyAchievPic extends Component
     protected function formatChartData($rows)
     {
         $dates = $rows
-            ->pluck('transaction_date')
-            ->map(fn($date) => \Carbon\Carbon::parse($date)->format('Y-m-d'))
+            ->pluck('pic_code')
             ->unique()
             ->sort()
             ->values();
@@ -49,14 +48,13 @@ class MonthlyAchievPic extends Component
         $datasets = $grouped->map(function ($items, $picCode) use ($dates) {
             // dd($picCode);
             $mapped = $items->keyBy(function ($item) {
-                return \Carbon\Carbon::parse($item->transaction_date)
-                    ->format('Y-m-d');
+                return $item->pic_code;
             });
 
             return [
                 'label' => $picCode,
                 'data' => $dates->map(function ($date) use ($mapped) {
-                    return $mapped[$date]->total ?? 0;
+                    return $mapped[$date]->total_transaction ?? 0;
                 })->values(),
 
                 'borderWidth' => 2,
@@ -75,7 +73,7 @@ class MonthlyAchievPic extends Component
 
     public function getData(): array
     {
-        $monthlyData = DashboardRepository::transactionMonthly();
+        $monthlyData = DashboardRepository::transactionAchievementMonthly();
         $data = $this->formatChartData($monthlyData);
 
         return $data;
