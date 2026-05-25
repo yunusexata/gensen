@@ -2485,62 +2485,62 @@
                         maxHeight:1500,
                     });
 
-                    canvas.toBlob(async (blob) => {
-                        if (!blob) return;
+                    // canvas.toBlob(async (blob) => {
+                    //     if (!blob) return;
 
-                        const file = new File([blob], 'cropped.jpg', { type: 'image/jpeg' });
-                        const type = $wire.editedData['type']; 
+                    //     const file = new File([blob], 'cropped.jpg', { type: 'image/jpeg' });
+                    //     const type = $wire.editedData['type']; 
 
-                        try {
-                            // ✅ Native, official JavaScript UUID generation (Matches Laravel's Str::uuid())
-                            const uuid = crypto.randomUUID();
-                            // const storedName = `${uuid}.jpg`;
+                    //     try {
+                    //         // ✅ Native, official JavaScript UUID generation (Matches Laravel's Str::uuid())
+                    //         const uuid = crypto.randomUUID();
+                    //         // const storedName = `${uuid}.jpg`;
 
-                            const formId = $wire.objId;
+                    //         const formId = $wire.objId;
 
-                            const target = await @this.getUploadTargetPath(type);
+                    //         const target = await @this.getUploadTargetPath(type);
 
-                            // const path = `gensen/${formId}/${type}/${storedName}`;
+                    //         // const path = `gensen/${formId}/${type}/${storedName}`;
                             
-                            uploadFileToSupabase(file, target.path);
+                    //         uploadFileToSupabase(file, target.path);
 
-                            // Pass metadata to Livewire
-                            const fileMetadata = {
-                                stored_name: target.stored_name,
-                                file_size: file.size,
-                                extension: 'jpg',
-                                mime_type: 'image/jpeg',
-                                original_name: 'cropped.jpg'
-                            };
+                    //         // Pass metadata to Livewire
+                    //         const fileMetadata = {
+                    //             stored_name: target.stored_name,
+                    //             file_size: file.size,
+                    //             extension: 'jpg',
+                    //             mime_type: 'image/jpeg',
+                    //             original_name: 'cropped.jpg'
+                    //         };
 
-                            // @this.call('storeDirectMeta', fileMetadata);
+                    //         // @this.call('storeDirectMeta', fileMetadata);
 
-                        } catch (error) {
-                            console.error('Upload cycle error:', error);
-                        }
-                    }, 'image/jpeg', 1);
-                    // canvas.toBlob(blob => {
-
-                    //     const file = new File(
-                    //         [blob],
-                    //         'cropped.jpg',
-                    //         { type:'image/jpeg' }
-                    //     );
-                    //     @this.upload(
-                    //         'photo',
-                    //         file,
-                    //         () => {
-                    //             console.log('uploaded');
-                    //             // ✅ NOW file exists
-                    //             @this.call('store');
-                    //         },
-
-                    //         () => console.log('error'),
-
-                    //         (progress) => console.log(progress.detail.progress)
-                    //     );
-
+                    //     } catch (error) {
+                    //         console.error('Upload cycle error:', error);
+                    //     }
                     // }, 'image/jpeg', 1);
+                    canvas.toBlob(blob => {
+
+                        const file = new File(
+                            [blob],
+                            'cropped.jpg',
+                            { type:'image/jpeg' }
+                        );
+                        @this.upload(
+                            'photo',
+                            file,
+                            () => {
+                                console.log('uploaded');
+                                // ✅ NOW file exists
+                                @this.call('store');
+                            },
+
+                            () => console.log('error'),
+
+                            (progress) => console.log(progress.detail.progress)
+                        );
+
+                    }, 'image/jpeg', 1);
                 });
                 
                 async function uploadFileToSupabase(file, path) {
