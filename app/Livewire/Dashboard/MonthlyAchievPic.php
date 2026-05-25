@@ -19,7 +19,7 @@ class MonthlyAchievPic extends Component
     public function getConfig(): array
     {
         return [
-            'type' => 'line',
+            'type' => 'bar',
             'options' => [
                 'responsive' => true,
                 'plugins' => [
