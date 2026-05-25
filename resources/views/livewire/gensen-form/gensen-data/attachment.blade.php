@@ -1,12 +1,13 @@
 
-<div class="">
-    <div>
-    {{-- <div wire:loading wire:target="submitChange"> --}}
-        <div class="position-absolute w-100 h-100">
+<div class="position-relative">
+    <div wire:loading wire:target="submitChange">
+        <div class="position-absolute w-100 h-100 z-[9999999999]">
             <div class="w-100 h-100" style="background-color: grey; opacity:0.2"></div>
         </div>
-        <h5 class="position-absolute shadow bg-white p-2 rounded"
-            style="top: 50%;left: 50%;transform: translate(-50%, -50%);">Loading...</h5>
+        <span class="position-absolute shadow bg-white p-[20px] rounded z-[9999999999] text-[50pt]"
+            style="top: 50%;left: 50%;transform: translate(-50%, -50%);">
+            Loading <i class="fa-solid fa-wand-magic-sparkles text-purple animate-wand" style="font-size:50px;"></i>
+        </span>
     </div>
     <div class="row">
         <div class="col-md-4 flex flex-col gap-2">
@@ -1877,6 +1878,7 @@
                                 @elseif($gensen_has_pending_ai_jobs)
                                     <div class="">
                                         <div class="btn text-white w-100" style="background-color: #5d2fc2; "> 
+                                            <span>
                                             Sedang Memproses <i class="fa-solid fa-wand-magic-sparkles text-white animate-wand"></i>
                                             </span>
                                         </div>
@@ -1884,6 +1886,7 @@
                                 @else
                                     <div class="">
                                         <div class="btn text-white w-100" style="background-color: #e5a54b; "> 
+                                            <span>
                                             Data belum diproses
                                             </span>
                                         </div>
@@ -2055,6 +2058,7 @@
                                 @elseif($seluruh_berkas_old['isJobProcess'] && ($seluruh_berkas_old['isJobProcess']->status == App\Enums\Gensen\JobStatus::PENDING || $seluruh_berkas_old['isJobProcess']->status == App\Enums\Gensen\JobStatus::PROCESSING))
                                 <div class="">
                                     <div class="btn text-white w-100" style="background-color: #5d2fc2; "> 
+                                        <span>
                                         Sedang Memproses <i class="fa-solid fa-wand-magic-sparkles text-white animate-wand"></i>
                                         </span>
                                     </div>
@@ -2090,6 +2094,7 @@
                                     
                                     <div class="">
                                         <div class="btn text-white w-100" style="background-color: #5d2fc2; "> 
+                                            <span>
                                             Sedang Memproses <i class="fa-solid fa-wand-magic-sparkles text-white animate-wand"></i>
                                             </span>
                                         </div>
