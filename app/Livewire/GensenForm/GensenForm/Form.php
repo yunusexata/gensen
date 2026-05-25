@@ -211,8 +211,10 @@ class Form extends Component
                 abort(404, 'Form Tidak Tersedia');
             }
             if ($form->expired_at && now()->greaterThan($form->expired_at)) {
-                GensenFormLinkRepository::update(
-                    Crypt::decrypt($this->objId),
+                GensenFormLinkRepository::updateBy(
+                    [
+                        ['token', $token]
+                    ],
                     ['status' => GensenFormLink::STATUS_EXPIRED]
                 );
                 abort(403, 'Form sudah expired');
