@@ -87,7 +87,7 @@ class Datatable extends Component
                     if ($this->isCanUpdate) {
                         $editUrl = route('gensen_form_link.edit', $id);
                         $editHtml = "<div class='col-auto'>
-                            <a type='button' href='$editUrl' class='p-0 hover:bg-error/10 text-primary rounded transition-colors' wire:click=\"showDeleteDialog($item->id)\">
+                            <a type='button' href='$editUrl' class='p-0 hover:bg-error/10 text-primary rounded transition-colors'>
                                 <span class='material-symbols-outlined text-lg' data-icon='edit'>edit</span>
                             </a>
                         </div>";
