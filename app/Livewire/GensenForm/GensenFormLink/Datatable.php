@@ -31,6 +31,8 @@ class Datatable extends Component
         $authUser = UserRepository::authenticatedUser();
         $this->isCanUpdate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_FORM_LINK, PermissionHelper::TYPE_UPDATE));
         $this->isCanDelete = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_FORM_LINK, PermissionHelper::TYPE_DELETE));
+        $this->sortBy = 'expired_at';
+        $this->sortDirection = 'DESC';
     }
 
     #[On('on-delete-dialog-confirm')]

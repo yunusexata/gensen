@@ -158,6 +158,7 @@ class ImportService
         return Validator::make($row, [
             // 'id_customer' => 'required|exists:gensen_forms,id_customer',
             'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
+            // 'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
             'nama_lengkap' => [
                 'required',
 
