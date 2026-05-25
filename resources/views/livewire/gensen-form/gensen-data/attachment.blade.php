@@ -1849,7 +1849,9 @@
                                                     <button type="button" data-bs-toggle="collapse" href="#collapse_remittance_groups_{{ $remittance['id'] }}" role="button" aria-expanded="false" aria-controls="#collapse_remittance_groups_{{ $remittance['id'] }}" 
                                                         class="w-full text-body-md font-body-md text-on-surface bg-surface p-2 border border-outline-variant rounded flex justify-between items-center opacity-70 m-0">
                                                         <span class="font-data-mono text-data-mono">@currency($remittance['total_amount']) - {{$remittance['currency']}}</span>
-                                                        <span class="material-symbols-outlined text-outline text-[16px]">check_circle</span>
+                                                        @if ($remittance['total_amount'] >= 380000)
+                                                            <span class="material-symbols-outlined text-outline text-[16px]">check_circle</span>
+                                                        @endif
                                                     </button >
                                                 </div>
                                                 <div id="collapse_remittance_groups_{{ $remittance['id'] }}" class="collapse" aria-labelledby="headingOne" wire:ignore>
