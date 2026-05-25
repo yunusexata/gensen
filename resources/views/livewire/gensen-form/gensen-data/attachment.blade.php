@@ -1,6 +1,6 @@
 
 <div class="position-relative">
-    <div wire:loading wire:target="submitChange, clickFile, handleCropper">
+    <div wire:loading wire:target="submitChange, clickFile">
         <div class="position-absolute w-100 h-100 z-[9999999999]">
             <div class="w-100 h-100" style="background-color: grey; opacity:0.2"></div>
         </div>
