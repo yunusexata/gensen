@@ -582,7 +582,7 @@ class Attachment extends Component
     public function store()
     {
         // consoleLog($this, 'store start');
-        $this->validate();
+        // $this->validate();
         try {
             DB::transaction(function () {
 
