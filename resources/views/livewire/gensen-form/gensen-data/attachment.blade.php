@@ -2531,7 +2531,7 @@
                         cropper = new Cropper(image, {
                         viewMode:0,
                         autoCropArea:1,
-                        responsive:true
+                        // responsive:true
                         });
                     // };
                     // cropper = new Cropper(image,{
