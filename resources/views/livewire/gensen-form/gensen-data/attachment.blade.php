@@ -895,13 +895,7 @@
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
                                                     <!-- Tag A (Download) -->
-                                                    <a 
-                                                        href="{{ $item['url'] }}"
-                                                        download=""
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">save</span>
-                                                    </a>
+                                                  
 
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
@@ -925,14 +919,7 @@
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
                                                     <!-- Tag A (Download) -->
-                                                    <a 
-                                                        href="{{ $item['url'] }}"
-                                                        download=""
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">save</span>
-                                                    </a>
-
+                                                
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
                                                         type="button"
@@ -1078,14 +1065,7 @@
                                                         <!-- Actions -->
                                                         <div class="absolute top-1 right-1 z-10">
                                                             <!-- Tag A (Download) -->
-                                                            <a 
-                                                                href="{{ $item['url'] }}"
-                                                                download=""
-                                                                class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                            >
-                                                                <span class="material-symbols-outlined text-xl">save</span>
-                                                            </a>
-
+                                                         
                                                             <!-- Tag Button (Delete) -->
                                                             <button 
                                                                 type="button"
@@ -1253,13 +1233,7 @@
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
                                                     <!-- Tag A (Download) -->
-                                                    <a 
-                                                        href="{{ $item['url'] }}"
-                                                        download=""
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">save</span>
-                                                    </a>
+                                                   
 
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
@@ -1283,13 +1257,7 @@
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
                                                     <!-- Tag A (Download) -->
-                                                    <a 
-                                                        href="{{ $item['url'] }}"
-                                                        download=""
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">save</span>
-                                                    </a>
+                                                   
 
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
@@ -1339,13 +1307,7 @@
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
                                                    <!-- Tag A (Download) -->
-                                                    <a 
-                                                        href="{{ $zairyou_card_front_old['url'] }}"
-                                                        download=""
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">save</span>
-                                                    </a>
+                                                  
 
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
@@ -1428,13 +1390,7 @@
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
                                                     <!-- Tag A (Download) -->
-                                                    <a 
-                                                        href="{{ $zairyou_card_back_old['url'] }}"
-                                                        download=""
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">save</span>
-                                                    </a>
+                                                 
 
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
@@ -1527,13 +1483,7 @@
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
                                                     <!-- Tag A (Download) -->
-                                                    <a 
-                                                        href="{{ $my_number_front_old['url'] }}"
-                                                        download=""
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">save</span>
-                                                    </a>
+                                                  
 
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
@@ -1620,13 +1570,7 @@
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
                                                     <!-- Tag A (Download) -->
-                                                    <a 
-                                                        href="{{ $my_number_back_old['url'] }}"
-                                                        download=""
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">save</span>
-                                                    </a>
+                                                 
 
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
@@ -1717,14 +1661,7 @@
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
                                                     <!-- Tag A (Download) -->
-                                                    <a 
-                                                        href="{{ $rekening_indonesia_old['url'] }}"
-                                                        download=""
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">save</span>
-                                                    </a>
-
+                                                   
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
                                                         type="button"
