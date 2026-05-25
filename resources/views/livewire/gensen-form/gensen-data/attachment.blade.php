@@ -883,7 +883,7 @@
                                                 <!-- Preview -->
                                                 <a wire:ignore
                                                     data-fslightbox="{{ $item['id'] }}"
-                                                    data-type="image"
+                                                    data-type="iframe"
                                                     href="#{{ $item['id'] }}"
                                                     class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
                                                 >
