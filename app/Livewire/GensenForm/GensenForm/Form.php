@@ -220,7 +220,7 @@ class Form extends Component
                 abort(403, 'Form sudah expired');
             }
             if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_CLOSED) {
-                abort(403, 'Form sudah expired');
+                abort(403, 'Form sudah Maksimal');
             }
             $this->password = $form->password;
         } catch (DecryptException $e) {

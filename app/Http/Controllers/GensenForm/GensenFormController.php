@@ -42,12 +42,28 @@ class GensenFormController extends Controller
     }
     public function form(Request $request)
     {
+        if (!$request->id) {
+            abort(404, 'Form Tidak Tersedia');
+        }
+
+        $token = simple_decrypt($request->id);
         $form = GensenFormLinkRepository::findBy([
-            ['token', simple_decrypt($request->id)],
-            ['status', GensenFormLink::STATUS_ACTIVE],
+            ['token', $token],
         ]);
         if (!$form) {
             abort(404, 'Form Tidak Tersedia');
+        }
+        if ($form->expired_at && now()->greaterThan($form->expired_at)) {
+            GensenFormLinkRepository::updateBy(
+                [
+                    ['token', $token]
+                ],
+                ['status' => GensenFormLink::STATUS_EXPIRED]
+            );
+            abort(403, "Form {$form['name']} sudah expired");
+        }
+        if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_CLOSED) {
+            abort(403, "Form {$form['name']} sudah Maksimal");
         }
         $title = "Access form - {$form['name']} | Exata Indonesia";
         return view('app.gensen-form.gensen-form.form', [
