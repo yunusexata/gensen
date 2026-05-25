@@ -21,14 +21,15 @@ class MonthlySummary extends Component
         return [
             'type' => 'line',
             'options' => [
+                'cubicInterpolationMode' => 'default',
                 'responsive' => true,
                 'plugins' => [
                     'legend' => [
-                        'position' => 'bottom',
+                        'position' => 'top',
                     ],
                     'title' => [
                         'display' => true,
-                        'text' => 'Grafik Transaksi 1 Bulan Terakhir'
+                        'text' => 'Data Submission 1 Bulan Terakhir'
                     ]
                 ]
             ]
@@ -79,20 +80,6 @@ class MonthlySummary extends Component
         $data = $this->formatChartData($monthlyData);
 
         return $data;
-        // dd($data);
-
-        // // dd($sortedData);
-        // // **Hasil Akhir untuk Chart.js**
-        // return [
-        //     'labels' => $sortedDates->values(),
-        //     'datasets' => [
-        //         [
-        //             'label' => 'Total Transaksi',
-        //             'data' => $sortedData->values(),
-        //             'borderColor' => '#fb70aa',
-        //         ]
-        //     ]
-        // ];
     }
 
     public function getView(): string
