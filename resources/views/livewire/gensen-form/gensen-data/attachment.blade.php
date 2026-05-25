@@ -1,5 +1,13 @@
 
 <div class="">
+    <div>
+    {{-- <div wire:loading wire:target="submitChange"> --}}
+        <div class="position-absolute w-100 h-100">
+            <div class="w-100 h-100" style="background-color: grey; opacity:0.2"></div>
+        </div>
+        <h5 class="position-absolute shadow bg-white p-2 rounded"
+            style="top: 50%;left: 50%;transform: translate(-50%, -50%);">Loading...</h5>
+    </div>
     <div class="row">
         <div class="col-md-4 flex flex-col gap-2">
             <label class="font-label text-xs font-medium text-on-surface-variant" for="nama_bank_penerima">Nama lengkap</label>
