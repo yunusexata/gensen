@@ -596,6 +596,19 @@ class Attachment extends Component
         ];
     }
 
+    public function getUploadTargetPath($type)
+    {
+        $formId = Crypt::decrypt($this->objId);
+        $type = GensenAttachmentType::fromLabel($type);
+
+        $storedName = Str::uuid() . '.jpg';
+
+        return [
+            'path' => "gensen/{$formId}/{$type->value}/{$storedName}",
+            'stored_name' => $storedName
+        ];
+    }
+
     public function store()
     {
         // consoleLog($this, 'store start');

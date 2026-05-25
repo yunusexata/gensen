@@ -2494,17 +2494,19 @@
                         try {
                             // ✅ Native, official JavaScript UUID generation (Matches Laravel's Str::uuid())
                             const uuid = crypto.randomUUID();
-                            const storedName = `${uuid}.jpg`;
+                            // const storedName = `${uuid}.jpg`;
 
                             const formId = $wire.objId;
 
-                            const path = `gensen/${formId}/${type}/${storedName}`;
+                            const target = await @this.getUploadTargetPath(type);
+
+                            // const path = `gensen/${formId}/${type}/${storedName}`;
                             
-                            uploadFileToSupabase(file, path);
+                            uploadFileToSupabase(file, target.path);
 
                             // Pass metadata to Livewire
                             const fileMetadata = {
-                                stored_name: storedName,
+                                stored_name: target.stored_name,
                                 file_size: file.size,
                                 extension: 'jpg',
                                 mime_type: 'image/jpeg',
