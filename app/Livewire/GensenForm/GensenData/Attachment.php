@@ -503,10 +503,11 @@ class Attachment extends Component
         ]));
 
         // Generate the clean URL
-        $url = route('preview.crop.image', [
-            'disk' => $attachmentData['disk'],
-            'payload' => $payload
-        ]);
+        // $url = route('preview.crop.image', [
+        //     'disk' => $attachmentData['disk'],
+        //     'payload' => $payload
+        // ]);
+        $url = 'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $attachmentData['path'];
         // $url = Storage::disk($attachmentData['disk'])->temporaryUrl(
         //     $attachmentData['path'],
         //     now()->addMinutes(15)
