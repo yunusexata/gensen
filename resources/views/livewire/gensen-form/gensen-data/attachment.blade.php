@@ -2491,16 +2491,14 @@
                         const file = new File([blob], 'cropped.jpg', { type: 'image/jpeg' });
                         const type = $wire.editedData['type']; 
 
-                        console.log(type)
-                        return;
                         try {
                             // ✅ Native, official JavaScript UUID generation (Matches Laravel's Str::uuid())
                             const uuid = crypto.randomUUID();
                             const storedName = `${uuid}.jpg`;
 
-                            const formId = @this.objId;
+                            const formId = $wire.objId;
 
-                            const path = `gensen/${formId}/${previewTypeLabel}/${storedName}`;
+                            const path = `gensen/${formId}/${type}/${storedName}`;
                             
 
                             // Proceed to upload via your window.supabase instance...
