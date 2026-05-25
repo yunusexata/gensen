@@ -33,4 +33,22 @@ class DashboardRepository extends MasterDataRepository
             ->orderBy('transaction_date')
             ->get();
     }
+
+    public static function transactionAchievementMonthly(?Carbon $month = null)
+    {
+        $month ??= now();
+
+        return GensenForm::query()
+            ->selectRaw("
+            pic_code,
+            COUNT(*) as total_transaction
+        ")
+            ->whereBetween('created_at', [
+                $month->copy()->startOfMonth(),
+                $month->copy()->endOfMonth(),
+            ])
+            ->groupBy('pic_code')
+            ->orderByDesc('total_transaction')
+            ->get();
+    }
 }
