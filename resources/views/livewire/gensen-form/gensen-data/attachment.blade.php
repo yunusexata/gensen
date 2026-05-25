@@ -884,7 +884,7 @@
                                                 <a wire:ignore
                                                     data-fslightbox="{{ $item['id'] }}"
                                                     data-type="image"
-                                                    href="#{{ $item['url'] }}"
+                                                    href="#{{ $item['id'] }}"
                                                     class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
                                                 >
                                                     <img
