@@ -220,7 +220,7 @@
                                             
                                             x-ref="input"
                                             {{-- wire:model="zairyou_card_front" --}}
-                                            @change="handleFiles"
+                                            {{-- @change="handleFiles" --}}
                                             accept="image/jpeg, image/png"
                                             class="position-absolute invisible"/>
                                             <label class="cursor-pointer flex flex-col items-center gap-3" for="zairyou_card_front">
@@ -344,7 +344,7 @@
                                             
                                             x-ref="input"
                                             {{-- wire:model="zairyou_card_back" --}}
-                                            @change="handleFiles"
+                                            {{-- @change="handleFiles" --}}
                                             accept="image/jpeg, image/png"
                                             class="position-absolute invisible"/>
                                             <label class="cursor-pointer flex flex-col items-center gap-3" for="zairyou_card_back">
@@ -467,7 +467,7 @@
                                             
                                             x-ref="input"
                                             {{-- wire:model="my_number_front" --}}
-                                            @change="handleFiles"
+                                            {{-- @change="handleFiles" --}}
                                             accept="image/jpeg, image/png"
                                             class="position-absolute invisible"/>
                                             <label class="cursor-pointer flex flex-col items-center gap-3" for="my_number_front">
@@ -594,7 +594,7 @@
                                             
                                             x-ref="input"
                                             {{-- wire:model="my_number_back" --}}
-                                            @change="handleFiles"
+                                            {{-- @change="handleFiles" --}}
                                             accept="image/jpeg, image/png"
                                             class="position-absolute invisible"/>
                                             <label class="cursor-pointer flex flex-col items-center gap-3" for="my_number_back">
@@ -717,7 +717,7 @@
                                             
                                             x-ref="input"
                                             {{-- wire:model="rekening_indonesia" --}}
-                                            @change="handleFiles"
+                                            {{-- @change="handleFiles" --}}
                                             accept="image/jpeg, image/png"
                                             class="position-absolute invisible"/>
                                             <label class="cursor-pointer flex flex-col items-center gap-3" for="rekening_indonesia">
@@ -832,7 +832,7 @@
                                     multiple
                                     x-ref="input"
                                     wire:model="kertas_gensen"
-                                    @change="handleFiles"
+                                    {{-- @change="handleFiles" --}}
                                     accept="application/pdf, image/jpeg, image/png"
                                     class="position-absolute invisible" />
                             </div>
@@ -1002,7 +1002,7 @@
                                                     multiple
                                                     x-ref="input"
                                                     wire:model="rekap_pengiriman_uang.{{$rekap_index}}.file"
-                                                    @change="handleFiles"
+                                                    {{-- @change="handleFiles" --}}
                                                     accept="application/pdf"
                                                     class="position-absolute invisible" />
                                                 <select class="form-select w-75 m-auto text-center" wire:model.live="rekap_pengiriman_uang.{{$rekap_index}}.remittance_type">
@@ -1159,7 +1159,7 @@
                                     multiple
                                     x-ref="input"
                                     wire:model="kartu_keluarga"
-                                    @change="handleFiles"
+                                    {{-- @change="handleFiles" --}}
                                     accept="application/pdf, image/jpeg, image/png"
                                     class="position-absolute invisible" />
                             </div>
@@ -1385,7 +1385,7 @@
                                                 type="file"
                                                 x-ref="input"
                                                 {{-- wire:model="zairyou_card_front" --}}
-                                                @change="handleFiles"
+                                                {{-- @change="handleFiles" --}}
                                                 accept="application/pdf, image/jpeg, image/png"
                                                 class="position-absolute invisible" />
                                         </div>
@@ -1468,7 +1468,7 @@
                                                 type="file"
                                                 x-ref="input"
                                                 {{-- wire:model="zairyou_card_back" --}}
-                                                @change="handleFiles"
+                                                {{-- @change="handleFiles" --}}
                                                 accept="application/pdf, image/jpeg, image/png"
                                                 class="position-absolute invisible" />
                                         </div>
@@ -1565,7 +1565,7 @@
                                                 type="file"
                                                 x-ref="input"
                                                 {{-- wire:model="my_number_front" --}}
-                                                @change="handleFiles"
+                                                {{-- @change="handleFiles" --}}
                                                 accept="application/pdf, image/jpeg, image/png"
                                                 class="position-absolute invisible" />
                                         </div>
@@ -1648,7 +1648,7 @@
                                                 type="file"
                                                 x-ref="input"
                                                 {{-- wire:model="my_number_back" --}}
-                                                @change="handleFiles"
+                                                {{-- @change="handleFiles" --}}
                                                 accept="application/pdf, image/jpeg, image/png"
                                                 class="position-absolute invisible" />
                                         </div>
@@ -1744,7 +1744,7 @@
                                                 type="file"
                                                 x-ref="input"
                                                 {{-- wire:model="rekening_indonesia" --}}
-                                                @change="handleFiles"
+                                                {{-- @change="handleFiles" --}}
                                                 accept="image/jpeg, image/png"
                                                 class="position-absolute invisible" />
                                         </div>
