@@ -55,7 +55,6 @@ class MonthlySummary extends Component
 
             return [
                 'label' => $picCode,
-
                 'data' => $dates->map(function ($date) use ($mapped) {
                     return $mapped[$date]->total ?? 0;
                 })->values(),
