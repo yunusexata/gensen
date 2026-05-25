@@ -24,6 +24,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
@@ -503,10 +504,36 @@ class Attachment extends Component
         ]));
 
         // Generate the clean URL
-        $url = route('preview.crop.image', [
-            'disk' => $attachmentData['disk'],
-            'payload' => $payload
+        // $url = route('preview.crop.image', [
+        //     'disk' => $attachmentData['disk'],
+        //     'payload' => $payload
+        // ]);
+        // $url = Storage::disk($attachmentData['disk'])->temporaryUrl(
+        //     $attachmentData['path'],
+        //     now()->addMinutes(15)
+        // );
+        $supabaseUrl = env('SUPABASE_PUBLIC_URL');
+
+        // 1. Ask Supabase API for a native signed URL (expires in 600 seconds / 10 mins)
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('SUPABASE_ACCESS_KEY_ID'),
+            'apikey' => env('SUPABASE_SECRET_ACCESS_KEY'),
+        ])->post("{$supabaseUrl}/{$attachmentData['path']}", [
+            'expiresIn' => 600
         ]);
+
+        dd($response);
+        if ($response->successful()) {
+            // 2. The API returns a relative path like "/storage/v1/object/sign/..."
+            // We must append it to the base URL
+            $signedPath = $response->json('signedURL');
+            $directUrl = $supabaseUrl . $signedPath;
+
+            // 3. Dispatch the URL to Cropper.js
+            $this->dispatch('handleCropper', [
+                'url' => $directUrl
+            ]);
+        }
         // $disk = Storage::disk('supabase');
         // $url = $disk->temporaryUrl(
         //     $path,

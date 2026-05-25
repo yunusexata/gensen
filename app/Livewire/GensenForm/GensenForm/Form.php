@@ -205,7 +205,6 @@ class Form extends Component
             }
             $form = GensenFormLinkRepository::findBy([
                 ['token', $token],
-                ['status', GensenFormLink::STATUS_ACTIVE],
             ]);
             if (!$form) {
                 abort(403, 'Form Tidak Tersedia');
@@ -217,10 +216,10 @@ class Form extends Component
                     ],
                     ['status' => GensenFormLink::STATUS_EXPIRED]
                 );
-                abort(403, 'Form sudah expired');
+                abort(403, "Form {$form['name']} sudah expired");
             }
             if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_CLOSED) {
-                abort(403, 'Form sudah Maksimal');
+                abort(403, "Form {$form['name']} sudah Maksimal");
             }
             $this->password = $form->password;
         } catch (DecryptException $e) {
