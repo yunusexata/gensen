@@ -75,11 +75,19 @@ class GensenFormLink extends Model
             ) {
                 $model->status = self::STATUS_ACTIVE;
             }
+
             if (
                 $model->isDirty('max_usage') &&
                 $model->used_count < $model->max_usage
             ) {
                 $model->status = self::STATUS_ACTIVE;
+            }
+
+            if (
+                $model->isDirty('max_usage') &&
+                $model->used_count >= $model->max_usage
+            ) {
+                $model->status = self::STATUS_CLOSED;
             }
         });
     }
