@@ -21,7 +21,7 @@ class MonthlySummary extends Component
         return [
             'type' => 'line',
             'options' => [
-                'cubicInterpolationMode' => 'default',
+                'cubicInterpolationMode' => 'monotone',
                 'responsive' => true,
                 'plugins' => [
                     'legend' => [
