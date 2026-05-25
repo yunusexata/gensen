@@ -2500,7 +2500,7 @@
 
                             const path = `gensen/${formId}/${type}/${storedName}`;
                             
-                            uploadFileToSupabase(file);
+                            uploadFileToSupabase(file, path);
 
                             // Pass metadata to Livewire
                             const fileMetadata = {
@@ -2541,7 +2541,7 @@
                     // }, 'image/jpeg', 1);
                 });
                 
-                async function uploadFileToSupabase(file) {
+                async function uploadFileToSupabase(file, path) {
                     const { data, error } = await window.supabase.storage.from('gensen-exata').upload(path, file)
                     if (error) {
                         console.log('upload error');
