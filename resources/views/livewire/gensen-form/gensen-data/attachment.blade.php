@@ -2542,7 +2542,7 @@
                 });
                 
                 async function uploadFileToSupabase(file) {
-                    const { data, error } = await supabase.storage.from('gensen-exata').upload(path, file)
+                    const { data, error } = await window.supabase.storage.from('gensen-exata').upload(path, file)
                     if (error) {
                         console.log('upload error');
                         // Handle error
