@@ -26,6 +26,7 @@ class DashboardRepository extends MasterDataRepository
             COUNT(*) as total
         ")
             ->whereBetween('created_at', [$start, $end])
+            ->whereNotNull('pic_code')
             ->groupByRaw("
             DATE(created_at),
             pic_code
@@ -47,6 +48,7 @@ class DashboardRepository extends MasterDataRepository
                 $month->copy()->startOfMonth(),
                 $month->copy()->endOfMonth(),
             ])
+            ->whereNotNull('pic_code')
             ->groupBy('pic_code')
             ->orderByDesc('total_transaction')
             ->get();
