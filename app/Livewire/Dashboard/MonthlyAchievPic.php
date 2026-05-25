@@ -28,7 +28,7 @@ class MonthlyAchievPic extends Component
                     ],
                     'title' => [
                         'display' => true,
-                        'text' => 'Data Achievement Bulan ' . now()->format('F')
+                        'text' => 'Data Achievement Bulan ' . now()->translatedFormat('F')
                     ]
                 ]
             ]
