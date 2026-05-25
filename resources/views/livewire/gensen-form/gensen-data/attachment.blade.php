@@ -883,7 +883,8 @@
                                                 <!-- Preview -->
                                                 <a wire:ignore
                                                     data-fslightbox="{{ $item['id'] }}"
-                                                    href="{{ $item['url'] }}"
+                                                    data-type="image"
+                                                    href="#{{ $item['url'] }}"
                                                     class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
                                                 >
                                                     <img
@@ -891,17 +892,26 @@
                                                         class="w-full h-full object-cover"
                                                     >
                                                 </a>
+                                                <div style="position:absolute; left:-9999px; top:-9999px;">
+                                                    <iframe
+                                                        src="{{$item['url']}}"
+                                                        id="{{$item['id']}}"
+                                                        width="1920"
+                                                        height="1080"
+                                                        frameborder="0"
+                                                    ></iframe>
+                                                </div>
 
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
                                                     <!-- Tag A (Download) -->
-                                                    <a 
+                                                    {{-- <a 
                                                         href="{{ $item['url'] }}"
                                                         download=""
                                                         class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
                                                     >
                                                         <span class="material-symbols-outlined text-xl">save</span>
-                                                    </a>
+                                                    </a> --}}
 
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
