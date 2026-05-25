@@ -21,7 +21,6 @@ class MonthlySummary extends Component
         return [
             'type' => 'line',
             'options' => [
-                'cubicInterpolationMode' => 'monotone',
                 'responsive' => true,
                 'plugins' => [
                     'legend' => [
@@ -61,7 +60,7 @@ class MonthlySummary extends Component
                 })->values(),
 
                 'borderWidth' => 2,
-                'tension' => 0.3,
+                'tension' => 0.1,
 
                 // optional styling
                 'fill' => false,
