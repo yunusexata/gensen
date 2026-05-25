@@ -54,7 +54,7 @@ class MonthlyAchievPic extends Component
             return [
                 'label' => $picCode,
                 'data' => $dates->map(function ($date) use ($mapped) {
-                    return $mapped[$date]->total ?? 0;
+                    return $mapped[$date]->total_transaction ?? 0;
                 })->values(),
 
                 'borderWidth' => 2,
