@@ -45,6 +45,7 @@ class BulkUpdateGensenNoInputJepangModal extends Component
                 'tanggal_lengkap' => $row['tanggal_lengkap'],
                 'tanggal_verified' => $row['tanggal_verified'],
                 'no_input_jepang' => $row['no_input_jepang'],
+                'status' => $row['status'],
                 'keterangan' => $row['keterangan'],
                 'tahun_gensen' => $row['tahun_gensen'],
                 'nominal_gensen' => $row['nominal_gensen'],
@@ -57,6 +58,7 @@ class BulkUpdateGensenNoInputJepangModal extends Component
                 'tanggal_lengkap' => 'required',
                 'tanggal_verified' => 'required',
                 'no_input_jepang' => 'required',
+                'status' => 'required',
             ], [
                 'id_customer.required' => 'Id customer harus di isi',
                 'id_customer.exists' => 'Id customer tidak terdaftar',
@@ -65,6 +67,7 @@ class BulkUpdateGensenNoInputJepangModal extends Component
                 'tanggal_lengkap.required' => 'Tanggal lengkap harus di isi',
                 'tanggal_verified.required' => 'Tanggal verified harus di isi',
                 'no_input_jepang.required' => 'No input Jepang harus di isi',
+                'status.required' => 'Status harus di isi',
             ]);
 
             $this->previewBulkStatusRows[] = [

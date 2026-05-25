@@ -39,6 +39,7 @@
                                                     <th>Tanggal Lengkap</th>
                                                     <th>Tanggal Verified</th>
                                                     <th>No Input Jepang/Status</th>
+                                                    <th>Status</th>
                                                     <th>Keterangan</th>
                                                     <th>Tahun Gensen</th>
                                                     <th>Nominal Gensen</th>
@@ -60,6 +61,7 @@
                                                                 <td>{{ $row['data']['tanggal_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_verified'] }}</td>
                                                                 <td>{{ $row['data']['no_input_jepang'] }}</td>
+                                                                <td>{{ $row['data']['status'] }}</td>
                                                                 <td>{{ $row['data']['keterangan'] }}</td>
                                                                 <td>{{ $row['data']['tahun_gensen'] }} / 
                                                                      @fromReiwaToYear($row['data']['tahun_gensen'])</td>
@@ -85,6 +87,7 @@
                                                     <th>Tanggal Lengkap</th>
                                                     <th>Tanggal Verified</th>
                                                     <th>No Input Jepang/Status</th>
+                                                    <th>Status</th>
                                                     <th>Keterangan</th>
                                                     <th>Tahun Gensen</th>
                                                     <th>Nominal Gensen</th>
@@ -107,6 +110,7 @@
                                                                 <td>{{ $row['data']['tanggal_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_verified'] }}</td>
                                                                 <td>{{ $row['data']['no_input_jepang'] }}</td>
+                                                                <td>{{ $row['data']['status'] }}</td>
                                                                 <td>{{ $row['data']['keterangan'] }}</td>
                                                                 <td>{{ $row['data']['tahun_gensen'] }} / 
                                                                      @fromReiwaToYear($row['data']['tahun_gensen'])</td>

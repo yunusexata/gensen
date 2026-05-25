@@ -106,6 +106,7 @@ class ImportService
             'tanggal_lengkap' => 'required',
             'tanggal_verified' => 'required',
             'no_input_jepang' => 'required',
+            'status' => 'required',
         ], [
             'id_customer.required' => 'Id customer harus di isi',
             'id_customer.exists' => 'Id customer tidak terdaftar',
@@ -118,6 +119,8 @@ class ImportService
             'tanggal_verified.required' => 'Tanggal verified harus di isi',
 
             'no_input_jepang.required' => 'No input Jepang harus di isi',
+
+            'status.required' => 'Status harus di isi',
         ]);
     }
     private function validateListDataDalamPengajuan(array $row)
@@ -289,7 +292,7 @@ class ImportService
             $validatedData = [];
 
             $status = Str::lower(
-                trim($row['no_input_jepang'])
+                trim($row['status'])
             );
 
             if ($status === 'cancel') {
@@ -310,12 +313,11 @@ class ImportService
                     'status' => GensenForm::STATUS_MONDAI,
                     'keterangan' => $row['keterangan'],
                 ];
-            } else {
-
-                $validatedData = [
-                    'no_input_jepang' => $row['no_input_jepang'],
-                ];
             }
+
+            $validatedData = [
+                'no_input_jepang' => $row['no_input_jepang'],
+            ];
 
             $updated = GensenFormRepository::updateBy([
                 ['id_customer', $row['id_customer']],
