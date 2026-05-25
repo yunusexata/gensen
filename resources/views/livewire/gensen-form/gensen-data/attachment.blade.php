@@ -892,15 +892,6 @@
                                                         class="w-full h-full object-cover"
                                                     >
                                                 </a>
-                                                <div style="position:absolute; left:-9999px; top:-9999px;">
-                                                    <iframe
-                                                        src="{{$item['url']}}"
-                                                        id="{{$item['id']}}"
-                                                        width="1920"
-                                                        height="1080"
-                                                        frameborder="0"
-                                                    ></iframe>
-                                                </div>
 
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
@@ -921,6 +912,16 @@
                                                     >
                                                         <span class="material-symbols-outlined text-xl">delete</span>
                                                     </button>
+                                                </div>
+                                                
+                                                <div style="position:absolute; left:-9999px; top:-9999px;">
+                                                    <iframe
+                                                        src="{{$item['url']}}"
+                                                        id="{{$item['id']}}"
+                                                        width="1920"
+                                                        height="1080"
+                                                        frameborder="0"
+                                                    ></iframe>
                                                 </div>
 
                                             </div>
