@@ -38,8 +38,7 @@ class MonthlyAchievPic extends Component
     protected function formatChartData($rows)
     {
         $dates = $rows
-            ->pluck('transaction_date')
-            ->map(fn($date) => \Carbon\Carbon::parse($date)->format('Y-m-d'))
+            ->pluck('pic_code')
             ->unique()
             ->sort()
             ->values();
