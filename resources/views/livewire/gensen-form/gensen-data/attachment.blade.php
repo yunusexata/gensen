@@ -25,8 +25,18 @@
     </div>
     <div class="flex-md-row rounded border md:p-10">
         <ul class="nav nav-tabs nav-line-tabs nav-line-tabs-2x mb-5 fs-6" wire:ignore>
+            
             <li class="nav-item mx-auto mb-md-2 md:w-[22%]" role="presentation">
-                <a class="nav-link m-0 btn btn-flex btn-success text-dark btn-active-light-success active:text-black active w-full" data-bs-toggle="tab" href="#kt_vtab_pane_1" aria-selected="true" role="tab">
+                <a class="nav-link m-0 btn btn-flex btn-success text-dark btn-active-light-success active:text-black w-full active" data-bs-toggle="tab" href="#kt_vtab_pane_2" aria-selected="false" role="tab">
+                    <div class="d-flex w-full flex-column align-items-center">
+                        <span class="text-center fs-4 fw-bold">Import Page</span>
+                        <span class="text-center fs-7">Import lampiran Berkas</span>
+                    </div>
+                </a>
+            </li>
+
+            <li class="nav-item mx-auto mb-md-2 md:w-[22%]" role="presentation">
+                <a class="nav-link m-0 btn btn-flex btn-warning text-dark btn-active-light-warning w-full" data-bs-toggle="tab" href="#kt_vtab_pane_1" aria-selected="true" role="tab">
                     <div class="d-flex w-full flex-column align-items-center">
                         <span class="text-center fs-4 fw-bold">Edit Page</span>
                         <span class="text-center fs-7">Edit dan sesuaikan file lampiran</span>
@@ -34,14 +44,6 @@
                 </a>
             </li>
             
-            <li class="nav-item mx-auto mb-md-2 md:w-[22%]" role="presentation">
-                <a class="nav-link m-0 btn btn-flex btn-warning text-dark btn-active-light-warning w-full" data-bs-toggle="tab" href="#kt_vtab_pane_2" aria-selected="false" role="tab">
-                    <div class="d-flex w-full flex-column align-items-center">
-                        <span class="text-center fs-4 fw-bold">Import Page</span>
-                        <span class="text-center fs-7">Import lampiran Berkas</span>
-                    </div>
-                </a>
-            </li>
             
             <li class="nav-item mx-auto mb-md-2 md:w-[22%]" role="presentation">
                 <a class="nav-link m-0 btn btn-flex btn-success text-dark btn-active-light-success w-full" data-bs-toggle="tab" href="#kt_vtab_pane_3" aria-selected="false" role="tab">
@@ -84,7 +86,7 @@
             </div>
          </header>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade active show" id="kt_vtab_pane_1" role="tabpanel" wire:ignore.self>
+            <div class="tab-pane fade" id="kt_vtab_pane_1" role="tabpanel" wire:ignore.self>
                 
                 <main class="flex-1 flex flex-col md:flex-row bg-background overflow-hidden">
                     <!-- Center: Image Previewer -->
@@ -483,11 +485,11 @@
                                                     if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
                                                         $url = $my_number_front->temporaryUrl();
                                                         // $url = route('preview.temp.image', $my_number_front->getFileName());
-    //                                                     $fullPath = $my_number_front->getRealPath();
-    // $relativePath = Str::after($fullPath, 'livewire-tmp/');
+                                                                //                                                     $fullPath = $my_number_front->getRealPath();
+                                                                // $relativePath = Str::after($fullPath, 'livewire-tmp/');
 
-    // $url = route('preview.temp.file', $relativePath);
-    $filename = $my_number_front->getClientOriginalName();
+                                                                // $url = route('preview.temp.file', $relativePath);
+                                                                $filename = $my_number_front->getClientOriginalName();
                                                     }elseif(in_array($ext, ['pdf'])){
                                                         $url = route('preview.temp.pdf', $my_number_front->getFileName());
                                                         $filename = $my_number_front->getClientOriginalName();
@@ -779,7 +781,7 @@
                     </aside>
                 </main>
             </div>
-            <div class="tab-pane fade" id="kt_vtab_pane_2" role="tabpanel" wire:ignore.self>
+            <div class="tab-pane fade active show" id="kt_vtab_pane_2" role="tabpanel" wire:ignore.self>
                 <!-- Main Workspace Container -->
                 <main class="min-h-screen pb-xl rounded-lg">
                     

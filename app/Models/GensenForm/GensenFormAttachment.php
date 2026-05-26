@@ -146,10 +146,10 @@ class GensenFormAttachment extends Model
         });
         self::created(function ($model) {
 
-            $try = GensenFormAttachmentHistory::create([
-                'gensen_form_id' => $model->gensen_form_id,
-                'gensen_form_attachment_id' => $model->id,
-            ]);
+            // $try = GensenFormAttachmentHistory::create([
+            //     'gensen_form_id' => $model->gensen_form_id,
+            //     'gensen_form_attachment_id' => $model->id,
+            // ]);
         });
     }
 

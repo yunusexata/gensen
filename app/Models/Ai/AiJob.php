@@ -102,6 +102,7 @@ class AiJob extends Model
                     });
 
                 ConvertPdfToImagesJob::dispatch(
+                    self::class,
                     $model
                 )->onQueue('default');
             }

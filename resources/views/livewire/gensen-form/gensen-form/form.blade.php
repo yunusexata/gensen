@@ -48,8 +48,8 @@
 
                 <!--end::Step 1-->
                 <!--begin::Step 4-->
-                <div class="stepper-item  w-full md:w-auto mx-8 my-4 {{ $isUploadAttachment ? 'current' : '' }}"
-                    data-kt-stepper-element="nav" data-kt-stepper-action="step" wire:ignore.self>
+                <div class="stepper-item  w-full md:w-auto mx-8 my-4" data-kt-stepper-element="nav"
+                    data-kt-stepper-action="step" wire:ignore.self>
                     <!--begin::Wrapper-->
                     <div
                         class="stepper-wrapper w-full d-flex align-items-center border border-primary rounded p-3 border-dashed">
@@ -64,34 +64,6 @@
                         <div class="stepper-label">
                             <h3 class="stepper-title">
                                 Step 2
-                            </h3>
-
-                            <div class="stepper-desc fw-bold">
-                                Contoh Berkas
-                            </div>
-                        </div>
-                        <!--end::Label-->
-                    </div>
-                    <!--end::Wrapper-->
-                </div>
-                <!--end::Step 4-->
-                <!--begin::Step 4-->
-                <div class="stepper-item  w-full md:w-auto mx-8 my-4" data-kt-stepper-element="nav"
-                    data-kt-stepper-action="step" wire:ignore.self>
-                    <!--begin::Wrapper-->
-                    <div
-                        class="stepper-wrapper w-full d-flex align-items-center border border-primary rounded p-3 border-dashed">
-                        <!--begin::Icon-->
-                        <div class="stepper-icon w-40px h-40px">
-                            <i class="stepper-check fas fa-check"></i>
-                            <span class="stepper-number">3</span>
-                        </div>
-                        <!--begin::Icon-->
-
-                        <!--begin::Label-->
-                        <div class="stepper-label">
-                            <h3 class="stepper-title">
-                                Step 3
                             </h3>
 
                             <div class="stepper-desc fw-bold">
@@ -473,67 +445,21 @@
                     <!--begin::Personal Information-->
 
                     <!--begin::Example Attachment-->
-                    <div class="flex-column {{ $isUploadAttachment ? 'current' : '' }}"
+                    {{-- <div class="flex-column {{ $isUploadAttachment ? 'current' : '' }}"
                         data-kt-stepper-element="content" wire:ignore.self>
                         <div class="row">
-                            <div class="col-md-10">
-                                <h3 class="text-center ">Contoh: KERTAS GENSEN</h3>
-                                <h3 class="text-center">(PDF, PNG, JPG)</h3>
-                                <img src="{{ asset('assets/media/PERSYARATAN GENSEN/KERTAS GENSEN.png') }}"
-                                    alt="" class=" mb-3">
-                            </div>
-                            <div class="col-md-10">
-                                <h3 class="text-center my-0 ">Contoh: ZARYU CARD DEPAN</h3>
-                                <h3 class="text-center">(PNG, JPG)</h3>
-                                <img src="{{ asset('assets/media/PERSYARATAN GENSEN/ZARYU CARD DEPAN.png') }}"
-                                    alt="" class="">
-                            </div>
-                            <div class="col-md-10">
-                                <h3 class="text-center ">Contoh: ZARYU CARD BELAKANG</h3>
-                                <h3 class="text-center">(PNG, JPG)</h3>
-                                <img src="{{ asset('assets/media/PERSYARATAN GENSEN/ZARYU CARD BELAKANG.png') }}"
-                                    alt="" class="">
-                            </div>
-                            <div class="col-md-10">
-                                <h3 class="text-center ">Contoh: MY NUMBER DEPAN</h3>
-                                <h3 class="text-center">(PNG, JPG)</h3>
-                                <img src="{{ asset('assets/media/PERSYARATAN GENSEN/MY NUMBER DEPAN.png') }}"
-                                    alt="" class="">
-                            </div>
-                            <div class="col-md-10">
-                                <h3 class="text-center ">Contoh: MY NUMBER BELAKANG</h3>
-                                <h3 class="text-center">(PNG, JPG)</h3>
-                                <img src="{{ asset('assets/media/PERSYARATAN GENSEN/MY NUMBER BELAKANG.png') }}"
-                                    alt="" class="">
-                            </div>
-                            <div class="col-md-10">
-                                <h3 class="text-center ">Contoh: REKENING INDONESIA</h3>
-                                <h3 class="text-center">(PNG, JPG)</h3>
-                                <img src="{{ asset('assets/media/PERSYARATAN GENSEN/REKENING INDONESIA.png') }}"
-                                    alt="" class="">
-                            </div>
-                            <div class="col-md-10">
-                                <h3 class="text-center ">Contoh: REMITTANCE</h3>
-                                <h3 class="text-center">(PDF)</h3>
-                                <img src="{{ asset('assets/media/PERSYARATAN GENSEN/REMITTANCE.png') }}"
-                                    alt="" class="">
-                            </div>
-                            <div class="col-md-10">
-                                <h3 class="text-center ">Contoh: KARTU KELUARGA</h3>
-                                <h3 class="text-center">(PDF, PNG, JPG)</h3>
-                                <img src="{{ asset('assets/media/PERSYARATAN GENSEN/KARTU KELUARGA.png') }}"
-                                    alt="" class="">
-                            </div>
+                            
                         </div>
-                    </div>
+                    </div> --}}
                     <!--begin::Example Attachment-->
 
                     <!--begin::Upload Attachment-->
-                    <div class="flex-column" data-kt-stepper-element="content" wire:ignore.self>
+                    <div class="flex-column {{ $isUploadAttachment ? 'current' : '' }}" data-kt-stepper-element="content" wire:ignore.self>
                         <!-- Section: File Upload -->
                         {{-- GENSEN --}}
                         {{-- @if (!isset($kertas_gensen_old['groups']) || !$kertas_gensen_old['groups']->isNotEmpty()) --}}
                         <section class="mt-5">
+                            
                             <div x-data="{
                                 isDragging: false,
                                 handleDrop(event) {
@@ -566,6 +492,15 @@
                                     <span class="material-symbols-outlined text-primary"
                                         data-icon="cloud_upload">cloud_upload</span>
                                     <h2 class="font-headline font-bold text-2xl">KERTAS GENSEN</h2>
+                                </div>
+                                <div class="row">
+                                
+                                    <div class="col-md-10">
+                                        <h3 class="text-center ">Contoh: KERTAS GENSEN</h3>
+                                        <h3 class="text-center">(PDF, PNG, JPG)</h3>
+                                        <img src="{{ asset('assets/media/PERSYARATAN GENSEN/KERTAS GENSEN.png') }}"
+                                            alt="" class=" mb-3">
+                                    </div>
                                 </div>
                                 <div
                                     class="border-2 border-dashed border-outline-variant/30 rounded-xl p-10 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
@@ -685,11 +620,20 @@
                         {{-- Zairyou Card Depan --}}
                         {{-- @if (!$zairyou_card_front_old || !$zairyou_card_front_old['id']) --}}
                         <section class="mt-5">
-
+                            
                             <div class="flex items-center gap-3 mb-5">
                                 <span class="material-symbols-outlined text-primary"
                                     data-icon="cloud_upload">cloud_upload</span>
                                 <h2 class="font-headline font-bold text-2xl">ZAIRYOU CARD (Depan)</h2>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <h3 class="text-center my-0 ">Contoh: ZARYU CARD DEPAN</h3>
+                                    <h3 class="text-center">(PNG, JPG)</h3>
+                                    <img src="{{ asset('assets/media/PERSYARATAN GENSEN/ZARYU CARD DEPAN.png') }}"
+                                        alt="" class="">
+                                </div>
                             </div>
                             @if ($zairyou_card_front_old && $zairyou_card_front_old['id'])
                                 @if ($zairyou_card_front_old['isImage'])
@@ -733,7 +677,7 @@
                                         <input class="hidden validate-upload-file" id="zairyou_card_front"
                                             name="zairyou_card_front" type="file" x-ref="input"
                                             {{-- wire:model="zairyou_card_front" --}} @change="handleFiles"
-                                            accept="application/pdf, image/jpeg, image/png"
+                                            accept="image/jpeg, image/png"
                                             class="position-absolute invisible" />
                                         <label class="cursor-pointer flex flex-col items-center gap-3"
                                             for="zairyou_card_front">
@@ -742,7 +686,7 @@
                                             <p class="font-body text-on-surface-variant">Drag and drop file kamu
                                                 disini, atau <span class="text-primary font-semibold">CARI FILE</span>
                                             </p>
-                                            <p class="text-xs text-outline font-medium">Format: PDF, JPG/PNG (Max 10MB)
+                                            <p class="text-xs text-outline font-medium">Format: JPG/PNG (Max 10MB)
                                             </p>
                                         </label>
                                     </div>
@@ -779,6 +723,15 @@
                                 <span class="material-symbols-outlined text-primary"
                                     data-icon="cloud_upload">cloud_upload</span>
                                 <h2 class="font-headline font-bold text-2xl">ZAIRYOU CARD (Belakang)</h2>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <h3 class="text-center ">Contoh: ZARYU CARD BELAKANG</h3>
+                                    <h3 class="text-center">(PNG, JPG)</h3>
+                                    <img src="{{ asset('assets/media/PERSYARATAN GENSEN/ZARYU CARD BELAKANG.png') }}"
+                                        alt="" class="">
+                                </div>
                             </div>
                             @if ($zairyou_card_back_old && $zairyou_card_back_old['id'])
                                 @if ($zairyou_card_back_old['isImage'])
@@ -822,7 +775,7 @@
                                         <input class="hidden validate-upload-file" id="zairyou_card_back"
                                             name="zairyou_card_back" type="file" x-ref="input"
                                             {{-- wire:model="zairyou_card_back" --}} @change="handleFiles"
-                                            accept="application/pdf, image/jpeg, image/png"
+                                            accept="image/jpeg, image/png"
                                             class="position-absolute invisible" />
                                         <label class="cursor-pointer flex flex-col items-center gap-3"
                                             for="zairyou_card_back">
@@ -831,7 +784,7 @@
                                             <p class="font-body text-on-surface-variant">Drag and drop file kamu
                                                 disini, atau <span class="text-primary font-semibold">CARI FILE</span>
                                             </p>
-                                            <p class="text-xs text-outline font-medium">Format: PDF, JPG/PNG (Max 10MB)
+                                            <p class="text-xs text-outline font-medium">Format: JPG/PNG (Max 10MB)
                                             </p>
                                         </label>
                                     </div>
@@ -868,6 +821,14 @@
                                 <span class="material-symbols-outlined text-primary"
                                     data-icon="cloud_upload">cloud_upload</span>
                                 <h2 class="font-headline font-bold text-2xl">MY NUMBER (Depan)</h2>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <h3 class="text-center ">Contoh: MY NUMBER DEPAN</h3>
+                                    <h3 class="text-center">(PNG, JPG)</h3>
+                                    <img src="{{ asset('assets/media/PERSYARATAN GENSEN/MY NUMBER DEPAN.png') }}"
+                                        alt="" class="">
+                                </div>
                             </div>
                             @if ($my_number_front_old && $my_number_front_old['id'])
                                 @if ($my_number_front_old['isImage'])
@@ -911,7 +872,7 @@
                                         <input class="hidden validate-upload-file" id="my_number_front"
                                             name="my_number_front" type="file" x-ref="input"
                                             {{-- wire:model="my_number_front" --}} @change="handleFiles"
-                                            accept="application/pdf, image/jpeg, image/png"
+                                            accept="image/jpeg, image/png"
                                             class="position-absolute invisible" />
                                         <label class="cursor-pointer flex flex-col items-center gap-3"
                                             for="my_number_front">
@@ -920,7 +881,7 @@
                                             <p class="font-body text-on-surface-variant">Drag and drop file kamu
                                                 disini, atau <span class="text-primary font-semibold">CARI FILE</span>
                                             </p>
-                                            <p class="text-xs text-outline font-medium">Format: PDF, JPG/PNG (Max 10MB)
+                                            <p class="text-xs text-outline font-medium">Format: JPG/PNG (Max 10MB)
                                             </p>
                                         </label>
                                     </div>
@@ -958,6 +919,15 @@
                                 <span class="material-symbols-outlined text-primary"
                                     data-icon="cloud_upload">cloud_upload</span>
                                 <h2 class="font-headline font-bold text-2xl">MY NUMBER (Belakang)</h2>
+                            </div>
+                            <div class="row">
+                                
+                                <div class="col-md-10">
+                                    <h3 class="text-center ">Contoh: MY NUMBER BELAKANG</h3>
+                                    <h3 class="text-center">(PNG, JPG)</h3>
+                                    <img src="{{ asset('assets/media/PERSYARATAN GENSEN/MY NUMBER BELAKANG.png') }}"
+                                        alt="" class="">
+                                </div>
                             </div>
                             @if ($my_number_back_old && $my_number_back_old['id'])
                                 @if ($my_number_back_old['isImage'])
@@ -1001,7 +971,7 @@
                                         <input class="hidden validate-upload-file" id="my_number_back"
                                             name="my_number_back" type="file" x-ref="input"
                                             {{-- wire:model="my_number_back" --}} @change="handleFiles"
-                                            accept="application/pdf, image/jpeg, image/png"
+                                            accept="image/jpeg, image/png"
                                             class="position-absolute invisible" />
                                         <label class="cursor-pointer flex flex-col items-center gap-3"
                                             for="my_number_back">
@@ -1010,7 +980,7 @@
                                             <p class="font-body text-on-surface-variant">Drag and drop file kamu
                                                 disini, atau <span class="text-primary font-semibold">CARI FILE</span>
                                             </p>
-                                            <p class="text-xs text-outline font-medium">Format: PDF, JPG/PNG (Max 10MB)
+                                            <p class="text-xs text-outline font-medium">Format: JPG/PNG (Max 10MB)
                                             </p>
                                         </label>
                                     </div>
@@ -1048,6 +1018,15 @@
                                 <span class="material-symbols-outlined text-primary"
                                     data-icon="cloud_upload">cloud_upload</span>
                                 <h2 class="font-headline font-bold text-2xl">REKENING INDONESIA </h2>
+                            </div>
+                            <div class="row">
+                                
+                                <div class="col-md-10">
+                                    <h3 class="text-center ">Contoh: REKENING INDONESIA</h3>
+                                    <h3 class="text-center">(PNG, JPG)</h3>
+                                    <img src="{{ asset('assets/media/PERSYARATAN GENSEN/REKENING INDONESIA.png') }}"
+                                        alt="" class="">
+                                </div>
                             </div>
                             @if ($rekening_indonesia_old && $rekening_indonesia_old['id'])
                                 @if ($rekening_indonesia_old['isImage'])
@@ -1090,7 +1069,7 @@
                                         <input class="hidden validate-upload-file" id="rekening_indonesia"
                                             name="rekening_indonesia" type="file" x-ref="input"
                                             {{-- wire:model="rekening_indonesia" --}} @change="handleFiles"
-                                            accept="application/pdf, image/jpeg, image/png"
+                                            accept="image/jpeg, image/png"
                                             class="position-absolute invisible" />
                                         <label class="cursor-pointer flex flex-col items-center gap-3"
                                             for="rekening_indonesia">
@@ -1099,7 +1078,7 @@
                                             <p class="font-body text-on-surface-variant">Drag and drop file kamu
                                                 disini, atau <span class="text-primary font-semibold">CARI FILE</span>
                                             </p>
-                                            <p class="text-xs text-outline font-medium">Format: PDF, JPG/PNG (Max 10MB)
+                                            <p class="text-xs text-outline font-medium">Format: JPG/PNG (Max 10MB)
                                             </p>
                                         </label>
                                     </div>
@@ -1138,11 +1117,17 @@
                                     <h2 class="font-headline font-bold text-2xl">REKAP PENGIRIMAN UANG</h2>
                                 </div>
                                 <div class="row">
-                                    <h5 class="font-headline font-bold text-2xl text-center">Contoh Remittance</h5>
+                                    
+                                    <div class="col-md-10">
+                                        <h3 class="text-center ">Contoh: REMITTANCE</h3>
+                                        <h3 class="text-center">(PDF)</h3>
+                                        <img src="{{ asset('assets/media/PERSYARATAN GENSEN/REMITTANCE.png') }}"
+                                            alt="" class="">
+                                    </div>
                                 </div>
                             </div>
                             {{-- REMITTANCE EXAMPLE --}}
-                            <div class="row justify-content-evenly">
+                            {{-- <div class="row justify-content-evenly">
 
                                 <div class="col-6 col-md-3 d-flex justify-content-center">
                                     <div class="card-flex text-center">
@@ -1184,7 +1169,8 @@
                                     </div>
                                 </div>
 
-                            </div>
+                            </div> --}}
+
                             @if ($rekap_pengiriman_uang)
                                 @foreach ($rekap_pengiriman_uang as $rekap_index => $rekap)
                                     <div wire:key="rekap_pengiriman_uang_{{ $rekap_index }}" x-data="{
@@ -1371,6 +1357,15 @@
                                     <span class="material-symbols-outlined text-primary"
                                         data-icon="cloud_upload">cloud_upload</span>
                                     <h2 class="font-headline font-bold text-2xl">KARTU KELUARGA</h2>
+                                </div>
+                                <div class="row">
+                                    
+                                    <div class="col-md-10">
+                                        <h3 class="text-center ">Contoh: KARTU KELUARGA</h3>
+                                        <h3 class="text-center">(PDF, PNG, JPG)</h3>
+                                        <img src="{{ asset('assets/media/PERSYARATAN GENSEN/KARTU KELUARGA.png') }}"
+                                            alt="" class="">
+                                    </div>
                                 </div>
                                 <div
                                     class="border-2 border-dashed border-outline-variant/30 rounded-xl p-10 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">

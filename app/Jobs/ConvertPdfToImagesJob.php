@@ -7,6 +7,7 @@ use App\Enums\Gensen\GensenAttachmentType;
 use App\Jobs\GensenExtractJob\ExtractionDocumentJob;
 use App\Models\Ai\AiJob;
 use App\Models\GensenForm\GensenForm;
+use App\Models\GensenForm\GensenFormAttachment;
 use App\Repositories\GensenForm\GensenFormAttachmentRepository;
 use App\Services\TemporaryFile;
 use Exception;
@@ -24,330 +25,335 @@ class ConvertPdfToImagesJob implements ShouldQueue
     use Dispatchable, Queueable, SerializesModels;
 
     public function __construct(
-        public AiJob $ai_job
+        public String $type,
+        public $model = null,
+
     ) {}
 
     public function handle(): void
     {
-        $attachments = $this->ai_job->subject->attachmentsToConvert;
+        if ($this->type == AiJob::class) {
 
-        foreach ($attachments as $attachment) {
-            $disk = $attachment->disk ?? 'private';
+            $attachments = $this->model->subject->attachmentsToConvert;
 
-            $storage = Storage::disk($disk);
+            foreach ($attachments as $attachment) {
+                $disk = $attachment->disk ?? 'private';
 
-            if (!$storage->exists($attachment->path)) {
-                throw new Exception("File missing: {$attachment->path}");
-            }
+                $storage = Storage::disk($disk);
 
-            $tmpDir = "gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}";
+                if (!$storage->exists($attachment->path)) {
+                    throw new Exception("File missing: {$attachment->path}");
+                }
 
-            logger([
-                'tmp dir 45',
-                $tmpDir
-            ]);
+                $tmpDir = "gensen/{$this->model->subject->id}/convert_{$attachment->type->value}";
 
-            if (!Storage::disk('private')->exists($tmpDir)) {
-                Storage::disk('private')->makeDirectory($tmpDir);
-            }
-
-            $tmpPdfPath = $tmpDir . '/' . basename($attachment->path);
-
-
-            logger([
-                'tmp pdf path 56',
-                $tmpPdfPath
-            ]);
-            /*
-|--------------------------------------------------------------------------
-| STREAM DOWNLOAD (Supabase → Local)
-|--------------------------------------------------------------------------
-*/
-            $readStream = $storage->readStream($attachment->path);
-
-            if ($readStream === false) {
-                throw new Exception("Failed to read remote file");
-            }
-
-            $writeStream = fopen(storage_path('app/private/' . $tmpPdfPath), 'w');
-
-            stream_copy_to_stream($readStream, $writeStream);
-
-            fclose($readStream);
-            fclose($writeStream);
-            $local_path = $tmpPdfPath;
-
-            $extension = strtolower(pathinfo($local_path, PATHINFO_EXTENSION));
-
-            if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
-                continue;
-            }
-
-            /*
-        |--------------------------------------------------------------------------
-        | STEP 4 — Ghostscript Convert
-        |--------------------------------------------------------------------------
-        */
-            $dir = "gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}";
-
-
-            logger([
-                'dir convert',
-                $dir
-            ]);
-
-            if (!Storage::disk('private')->exists($dir)) {
-                Storage::disk('private')->makeDirectory($dir);
-            }
-
-            $outputDir = storage_path("app/private/{$dir}");
-
-            $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
-            $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
-
-            logger([
-                'stored name 97',
-                $storedName
-            ]);
-
-            $process = new Process([
-                // '/usr/local/bin/gs',
-                'gs',
-                '-sDEVICE=jpeg',
-                '-r200',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
-                '-dNOPAUSE',
-                '-dBATCH',
-                '-dSAFER',
-                '-dFirstPage=1',        // Secure: Process only what you need
-                '-dINTERPOLATE',        // Smoother scaling
-                '-dJPEGQ=85',           // Q=100 is wasteful; 85 is indistinguishable for AI
-                '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
-                "-sOutputFile={$outputPattern}",
-                storage_path('app/private/' . $tmpPdfPath),
-            ]);
-            $process->run();
-
-            logger($process->getCommandLine());
-
-            if (!$process->isSuccessful()) {
-                throw new \Exception(
-                    'PDF conversion failed: ' . $process->getErrorOutput()
-                );
-            }
-
-            /*
-        |--------------------------------------------------------------------------
-        | STEP 5 — Collect Generated Images
-        |--------------------------------------------------------------------------
-        */
-
-            $generatedFiles = glob(
-                "{$outputDir}/{$storedName}_page-*.jpg"
-            );
-
-            if ($attachment->type !== GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
-                GensenFormAttachmentRepository::update($attachment->id, [
-                    'convert_image' => true
+                logger([
+                    'tmp dir 45',
+                    $tmpDir
                 ]);
-            }
 
-            /*
-        |--------------------------------------------------------------------------
-        | STEP 6 — Upload BACK to STORAGE (SUPABASE OR LOCAL)
-        |--------------------------------------------------------------------------
-        */
+                if (!Storage::disk('private')->exists($tmpDir)) {
+                    Storage::disk('private')->makeDirectory($tmpDir);
+                }
 
-            foreach ($generatedFiles as $file) {
-
-                $info = pathinfo($file);
-                $stored_name = $info['filename'] . '.' . $info['extension'];
+                $tmpPdfPath = $tmpDir . '/' . basename($attachment->path);
 
 
                 logger([
-                    'stored name 155',
-                    $stored_name
+                    'tmp pdf path 56',
+                    $tmpPdfPath
                 ]);
-                $targetPath = "{$dir}/{$stored_name}";
+                /*
+                |--------------------------------------------------------------------------
+                | STREAM DOWNLOAD (Supabase → Local)
+                |--------------------------------------------------------------------------
+                */
+                $readStream = $storage->readStream($attachment->path);
 
-                $disk = 'private';
-                /**
-                 * Upload using SAME disk as original
-                 */
-                // Storage::disk($disk)->put(
-                //     $targetPath,
-                //     fopen($file, 'r')
-                // );
+                if ($readStream === false) {
+                    throw new Exception("Failed to read remote file");
+                }
 
-                // Storage::disk($disk)->putFileAs(
-                //     dirname($targetPath),
-                //     new File($file),
-                //     basename($targetPath)
-                // );
-                // Storage::disk($disk)->put(
-                //     $targetPath,
-                //     fopen($file, 'r'),
-                //     [
-                //         'visibility' => 'private', // or 'public'
-                //     ]
-                // );
+                $writeStream = fopen(storage_path('app/private/' . $tmpPdfPath), 'w');
 
-                GensenFormAttachmentRepository::create([
-                    'gensen_form_id' => $this->ai_job->subject->id,
-                    'type' => $attachment->type,
-                    'original_name' => $attachment->original_name,
-                    'stored_name' => $stored_name,
-                    'description' => $attachment->description,
+                stream_copy_to_stream($readStream, $writeStream);
 
-                    'disk' => $disk,
-                    'path' => $targetPath,
+                fclose($readStream);
+                fclose($writeStream);
+                $local_path = $tmpPdfPath;
 
-                    'checksum' => hash_file('sha256', $file),
+                $extension = strtolower(pathinfo($local_path, PATHINFO_EXTENSION));
 
-                    'note' => $attachment->note,
-                    'remittance_type' => $attachment->remittance_type,
+                if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
+                    continue;
+                }
 
-                    'extension' => 'jpg',
-                    'mime_type' => 'image/jpeg',
-                    'file_size' => filesize($file),
+                /*
+                |--------------------------------------------------------------------------
+                | STEP 4 — Ghostscript Convert
+                |--------------------------------------------------------------------------
+                */
+                $dir = "gensen/{$this->model->subject->id}/convert_{$attachment->type->value}";
 
-                    'status' => GensenAttachmenStatus::STATUS_CONVERTED,
-                    'convert_image' => true,
+
+                logger([
+                    'dir convert',
+                    $dir
                 ]);
-            }
-            // TemporaryFile::cleanup($tmpPdfPath);
-        }
 
-        /*
-    |--------------------------------------------------------------------------
-    | NEXT JOB
-    |--------------------------------------------------------------------------
-    */
+                if (!Storage::disk('private')->exists($dir)) {
+                    Storage::disk('private')->makeDirectory($dir);
+                }
 
-        ExtractionDocumentJob::dispatch($this->ai_job);
-    }
-    public function handleOld(): void
-    {
-        $attachments = $this->ai_job->subject->attachmentsToConvert;
-        $imagePaths = [];
-        foreach ($attachments as $attachment) {
+                $outputDir = storage_path("app/private/{$dir}");
 
-            $pdfPath = Storage::disk($attachment['disk'])->path($attachment['path']);
+                $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
+                $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
 
-            $dir = "gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}/" . Str::random(6);
-            logger([
-                'dir',
-                $dir
-            ]);
-            $outputDir = storage_path(
-                "app/private/" . $dir
-            );
+                logger([
+                    'stored name 97',
+                    $storedName
+                ]);
 
-            if (!is_dir($outputDir)) {
-                mkdir($outputDir, 0777, true);
-            }
+                $process = new Process([
+                    // '/usr/local/bin/gs',
+                    'gs',
+                    '-sDEVICE=jpeg',
+                    '-r200',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
+                    '-dNOPAUSE',
+                    '-dBATCH',
+                    '-dSAFER',
+                    '-dFirstPage=1',        // Secure: Process only what you need
+                    '-dINTERPOLATE',        // Smoother scaling
+                    '-dJPEGQ=85',           // Q=100 is wasteful; 85 is indistinguishable for AI
+                    '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
+                    "-sOutputFile={$outputPattern}",
+                    storage_path('app/private/' . $tmpPdfPath),
+                ]);
+                $process->run();
 
-            $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
+                logger($process->getCommandLine());
 
-            $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
-            logger([
-                'dir pattern',
-                $outputPattern
-            ]);
-            // 1. Cek ekstensi file input
-            $extension = strtolower(pathinfo($pdfPath, PATHINFO_EXTENSION));
+                if (!$process->isSuccessful()) {
+                    throw new \Exception(
+                        'PDF conversion failed: ' . $process->getErrorOutput()
+                    );
+                }
 
-            // 2. Jika file sudah berupa gambar, langsung lewatkan proses konversi
-            if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
-                // Logika: Langsung gunakan file asli atau copy ke folder output pattern
-                // Karena Gemini bisa membaca gambar langsung, Anda hemat resource server.
-                continue;
-            }
-            $process = new Process([
-                // '/usr/local/bin/gs',
-                'gs',
-                '-sDEVICE=jpeg',
-                '-r200',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
-                '-dNOPAUSE',
-                '-dBATCH',
-                '-dSAFER',
-                '-dFirstPage=1',        // Secure: Process only what you need
-                '-dINTERPOLATE',        // Smoother scaling
-                '-dJPEGQ=85',           // Q=100 is wasteful; 85 is indistinguishable for AI
-                '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
-                "-sOutputFile={$outputPattern}",
-                $pdfPath,
-            ]);
+                /*
+                |--------------------------------------------------------------------------
+                | STEP 5 — Collect Generated Images
+                |--------------------------------------------------------------------------
+                */
 
-            $process->run();
-            logger($process->getCommandLine());
+                $generatedFiles = glob(
+                    "{$outputDir}/{$storedName}_page-*.jpg"
+                );
 
-            if (!$process->isSuccessful()) {
-                // throw new \Exception('PDF conversion failed');
-                throw new \Exception('PDF conversion failed: ' . $process->getErrorOutput());
+                if ($attachment->type !== GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
+                    GensenFormAttachmentRepository::update($attachment->id, [
+                        'convert_image' => true
+                    ]);
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | STEP 6 — Upload BACK to STORAGE (SUPABASE OR LOCAL)
+                |--------------------------------------------------------------------------
+                */
+
+                foreach ($generatedFiles as $file) {
+
+                    $info = pathinfo($file);
+                    $stored_name = $info['filename'] . '.' . $info['extension'];
+
+
+                    logger([
+                        'stored name 155',
+                        $stored_name
+                    ]);
+                    $targetPath = "{$dir}/{$stored_name}";
+
+                    $disk = 'private';
+                    /**
+                     * Upload using SAME disk as original
+                     */
+                    // Storage::disk($disk)->put(
+                    //     $targetPath,
+                    //     fopen($file, 'r')
+                    // );
+
+                    // Storage::disk($disk)->putFileAs(
+                    //     dirname($targetPath),
+                    //     new File($file),
+                    //     basename($targetPath)
+                    // );
+                    // Storage::disk($disk)->put(
+                    //     $targetPath,
+                    //     fopen($file, 'r'),
+                    //     [
+                    //         'visibility' => 'private', // or 'public'
+                    //     ]
+                    // );
+
+                    GensenFormAttachmentRepository::create([
+                        'gensen_form_id' => $this->model->subject->id,
+                        'type' => $attachment->type,
+                        'original_name' => $attachment->original_name,
+                        'stored_name' => $stored_name,
+                        'description' => $attachment->description,
+
+                        'disk' => $disk,
+                        'path' => $targetPath,
+
+                        'checksum' => hash_file('sha256', $file),
+
+                        'note' => $attachment->note,
+                        'remittance_type' => $attachment->remittance_type,
+
+                        'extension' => 'jpg',
+                        'mime_type' => 'image/jpeg',
+                        'file_size' => filesize($file),
+
+                        'status' => GensenAttachmenStatus::STATUS_CONVERTED,
+                        'convert_image' => true,
+                    ]);
+                }
+                // TemporaryFile::cleanup($tmpPdfPath);
             }
 
             /*
             |--------------------------------------------------------------------------
-            | IMPORTANT FIX
+            | NEXT JOB
             |--------------------------------------------------------------------------
-            | Only grab files generated by THIS attachment
             */
 
-            $generatedFiles = glob(
-                "{$outputDir}/{$storedName}_page-*.jpg"
-            );
-
-            if ($attachment->type !== GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
-                GensenFormAttachmentRepository::update($attachment['id'], [
-                    'convert_image' => true
-                ]);
-            }
-
-
-            foreach ($generatedFiles as $file) {
-
-                $info = pathinfo($file);
-
-                $stored_name = $info['filename'] . '.' . $info['extension'];
-
-                GensenFormAttachmentRepository::create([
-                    'gensen_form_id' => $this->ai_job->subject->id,
-                    'type' => $attachment['type'],
-                    'original_name' => $attachment['original_name'],
-                    'stored_name' => $stored_name,
-                    'description' => $attachment['description'],
-
-                    'disk' => 'private',
-                    'path' => "{$dir}/{$stored_name}",
-
-                    'checksum' => hash_file('sha256', $file),
-
-                    'note' => $attachment['note'],
-                    'remittance_type' => $attachment['remittance_type'],
-
-                    'extension' => 'jpg',
-                    'mime_type' => 'image/jpeg',
-                    'file_size' => filesize($file),
-
-                    'status' => GensenAttachmenStatus::STATUS_CONVERTED,
-                    'convert_image' => true
-                ]);
-            }
+            ExtractionDocumentJob::dispatch($this->model);
         }
-
-        /**
-         * Save processed images into AiJob (or relation table)
-         */
-        // $this->gensen_form->update([
-        //     'status' => 'converted',
-        //     'meta' => [
-        //         'image_paths' => $imagePaths,
-        //     ],
-        // ]);
-
-        /**
-         * NEXT STEP → extraction job
-         */
-        ExtractionDocumentJob::dispatch($this->ai_job);
     }
+    // public function handleOld(): void
+    // {
+    //     $attachments = $this->ai_job->subject->attachmentsToConvert;
+    //     $imagePaths = [];
+    //     foreach ($attachments as $attachment) {
+
+    //         $pdfPath = Storage::disk($attachment['disk'])->path($attachment['path']);
+
+    //         $dir = "gensen/{$this->ai_job->subject->id}/convert_{$attachment->type->value}/" . Str::random(6);
+    //         logger([
+    //             'dir',
+    //             $dir
+    //         ]);
+    //         $outputDir = storage_path(
+    //             "app/private/" . $dir
+    //         );
+
+    //         if (!is_dir($outputDir)) {
+    //             mkdir($outputDir, 0777, true);
+    //         }
+
+    //         $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
+
+    //         $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
+    //         logger([
+    //             'dir pattern',
+    //             $outputPattern
+    //         ]);
+    //         // 1. Cek ekstensi file input
+    //         $extension = strtolower(pathinfo($pdfPath, PATHINFO_EXTENSION));
+
+    //         // 2. Jika file sudah berupa gambar, langsung lewatkan proses konversi
+    //         if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
+    //             // Logika: Langsung gunakan file asli atau copy ke folder output pattern
+    //             // Karena Gemini bisa membaca gambar langsung, Anda hemat resource server.
+    //             continue;
+    //         }
+    //         $process = new Process([
+    //             // '/usr/local/bin/gs',
+    //             'gs',
+    //             '-sDEVICE=jpeg',
+    //             '-r200',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
+    //             '-dNOPAUSE',
+    //             '-dBATCH',
+    //             '-dSAFER',
+    //             '-dFirstPage=1',        // Secure: Process only what you need
+    //             '-dINTERPOLATE',        // Smoother scaling
+    //             '-dJPEGQ=85',           // Q=100 is wasteful; 85 is indistinguishable for AI
+    //             '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
+    //             "-sOutputFile={$outputPattern}",
+    //             $pdfPath,
+    //         ]);
+
+    //         $process->run();
+    //         logger($process->getCommandLine());
+
+    //         if (!$process->isSuccessful()) {
+    //             // throw new \Exception('PDF conversion failed');
+    //             throw new \Exception('PDF conversion failed: ' . $process->getErrorOutput());
+    //         }
+
+    //         /*
+    //         |--------------------------------------------------------------------------
+    //         | IMPORTANT FIX
+    //         |--------------------------------------------------------------------------
+    //         | Only grab files generated by THIS attachment
+    //         */
+
+    //         $generatedFiles = glob(
+    //             "{$outputDir}/{$storedName}_page-*.jpg"
+    //         );
+
+    //         if ($attachment->type !== GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
+    //             GensenFormAttachmentRepository::update($attachment['id'], [
+    //                 'convert_image' => true
+    //             ]);
+    //         }
+
+
+    //         foreach ($generatedFiles as $file) {
+
+    //             $info = pathinfo($file);
+
+    //             $stored_name = $info['filename'] . '.' . $info['extension'];
+
+    //             GensenFormAttachmentRepository::create([
+    //                 'gensen_form_id' => $this->ai_job->subject->id,
+    //                 'type' => $attachment['type'],
+    //                 'original_name' => $attachment['original_name'],
+    //                 'stored_name' => $stored_name,
+    //                 'description' => $attachment['description'],
+
+    //                 'disk' => 'private',
+    //                 'path' => "{$dir}/{$stored_name}",
+
+    //                 'checksum' => hash_file('sha256', $file),
+
+    //                 'note' => $attachment['note'],
+    //                 'remittance_type' => $attachment['remittance_type'],
+
+    //                 'extension' => 'jpg',
+    //                 'mime_type' => 'image/jpeg',
+    //                 'file_size' => filesize($file),
+
+    //                 'status' => GensenAttachmenStatus::STATUS_CONVERTED,
+    //                 'convert_image' => true
+    //             ]);
+    //         }
+    //     }
+
+    //     /**
+    //      * Save processed images into AiJob (or relation table)
+    //      */
+    //     // $this->gensen_form->update([
+    //     //     'status' => 'converted',
+    //     //     'meta' => [
+    //     //         'image_paths' => $imagePaths,
+    //     //     ],
+    //     // ]);
+
+    //     /**
+    //      * NEXT STEP → extraction job
+    //      */
+    //     ExtractionDocumentJob::dispatch($this->ai_job);
+    // }
 }

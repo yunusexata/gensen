@@ -301,7 +301,6 @@ class Form extends Component
 
                 1 => (function () {
                     $this->validateStepPersonal();
-                    $this->validateStepAttachment();
                 })(),
                 2 => $this->validateStepReview(),
             };
@@ -310,9 +309,7 @@ class Form extends Component
 
                 1 => $this->validateStepPersonal(),
 
-                2 => $this->validateStepAttachment(),
-
-                3 => $this->validateStepReview(),
+                2 => $this->validateStepReview(),
             };
         }
     }
