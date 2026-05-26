@@ -1673,6 +1673,10 @@ video {
   padding: 2rem;
 }
 
+.p-\[20px\] {
+  padding: 20px;
+}
+
 .p-lg {
   padding: 1.5rem;
 }
@@ -1691,10 +1695,6 @@ video {
 
 .p-xs {
   padding: 0.25rem;
-}
-
-.p-\[20px\] {
-  padding: 20px;
 }
 
 .px-0 {
@@ -1940,6 +1940,10 @@ video {
   font-size: 25px;
 }
 
+.text-\[50pt\] {
+  font-size: 50pt;
+}
+
 .text-body-lg {
   font-size: 18px;
   line-height: 1.5;
@@ -1990,14 +1994,6 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-\[50px\] {
-  font-size: 50px;
-}
-
-.text-\[50pt\] {
-  font-size: 50pt;
 }
 
 .font-bold {

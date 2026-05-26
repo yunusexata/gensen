@@ -7,6 +7,7 @@ use App\Enums\Gensen\GensenAttachmentRemittanceType;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
+use App\Jobs\ConvertPdfToImagesJob;
 use App\Models\Ai\AiJob;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\GensenFormAttachment;
@@ -38,7 +39,9 @@ class Attachment extends Component
     public $objId;
     public $targetDeleteId;
     public $targetDeleteType;
+    public $targetConvertId;
     public $isCanDelete;
+    public $isCanUpdate;
 
     #[Validate('required', message: 'Nama Harus Diisi', onUpdate: false)]
     public $nama_lengkap;
@@ -100,8 +103,9 @@ class Attachment extends Component
 
     public function mount()
     {
-        $this->getData();
+        $this->getData($data);
     }
+    consoleLog($this, $data);
 
     public function updatedRemittanceExtractionGroups($value, $index)
     {
@@ -225,8 +229,9 @@ class Attachment extends Component
         }
     }
 
-    public function getData()
+    public function getData($data)
     {
+        consoleLog($this, $data);
         if ($this->objId) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
             $this->nama_lengkap = $gensen->nama_lengkap;
@@ -276,29 +281,20 @@ class Attachment extends Component
             $this->zairyou_card_back_old = $attachments[GensenAttachmentType::ZAIRYOU_CARD_BACK->value];
             $this->rekening_indonesia_old = $attachments[GensenAttachmentType::REKENING_INDONESIA->value];
 
+            $this->kertas_gensen_old = $attachments[GensenAttachmentType::KERTAS_GENSEN->value];
+            $this->kartu_keluarga_old = $attachments[GensenAttachmentType::KARTU_KELUARGA->value];
+            $this->rekap_pengiriman_uang_old = $attachments[GensenAttachmentType::REKAP_PENGIRIMAN_UANG->value];
+            $this->persyaratan_pengurusan_gensen_old = $attachments[GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value];
+            $this->seluruh_berkas_old = $attachments[GensenAttachmentType::SELURUH_BERKAS->value];
+
             $this->isCanDelete = $gensen->isCanDelete();
+            $this->isCanUpdate = $gensen->isCanUpdate();
         }
     }
     public function getOnload()
     {
         // consoleLog($this, 'onload');
         $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
-        $this->nama_lengkap = $gensen->nama_lengkap;
-        $this->tanggal_lahir = $gensen->tanggal_lahir;
-        $this->nomor_whatsapp = $gensen->nomor_whatsapp;
-
-        $attachments = $gensen->attachmentGroups([
-            GensenAttachmentType::KERTAS_GENSEN,
-            GensenAttachmentType::KARTU_KELUARGA,
-            GensenAttachmentType::REKAP_PENGIRIMAN_UANG,
-            GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN,
-            GensenAttachmentType::SELURUH_BERKAS,
-        ]);
-        $this->kertas_gensen_old = $attachments[GensenAttachmentType::KERTAS_GENSEN->value];
-        $this->kartu_keluarga_old = $attachments[GensenAttachmentType::KARTU_KELUARGA->value];
-        $this->rekap_pengiriman_uang_old = $attachments[GensenAttachmentType::REKAP_PENGIRIMAN_UANG->value];
-        $this->persyaratan_pengurusan_gensen_old = $attachments[GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value];
-        $this->seluruh_berkas_old = $attachments[GensenAttachmentType::SELURUH_BERKAS->value];
 
         $this->getRemittanceExtraction($gensen);
     }
@@ -446,6 +442,47 @@ class Attachment extends Component
         $this->targetDeleteType = null;
         // $this->getData($this->targetDeleteType);
     }
+
+
+    // Convert PDF To Image
+    public function showDialogConvertToImage($id)
+    {
+        $this->targetConvertId = $id;
+        // consoleLog($this, $this->targetConvertType);
+        Alert::confirmation(
+            $this,
+            Alert::ICON_QUESTION,
+            "Convert PDF",
+            "Apakah Anda Yakin Ingin Convert Ke JPG ?",
+            "on-dialog-convert-to-image-confirm",
+            "on-dialog-convert-to-image-cancel",
+            "convert",
+            "Batal",
+        );
+    }
+
+    #[On('on-dialog-convert-to-image-cancel')]
+    public function onDialogConvertToImageCancel()
+    {
+        $this->targetConvertId = null;
+    }
+
+    #[On('on-dialog-convert-to-image-confirm')]
+    public function onDialogConvertToImageConfirm()
+    {
+        $gensen_form_attachment = GensenFormAttachmentRepository::find(Crypt::decrypt($this->targetConvertId));
+
+        ConvertPdfToImagesJob::dispatch(
+            self::class,
+            $gensen_form_attachment
+        )->onQueue('default');
+
+        Alert::information($this, 'Data berhasil di convert');
+
+        $this->targetConvertId = null;
+        $this->dispatch('handleGetData');
+    }
+
 
     private function removeAttachmentFromGroups($attachmentId, $property)
     {

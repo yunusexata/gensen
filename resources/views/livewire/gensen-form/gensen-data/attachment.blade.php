@@ -86,6 +86,1034 @@
             </div>
          </header>
         <div class="tab-content" id="myTabContent">
+            
+            <div class="tab-pane fade active show" id="kt_vtab_pane_2" role="tabpanel" wire:ignore.self>
+                <!-- Main Workspace Container -->
+                <main class="min-h-screen pb-xl rounded-lg">
+                    
+                    <!-- Document Grid -->
+                    <div class="mx-auto px-margin mt-xl">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
+                        <!-- Card: Kertas Gensen -->
+                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col gap-md group hover:border-primary-container transition-colors">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h2 class="font-h2 text-body-lg text-on-surface">Kertas Gensen</h2>
+                                </div>
+                            </div>
+                            <!-- Upload Zone -->
+                            <div
+                                x-data="{
+                                    isDragging: false,
+                                    handleDrop(event) {
+                                    {{-- Multi --}}
+                                    const files = event.dataTransfer.files;
+                                    if (files.length) {
+                                    const dataTransfer = new DataTransfer();
+                                    [...files].forEach(file => {
+                                    dataTransfer.items.add(file);
+                                    });
+                                    $refs.input.files = dataTransfer.files;
+                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                    }
+                                    this.isDragging = false;
+                                    },
+                                    handleFiles(event) {
+                                    const file = event.target.files[0];
+                                    return;
+                                    // Optional: you can limit or validate here
+                                    }
+                                }"
+                                @dragover.prevent="isDragging = true"
+                                @dragleave.prevent="isDragging = false"
+                                @drop.prevent="handleDrop($event)"
+                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                class="form-group">
+                                    <label for="kertas_gensen" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                        <span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
+                                        <div class="text-body-sm">
+                                            <span class="text-primary font-semibold">Click to upload</span> or drag and drop
+                                        </div>
+                                    </label>
+                                    <input class="hidden validate-upload-file" id="kertas_gensen" name="kertas_gensen"
+                                    type="file"
+                                    multiple
+                                    x-ref="input"
+                                    wire:model="kertas_gensen"
+                                    {{-- @change="handleFiles" --}}
+                                    accept="application/pdf, image/jpeg, image/png"
+                                    class="position-absolute invisible" />
+                            </div>
+                            <!-- File Previews -->
+                            <div class="grid grid-cols-2 gap-sm">
+                                @if ($kertas_gensen)
+                                    @foreach ($kertas_gensen as $index => $item)
+                                        @php
+                                            $ext = $item->getClientOriginalExtension();
+                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                                $url = $item->temporaryUrl();
+                                                
+                                                // $url = route('preview.temp.image', $item->getFileName());
+                                                $filename = $item->getClientOriginalName();
+                                            }elseif(in_array($ext, ['pdf'])){
+                                                $url = route('preview.temp.pdf', $item->getFileName());
+                                                $filename = $item->getClientOriginalName();
+                                            }else{
+                                                $filename = $item->getClientOriginalName();
+                                            }
+                                            $ext = strtolower($ext);
+                                        @endphp
+                                        {{-- {!! $kertas_gensen_note[$index] !!} --}}
+                                        @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
+                                            {{-- IMAGE --}}
+                                            <img wire:key="kertas_gensen_new_{{ $index }}" class="w-full h-full object-cover" data-alt="Professional scan of a tax document on a clean desk background with soft office lighting" 
+                                            src="{{$url}}"/>
+                                        @elseif(in_array($ext, ['pdf']))
+                                            {{-- IFRAME PDF --}}
+                                            <a wire:key="kertas_gensen_new_{{ $index }}"
+                                                class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb"
+                                            >
+                                                <iframe
+                                                    src="{{ $url }}"
+                                                    type="application/pdf"
+                                                    width="100%"
+                                                    height="200"
+                                                    class="pointer-events-none"
+                                                ></iframe>
+
+                                            </a> 
+                                        @else
+                                            {{-- <div class="border rounded p-4 text-center bg-light">
+                                                <i class="bi bi-file-earmark fs-1"></i>
+                                                <div class="mt-2">
+                                                    {{$filename}}
+                                                </div>
+                                            </div> --}}
+                                        @endif
+                                    @endforeach
+                                @endif
+                                @if (!empty($kertas_gensen_old && $kertas_gensen_old['groups']))
+                                    @foreach ($kertas_gensen_old['groups'][0]['files'] as $index => $item)
+                                        {{-- {!! $kertas_gensen_old_note[$index] !!} --}}
+                                        @if($item['isImage'] ?? 0)
+                                            <div class="relative group/thumb" wire:key="kertas_gensen_old_{{ $item['id'] }}">
+                                                <!-- Preview -->
+                                                <a wire:ignore
+                                                    data-fslightbox="{{ $item['id'] }}"
+                                                    href="{{ $item['url'] }}"
+                                                    class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
+                                                >
+                                                    <img
+                                                        src="{{ $item['url'] }}"
+                                                        class="w-full h-full object-cover"
+                                                    >
+                                                </a>
+
+                                                <!-- Actions -->
+                                                <div class="absolute top-1 right-1 z-10">
+                                                    <!-- Tag A (Download) -->
+                                                  
+
+                                                    <!-- Tag Button (Delete) -->
+                                                    <button 
+                                                        type="button"
+                                                        wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')"
+                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
+                                                    >
+                                                        <span class="material-symbols-outlined text-xl">delete</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        @elseif($item['isPdf'])
+                                            
+                                            <div class="relative group/thumb" wire:key="kertas_gensen_old_{{ $item['id'] }}">
+                                                {{-- IFRAME PDF Preview --}}
+                                                <a wire:ignore data-fslightbox="{{$item['id']}}" data-type="iframe" href="#{{$item['id']}}"
+                                                class="block thumbnail-aspect bg-surface-container rounded-lg overflow-scroll">    
+                                                    <embed src="{{ $item['url'] }}" type="application/pdf" width="100%" style="min-height: 200px;" class="pointer-events-none">
+                                                </a>       
+                                                <!-- Actions -->
+                                                <div class="absolute top-1 right-1 z-10">
+                                                    <!-- Tag A (Download) -->
+                                                    <button 
+                                                        type="button"
+                                                        wire:click.stop="showDialogConvertToImage('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')"
+                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-success/50 text-success rounded h-8 w-8 transition-colors"
+                                                    >
+                                                        <span class="material-symbols-outlined text-xl">wand_stars</span>
+                                                    </button>
+                                                
+                                                    <!-- Tag Button (Delete) -->
+                                                    <button 
+                                                        type="button"
+                                                        wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')"
+                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
+                                                    >
+                                                        <span class="material-symbols-outlined text-xl">delete</span>
+                                                    </button>
+                                                </div>
+                                                {{-- Iframe Full Preview --}}
+                                                <div style="position:absolute; left:-9999px; top:-9999px;">
+                                                    <iframe
+                                                        src="{{$item['url']}}"
+                                                        id="{{$item['id']}}"
+                                                        width="1920"
+                                                        height="1080"
+                                                        frameborder="0"
+                                                    ></iframe>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="border rounded p-4 text-center bg-light" wire:key="kertas_gensen_old_{{ $index }}">
+                                                <i class="bi bi-file-earmark fs-1"></i>
+                                                <div class="mt-2">
+                                                    {{$item['url']}}
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        <!-- Card: Rekap Pengiriman Uang -->
+                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col gap-md group hover:border-primary-container transition-colors">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h2 class="font-h2 text-body-lg text-on-surface">Rekap Pengiriman</h2>
+                                </div>
+                            </div>
+                                @if ($rekap_pengiriman_uang)
+                                    @foreach ($rekap_pengiriman_uang as $rekap_index => $rekap)
+                                        <div
+                                                x-data="{
+                                                    isDragging: false,
+                                                    handleDrop(event) {
+                                                    {{-- Multi --}}
+                                                    const files = event.dataTransfer.files;
+                                                    if (files.length) {
+                                                    const dataTransfer = new DataTransfer();
+                                                    [...files].forEach(file => {
+                                                    dataTransfer.items.add(file);
+                                                    });
+                                                    $refs.input.files = dataTransfer.files;
+                                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                    }
+                                                    this.isDragging = false;
+                                                    },
+                                                    handleFiles(event) {
+                                                    const file = event.target.files[0];
+                                                    // Optional: you can limit or validate here
+                                                    }
+                                                }"
+                                                @dragover.prevent="isDragging = true"
+                                                @dragleave.prevent="isDragging = false"
+                                                @drop.prevent="handleDrop($event)"
+                                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                                class="form-group mt-5">
+                                            <div class="border-2 border-dashed border-outline-variant/30 py-1 rounded-xl text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
+                                                <input class="hidden validate-upload-file" id="rekap_pengiriman_uang.{{$rekap_index}}.file" name="rekap_pengiriman_uang.{{$rekap_index}}.file"
+                                                    type="file"
+                                                    multiple
+                                                    x-ref="input"
+                                                    wire:model="rekap_pengiriman_uang.{{$rekap_index}}.file"
+                                                    {{-- @change="handleFiles" --}}
+                                                    accept="application/pdf"
+                                                    class="position-absolute invisible" />
+                                                <select class="form-select w-75 m-auto text-center" wire:model.live="rekap_pengiriman_uang.{{$rekap_index}}.remittance_type">
+                                                    @foreach (App\Enums\Gensen\GensenAttachmentRemittanceType::options() as $value => $label)
+                                                    <option value="{{ $value }}">{{ $label }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <label for="rekap_pengiriman_uang.{{$rekap_index}}.file" class="{{($rekap['remittance_type']) ? '' : 'd-none'}} border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                                    <span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
+                                                    <div class="text-body-sm">
+                                                        <span class="text-primary font-semibold">Click to upload</span> or drag and drop
+                                                    </div>
+                                                </label>
+                                                <div class="grid grid-cols-2 gap-sm">
+                                                    @foreach ($rekap['file'] as $file_index => $item)
+                                                        @php
+                                                            $ext = $item->getClientOriginalExtension();
+                                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                                            $url = $item->temporaryUrl();
+                                                            
+                                                        // $url = route('preview.temp.image', $item->getFileName());
+                                                        $filename = $item->getClientOriginalName();
+                                                            }elseif(in_array($ext, ['pdf'])){
+                                                            $url = route('preview.temp.pdf', $item->getFileName());
+                                                            $filename = $item->getClientOriginalName();
+                                                            }else{
+                                                            $filename = $item->getClientOriginalName();
+                                                            }
+                                                            $ext = strtolower($ext);
+                                                        @endphp
+                                                        @if(in_array($ext, ['pdf']))
+                                                            <a wire:key="rekap_pengiriman_new_{{ $filename }}"
+                                                                class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb"
+                                                            >
+                                                                <iframe
+                                                                    src="{{ $url }}"
+                                                                    type="application/pdf"
+                                                                    width="100%"
+                                                                    height="200"
+                                                                    class="pointer-events-none"
+                                                                ></iframe>
+
+                                                            </a> 
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                                <button type="button" wire:click="addRekapPengirimanUang" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                    <span class="material-symbols-outlined text-primary text-3xl">add_circle</span>
+                                    <div class="text-body-sm">Add files</div>
+                                </button>
+                                @if ($rekap_pengiriman_uang_old)
+                                    <div class="grid grid-cols-2 gap-sm">
+                                        @foreach ($rekap_pengiriman_uang_old['groups'] as $group_index => $group)
+                                            {{-- <h3 class="ms-[10px] text-center">{{$rekap_pengiriman_uang_old['groups'][$group_index]['provider']}}</h3> --}}
+                                            @if (!empty($group['files']))
+                                            @foreach ($group['files'] as $rekap_index => $item)
+                                                @if($item['isPdf'])
+                                                    <div class="relative group/thumb" wire:key="rekap_pengirian_old_{{ $item['id'] }}" 
+                                                        x-init="if(window.refreshFsLightbox) refreshFsLightbox()">
+                                                        {{-- IFRAME PDF Preview --}}
+                                                        <a data-fslightbox="rekap_pengiriman_{{$item['id']}}" data-type="iframe" href="#{{$item['id']}}"
+                                                        class="block thumbnail-aspect bg-surface-container rounded-lg overflow-scroll">    
+                                                            <embed src="{{ $item['url'] }}" type="application/pdf" width="100%" style="min-height: 200px;" class="pointer-events-none">
+                                                        </a>       
+                                                        <!-- Actions -->
+                                                        <div class="absolute top-1 right-1 z-10">
+                                                            <!-- Tag A (Download) -->
+                                                         
+                                                            <!-- Tag Button (Delete) -->
+                                                            <button 
+                                                                type="button"
+                                                                wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::REKAP_PENGIRIMAN_UANG }}')"
+                                                                class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
+                                                            >
+                                                                <span class="material-symbols-outlined text-xl">delete</span>
+                                                            </button>
+                                                        </div>
+                                                        {{-- Iframe Full Preview --}}
+                                                        <div style="position:absolute; left:-9999px; top:-9999px;">
+                                                            <iframe
+                                                                src="{{$item['url']}}"
+                                                                id="{{$item['id']}}"
+                                                                width="1920"
+                                                                height="1080"
+                                                                frameborder="0"
+                                                            ></iframe>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <div class="border rounded p-4 text-center bg-light"  wire:key="rekap_pengirian_old_{{ $item['id'] }}">
+                                                        <i class="bi bi-file-earmark fs-1"></i>
+                                                        <div class="mt-2">
+                                                            {{$item['url']}}
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                @endif
+                            
+                            {{-- <div class="flex items-center justify-center h-40 bg-surface-container-low rounded-lg border border-outline-variant border-dashed">
+                                <p class="text-body-sm text-secondary italic">No documents uploaded</p>
+                            </div> --}}
+                        </div>
+                        <!-- Card: Kartu Keluarga -->
+                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col gap-md group hover:border-primary-container transition-colors">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h2 class="font-h2 text-body-lg text-on-surface">Kartu Keluarga</h2>
+                                </div>
+                            </div>
+                            <!-- Upload Zone -->
+                            <div
+                                x-data="{
+                                    isDragging: false,
+                                    handleDrop(event) {
+                                    {{-- Multi --}}
+                                    const files = event.dataTransfer.files;
+                                    if (files.length) {
+                                    const dataTransfer = new DataTransfer();
+                                    [...files].forEach(file => {
+                                    dataTransfer.items.add(file);
+                                    });
+                                    $refs.input.files = dataTransfer.files;
+                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                    }
+                                    this.isDragging = false;
+                                    },
+                                    handleFiles(event) {
+                                    const file = event.target.files[0];
+                                    return;
+                                    // Optional: you can limit or validate here
+                                    }
+                                }"
+                                @dragover.prevent="isDragging = true"
+                                @dragleave.prevent="isDragging = false"
+                                @drop.prevent="handleDrop($event)"
+                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                class="form-group">
+                                    <label for="kartu_keluarga" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                        <span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
+                                        <div class="text-body-sm">
+                                            <span class="text-primary font-semibold">Click to upload</span> or drag and drop
+                                        </div>
+                                    </label>
+                                    <input class="hidden validate-upload-file" id="kartu_keluarga" name="kartu_keluarga"
+                                    type="file"
+                                    multiple
+                                    x-ref="input"
+                                    wire:model="kartu_keluarga"
+                                    {{-- @change="handleFiles" --}}
+                                    accept="application/pdf, image/jpeg, image/png"
+                                    class="position-absolute invisible" />
+                            </div>
+                            <!-- File Previews -->
+                            <div class="grid grid-cols-2 gap-sm">
+                                @if ($kartu_keluarga)
+                                    @foreach ($kartu_keluarga as $index => $item)
+                                        @php
+                                            $ext = $item->getClientOriginalExtension();
+                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                                $url = $item->temporaryUrl();
+                                                
+                                                        // $url = route('preview.temp.image', $item->getFileName());
+                                                $filename = $item->getClientOriginalName();
+                                            }elseif(in_array($ext, ['pdf'])){
+                                                $url = route('preview.temp.pdf', $item->getFileName());
+                                                $filename = $item->getClientOriginalName();
+                                            }else{
+                                                $filename = $item->getClientOriginalName();
+                                            }
+                                            $ext = strtolower($ext);
+                                        @endphp
+                                        {{-- {!! $kartu_keluarga_note[$index] !!} --}}
+                                        @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
+                                            {{-- IMAGE --}}
+                                            <!-- Preview -->
+                                            <div class="relative group/thumb" wire:key="kartu_keluarga_new_{{ $filename }}">
+                                                <a
+                                                    data-fslightbox="kartu_keluarga_{{ rand() }}"
+                                                    href="{{ $url }}"
+                                                    class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
+                                                >
+                                                    <img
+                                                        src="{{ $url }}"
+                                                        class="w-full h-full object-cover"
+                                                    >
+                                                </a>
+                                            </div>
+                                        @elseif(in_array($ext, ['pdf']))
+                                            {{-- IFRAME PDF --}}
+                                            <a  wire:key="kartu_keluarga_new_{{ $filename }}"
+                                                class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb"
+                                            >
+                                                <iframe
+                                                    src="{{ $url }}"
+                                                    type="application/pdf"
+                                                    width="100%"
+                                                    height="200"
+                                                    class="pointer-events-none"
+                                                ></iframe>
+
+                                            </a> 
+                                        @else
+                                            {{-- <div class="border rounded p-4 text-center bg-light">
+                                                <i class="bi bi-file-earmark fs-1"></i>
+                                                <div class="mt-2">
+                                                    {{$filename}}
+                                                </div>
+                                            </div> --}}
+                                        @endif
+                                    @endforeach
+                                @endif
+                                @if (!empty($kartu_keluarga_old && $kartu_keluarga_old['groups']))
+                                    @foreach ($kartu_keluarga_old['groups'][0]['files'] as $index => $item)
+                                        {{-- {!! $kartu_keluarga_old_note[$index] !!} --}}
+                                        @if($item['isImage'] ?? 0)
+                                            <div class="relative group/thumb"  wire:key="kartu_keluarga_old_{{ $item['id'] }}">
+                                                <!-- Preview -->
+                                                <a
+                                                    data-fslightbox="kartu_keluarga_old_{{ $item['id'] }}"
+                                                    href="{{ $item['url'] }}"
+                                                    class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
+                                                >
+                                                    <img
+                                                        src="{{ $item['url'] }}"
+                                                        class="w-full h-full object-cover"
+                                                    >
+                                                </a>
+
+                                                <!-- Actions -->
+                                                <div class="absolute top-1 right-1 z-10">
+                                                    <!-- Tag A (Download) -->
+                                                   
+
+                                                    <!-- Tag Button (Delete) -->
+                                                    <button 
+                                                        type="button"
+                                                        wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KARTU_KELUARGA }}')"
+                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
+                                                    >
+                                                        <span class="material-symbols-outlined text-xl">delete</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        @elseif($item['isPdf'])
+                                            
+                                            <div class="relative group/thumb"  wire:key="kartu_keluarga_old_{{ $item['id'] }}">
+                                                {{-- IFRAME PDF Preview --}}
+                                                <a data-fslightbox="kartu_keluarga_old_{{$item['id']}}" data-type="iframe" href="#{{$item['id']}}"
+                                                class="block thumbnail-aspect bg-surface-container rounded-lg overflow-scroll">    
+                                                    <embed src="{{ $item['url'] }}" type="application/pdf" width="100%" style="min-height: 200px;" class="pointer-events-none">
+                                                </a>       
+                                                <!-- Actions -->
+                                                <div class="absolute top-1 right-1 z-10">
+                                                    <!-- Tag A (Download) -->
+                                                   
+
+                                                    <!-- Tag Button (Delete) -->
+                                                    <button 
+                                                        type="button"
+                                                        wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KARTU_KELUARGA }}')"
+                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
+                                                    >
+                                                        <span class="material-symbols-outlined text-xl">delete</span>
+                                                    </button>
+                                                </div>
+                                                {{-- Iframe Full Preview --}}
+                                                <div style="position:absolute; left:-9999px; top:-9999px;">
+                                                    <iframe
+                                                        src="{{$item['url']}}"
+                                                        id="{{$item['id']}}"
+                                                        width="1920"
+                                                        height="1080"
+                                                        frameborder="0"
+                                                    ></iframe>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="border rounded p-4 text-center bg-light" wire:key="kartu_keluarga_old_{{ $item['id'] }}">
+                                                <i class="bi bi-file-earmark fs-1"></i>
+                                                <div class="mt-2">
+                                                    {{$item['url']}}
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        <!-- Card: Zairyou Card (Front/Back) -->
+                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col gap-md group hover:border-primary-container transition-colors">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h2 class="font-h2 text-body-lg text-on-surface">Zairyou Card</h2>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-sm">
+                                <div class="flex flex-col gap-xs">
+                                    <span class="text-label-caps text-[10px] text-secondary">FRONT SIDE</span>
+                                    @if ($zairyou_card_front_old['id'])
+                                        @if($zairyou_card_front_old['isImage'])
+                                            <div wire:key="zairyou_card_front_{{ $zairyou_card_front_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">
+                                                <!-- Actions -->
+                                                <div class="absolute top-1 right-1 z-10">
+                                                   <!-- Tag A (Download) -->
+                                                  
+
+                                                    <!-- Tag Button (Delete) -->
+                                                    <button 
+                                                        type="button"
+                                                        wire:click.stop="showDialogDeleteFile('{{ $zairyou_card_front_old['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::ZAIRYOU_CARD_FRONT }}')"
+                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
+                                                    >
+                                                        <span class="material-symbols-outlined text-xl">delete</span>
+                                                    </button>
+                                                </div>
+                                                <img class="w-full h-full object-cover" data-alt="" src="{{$zairyou_card_front_old['url']}}"/>
+                                            </div>
+                                        @endif
+                                    @elseif ($zairyou_card_front)
+                                        @php
+                                            $ext = $zairyou_card_front->getClientOriginalExtension();
+                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                            $filename = $zairyou_card_front->getClientOriginalName();
+                                            $url = $zairyou_card_front->temporaryUrl();
+                                            
+                                                        // $url = route('preview.temp.image', $zairyou_card_front->getFileName());
+                                            }elseif(in_array($ext, ['pdf'])){
+                                            $url = route('preview.temp.pdf', $zairyou_card_front->getFileName());
+                                            $filename = $zairyou_card_front->getClientOriginalName();
+                                            }else{
+                                            $filename = $zairyou_card_front->getClientOriginalName();
+                                            }
+                                            $ext = strtolower($ext);
+                                        @endphp
+                                        @if(in_array($ext, ['jpg','jpeg','png']))
+                                            <div wire:key="zairyou_card_front_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
+                                                <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <div
+                                            x-data="{
+                                                isDragging: false,
+                                                handleDrop(event) {
+                                                const file = event.dataTransfer.files[0]; // Only take the first file
+                                                if (file) {
+                                                const dataTransfer = new DataTransfer();
+                                                dataTransfer.items.add(file);
+                                                $refs.input.files = dataTransfer.files;
+                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                }
+                                                this.isDragging = false;
+                                                },
+                                                handleFiles(event) {
+                                                const file = event.target.files[0];
+                                                // Optional: you can limit or validate here
+                                                }
+                                            }"
+                                            @dragover.prevent="isDragging = true"
+                                            @dragleave.prevent="isDragging = false"
+                                            @drop.prevent="handleDrop($event)"
+                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                            class="form-group">
+                                                <label for="zairyou_card_front" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
+                                                </label>
+                                                {{-- <label for="zairyou_card_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                                    
+                                                </label> --}}
+                                            <input class="hidden validate-upload-file" id="zairyou_card_front.1" name="zairyou_card_front"
+                                                type="file"
+                                                x-ref="input"
+                                                {{-- wire:model="zairyou_card_front" --}}
+                                                {{-- @change="handleFiles" --}}
+                                                accept="application/pdf, image/jpeg, image/png"
+                                                class="position-absolute invisible" />
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="flex flex-col gap-xs">
+                                    <span class="text-label-caps text-[10px] text-secondary">BACK SIDE</span>
+                                    @if ($zairyou_card_back_old['id'])
+                                        @if($zairyou_card_back_old['isImage'])
+                                            <div wire:key="zairyou_card_back_{{ $zairyou_card_back_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">
+                                                <!-- Actions -->
+                                                <div class="absolute top-1 right-1 z-10">
+                                                    <!-- Tag A (Download) -->
+                                                 
+
+                                                    <!-- Tag Button (Delete) -->
+                                                    <button 
+                                                        type="button"
+                                                        wire:click.stop="showDialogDeleteFile('{{ $zairyou_card_back_old['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::ZAIRYOU_CARD_BACK }}')"
+                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
+                                                    >
+                                                        <span class="material-symbols-outlined text-xl">delete</span>
+                                                    </button>
+                                                </div>
+                                                <img class="w-full h-full object-cover" data-alt="" src="{{$zairyou_card_back_old['url']}}"/>
+                                            </div>
+                                        @endif
+                                    @elseif ($zairyou_card_back)
+                                        @php
+                                            $ext = $zairyou_card_back->getClientOriginalExtension();
+                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                            $filename = $zairyou_card_back->getClientOriginalName();
+                                            $url = $zairyou_card_back->temporaryUrl();
+                                            
+                                                        // $url = route('preview.temp.image', $zairyou_card_back->getFileName());
+                                            }elseif(in_array($ext, ['pdf'])){
+                                            $url = route('preview.temp.pdf', $zairyou_card_back->getFileName());
+                                            $filename = $zairyou_card_back->getClientOriginalName();
+                                            }else{
+                                            $filename = $zairyou_card_back->getClientOriginalName();
+                                            }
+                                            $ext = strtolower($ext);
+                                        @endphp
+                                        @if(in_array($ext, ['jpg','jpeg','png']))
+                                            <div wire:key="zairyou_card_back_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
+                                                <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <div
+                                            x-data="{
+                                                isDragging: false,
+                                                handleDrop(event) {
+                                                const file = event.dataTransfer.files[0]; // Only take the first file
+                                                if (file) {
+                                                const dataTransfer = new DataTransfer();
+                                                dataTransfer.items.add(file);
+                                                $refs.input.files = dataTransfer.files;
+                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                }
+                                                this.isDragging = false;
+                                                },
+                                                handleFiles(event) {
+                                                const file = event.target.files[0];
+                                                // Optional: you can limit or validate here
+                                                }
+                                            }"
+                                            @dragover.prevent="isDragging = true"
+                                            @dragleave.prevent="isDragging = false"
+                                            @drop.prevent="handleDrop($event)"
+                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                            class="form-group">
+                                                <label for="zairyou_card_back" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
+                                                </label>
+                                                {{-- <label for="zairyou_card_back" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                                    
+                                                </label> --}}
+                                            <input class="hidden validate-upload-file" id="zairyou_card_back.1" name="zairyou_card_back"
+                                                type="file"
+                                                x-ref="input"
+                                                {{-- wire:model="zairyou_card_back" --}}
+                                                {{-- @change="handleFiles" --}}
+                                                accept="application/pdf, image/jpeg, image/png"
+                                                class="position-absolute invisible" />
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card: My Number (Front/Back) -->
+                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col gap-md group hover:border-primary-container transition-colors">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h2 class="font-h2 text-body-lg text-on-surface">My Number</h2>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-sm">
+                                <div class="flex flex-col gap-xs">
+                                    <span class="text-label-caps text-[10px] text-secondary">FRONT SIDE</span>
+                                    @if ($my_number_front_old['id'])
+                                        @if($my_number_front_old['isImage'])
+                                            <div wire:key="my_number_front_{{ $my_number_front_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">
+                                                <!-- Actions -->
+                                                <div class="absolute top-1 right-1 z-10">
+                                                    <!-- Tag A (Download) -->
+                                                  
+
+                                                    <!-- Tag Button (Delete) -->
+                                                    <button 
+                                                        type="button"
+                                                        wire:click.stop="showDialogDeleteFile('{{ $my_number_front_old['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::MY_NUMBER_FRONT }}')"
+                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
+                                                    >
+                                                        <span class="material-symbols-outlined text-xl">delete</span>
+                                                    </button>
+                                                </div>
+                                                <img class="w-full h-full object-cover" data-alt="" src="{{$my_number_front_old['url']}}"/>
+                                            </div>
+                                        @endif
+                                    @elseif ($my_number_front)
+                                        @php
+                                            $ext = $my_number_front->getClientOriginalExtension();
+                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                            $filename = $my_number_front->getClientOriginalName();
+                                            $url = $my_number_front->temporaryUrl();
+                                            
+                                                        // $url = route('preview.temp.image', $my_number_front->getFileName());
+                                                // $fullPath = $my_number_front->getRealPath();
+                                            // $relativePath = Str::after($fullPath, 'livewire-tmp/');
+
+                                            // $url = route('preview.temp.file', $relativePath);
+                                            }elseif(in_array($ext, ['pdf'])){
+                                            $url = route('preview.temp.pdf', $my_number_front->getFileName());
+                                            $filename = $my_number_front->getClientOriginalName();
+                                            }else{
+                                            $filename = $my_number_front->getClientOriginalName();
+                                            }
+                                            $ext = strtolower($ext);
+                                        @endphp
+                                        @if(in_array($ext, ['jpg','jpeg','png']))
+                                            <div wire:key="my_number_front_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
+                                                <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <div
+                                            x-data="{
+                                                isDragging: false,
+                                                handleDrop(event) {
+                                                const file = event.dataTransfer.files[0]; // Only take the first file
+                                                if (file) {
+                                                const dataTransfer = new DataTransfer();
+                                                dataTransfer.items.add(file);
+                                                $refs.input.files = dataTransfer.files;
+                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                }
+                                                this.isDragging = false;
+                                                },
+                                                handleFiles(event) {
+                                                const file = event.target.files[0];
+                                                // Optional: you can limit or validate here
+                                                }
+                                            }"
+                                            @dragover.prevent="isDragging = true"
+                                            @dragleave.prevent="isDragging = false"
+                                            @drop.prevent="handleDrop($event)"
+                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                            class="form-group">
+                                                <label for="my_number_front" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
+                                                </label>
+                                                {{-- <label for="my_number_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                                    
+                                                </label> --}}
+                                            <input class="hidden validate-upload-file" id="my_number_front.1" name="my_number_front"
+                                                type="file"
+                                                x-ref="input"
+                                                {{-- wire:model="my_number_front" --}}
+                                                {{-- @change="handleFiles" --}}
+                                                accept="application/pdf, image/jpeg, image/png"
+                                                class="position-absolute invisible" />
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="flex flex-col gap-xs">
+                                    <span class="text-label-caps text-[10px] text-secondary">BACK SIDE</span>
+                                    @if ($my_number_back_old['id'])
+                                        @if($my_number_back_old['isImage'])
+                                            <div wire:key="my_number_back_{{ $my_number_back_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">
+                                                <!-- Actions -->
+                                                <div class="absolute top-1 right-1 z-10">
+                                                    <!-- Tag A (Download) -->
+                                                 
+
+                                                    <!-- Tag Button (Delete) -->
+                                                    <button 
+                                                        type="button"
+                                                        wire:click.stop="showDialogDeleteFile('{{ $my_number_back_old['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::MY_NUMBER_BACK }}')"
+                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
+                                                    >
+                                                        <span class="material-symbols-outlined text-xl">delete</span>
+                                                    </button>
+                                                </div>
+                                                <img class="w-full h-full object-cover" data-alt="" src="{{$my_number_back_old['url']}}"/>
+                                            </div>
+                                        @endif
+                                    @elseif ($my_number_back)
+                                        @php
+                                            $ext = $my_number_back->getClientOriginalExtension();
+                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                            $filename = $my_number_back->getClientOriginalName();
+                                            $url = $my_number_back->temporaryUrl();
+                                            
+                                                        // $url = route('preview.temp.image', $my_number_back->getFileName());
+                                            }elseif(in_array($ext, ['pdf'])){
+                                            $url = route('preview.temp.pdf', $my_number_back->getFileName());
+                                            $filename = $my_number_back->getClientOriginalName();
+                                            }else{
+                                            $filename = $my_number_back->getClientOriginalName();
+                                            }
+                                            $ext = strtolower($ext);
+                                        @endphp
+                                        @if(in_array($ext, ['jpg','jpeg','png']))
+                                            <div wire:key="my_number_back_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
+                                                <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <div
+                                            x-data="{
+                                                isDragging: false,
+                                                handleDrop(event) {
+                                                const file = event.dataTransfer.files[0]; // Only take the first file
+                                                if (file) {
+                                                const dataTransfer = new DataTransfer();
+                                                dataTransfer.items.add(file);
+                                                $refs.input.files = dataTransfer.files;
+                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                }
+                                                this.isDragging = false;
+                                                },
+                                                handleFiles(event) {
+                                                const file = event.target.files[0];
+                                                // Optional: you can limit or validate here
+                                                }
+                                            }"
+                                            @dragover.prevent="isDragging = true"
+                                            @dragleave.prevent="isDragging = false"
+                                            @drop.prevent="handleDrop($event)"
+                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                            class="form-group">
+                                                <label for="my_number_back" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
+                                                </label>
+                                                {{-- <label for="my_number_back" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                                    
+                                                </label> --}}
+                                            <input class="hidden validate-upload-file" id="my_number_back.1" name="my_number_back"
+                                                type="file"
+                                                x-ref="input"
+                                                {{-- wire:model="my_number_back" --}}
+                                                {{-- @change="handleFiles" --}}
+                                                accept="application/pdf, image/jpeg, image/png"
+                                                class="position-absolute invisible" />
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card: Rekening Indonesia -->
+                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col gap-md group hover:border-primary-container transition-colors">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h2 class="font-h2 text-body-lg text-on-surface">Rekening Indonesia</h2>
+                                </div>
+                            </div>
+                            
+                                    @if ($rekening_indonesia_old['id'])
+                                        @if($rekening_indonesia_old['isImage'])
+                                            <div wire:key="rekening_indonesia_{{ $rekening_indonesia_old['id'] }}" class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb max-w-[160px] mx-auto">
+                                                <!-- Actions -->
+                                                <div class="absolute top-1 right-1 z-10">
+                                                    <!-- Tag A (Download) -->
+                                                   
+                                                    <!-- Tag Button (Delete) -->
+                                                    <button 
+                                                        type="button"
+                                                        wire:click.stop="showDialogDeleteFile('{{ $rekening_indonesia_old['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::REKENING_INDONESIA }}')"
+                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
+                                                    >
+                                                        <span class="material-symbols-outlined text-xl">delete</span>
+                                                    </button>
+                                                </div>
+                                                <img class="w-full h-full object-cover" data-alt="" src="{{$rekening_indonesia_old['url']}}"/>
+                                            </div>
+                                        @endif
+                                    @elseif ($rekening_indonesia)
+                                        @php
+                                            $ext = $rekening_indonesia->getClientOriginalExtension();
+                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                            $filename = $rekening_indonesia->getClientOriginalName();
+                                            $url = $rekening_indonesia->temporaryUrl();
+                                            
+                                                        // $url = route('preview.temp.image', $rekening_indonesia->getFileName());
+                                            }elseif(in_array($ext, ['pdf'])){
+                                            $url = route('preview.temp.pdf', $rekening_indonesia->getFileName());
+                                            $filename = $rekening_indonesia->getClientOriginalName();
+                                            }else{
+                                            $filename = $rekening_indonesia->getClientOriginalName();
+                                            }
+                                            $ext = strtolower($ext);
+                                        @endphp
+                                        @if(in_array($ext, ['jpg','jpeg','png']))
+                                        {{-- <div class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb max-w-[160px] mx-auto">
+                                            <div class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
+                                                <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
+                                            </div>
+                                        </div> --}}
+                                        <div wire:key="rekening_indonesia_{{ $filename }}" class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb max-w-[160px] mx-auto">
+                                            <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
+                                            
+                                        </div>
+                                        @endif
+                                    @else
+                                    <div
+                                            x-data="{
+                                                isDragging: false,
+                                                handleDrop(event) {
+                                                const file = event.dataTransfer.files[0]; // Only take the first file
+                                                if (file) {
+                                                const dataTransfer = new DataTransfer();
+                                                dataTransfer.items.add(file);
+                                                $refs.input.files = dataTransfer.files;
+                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                }
+                                                this.isDragging = false;
+                                                },
+                                                handleFiles(event) {
+                                                const file = event.target.files[0];
+                                                // Optional: you can limit or validate here
+                                                }
+                                            }"
+                                            @dragover.prevent="isDragging = true"
+                                            @dragleave.prevent="isDragging = false"
+                                            @drop.prevent="handleDrop($event)"
+                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                            class="form-group">
+                                                <label for="rekening_indonesia" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
+                                                </label>
+                                                {{-- <label for="rekening_indonesia" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                                    
+                                                </label> --}}
+                                            <input class="hidden validate-upload-file" id="rekening_indonesia.1" name="rekening_indonesia"
+                                                type="file"
+                                                x-ref="input"
+                                                {{-- wire:model="rekening_indonesia" --}}
+                                                {{-- @change="handleFiles" --}}
+                                                accept="image/jpeg, image/png"
+                                                class="position-absolute invisible" />
+                                        </div>
+                                        {{-- <div class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb d-flex border-2 border-blue-300 md:w-1/2 h-full mx-auto">
+                                            <div
+                                                x-data="{
+                                                isDragging: false,
+                                                handleDrop(event) {
+                                                const file = event.dataTransfer.files[0]; // Only take the first file
+                                                if (file) {
+                                                const dataTransfer = new DataTransfer();
+                                                dataTransfer.items.add(file);
+                                                $refs.input.files = dataTransfer.files;
+                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                }
+                                                this.isDragging = false;
+                                                },
+                                                handleFiles(event) {
+                                                const file = event.target.files[0];
+                                                // Optional: you can limit or validate here
+                                                }
+                                            }"
+                                                @dragover.prevent="isDragging = true"
+                                                @dragleave.prevent="isDragging = false"
+                                                @drop.prevent="handleDrop($event)"
+                                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                                class="form-group">
+                                                    <label for="rekening_indonesia" class="w-full h-full aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+                                                        <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
+                                                    </label>
+                                                <input class="hidden validate-upload-file" id="rekening_indonesia" name="rekening_indonesia"
+                                                    type="file"
+                                                    x-ref="input"
+                                                    wire:model="rekening_indonesia"
+                                                    @change="handleFiles"
+                                                    accept="application/pdf, image/jpeg, image/png"
+                                                    class="position-absolute invisible" />
+                                            </div>
+                                        </div> --}}
+                                    @endif
+                                    
+                                
+                        </div>
+                        </div>
+                    </div>
+                    <!-- Sticky Footer Note (Floating Action Style) -->
+                    <!-- <div class="fixed bottom-lg left-1/2 -translate-x-1/2 z-40 bg-on-surface text-white px-xl py-md rounded-2xl shadow-xl flex items-center gap-md">
+                        <span class="material-symbols-outlined text-primary-container">info</span>
+                        <p class="text-body-sm font-medium">All uploads are encrypted and secure. Supported: PDF, JPG, PNG (Max 10MB)</p>
+                        <button class="ml-xl bg-white/10 hover:bg-white/20 p-xs rounded-full"><span class="material-symbols-outlined">close</span></button>
+                    </div> -->
+                </main>
+                
+            </div>
             <div class="tab-pane fade" id="kt_vtab_pane_1" role="tabpanel" wire:ignore.self>
                 
                 <main class="flex-1 flex flex-col md:flex-row bg-background overflow-hidden">
@@ -780,1026 +1808,6 @@
                         </button> --}}
                     </aside>
                 </main>
-            </div>
-            <div class="tab-pane fade active show" id="kt_vtab_pane_2" role="tabpanel" wire:ignore.self>
-                <!-- Main Workspace Container -->
-                <main class="min-h-screen pb-xl rounded-lg">
-                    
-                    <!-- Document Grid -->
-                    <div class="mx-auto px-margin mt-xl">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
-                        <!-- Card: Kertas Gensen -->
-                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col gap-md group hover:border-primary-container transition-colors">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h2 class="font-h2 text-body-lg text-on-surface">Kertas Gensen</h2>
-                                </div>
-                            </div>
-                            <!-- Upload Zone -->
-                            <div
-                                x-data="{
-                                    isDragging: false,
-                                    handleDrop(event) {
-                                    {{-- Multi --}}
-                                    const files = event.dataTransfer.files;
-                                    if (files.length) {
-                                    const dataTransfer = new DataTransfer();
-                                    [...files].forEach(file => {
-                                    dataTransfer.items.add(file);
-                                    });
-                                    $refs.input.files = dataTransfer.files;
-                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                    }
-                                    this.isDragging = false;
-                                    },
-                                    handleFiles(event) {
-                                    const file = event.target.files[0];
-                                    return;
-                                    // Optional: you can limit or validate here
-                                    }
-                                }"
-                                @dragover.prevent="isDragging = true"
-                                @dragleave.prevent="isDragging = false"
-                                @drop.prevent="handleDrop($event)"
-                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                class="form-group">
-                                    <label for="kertas_gensen" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                        <span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
-                                        <div class="text-body-sm">
-                                            <span class="text-primary font-semibold">Click to upload</span> or drag and drop
-                                        </div>
-                                    </label>
-                                    <input class="hidden validate-upload-file" id="kertas_gensen" name="kertas_gensen"
-                                    type="file"
-                                    multiple
-                                    x-ref="input"
-                                    wire:model="kertas_gensen"
-                                    {{-- @change="handleFiles" --}}
-                                    accept="application/pdf, image/jpeg, image/png"
-                                    class="position-absolute invisible" />
-                            </div>
-                            <!-- File Previews -->
-                            <div class="grid grid-cols-2 gap-sm">
-                                @if ($kertas_gensen)
-                                    @foreach ($kertas_gensen as $index => $item)
-                                        @php
-                                            $ext = $item->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                                $url = $item->temporaryUrl();
-                                                
-                                                // $url = route('preview.temp.image', $item->getFileName());
-                                                $filename = $item->getClientOriginalName();
-                                            }elseif(in_array($ext, ['pdf'])){
-                                                $url = route('preview.temp.pdf', $item->getFileName());
-                                                $filename = $item->getClientOriginalName();
-                                            }else{
-                                                $filename = $item->getClientOriginalName();
-                                            }
-                                            $ext = strtolower($ext);
-                                        @endphp
-                                        {{-- {!! $kertas_gensen_note[$index] !!} --}}
-                                        @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
-                                            {{-- IMAGE --}}
-                                            <img wire:key="kertas_gensen_new_{{ $index }}" class="w-full h-full object-cover" data-alt="Professional scan of a tax document on a clean desk background with soft office lighting" 
-                                            src="{{$url}}"/>
-                                        @elseif(in_array($ext, ['pdf']))
-                                            {{-- IFRAME PDF --}}
-                                            <a wire:key="kertas_gensen_new_{{ $index }}"
-                                                class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb"
-                                            >
-                                                <iframe
-                                                    src="{{ $url }}"
-                                                    type="application/pdf"
-                                                    width="100%"
-                                                    height="200"
-                                                    class="pointer-events-none"
-                                                ></iframe>
-
-                                            </a> 
-                                        @else
-                                            {{-- <div class="border rounded p-4 text-center bg-light">
-                                                <i class="bi bi-file-earmark fs-1"></i>
-                                                <div class="mt-2">
-                                                    {{$filename}}
-                                                </div>
-                                            </div> --}}
-                                        @endif
-                                    @endforeach
-                                @endif
-                                @if (!empty($kertas_gensen_old && $kertas_gensen_old['groups']))
-                                    @foreach ($kertas_gensen_old['groups'][0]['files'] as $index => $item)
-                                        {{-- {!! $kertas_gensen_old_note[$index] !!} --}}
-                                        @if($item['isImage'] ?? 0)
-                                            <div class="relative group/thumb" wire:key="kertas_gensen_old_{{ $item['id'] }}">
-                                                <!-- Preview -->
-                                                <a wire:ignore
-                                                    data-fslightbox="{{ $item['id'] }}"
-                                                    href="{{ $item['url'] }}"
-                                                    class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
-                                                >
-                                                    <img
-                                                        src="{{ $item['url'] }}"
-                                                        class="w-full h-full object-cover"
-                                                    >
-                                                </a>
-
-                                                <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
-                                                    <!-- Tag A (Download) -->
-                                                  
-
-                                                    <!-- Tag Button (Delete) -->
-                                                    <button 
-                                                        type="button"
-                                                        wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')"
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">delete</span>
-                                                    </button>
-                                                </div>
-
-                                            </div>
-                                        @elseif($item['isPdf'])
-                                            
-                                            <div class="relative group/thumb" wire:key="kertas_gensen_old_{{ $item['id'] }}">
-                                                {{-- IFRAME PDF Preview --}}
-                                                <a wire:ignore data-fslightbox="{{$item['id']}}" data-type="iframe" href="#{{$item['id']}}"
-                                                class="block thumbnail-aspect bg-surface-container rounded-lg overflow-scroll">    
-                                                    <embed src="{{ $item['url'] }}" type="application/pdf" width="100%" style="min-height: 200px;" class="pointer-events-none">
-                                                </a>       
-                                                <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
-                                                    <!-- Tag A (Download) -->
-                                                
-                                                    <!-- Tag Button (Delete) -->
-                                                    <button 
-                                                        type="button"
-                                                        wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')"
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">delete</span>
-                                                    </button>
-                                                </div>
-                                                {{-- Iframe Full Preview --}}
-                                                <div style="position:absolute; left:-9999px; top:-9999px;">
-                                                    <iframe
-                                                        src="{{$item['url']}}"
-                                                        id="{{$item['id']}}"
-                                                        width="1920"
-                                                        height="1080"
-                                                        frameborder="0"
-                                                    ></iframe>
-                                                </div>
-                                            </div>
-                                        @else
-                                            <div class="border rounded p-4 text-center bg-light" wire:key="kertas_gensen_old_{{ $index }}">
-                                                <i class="bi bi-file-earmark fs-1"></i>
-                                                <div class="mt-2">
-                                                    {{$item['url']}}
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </div>
-                        </div>
-                        <!-- Card: Rekap Pengiriman Uang -->
-                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col gap-md group hover:border-primary-container transition-colors">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h2 class="font-h2 text-body-lg text-on-surface">Rekap Pengiriman</h2>
-                                </div>
-                            </div>
-                                @if ($rekap_pengiriman_uang)
-                                    @foreach ($rekap_pengiriman_uang as $rekap_index => $rekap)
-                                        <div
-                                                x-data="{
-                                                    isDragging: false,
-                                                    handleDrop(event) {
-                                                    {{-- Multi --}}
-                                                    const files = event.dataTransfer.files;
-                                                    if (files.length) {
-                                                    const dataTransfer = new DataTransfer();
-                                                    [...files].forEach(file => {
-                                                    dataTransfer.items.add(file);
-                                                    });
-                                                    $refs.input.files = dataTransfer.files;
-                                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                                    }
-                                                    this.isDragging = false;
-                                                    },
-                                                    handleFiles(event) {
-                                                    const file = event.target.files[0];
-                                                    // Optional: you can limit or validate here
-                                                    }
-                                                }"
-                                                @dragover.prevent="isDragging = true"
-                                                @dragleave.prevent="isDragging = false"
-                                                @drop.prevent="handleDrop($event)"
-                                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                                class="form-group mt-5">
-                                            <div class="border-2 border-dashed border-outline-variant/30 py-1 rounded-xl text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
-                                                <input class="hidden validate-upload-file" id="rekap_pengiriman_uang.{{$rekap_index}}.file" name="rekap_pengiriman_uang.{{$rekap_index}}.file"
-                                                    type="file"
-                                                    multiple
-                                                    x-ref="input"
-                                                    wire:model="rekap_pengiriman_uang.{{$rekap_index}}.file"
-                                                    {{-- @change="handleFiles" --}}
-                                                    accept="application/pdf"
-                                                    class="position-absolute invisible" />
-                                                <select class="form-select w-75 m-auto text-center" wire:model.live="rekap_pengiriman_uang.{{$rekap_index}}.remittance_type">
-                                                    @foreach (App\Enums\Gensen\GensenAttachmentRemittanceType::options() as $value => $label)
-                                                    <option value="{{ $value }}">{{ $label }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <label for="rekap_pengiriman_uang.{{$rekap_index}}.file" class="{{($rekap['remittance_type']) ? '' : 'd-none'}} border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                                    <span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
-                                                    <div class="text-body-sm">
-                                                        <span class="text-primary font-semibold">Click to upload</span> or drag and drop
-                                                    </div>
-                                                </label>
-                                                <div class="grid grid-cols-2 gap-sm">
-                                                    @foreach ($rekap['file'] as $file_index => $item)
-                                                        @php
-                                                            $ext = $item->getClientOriginalExtension();
-                                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                                            $url = $item->temporaryUrl();
-                                                            
-                                                        // $url = route('preview.temp.image', $item->getFileName());
-                                                        $filename = $item->getClientOriginalName();
-                                                            }elseif(in_array($ext, ['pdf'])){
-                                                            $url = route('preview.temp.pdf', $item->getFileName());
-                                                            $filename = $item->getClientOriginalName();
-                                                            }else{
-                                                            $filename = $item->getClientOriginalName();
-                                                            }
-                                                            $ext = strtolower($ext);
-                                                        @endphp
-                                                        @if(in_array($ext, ['pdf']))
-                                                            <a wire:key="rekap_pengiriman_new_{{ $filename }}"
-                                                                class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb"
-                                                            >
-                                                                <iframe
-                                                                    src="{{ $url }}"
-                                                                    type="application/pdf"
-                                                                    width="100%"
-                                                                    height="200"
-                                                                    class="pointer-events-none"
-                                                                ></iframe>
-
-                                                            </a> 
-                                                        @endif
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @endif
-                                <button type="button" wire:click="addRekapPengirimanUang" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                    <span class="material-symbols-outlined text-primary text-3xl">add_circle</span>
-                                    <div class="text-body-sm">Add files</div>
-                                </button>
-                                @if ($rekap_pengiriman_uang_old)
-                                    <div class="grid grid-cols-2 gap-sm">
-                                        @foreach ($rekap_pengiriman_uang_old['groups'] as $group_index => $group)
-                                            {{-- <h3 class="ms-[10px] text-center">{{$rekap_pengiriman_uang_old['groups'][$group_index]['provider']}}</h3> --}}
-                                            @if (!empty($group['files']))
-                                            @foreach ($group['files'] as $rekap_index => $item)
-                                                @if($item['isPdf'])
-                                                    <div class="relative group/thumb" wire:key="rekap_pengirian_old_{{ $item['id'] }}" 
-                                                        x-init="if(window.refreshFsLightbox) refreshFsLightbox()">
-                                                        {{-- IFRAME PDF Preview --}}
-                                                        <a data-fslightbox="rekap_pengiriman_{{$item['id']}}" data-type="iframe" href="#{{$item['id']}}"
-                                                        class="block thumbnail-aspect bg-surface-container rounded-lg overflow-scroll">    
-                                                            <embed src="{{ $item['url'] }}" type="application/pdf" width="100%" style="min-height: 200px;" class="pointer-events-none">
-                                                        </a>       
-                                                        <!-- Actions -->
-                                                        <div class="absolute top-1 right-1 z-10">
-                                                            <!-- Tag A (Download) -->
-                                                         
-                                                            <!-- Tag Button (Delete) -->
-                                                            <button 
-                                                                type="button"
-                                                                wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::REKAP_PENGIRIMAN_UANG }}')"
-                                                                class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
-                                                            >
-                                                                <span class="material-symbols-outlined text-xl">delete</span>
-                                                            </button>
-                                                        </div>
-                                                        {{-- Iframe Full Preview --}}
-                                                        <div style="position:absolute; left:-9999px; top:-9999px;">
-                                                            <iframe
-                                                                src="{{$item['url']}}"
-                                                                id="{{$item['id']}}"
-                                                                width="1920"
-                                                                height="1080"
-                                                                frameborder="0"
-                                                            ></iframe>
-                                                        </div>
-                                                    </div>
-                                                @else
-                                                    <div class="border rounded p-4 text-center bg-light"  wire:key="rekap_pengirian_old_{{ $item['id'] }}">
-                                                        <i class="bi bi-file-earmark fs-1"></i>
-                                                        <div class="mt-2">
-                                                            {{$item['url']}}
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            @endforeach
-                                            @endif
-                                        @endforeach
-                                    </div>
-                                @endif
-                            
-                            {{-- <div class="flex items-center justify-center h-40 bg-surface-container-low rounded-lg border border-outline-variant border-dashed">
-                                <p class="text-body-sm text-secondary italic">No documents uploaded</p>
-                            </div> --}}
-                        </div>
-                        <!-- Card: Kartu Keluarga -->
-                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col gap-md group hover:border-primary-container transition-colors">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h2 class="font-h2 text-body-lg text-on-surface">Kartu Keluarga</h2>
-                                </div>
-                            </div>
-                            <!-- Upload Zone -->
-                            <div
-                                x-data="{
-                                    isDragging: false,
-                                    handleDrop(event) {
-                                    {{-- Multi --}}
-                                    const files = event.dataTransfer.files;
-                                    if (files.length) {
-                                    const dataTransfer = new DataTransfer();
-                                    [...files].forEach(file => {
-                                    dataTransfer.items.add(file);
-                                    });
-                                    $refs.input.files = dataTransfer.files;
-                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                    }
-                                    this.isDragging = false;
-                                    },
-                                    handleFiles(event) {
-                                    const file = event.target.files[0];
-                                    return;
-                                    // Optional: you can limit or validate here
-                                    }
-                                }"
-                                @dragover.prevent="isDragging = true"
-                                @dragleave.prevent="isDragging = false"
-                                @drop.prevent="handleDrop($event)"
-                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                class="form-group">
-                                    <label for="kartu_keluarga" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                        <span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
-                                        <div class="text-body-sm">
-                                            <span class="text-primary font-semibold">Click to upload</span> or drag and drop
-                                        </div>
-                                    </label>
-                                    <input class="hidden validate-upload-file" id="kartu_keluarga" name="kartu_keluarga"
-                                    type="file"
-                                    multiple
-                                    x-ref="input"
-                                    wire:model="kartu_keluarga"
-                                    {{-- @change="handleFiles" --}}
-                                    accept="application/pdf, image/jpeg, image/png"
-                                    class="position-absolute invisible" />
-                            </div>
-                            <!-- File Previews -->
-                            <div class="grid grid-cols-2 gap-sm">
-                                @if ($kartu_keluarga)
-                                    @foreach ($kartu_keluarga as $index => $item)
-                                        @php
-                                            $ext = $item->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                                $url = $item->temporaryUrl();
-                                                
-                                                        // $url = route('preview.temp.image', $item->getFileName());
-                                                $filename = $item->getClientOriginalName();
-                                            }elseif(in_array($ext, ['pdf'])){
-                                                $url = route('preview.temp.pdf', $item->getFileName());
-                                                $filename = $item->getClientOriginalName();
-                                            }else{
-                                                $filename = $item->getClientOriginalName();
-                                            }
-                                            $ext = strtolower($ext);
-                                        @endphp
-                                        {{-- {!! $kartu_keluarga_note[$index] !!} --}}
-                                        @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
-                                            {{-- IMAGE --}}
-                                            <!-- Preview -->
-                                            <div class="relative group/thumb" wire:key="kartu_keluarga_new_{{ $filename }}">
-                                                <a
-                                                    data-fslightbox="kartu_keluarga_{{ rand() }}"
-                                                    href="{{ $url }}"
-                                                    class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
-                                                >
-                                                    <img
-                                                        src="{{ $url }}"
-                                                        class="w-full h-full object-cover"
-                                                    >
-                                                </a>
-                                            </div>
-                                        @elseif(in_array($ext, ['pdf']))
-                                            {{-- IFRAME PDF --}}
-                                            <a  wire:key="kartu_keluarga_new_{{ $filename }}"
-                                                class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb"
-                                            >
-                                                <iframe
-                                                    src="{{ $url }}"
-                                                    type="application/pdf"
-                                                    width="100%"
-                                                    height="200"
-                                                    class="pointer-events-none"
-                                                ></iframe>
-
-                                            </a> 
-                                        @else
-                                            {{-- <div class="border rounded p-4 text-center bg-light">
-                                                <i class="bi bi-file-earmark fs-1"></i>
-                                                <div class="mt-2">
-                                                    {{$filename}}
-                                                </div>
-                                            </div> --}}
-                                        @endif
-                                    @endforeach
-                                @endif
-                                @if (!empty($kartu_keluarga_old && $kartu_keluarga_old['groups']))
-                                    @foreach ($kartu_keluarga_old['groups'][0]['files'] as $index => $item)
-                                        {{-- {!! $kartu_keluarga_old_note[$index] !!} --}}
-                                        @if($item['isImage'] ?? 0)
-                                            <div class="relative group/thumb"  wire:key="kartu_keluarga_old_{{ $item['id'] }}">
-                                                <!-- Preview -->
-                                                <a
-                                                    data-fslightbox="kartu_keluarga_old_{{ $item['id'] }}"
-                                                    href="{{ $item['url'] }}"
-                                                    class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
-                                                >
-                                                    <img
-                                                        src="{{ $item['url'] }}"
-                                                        class="w-full h-full object-cover"
-                                                    >
-                                                </a>
-
-                                                <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
-                                                    <!-- Tag A (Download) -->
-                                                   
-
-                                                    <!-- Tag Button (Delete) -->
-                                                    <button 
-                                                        type="button"
-                                                        wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KARTU_KELUARGA }}')"
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">delete</span>
-                                                    </button>
-                                                </div>
-
-                                            </div>
-                                        @elseif($item['isPdf'])
-                                            
-                                            <div class="relative group/thumb"  wire:key="kartu_keluarga_old_{{ $item['id'] }}">
-                                                {{-- IFRAME PDF Preview --}}
-                                                <a data-fslightbox="kartu_keluarga_old_{{$item['id']}}" data-type="iframe" href="#{{$item['id']}}"
-                                                class="block thumbnail-aspect bg-surface-container rounded-lg overflow-scroll">    
-                                                    <embed src="{{ $item['url'] }}" type="application/pdf" width="100%" style="min-height: 200px;" class="pointer-events-none">
-                                                </a>       
-                                                <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
-                                                    <!-- Tag A (Download) -->
-                                                   
-
-                                                    <!-- Tag Button (Delete) -->
-                                                    <button 
-                                                        type="button"
-                                                        wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KARTU_KELUARGA }}')"
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">delete</span>
-                                                    </button>
-                                                </div>
-                                                {{-- Iframe Full Preview --}}
-                                                <div style="position:absolute; left:-9999px; top:-9999px;">
-                                                    <iframe
-                                                        src="{{$item['url']}}"
-                                                        id="{{$item['id']}}"
-                                                        width="1920"
-                                                        height="1080"
-                                                        frameborder="0"
-                                                    ></iframe>
-                                                </div>
-                                            </div>
-                                        @else
-                                            <div class="border rounded p-4 text-center bg-light" wire:key="kartu_keluarga_old_{{ $item['id'] }}">
-                                                <i class="bi bi-file-earmark fs-1"></i>
-                                                <div class="mt-2">
-                                                    {{$item['url']}}
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </div>
-                        </div>
-                        <!-- Card: Zairyou Card (Front/Back) -->
-                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col gap-md group hover:border-primary-container transition-colors">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h2 class="font-h2 text-body-lg text-on-surface">Zairyou Card</h2>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-sm">
-                                <div class="flex flex-col gap-xs">
-                                    <span class="text-label-caps text-[10px] text-secondary">FRONT SIDE</span>
-                                    @if ($zairyou_card_front_old['id'])
-                                        @if($zairyou_card_front_old['isImage'])
-                                            <div wire:key="zairyou_card_front_{{ $zairyou_card_front_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">
-                                                <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
-                                                   <!-- Tag A (Download) -->
-                                                  
-
-                                                    <!-- Tag Button (Delete) -->
-                                                    <button 
-                                                        type="button"
-                                                        wire:click.stop="showDialogDeleteFile('{{ $zairyou_card_front_old['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::ZAIRYOU_CARD_FRONT }}')"
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">delete</span>
-                                                    </button>
-                                                </div>
-                                                <img class="w-full h-full object-cover" data-alt="" src="{{$zairyou_card_front_old['url']}}"/>
-                                            </div>
-                                        @endif
-                                    @elseif ($zairyou_card_front)
-                                        @php
-                                            $ext = $zairyou_card_front->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                            $filename = $zairyou_card_front->getClientOriginalName();
-                                            $url = $zairyou_card_front->temporaryUrl();
-                                            
-                                                        // $url = route('preview.temp.image', $zairyou_card_front->getFileName());
-                                            }elseif(in_array($ext, ['pdf'])){
-                                            $url = route('preview.temp.pdf', $zairyou_card_front->getFileName());
-                                            $filename = $zairyou_card_front->getClientOriginalName();
-                                            }else{
-                                            $filename = $zairyou_card_front->getClientOriginalName();
-                                            }
-                                            $ext = strtolower($ext);
-                                        @endphp
-                                        @if(in_array($ext, ['jpg','jpeg','png']))
-                                            <div wire:key="zairyou_card_front_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
-                                                <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
-                                            </div>
-                                        @endif
-                                    @else
-                                        <div
-                                            x-data="{
-                                                isDragging: false,
-                                                handleDrop(event) {
-                                                const file = event.dataTransfer.files[0]; // Only take the first file
-                                                if (file) {
-                                                const dataTransfer = new DataTransfer();
-                                                dataTransfer.items.add(file);
-                                                $refs.input.files = dataTransfer.files;
-                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-                                                this.isDragging = false;
-                                                },
-                                                handleFiles(event) {
-                                                const file = event.target.files[0];
-                                                // Optional: you can limit or validate here
-                                                }
-                                            }"
-                                            @dragover.prevent="isDragging = true"
-                                            @dragleave.prevent="isDragging = false"
-                                            @drop.prevent="handleDrop($event)"
-                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                            class="form-group">
-                                                <label for="zairyou_card_front" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
-                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
-                                                </label>
-                                                {{-- <label for="zairyou_card_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                                    
-                                                </label> --}}
-                                            <input class="hidden validate-upload-file" id="zairyou_card_front.1" name="zairyou_card_front"
-                                                type="file"
-                                                x-ref="input"
-                                                {{-- wire:model="zairyou_card_front" --}}
-                                                {{-- @change="handleFiles" --}}
-                                                accept="application/pdf, image/jpeg, image/png"
-                                                class="position-absolute invisible" />
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="flex flex-col gap-xs">
-                                    <span class="text-label-caps text-[10px] text-secondary">BACK SIDE</span>
-                                    @if ($zairyou_card_back_old['id'])
-                                        @if($zairyou_card_back_old['isImage'])
-                                            <div wire:key="zairyou_card_back_{{ $zairyou_card_back_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">
-                                                <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
-                                                    <!-- Tag A (Download) -->
-                                                 
-
-                                                    <!-- Tag Button (Delete) -->
-                                                    <button 
-                                                        type="button"
-                                                        wire:click.stop="showDialogDeleteFile('{{ $zairyou_card_back_old['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::ZAIRYOU_CARD_BACK }}')"
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">delete</span>
-                                                    </button>
-                                                </div>
-                                                <img class="w-full h-full object-cover" data-alt="" src="{{$zairyou_card_back_old['url']}}"/>
-                                            </div>
-                                        @endif
-                                    @elseif ($zairyou_card_back)
-                                        @php
-                                            $ext = $zairyou_card_back->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                            $filename = $zairyou_card_back->getClientOriginalName();
-                                            $url = $zairyou_card_back->temporaryUrl();
-                                            
-                                                        // $url = route('preview.temp.image', $zairyou_card_back->getFileName());
-                                            }elseif(in_array($ext, ['pdf'])){
-                                            $url = route('preview.temp.pdf', $zairyou_card_back->getFileName());
-                                            $filename = $zairyou_card_back->getClientOriginalName();
-                                            }else{
-                                            $filename = $zairyou_card_back->getClientOriginalName();
-                                            }
-                                            $ext = strtolower($ext);
-                                        @endphp
-                                        @if(in_array($ext, ['jpg','jpeg','png']))
-                                            <div wire:key="zairyou_card_back_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
-                                                <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
-                                            </div>
-                                        @endif
-                                    @else
-                                        <div
-                                            x-data="{
-                                                isDragging: false,
-                                                handleDrop(event) {
-                                                const file = event.dataTransfer.files[0]; // Only take the first file
-                                                if (file) {
-                                                const dataTransfer = new DataTransfer();
-                                                dataTransfer.items.add(file);
-                                                $refs.input.files = dataTransfer.files;
-                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-                                                this.isDragging = false;
-                                                },
-                                                handleFiles(event) {
-                                                const file = event.target.files[0];
-                                                // Optional: you can limit or validate here
-                                                }
-                                            }"
-                                            @dragover.prevent="isDragging = true"
-                                            @dragleave.prevent="isDragging = false"
-                                            @drop.prevent="handleDrop($event)"
-                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                            class="form-group">
-                                                <label for="zairyou_card_back" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
-                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
-                                                </label>
-                                                {{-- <label for="zairyou_card_back" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                                    
-                                                </label> --}}
-                                            <input class="hidden validate-upload-file" id="zairyou_card_back.1" name="zairyou_card_back"
-                                                type="file"
-                                                x-ref="input"
-                                                {{-- wire:model="zairyou_card_back" --}}
-                                                {{-- @change="handleFiles" --}}
-                                                accept="application/pdf, image/jpeg, image/png"
-                                                class="position-absolute invisible" />
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Card: My Number (Front/Back) -->
-                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col gap-md group hover:border-primary-container transition-colors">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h2 class="font-h2 text-body-lg text-on-surface">My Number</h2>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-sm">
-                                <div class="flex flex-col gap-xs">
-                                    <span class="text-label-caps text-[10px] text-secondary">FRONT SIDE</span>
-                                    @if ($my_number_front_old['id'])
-                                        @if($my_number_front_old['isImage'])
-                                            <div wire:key="my_number_front_{{ $my_number_front_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">
-                                                <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
-                                                    <!-- Tag A (Download) -->
-                                                  
-
-                                                    <!-- Tag Button (Delete) -->
-                                                    <button 
-                                                        type="button"
-                                                        wire:click.stop="showDialogDeleteFile('{{ $my_number_front_old['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::MY_NUMBER_FRONT }}')"
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">delete</span>
-                                                    </button>
-                                                </div>
-                                                <img class="w-full h-full object-cover" data-alt="" src="{{$my_number_front_old['url']}}"/>
-                                            </div>
-                                        @endif
-                                    @elseif ($my_number_front)
-                                        @php
-                                            $ext = $my_number_front->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                            $filename = $my_number_front->getClientOriginalName();
-                                            $url = $my_number_front->temporaryUrl();
-                                            
-                                                        // $url = route('preview.temp.image', $my_number_front->getFileName());
-    //                                                     $fullPath = $my_number_front->getRealPath();
-    // $relativePath = Str::after($fullPath, 'livewire-tmp/');
-
-    // $url = route('preview.temp.file', $relativePath);
-                                            }elseif(in_array($ext, ['pdf'])){
-                                            $url = route('preview.temp.pdf', $my_number_front->getFileName());
-                                            $filename = $my_number_front->getClientOriginalName();
-                                            }else{
-                                            $filename = $my_number_front->getClientOriginalName();
-                                            }
-                                            $ext = strtolower($ext);
-                                        @endphp
-                                        @if(in_array($ext, ['jpg','jpeg','png']))
-                                            <div wire:key="my_number_front_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
-                                                <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
-                                            </div>
-                                        @endif
-                                    @else
-                                        <div
-                                            x-data="{
-                                                isDragging: false,
-                                                handleDrop(event) {
-                                                const file = event.dataTransfer.files[0]; // Only take the first file
-                                                if (file) {
-                                                const dataTransfer = new DataTransfer();
-                                                dataTransfer.items.add(file);
-                                                $refs.input.files = dataTransfer.files;
-                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-                                                this.isDragging = false;
-                                                },
-                                                handleFiles(event) {
-                                                const file = event.target.files[0];
-                                                // Optional: you can limit or validate here
-                                                }
-                                            }"
-                                            @dragover.prevent="isDragging = true"
-                                            @dragleave.prevent="isDragging = false"
-                                            @drop.prevent="handleDrop($event)"
-                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                            class="form-group">
-                                                <label for="my_number_front" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
-                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
-                                                </label>
-                                                {{-- <label for="my_number_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                                    
-                                                </label> --}}
-                                            <input class="hidden validate-upload-file" id="my_number_front.1" name="my_number_front"
-                                                type="file"
-                                                x-ref="input"
-                                                {{-- wire:model="my_number_front" --}}
-                                                {{-- @change="handleFiles" --}}
-                                                accept="application/pdf, image/jpeg, image/png"
-                                                class="position-absolute invisible" />
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="flex flex-col gap-xs">
-                                    <span class="text-label-caps text-[10px] text-secondary">BACK SIDE</span>
-                                    @if ($my_number_back_old['id'])
-                                        @if($my_number_back_old['isImage'])
-                                            <div wire:key="my_number_back_{{ $my_number_back_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">
-                                                <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
-                                                    <!-- Tag A (Download) -->
-                                                 
-
-                                                    <!-- Tag Button (Delete) -->
-                                                    <button 
-                                                        type="button"
-                                                        wire:click.stop="showDialogDeleteFile('{{ $my_number_back_old['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::MY_NUMBER_BACK }}')"
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">delete</span>
-                                                    </button>
-                                                </div>
-                                                <img class="w-full h-full object-cover" data-alt="" src="{{$my_number_back_old['url']}}"/>
-                                            </div>
-                                        @endif
-                                    @elseif ($my_number_back)
-                                        @php
-                                            $ext = $my_number_back->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                            $filename = $my_number_back->getClientOriginalName();
-                                            $url = $my_number_back->temporaryUrl();
-                                            
-                                                        // $url = route('preview.temp.image', $my_number_back->getFileName());
-                                            }elseif(in_array($ext, ['pdf'])){
-                                            $url = route('preview.temp.pdf', $my_number_back->getFileName());
-                                            $filename = $my_number_back->getClientOriginalName();
-                                            }else{
-                                            $filename = $my_number_back->getClientOriginalName();
-                                            }
-                                            $ext = strtolower($ext);
-                                        @endphp
-                                        @if(in_array($ext, ['jpg','jpeg','png']))
-                                            <div wire:key="my_number_back_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
-                                                <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
-                                            </div>
-                                        @endif
-                                    @else
-                                        <div
-                                            x-data="{
-                                                isDragging: false,
-                                                handleDrop(event) {
-                                                const file = event.dataTransfer.files[0]; // Only take the first file
-                                                if (file) {
-                                                const dataTransfer = new DataTransfer();
-                                                dataTransfer.items.add(file);
-                                                $refs.input.files = dataTransfer.files;
-                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-                                                this.isDragging = false;
-                                                },
-                                                handleFiles(event) {
-                                                const file = event.target.files[0];
-                                                // Optional: you can limit or validate here
-                                                }
-                                            }"
-                                            @dragover.prevent="isDragging = true"
-                                            @dragleave.prevent="isDragging = false"
-                                            @drop.prevent="handleDrop($event)"
-                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                            class="form-group">
-                                                <label for="my_number_back" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
-                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
-                                                </label>
-                                                {{-- <label for="my_number_back" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                                    
-                                                </label> --}}
-                                            <input class="hidden validate-upload-file" id="my_number_back.1" name="my_number_back"
-                                                type="file"
-                                                x-ref="input"
-                                                {{-- wire:model="my_number_back" --}}
-                                                {{-- @change="handleFiles" --}}
-                                                accept="application/pdf, image/jpeg, image/png"
-                                                class="position-absolute invisible" />
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Card: Rekening Indonesia -->
-                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col gap-md group hover:border-primary-container transition-colors">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h2 class="font-h2 text-body-lg text-on-surface">Rekening Indonesia</h2>
-                                </div>
-                            </div>
-                            
-                                    @if ($rekening_indonesia_old['id'])
-                                        @if($rekening_indonesia_old['isImage'])
-                                            <div wire:key="rekening_indonesia_{{ $rekening_indonesia_old['id'] }}" class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb max-w-[160px] mx-auto">
-                                                <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
-                                                    <!-- Tag A (Download) -->
-                                                   
-                                                    <!-- Tag Button (Delete) -->
-                                                    <button 
-                                                        type="button"
-                                                        wire:click.stop="showDialogDeleteFile('{{ $rekening_indonesia_old['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::REKENING_INDONESIA }}')"
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">delete</span>
-                                                    </button>
-                                                </div>
-                                                <img class="w-full h-full object-cover" data-alt="" src="{{$rekening_indonesia_old['url']}}"/>
-                                            </div>
-                                        @endif
-                                    @elseif ($rekening_indonesia)
-                                        @php
-                                            $ext = $rekening_indonesia->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                            $filename = $rekening_indonesia->getClientOriginalName();
-                                            $url = $rekening_indonesia->temporaryUrl();
-                                            
-                                                        // $url = route('preview.temp.image', $rekening_indonesia->getFileName());
-                                            }elseif(in_array($ext, ['pdf'])){
-                                            $url = route('preview.temp.pdf', $rekening_indonesia->getFileName());
-                                            $filename = $rekening_indonesia->getClientOriginalName();
-                                            }else{
-                                            $filename = $rekening_indonesia->getClientOriginalName();
-                                            }
-                                            $ext = strtolower($ext);
-                                        @endphp
-                                        @if(in_array($ext, ['jpg','jpeg','png']))
-                                        {{-- <div class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb max-w-[160px] mx-auto">
-                                            <div class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
-                                                <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
-                                            </div>
-                                        </div> --}}
-                                        <div wire:key="rekening_indonesia_{{ $filename }}" class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb max-w-[160px] mx-auto">
-                                            <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
-                                            
-                                        </div>
-                                        @endif
-                                    @else
-                                    <div
-                                            x-data="{
-                                                isDragging: false,
-                                                handleDrop(event) {
-                                                const file = event.dataTransfer.files[0]; // Only take the first file
-                                                if (file) {
-                                                const dataTransfer = new DataTransfer();
-                                                dataTransfer.items.add(file);
-                                                $refs.input.files = dataTransfer.files;
-                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-                                                this.isDragging = false;
-                                                },
-                                                handleFiles(event) {
-                                                const file = event.target.files[0];
-                                                // Optional: you can limit or validate here
-                                                }
-                                            }"
-                                            @dragover.prevent="isDragging = true"
-                                            @dragleave.prevent="isDragging = false"
-                                            @drop.prevent="handleDrop($event)"
-                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                            class="form-group">
-                                                <label for="rekening_indonesia" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
-                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
-                                                </label>
-                                                {{-- <label for="rekening_indonesia" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                                    
-                                                </label> --}}
-                                            <input class="hidden validate-upload-file" id="rekening_indonesia.1" name="rekening_indonesia"
-                                                type="file"
-                                                x-ref="input"
-                                                {{-- wire:model="rekening_indonesia" --}}
-                                                {{-- @change="handleFiles" --}}
-                                                accept="image/jpeg, image/png"
-                                                class="position-absolute invisible" />
-                                        </div>
-                                        {{-- <div class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb d-flex border-2 border-blue-300 md:w-1/2 h-full mx-auto">
-                                            <div
-                                                x-data="{
-                                                isDragging: false,
-                                                handleDrop(event) {
-                                                const file = event.dataTransfer.files[0]; // Only take the first file
-                                                if (file) {
-                                                const dataTransfer = new DataTransfer();
-                                                dataTransfer.items.add(file);
-                                                $refs.input.files = dataTransfer.files;
-                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-                                                this.isDragging = false;
-                                                },
-                                                handleFiles(event) {
-                                                const file = event.target.files[0];
-                                                // Optional: you can limit or validate here
-                                                }
-                                            }"
-                                                @dragover.prevent="isDragging = true"
-                                                @dragleave.prevent="isDragging = false"
-                                                @drop.prevent="handleDrop($event)"
-                                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                                class="form-group">
-                                                    <label for="rekening_indonesia" class="w-full h-full aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
-                                                        <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
-                                                    </label>
-                                                <input class="hidden validate-upload-file" id="rekening_indonesia" name="rekening_indonesia"
-                                                    type="file"
-                                                    x-ref="input"
-                                                    wire:model="rekening_indonesia"
-                                                    @change="handleFiles"
-                                                    accept="application/pdf, image/jpeg, image/png"
-                                                    class="position-absolute invisible" />
-                                            </div>
-                                        </div> --}}
-                                    @endif
-                                    
-                                
-                        </div>
-                        </div>
-                    </div>
-                    <!-- Sticky Footer Note (Floating Action Style) -->
-                    <!-- <div class="fixed bottom-lg left-1/2 -translate-x-1/2 z-40 bg-on-surface text-white px-xl py-md rounded-2xl shadow-xl flex items-center gap-md">
-                        <span class="material-symbols-outlined text-primary-container">info</span>
-                        <p class="text-body-sm font-medium">All uploads are encrypted and secure. Supported: PDF, JPG, PNG (Max 10MB)</p>
-                        <button class="ml-xl bg-white/10 hover:bg-white/20 p-xs rounded-full"><span class="material-symbols-outlined">close</span></button>
-                    </div> -->
-                </main>
-                
             </div>
             <div class="tab-pane fade" id="kt_vtab_pane_3" role="tabpanel" wire:ignore.self>
                 <!-- Main Content Area: Split Pane Layout -->
@@ -2592,18 +2600,18 @@
                     // });
                 },50);
             });
-            Livewire.on('handleGetData',async (data) => {
-                console.log('Fetching data asynchronously...');
+                Livewire.on('handleGetData',async (data) => {
+                    console.log('Fetching data asynchronously...');
 
-                try {
-                    // This runs asynchronously without blocking the browser UI thread
-                    const result = await @this.call('getData'); 
-                    
-                    console.log('Data fetched successfully!', result);
-                } catch (error) {
-                    console.error('Failed to fetch data:', error);
-                }
-            });
+                    try {
+                        // This runs asynchronously without blocking the browser UI thread
+                        const result = await @this.call('getData', data); 
+                        
+                        console.log('Data fetched successfully!', result);
+                    } catch (error) {
+                        console.error('Failed to fetch data:', error);
+                    }
+                });
                 Livewire.on('initializeFileInputs', (data) => {
                     setTimeout(() => {
                         // updateSubstepDescription();

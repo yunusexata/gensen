@@ -197,6 +197,11 @@ class GensenForm extends Model
         return $this->isDeletable() && UserRepository::authenticatedUser()->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_DATA, PermissionHelper::TYPE_DELETE));
     }
 
+    public function isCanUpdate()
+    {
+        return $this->isEditable() && UserRepository::authenticatedUser()->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_DATA, PermissionHelper::TYPE_UPDATE));
+    }
+
     protected static function onBoot()
     {
         self::creating(function ($model) {
