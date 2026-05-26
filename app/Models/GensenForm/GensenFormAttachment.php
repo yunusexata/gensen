@@ -83,16 +83,19 @@ class GensenFormAttachment extends Model
         } else {
             $filename = $this->original_name;
         }
-        return $this->disk === 'supabase' ? Storage::disk($this->disk)
-            ->temporaryUrl(
-                $this->path,
-                now()->addMinutes(10),
-                [
-                    'ResponseCacheControl' => 'private, max-age=3600',
-                    'ResponseContentDisposition' =>
-                    'inline; filename="' . $filename . '"',
-                ]
-            ) :  URL::temporarySignedRoute(
+        return $this->disk === 'supabase' ?
+            // Storage::disk($this->disk)
+            // ->temporaryUrl(
+            //     $this->path,
+            //     now()->addMinutes(10),
+            //     [
+            //         'ResponseCacheControl' => 'private, max-age=3600',
+            //         'ResponseContentDisposition' =>
+            //         'inline; filename="' . $filename . '"',
+            //     ]
+            // )
+            'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $this->path
+            :  URL::temporarySignedRoute(
                 'gensen.attachment.preview',
                 now()->addMinutes(30),
                 ['attachment' => $this->id]
