@@ -7,7 +7,7 @@
                     <h5 class="modal-title" id="exportDalamPengajuanModalLabel">ExportList Data Dalam Pengajuan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="closeExportDalamPengajuanModal"></button>
                 </div>
-                <form wire:submit.prevent="storeImportBulkStatus">
+                <form wire:submit.prevent="storeExportDalamPengajuan">
                     <div class="modal-body import_modal">
                         <div class="form-group mb-2">
                             <label>File Import Excel</label>
