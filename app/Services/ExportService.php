@@ -180,7 +180,7 @@ class ExportService
         //     tahun_gensen
         // )
         // WHERE deleted_at IS NULL;
-        $rows = collect($filters->rows)
+        $rows = collect($filters)
 
             ->map(fn($row) => [
 

@@ -56,7 +56,7 @@ class ExportGensenJob implements ShouldQueue
                 $disk = Storage::disk($history->disk_template);
                 $path = $history->file_template_path;
                 Excel::import($import, $disk->path($path));
-                $filters = collect($import);
+                $filters = $import->rows;
             } else {
                 $filters = json_decode($history->filters, true);
                 // ambil data sesuai role + filter
