@@ -95,7 +95,7 @@ class GensenFormAttachment extends Model
             // =========================================
             // LOCAL PRIVATE
             // =========================================
-            'local' => URL::temporarySignedRoute(
+            'private' => URL::temporarySignedRoute(
                 'gensen.attachment.preview',
                 now()->addMinutes(30),
                 [
