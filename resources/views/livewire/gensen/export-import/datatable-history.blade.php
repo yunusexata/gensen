@@ -24,7 +24,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-bordered text-nowrap w-100 h-100 w-full text-left border-collapse">
+            <table class="table-default table table-bordered text-nowrap w-100 h-100 w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-surface-container-low/50">
                         @foreach ($columns as $index => $col)
