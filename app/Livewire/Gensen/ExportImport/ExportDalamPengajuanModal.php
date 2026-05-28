@@ -88,8 +88,6 @@ class ExportDalamPengajuanModal extends Component
                     }
                 }
             }
-            unlink($path);
-            DB::commit();
             // $disk = 'env('DEFAULT_STORE_DISK', 'private');'
             $disk = 'private';
 
