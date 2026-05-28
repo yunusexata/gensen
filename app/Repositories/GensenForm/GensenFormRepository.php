@@ -280,6 +280,7 @@ class GensenFormRepository extends MasterDataRepository
                 'gensen_forms.*',
                 'gfd.tahun_gensen_details',
                 'gfd.nominal_gensen_details',
+                'gfd.tarik_data_details',
                 'gfd_cair.tanggal_cair_details as tanggal_cair_details',
                 'gfd_cair.nominal_cair_details as nominal_cair_details',
                 'remittances.remittance_total_amounts',
