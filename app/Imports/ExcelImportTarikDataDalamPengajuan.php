@@ -18,8 +18,6 @@ class ExcelImportTarikDataDalamPengajuan implements ToCollection, WithHeadingRow
         foreach ($rows as $key => $value) {
 
             $this->rows = $rows
-                ->skip(1)
-
                 ->map(function ($row) {
 
                     return [
