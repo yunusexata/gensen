@@ -401,7 +401,14 @@ class Datatable extends Component
 
                     $tarik_data_details = explode(';', $item->tarik_data_details);
 
-                    $html = "";
+                    $detail = $item->gensenFormDetails()
+                        ->whereNull('deleted_at')
+                        ->whereNull('tanggal_tarik_data')
+                        ->where(function ($q) {
+                            $q->whereNull('label')
+                                ->orWhere('label', '=', '');
+                        })->get()->toArray();
+                    $html = json_encode($detail, true);
                     foreach ($tarik_data_details as $index => $data) {
                         $html .= "<div class='text-nowrap'>" . ($item->allGensenDetailsTarikData() ? 'TARIK' : 'KOSONG') . " {$data}</div>";
                     }
