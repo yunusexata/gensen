@@ -285,6 +285,7 @@
                                             <div class="border rounded p-4 text-center bg-light" wire:key="kertas_gensen_old_{{ $index }}">
                                                 <i class="bi bi-file-earmark fs-1"></i>
                                                 <div class="mt-2">
+                                                    {{$item['path']}} <br>
                                                     {{$item['url']}}
                                                 </div>
                                             </div>
