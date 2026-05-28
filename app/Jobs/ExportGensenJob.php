@@ -8,6 +8,7 @@ use App\Events\ExportImportStatusUpdated;
 use App\Exports\CollectionExport;
 use App\Helpers\ExportHelper;
 use App\Imports\ExcelImportBulkStatusGensen;
+use App\Imports\ExcelImportTarikDataDalamPengajuan;
 use App\Models\Gensen\GensenExportImportHistory;
 use App\Services\ExportService;
 use Exception;
@@ -49,7 +50,18 @@ class ExportGensenJob implements ShouldQueue
             ]);
 
 
-            $filters = json_decode($history->filters, true);
+            if ($history->job_key == ExportImportJobKey::EXPORT_LIST_DATA_DALAM_PENGAJUAN) {
+
+                $import = new ExcelImportTarikDataDalamPengajuan();
+                $disk = Storage::disk($history->disk_template);
+                $path = $history->file_template_path;
+                Excel::import($import, $disk->path($path));
+                $filters = $import;
+            } else {
+                $filters = json_decode($history->filters, true);
+                // ambil data sesuai role + filter
+            }
+            // $filters = json_decode($history->filters, true);
             $data = app(ExportService::class)
                 ->handle($history->job_key, $filters);
 
@@ -60,7 +72,7 @@ class ExportGensenJob implements ShouldQueue
             $disk = 'private';
             Excel::store(new CollectionExport(
                 [
-                    'title' => 'Data Gensen',
+                    'title' => 'Data Gensen ',
                     'type' => ExportHelper::TYPE_EXCEL,
                 ],
                 $data,

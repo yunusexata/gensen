@@ -17,9 +17,7 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
     {
         foreach ($rows as $key => $value) {
             $data = GensenForm::select(
-                'gensen_forms.id_customer',
-                'gensen_forms.nomor_whatsapp',
-                'gensen_forms.nomor_whatsapp_darurat',
+                'gensen_forms.*',
 
                 'gfd.id as gensen_form_detail_id',
             )

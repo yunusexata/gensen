@@ -5,6 +5,7 @@ namespace App\Livewire\Gensen\ExportImport;
 use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
+use App\Helpers\ExportHelper;
 use App\Imports\ExcelImportBulkStatusGensen;
 use App\Imports\ExcelImportTarikData;
 use App\Repositories\Gensen\GensenExportImportHistoryRepository;
@@ -124,20 +125,23 @@ class ExportDalamPengajuanModal extends Component
                 'type' => 'export',
                 'filters' => json_encode([], true),
                 'status' => JobStatus::DONE,
+                'export_template' => 'app.gensen.gensen-data.export-dalam-pengajuan',
                 'file_template_name' => $fileName,
                 'file_template_path' => $filePath,
                 'disk_template' => $disk,
                 'start_at' => now(),
 
-                'file_name' => $fileName,
-                'file_path' => $filePath,
-                'disk' => $disk,
-                'amount' => $successCount,
-                'finish_at' => now(),
+                // 'file_name' => $fileName,
+                // 'file_path' => $filePath,
+                // 'disk' => $disk,
+                // 'amount' => $successCount,
+                // 'finish_at' => now(),
             ]);
             $path = $this->inputFileBulkStatus->getRealPath();
             unlink($path);
             DB::commit();
+            $fileName = "Data Gensen Dalam Pengajuan" . Carbon::now()->format('Y-m-d H:i:s');
+
 
             $this->dispatch('datatable-refresh');
             $this->dispatch('onSuccessExportDalamPengajuan');
@@ -145,6 +149,20 @@ class ExportDalamPengajuanModal extends Component
             $this->closeExportDalamPengajuanModal();
 
             Alert::information($this, 'Data berhasil disimpan');
+            // return ExportHelper::export(
+            //     ExportHelper::TYPE_EXCEL,
+            //     $fileName,
+            //     $this->previewBulkStatusRows,
+            //     'app.gensen-form.gensen-data.export-dalam-pengajuan',
+            //     [
+            //         'title' => 'Data Gensen Dalam Pengajuan',
+            //         'type' => ExportHelper::TYPE_EXCEL,
+            //     ],
+            //     [
+            //         'size' => 'legal',
+            //         'orientation' => 'landscape',
+            //     ]
+            // );
         } catch (\Exception $e) {
             DB::rollBack();
             Alert::fail($this, "Gagal", $e->getMessage());

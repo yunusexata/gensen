@@ -85,9 +85,6 @@ class GensenForm extends Model
         // Step 3 - Admin Jepang
         'no_input_jepang',
 
-        // Step 3 - Admin Jepang
-        'no_input_jepang',
-
         // Step 4 - Admin Jepang
         'tanggal_pengajuan',  // Tanggal Pengajuan Ke Kantor Pajak
 
