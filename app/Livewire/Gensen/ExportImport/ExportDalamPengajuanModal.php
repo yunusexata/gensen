@@ -124,6 +124,12 @@ class ExportDalamPengajuanModal extends Component
                 'file_template_path' => $filePath,
                 'disk_template' => $disk,
                 'start_at' => now(),
+
+                'file_name' => $fileName,
+                'file_path' => $filePath,
+                'disk' => $disk,
+                'amount' => $successCount,
+                'finish_at' => now(),
             ]);
             $path = $this->inputFileBulkStatus->getRealPath();
             unlink($path);
