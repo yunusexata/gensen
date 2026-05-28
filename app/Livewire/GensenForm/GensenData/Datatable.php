@@ -401,17 +401,18 @@ class Datatable extends Component
 
                     $tarik_data_details = explode(';', $item->tarik_data_details);
 
-                    $q = $item->gensenFormDetails()
-                        ->whereNull('deleted_at')
-                        ->whereNull('tanggal_tarik_data')
-                        ->where(function ($q) {
-                            $q->whereNull('label')
-                                ->orWhere('label', '=', '');
-                        });
-                    $html = json_encode([
-                        $q->exists(),
-                        $q->count()
-                    ], true);
+                    // $q = $item->gensenFormDetails()
+                    //     ->whereNull('deleted_at')
+                    //     ->whereNull('tanggal_tarik_data')
+                    //     ->where(function ($q) {
+                    //         $q->whereNull('label')
+                    //             ->orWhere('label', '=', '');
+                    //     });
+                    // $html = json_encode([
+                    //     $q->exists(),
+                    //     $q->count()
+                    // ], true);
+                    $html = '';
                     foreach ($tarik_data_details as $index => $data) {
                         $html .= "<div class='text-nowrap'>" . ($item->allGensenDetailsTarikData() ? 'TARIK' : 'KOSONG') . " {$data}</div>";
                     }
