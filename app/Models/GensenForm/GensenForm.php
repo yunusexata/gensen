@@ -326,26 +326,27 @@ class GensenForm extends Model
 
     public function allGensenDetailsCair(): bool
     {
-        $query = $this->gensenFormDetails();
-        // ->whereNull('deleted_at');
-
-        return !$query->whereNull('tanggal_cair')
+        return !$this->gensenFormDetails()
+            ->whereNull('deleted_at')->whereNull('tanggal_cair')
             ->where(function ($q) {
                 $q->whereNull('nominal_cair')
                     ->orWhere('nominal_cair', 0);
-            })->exists() && $query->count() > 0;
+            })->exists() &&
+            $this->gensenFormDetails()
+            ->whereNull('deleted_at')->count() > 0;
     }
 
     public function allGensenDetailsTarikData(): bool
     {
-        $query = $this->gensenFormDetails();
-        // ->whereNull('deleted_at');
 
-        return !$query->whereNull('tanggal_tarik_data')
+        return !$this->gensenFormDetails()
+            ->whereNull('deleted_at')->whereNull('tanggal_tarik_data')
             ->where(function ($q) {
                 $q->whereNull('label')
                     ->orWhere('label', '=', '');
-            })->exists() && $query->count() > 0;
+            })->exists() &&
+            $this->gensenFormDetails()
+            ->whereNull('deleted_at')->count() > 0;
     }
 
     public function isAttachmentReady($requiredTypes = false): bool
