@@ -37,19 +37,15 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
                 // From Excel
                 'nama_lengkap' => $value['nama_lengkap'],
                 'tgl_lahir' => $value['tgl_lahir'],
-                'nominal_gensen' => $value['nominal_gensen'],
                 'tahun_gensen' => $value['tahun_gensen'],
                 'no_input_jepang' => $value['no_input_jepang'],
                 'tanggal_tarik_data' => $value['tanggal_tarik_data'],
                 'label' => $value['label'],
-                'status' => $value['status'],
-                'keterangan' => $value['keterangan'],
-                'jumlah_kirim_uang' => $value['jumlah_kirim_uang'],
-                'hubungan_keluarga' => $value['hubungan_keluarga'],
             ];
             if ($data) {
                 $validateData = array_merge([
                     // From DB Query
+
                     'gensen_form_detail_id' => $data['gensen_form_detail_id'],
                     'id_customer' => $data['id_customer'],
                     'nomor_whatsapp' => $data['nomor_whatsapp'],
