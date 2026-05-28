@@ -109,6 +109,7 @@ return new class extends Migration
         $table->text('keterangan')->nullable();
         $table->boolean('is_previously_processed')->default(false)->nullable(); // Gensen pernah diproses sebelumnya oleh pihak lain (belum/sudah)
 
+
         $table->bigInteger("created_by")->unsigned()->nullable();
         $table->bigInteger("updated_by")->unsigned()->nullable();
         $table->bigInteger("deleted_by")->unsigned()->nullable()->default(null);

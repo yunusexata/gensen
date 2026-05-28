@@ -85,17 +85,15 @@ class GensenForm extends Model
         // Step 3 - Admin Jepang
         'no_input_jepang',
 
-        // Step 4 - HS
-        // 'nominal_gensen',
-        // 'jumlah_kirim_uang',
-        'nama_penerima_dan_hubungan',
+        // Step 3 - Admin Jepang
+        'no_input_jepang',
 
-        // Step 5 - Admin Jepang
+        // Step 4 - Admin Jepang
         'tanggal_pengajuan',  // Tanggal Pengajuan Ke Kantor Pajak
 
         // Step 6 - Acc Exata
-        'nominal_cair',
-        'tanggal_cair',
+        // 'nominal_cair',
+        // 'tanggal_cair',
 
         // MONDAI
         'keterangan',
@@ -128,6 +126,7 @@ class GensenForm extends Model
     const STATUS_VERIFIED = 'VERIFIED';
     const STATUS_NO_INPUT_JEPANG = 'NO INPUT JEPANG'; // NOT INCLUDE IN FLOW / CUSTOM STATUS 
     const STATUS_DALAM_PENGAJUAN = 'DALAM PENGAJUAN';
+    const STATUS_TARIK_DATA = 'TARIK DATA ACC';
     const STATUS_GENSEN_CAIR = 'GENSEN CAIR';
     const STATUS_CANCEL = 'CANCEL';
     const STATUS_HONNIN = 'HONNIN';
@@ -140,6 +139,7 @@ class GensenForm extends Model
         self::STATUS_VERIFIED => 'VERIFIED',
         self::STATUS_NO_INPUT_JEPANG => 'NO INPUT JEPANG',
         self::STATUS_DALAM_PENGAJUAN => 'DALAM PENGAJUAN',
+        self::STATUS_TARIK_DATA => 'TARIK DATA ACC',
         self::STATUS_GENSEN_CAIR => 'GENSEN CAIR',
         self::STATUS_CANCEL => 'CANCEL',
         self::STATUS_HONNIN => 'HONNIN',
@@ -172,6 +172,7 @@ class GensenForm extends Model
             self::STATUS_LENGKAP => '#5DEBD7',
             self::STATUS_VERIFIED => '#89D4FF',
             self::STATUS_DALAM_PENGAJUAN => '#4689e8',
+            self::STATUS_TARIK_DATA => '#eb50c4',
             self::STATUS_GENSEN_CAIR => '#E5C95F',
             self::STATUS_CANCEL => '#FFF6F6',
             self::STATUS_HONNIN => '#D1855C',
@@ -224,6 +225,10 @@ class GensenForm extends Model
             if ($model->isDirty('tanggal_pengajuan') && $model->tanggal_pengajuan) {
                 logger('dirty pengajuan');
                 $model->status = self::STATUS_DALAM_PENGAJUAN;
+            }
+            if ($model->isDirty('tanggal_tarik_data') && $model->tanggal_tarik_data) {
+                logger('dirty tarik_data');
+                $model->status = self::STATUS_TARIK_DATA;
             }
             // if ($model->isDirty('no_input_jepang') && $model->no_input_jepang) {
             // $model->status = self::STATUS_GENSEN_CAIR;
@@ -310,6 +315,10 @@ class GensenForm extends Model
             logger('status cair');
             $this->status = self::STATUS_GENSEN_CAIR;
         }
+        if ($this->allGensenDetailsTarikData()) {
+            logger('status tarik data');
+            $this->status = self::STATUS_TARIK_DATA;
+        }
         $this->is_should_filled = $this->isShouldFilled();
 
         $this->save();
@@ -324,6 +333,18 @@ class GensenForm extends Model
             ->where(function ($q) {
                 $q->whereNull('nominal_cair')
                     ->orWhere('nominal_cair', 0);
+            })->exists() && $query->count() > 0;
+    }
+
+    public function allGensenDetailsTarikData(): bool
+    {
+        $query = $this->gensenFormDetails()
+            ->whereNull('deleted_at');
+
+        return !$query->whereNull('tanggal_tarik_data')
+            ->where(function ($q) {
+                $q->whereNull('label')
+                    ->orWhere('label', '=', '');
             })->exists() && $query->count() > 0;
     }
 

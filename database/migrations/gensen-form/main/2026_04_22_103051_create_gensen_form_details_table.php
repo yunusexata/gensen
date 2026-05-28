@@ -41,6 +41,12 @@ return new class extends Migration
 
         $table->integer('tahun_gensen');
         $table->double('nominal_gensen', 20, 2, true)->nullable();
+
+        // Step 5 - Acc Exata
+        $table->date('tanggal_tarik_data')->nullable(); // Tanggal Pengajuan Ke Kantor Pajak
+        $table->string('label')->nullable(); // Label ACC Exata
+
+        // Step 6 - HS2
         $table->date('tanggal_cair')->nullable();
         $table->double('nominal_cair', 20, 2, true)->nullable();
 

@@ -17,6 +17,13 @@ class GensenFormDetail extends Model
         'gensen_form_id',
         'tahun_gensen',
         'nominal_gensen',
+
+
+        // Step 4 - Acc Exata
+        'tanggal_tarik_data',  // Tanggal Tarik Data
+        'label',  // Label Tarik Data
+
+        // Step 5 - HS2
         'nominal_cair',
         'tanggal_cair',
     ];

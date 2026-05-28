@@ -27,6 +27,10 @@ class GensenExportImportHistory extends Model
         'export_template',
         'status',
 
+        'file_template_name',
+        'disk_template',
+        'file_template_path',
+
         'file_name',
         'disk',
         'file_path',

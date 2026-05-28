@@ -2,10 +2,12 @@
 
 namespace App\Jobs;
 
+use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Events\ExportImportStatusUpdated;
 use App\Exports\CollectionExport;
 use App\Helpers\ExportHelper;
+use App\Imports\ExcelImportBulkStatusGensen;
 use App\Models\Gensen\GensenExportImportHistory;
 use App\Services\ExportService;
 use Exception;
@@ -15,6 +17,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Throwable;
 
@@ -45,11 +48,21 @@ class ExportGensenJob implements ShouldQueue
                 'job_key' => $history->job_key->value,
             ]);
 
-            $filters = json_decode($history->filters, true);
 
-            // ambil data sesuai role + filter
+            if ($history->job_key == ExportImportJobKey::EXPORT_LIST_DATA_DALAM_PENGAJUAN) {
+
+                $import = new ExcelImportBulkStatusGensen();
+                $disk = Storage::disk($history->disk);
+                $path = $history->path;
+                Excel::import($import, $disk->path($path));
+                $filters = $import;
+            } else {
+                $filters = json_decode($history->filters, true);
+                // ambil data sesuai role + filter
+            }
             $data = app(ExportService::class)
                 ->handle($history->job_key, $filters);
+
 
             $fileName = $history->job_key->value . '_' . now()->format('Ymd') . '.xlsx';
             $filePath = 'exports/gensen/' . $fileName;

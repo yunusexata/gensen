@@ -45,6 +45,10 @@ return new class extends Migration
         $table->string('status'); // pending, processing, success, failed
         $table->string('export_tempalte')->nullable(); // Export Template View
 
+        $table->string('file_template_name')->nullable(); // nama file
+        $table->string('disk_template')->nullable();                // local / s3
+        $table->string('file_template_path')->nullable(); // path download (kalau export)
+
         $table->string('file_name')->nullable(); // nama file
         $table->string('disk')->nullable();                // local / s3
         $table->string('file_path')->nullable(); // path download (kalau export)

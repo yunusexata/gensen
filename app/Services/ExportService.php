@@ -58,24 +58,24 @@ class ExportService
             ->where('reg.is_validate', true)
             ->whereNull('reg.deleted_at')
             ->selectRaw("
-        re.subject_id,
-        re.subject_type,
-        reg.transaction_year,
+                re.subject_id,
+                re.subject_type,
+                reg.transaction_year,
 
-        STRING_AGG(
-            reg.total_amount::text,
-            '; '
-            ORDER BY reg.transaction_year
-        ) AS remittance_total_amounts,
+                STRING_AGG(
+                    reg.total_amount::text,
+                    '; '
+                    ORDER BY reg.transaction_year
+                ) AS remittance_total_amounts,
 
-        STRING_AGG(
-            COALESCE(reg.receiver_name, '') 
-             || '-' || 
-            COALESCE(reg.receiver_relationship, ''),
-            '; '
-            ORDER BY reg.transaction_year
-        ) AS remittance_receiver_names
-    ")
+                STRING_AGG(
+                    COALESCE(reg.receiver_name, '') 
+                    || '-' || 
+                    COALESCE(reg.receiver_relationship, ''),
+                    '; '
+                    ORDER BY reg.transaction_year
+                ) AS remittance_receiver_names
+            ")
             ->groupBy(
                 're.subject_id',
                 're.subject_type',
@@ -96,6 +96,76 @@ class ExportService
             ->join('gensen_form_details as gfd', function ($join) {
                 $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id')
                     ->whereNull('gfd.deleted_at');
+            })
+
+            ->leftJoinSub($remittanceAgg, 'remittances', function ($join) {
+                $join->on('remittances.subject_id', '=', 'gensen_forms.id')
+                    ->where('remittances.subject_type', '=', GensenForm::class)
+                    ->whereRaw(
+                        'remittances.transaction_year = (gfd.tahun_gensen::int + 2018)'
+                    ); // yyyy compare reiwa
+            })
+
+            ->select([
+                'gensen_forms.*',
+                'gfd.tahun_gensen as tahun_gensen_detail',
+                'gfd.nominal_gensen as nominal_gensen_detail',
+                'remittances.remittance_total_amounts',
+                'remittances.remittance_receiver_names',
+            ])
+            ->withExists([
+                'attachments as has_kartu_keluarga' => function ($q) {
+                    $q->where('type', GensenAttachmentType::KARTU_KELUARGA);
+                },
+                'attachments as has_my_number' => function ($q) {
+                    $q->where('type', GensenAttachmentType::MY_NUMBER_FRONT);
+                },
+            ])
+            ->when(isset($filters['pic_code']) && $filters['pic_code'], function ($q) use ($filters) {
+                $q->where('gensen_forms.pic_code', $filters['pic_code']);
+            })
+            ->when(isset($filters['tanggal_input']) && $filters['tanggal_input'], function ($query) use ($filters) {
+                $query->whereBetween('gensen_forms.created_at', $filters['tanggal_input']);
+            });
+    }
+    private function queryDalamPengajuan($filters)
+    {
+        $remittanceAgg = DB::table('remittance_extraction_groups as reg')
+            ->join('remittance_extractions as re', function ($join) {
+                $join->on('re.id', '=', 'reg.remittance_extraction_id')
+                    ->whereNull('re.deleted_at');
+            })
+            ->where('reg.is_validate', true)
+            ->whereNull('reg.deleted_at')
+            ->selectRaw("
+                re.subject_id,
+                re.subject_type,
+                reg.transaction_year,
+
+                STRING_AGG(
+                    reg.total_amount::text,
+                    '; '
+                    ORDER BY reg.transaction_year
+                ) AS remittance_total_amounts,
+
+                STRING_AGG(
+                    COALESCE(reg.receiver_name, '') 
+                    || '-' || 
+                    COALESCE(reg.receiver_relationship, ''),
+                    '; '
+                    ORDER BY reg.transaction_year
+                ) AS remittance_receiver_names
+            ")
+            ->groupBy(
+                're.subject_id',
+                're.subject_type',
+                'reg.transaction_year'
+            );
+        return GensenForm::query()
+            ->join('gensen_form_details as gfd', function ($join) use ($filters) {
+                $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id')
+                    ->whereNull('gfd.deleted_at');
+                // ->whereNUll('');
             })
 
             ->leftJoinSub($remittanceAgg, 'remittances', function ($join) {
@@ -182,4 +252,18 @@ class ExportService
             })
             ->whereNull('gfd.tanggal_cair');
     }
+    // private function exportListDataDalamPengajuan($filters)
+    // {
+    //     return $this->query($filters)
+    //         ->where('gensen_forms.status', GensenForm::STATUS_DALAM_PENGAJUAN)
+    //         ->whereNotNull('gensen_forms.tanggal_lengkap')
+    //         ->whereNotNull('gensen_forms.tanggal_verified')
+    //         ->whereNotNull('gensen_forms.no_input_jepang')
+    //         ->whereNotNull('gensen_forms.tanggal_pengajuan')
+    //         ->where(function ($q) {
+    //             $q->whereNull('gfd.nominal_cair')
+    //                 ->orWhere('gfd.nominal_cair', 0);
+    //         })
+    //         ->whereNull('gfd.tanggal_cair');
+    // }
 }
