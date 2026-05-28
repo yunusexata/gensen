@@ -75,6 +75,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
     private function convertToImage($attachment)
     {
         $disk = $attachment->disk ?? 'private';
+        $store_disk = env('DEFAULT_STORE_CONVERT', 'private');
 
         $storage = Storage::disk($disk);
 
@@ -91,8 +92,8 @@ class ConvertPdfToImagesJob implements ShouldQueue
             $tmpDir
         ]);
 
-        if (!Storage::disk('private')->exists($tmpDir)) {
-            Storage::disk('private')->makeDirectory($tmpDir);
+        if (!Storage::disk($store_disk)->exists($tmpDir)) {
+            Storage::disk($store_disk)->makeDirectory($tmpDir);
         }
 
         $tmpPdfPath = $tmpDir . '/' . basename($attachment->path);
@@ -113,7 +114,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
             throw new Exception("Failed to read remote file");
         }
 
-        $writeStream = fopen(storage_path('app/private/' . $tmpPdfPath), 'w');
+        $writeStream = fopen(storage_path('app/' . $store_disk . '/' . $tmpPdfPath), 'w');
 
         stream_copy_to_stream($readStream, $writeStream);
 
@@ -138,12 +139,11 @@ class ConvertPdfToImagesJob implements ShouldQueue
             $dir
         ]);
 
-        $store_disk = env('DEFAULT_STORE_CONVERT', 'private');
         if (!Storage::disk($store_disk)->exists($dir)) {
             Storage::disk($store_disk)->makeDirectory($dir);
         }
 
-        $outputDir = storage_path("app/private/{$dir}");
+        $outputDir = storage_path("app/{$store_disk}/{$dir}");
 
         $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
         $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
@@ -166,7 +166,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
             '-dJPEGQ=85',           // Q=100 is wasteful; 85 is indistinguishable for AI
             '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
             "-sOutputFile={$outputPattern}",
-            storage_path('app/private/' . $tmpPdfPath),
+            storage_path('app/' . $store_disk . '/' . $tmpPdfPath),
         ]);
         $process->run();
 
