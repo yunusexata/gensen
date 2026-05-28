@@ -6,6 +6,7 @@ use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
 use App\Imports\ExcelImportBulkStatusGensen;
+use App\Imports\ExcelImportTarikData;
 use App\Repositories\Gensen\GensenExportImportHistoryRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,7 @@ class ExportDalamPengajuanModal extends Component
     // IMPORT PIPELINE
     public function updatedInputFileBulkStatus()
     {
-        $import = new ExcelImportBulkStatusGensen();
+        $import = new ExcelImportTarikData();
         Excel::import($import, $this->inputFileBulkStatus);
 
         $this->previewBulkStatusRows = [];
@@ -39,19 +40,7 @@ class ExportDalamPengajuanModal extends Component
 
         $d = [];
         foreach ($import->rows as $index => $row) {
-            $d = [
-                'nama_lengkap' => $row['nama_lengkap'],
-                'tgl_lahir' => $row['tgl_lahir'],
-                'nominal_gensen' => $row['nominal_gensen'],
-                'tahun_gensen' => $row['tahun_gensen'],
-                'no_input_jepang' => $row['no_input_jepang'],
-                'tanggal_tarik_data' => $row['tanggal_tarik_data'],
-                'label' => $row['label'],
-                'status' => $row['status'],
-                'keterangan' => $row['keterangan'],
-                'jumlah_kirim_uang' => $row['jumlah_kirim_uang'],
-                'hubungan_keluarga' => $row['hubungan_keluarga'],
-            ];
+            $d = $row;
             $validator = Validator::make($d, [
                 'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
                 'nama_lengkap' => 'required|exists:gensen_forms,nama_lengkap',
@@ -114,7 +103,7 @@ class ExportDalamPengajuanModal extends Component
                 'job_key' => ExportImportJobKey::EXPORT_LIST_DATA_DALAM_PENGAJUAN->value,
                 'type' => 'export',
                 'filters' => json_encode([], true),
-                'status' => JobStatus::PROCESSING,
+                'status' => JobStatus::DONE,
                 'file_template_name' => $fileName,
                 'file_template_path' => $filePath,
                 'disk_template' => $disk,

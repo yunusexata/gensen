@@ -34,7 +34,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    {{-- <th>ID Customer</th> --}}
+                                                    <th>ID Customer</th>
                                                     <th>No Input Jepang</th>
                                                     <th>Nama</th>
                                                     <th>Tgl Lahir</th>
@@ -59,7 +59,7 @@
                                                         <tr>
                                                         {{-- <tr class="{{ count($row['error']) ? '--kt-gray-100' : '' }}"> --}}
                                                                 <td>{{ $no++ }}</td>
-                                                                {{-- <td>{{ $row['data']['id_customer'] }}</td> --}}
+                                                                <td>{{ $row['data']['id_customer'] }}</td>
                                                                 <td>{{ $row['data']['no_input_jepang'] }}</td>
                                                                 <td>{{ $row['data']['nama_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['tgl_lahir'] }}</td>
@@ -88,7 +88,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    {{-- <th>ID Customer</th> --}}
+                                                    <th>ID Customer</th>
                                                     <th>No Input Jepang</th>
                                                     <th>Nama</th>
                                                     <th>Tgl Lahir</th>
@@ -114,7 +114,7 @@
                                                         <tr>
                                                         {{-- <tr class="{{ count($row['error']) ? '--kt-gray-100' : '' }}"> --}}
                                                                 <td>{{ $no_error++ }}</td>
-                                                                {{-- <td>{{ $row['data']['id_customer'] }}</td> --}}
+                                                                <td>{{ $row['data']['id_customer'] }}</td>
                                                                 <td>{{ $row['data']['no_input_jepang'] }}</td>
                                                                 <td>{{ $row['data']['nama_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['tgl_lahir'] }}</td>

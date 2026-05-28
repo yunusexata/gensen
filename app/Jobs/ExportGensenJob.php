@@ -49,20 +49,9 @@ class ExportGensenJob implements ShouldQueue
             ]);
 
 
-            if ($history->job_key == ExportImportJobKey::EXPORT_LIST_DATA_DALAM_PENGAJUAN) {
-
-                $import = new ExcelImportBulkStatusGensen();
-                $disk = Storage::disk($history->disk);
-                $path = $history->path;
-                Excel::import($import, $disk->path($path));
-                $filters = $import;
-            } else {
-                $filters = json_decode($history->filters, true);
-                // ambil data sesuai role + filter
-            }
+            $filters = json_decode($history->filters, true);
             $data = app(ExportService::class)
                 ->handle($history->job_key, $filters);
-
 
             $fileName = $history->job_key->value . '_' . now()->format('Ymd') . '.xlsx';
             $filePath = 'exports/gensen/' . $fileName;
