@@ -396,7 +396,43 @@
                                             {{-- <h3 class="ms-[10px] text-center">{{$rekap_pengiriman_uang_old['groups'][$group_index]['provider']}}</h3> --}}
                                             @if (!empty($group['files']))
                                             @foreach ($group['files'] as $rekap_index => $item)
-                                                @if($item['isPdf'])
+                                                @if($item['isImage'] ?? 0)
+                                                    <div class="relative group/thumb"  wire:key="kartu_keluarga_old_{{ $item['id'] }}">
+                                                        <!-- Preview -->
+                                                        <a
+                                                            data-fslightbox="kartu_keluarga_old_{{ $item['id'] }}"
+                                                            href="{{ $item['url'] }}"
+                                                            class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
+                                                        >
+                                                            <img
+                                                                src="{{ $item['url'] }}"
+                                                                class="w-full h-full object-cover"
+                                                            >
+                                                        </a>
+
+                                                        <!-- Actions -->
+                                                        <div class="absolute top-1 right-1 z-10">
+                                                            <!-- Tag A (Download) -->
+                                                        
+
+                                                            <!-- Tag Button (Delete) -->
+                                                            <button 
+                                                                type="button"
+                                                                wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::REKAP_PENGIRIMAN_UANG }}')"
+                                                                class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
+                                                            >
+                                                                <span class="material-symbols-outlined text-xl">delete</span>
+                                                            </button>
+                                                            <button 
+                                                                type="button"
+                                                                class="inline-flex items-center justify-center p-1 bg-white hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
+                                                            >
+                                                            IMG
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+                                                @elseif($item['isPdf'])
                                                     <div class="relative group/thumb" wire:key="rekap_pengirian_old_{{ $item['id'] }}" 
                                                         x-init="if(window.refreshFsLightbox) refreshFsLightbox()">
                                                         {{-- IFRAME PDF Preview --}}
