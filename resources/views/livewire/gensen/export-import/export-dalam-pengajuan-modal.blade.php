@@ -39,15 +39,10 @@
                                                     <th>Nama</th>
                                                     <th>Tgl Lahir</th>
                                                     <th>tahun Gensen</th>
-                                                    <th>Nominal Gensen</th>
                                                     <th>Tanggal Tarik Data</th>
                                                     <th>Label</th>
                                                     {{-- <th>Tanggal Lengkap</th>
                                                     <th>Tanggal Verified</th> --}}
-                                                    <th>Status</th>
-                                                    <th>Keterangan</th>
-                                                    <th>Jumlah Kirim Uang</th>
-                                                    <th>Hubungan Keluarga</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -65,15 +60,10 @@
                                                                 <td>{{ $row['data']['tgl_lahir'] }}</td>
                                                                 <td>{{ $row['data']['tahun_gensen'] }} / 
                                                                      @fromReiwaToYear($row['data']['tahun_gensen'])</td>
-                                                                <td>{{ $row['data']['nominal_gensen'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_tarik_data'] }}</td>
                                                                 <td>{{ $row['data']['label'] }}</td>
                                                                 {{-- <td>{{ $row['data']['tanggal_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_verified'] }}</td> --}}
-                                                                <td>{{ $row['data']['status'] }}</td>
-                                                                <td>{{ $row['data']['keterangan'] }}</td>
-                                                                <td>{{ $row['data']['jumlah_kirim_uang'] }}</td>
-                                                                <td>{{ $row['data']['hubungan_keluarga'] }}</td>
                                                                 
                                                         </tr>
                                                     @endif
