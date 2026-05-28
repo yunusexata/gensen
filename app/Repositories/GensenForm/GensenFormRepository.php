@@ -212,6 +212,15 @@ class GensenFormRepository extends MasterDataRepository
             ';'
             ORDER BY gfd.tahun_gensen
         ) AS tahun_gensen_details,
+
+        STRING_AGG(
+                COALESCE(gfd.tanggal_tarik_data, '') 
+                || ' - ' || 
+                COALESCE(gfd.label, ''),
+            ';'
+            ORDER BY gfd.tahun_gensen
+        ) AS tarik_data_details,
+            
         STRING_AGG(
             COALESCE(REPLACE(
                 TO_CHAR(gfd.nominal_gensen, 'FM999,999,999,999'),

@@ -396,6 +396,21 @@ class Datatable extends Component
             [
                 'sortable' => false,
                 'searchable' => false,
+                'name' => 'Tarik Data ACC',
+                'render' => function ($item) {
+
+                    $tarik_data_details = explode(';', $item->tarik_data_details);
+
+                    $html = "";
+                    foreach ($tarik_data_details as $index => $data) {
+                        $html .= "<div class='text-nowrap'>{$data}</div>";
+                    }
+                    return $html;
+                }
+            ],
+            [
+                'sortable' => false,
+                'searchable' => false,
                 'name' => 'Tanggal Cair',
                 'class' => 'text-center',
                 'render' => function ($item) {
