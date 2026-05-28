@@ -47,11 +47,6 @@
                 <th class="text-center">NAMA PENERIMA</th>
                 <th class="text-center">HUBUNGAN PENERIMA</th>
 
-                <th class="text-center">TAHUN GENSEN</th>
-                <th class="text-center">TAHUN TRANSFER</th>
-
-                <th class="text-center">REMARKS ID</th>
-                <th class="text-center">REMARKS TYPE</th>
                 <th class="text-center">PIC CODE</th>
 
                 <th class="text-center">IS SHOULD FILLED</th>
@@ -60,8 +55,6 @@
                 <th class="text-center">TANGGAL LENGKAP</th>
 
                 <th class="text-center">TANGGAL VERIFIED</th>
-
-                <th class="text-center">NO INPUT JEPANG</th>
 
                 <th class="text-center">NO INPUT JEPANG</th>
 
@@ -111,11 +104,6 @@
                         <td>{{ $data['nama_penerima'] }}</td>
                         <td>{{ $data['hubungan_penerima'] }}</td>
 
-                        <td>{{ $data['tahun_gensen'] }}</td>
-                        <td>{{ $data['tahun_transfer'] }}</td>
-
-                        <td>{{ $data['remarks_id'] }}</td>
-                        <td>{{ $data['remarks_type'] }}</td>
                         <td>{{ $data['pic_code'] }}</td>
 
                         <td>{{ $data['is_should_filled'] }}</td>
@@ -150,6 +138,7 @@
                             {{ $name }},
                         @endforeach</td>
                         <td>{{ $data['tanggal_cair'] ? Carbon\Carbon::parse($data['tanggal_cair'])->format('Ymd') : '' }}</td>
+                        <td>{{ $data['nominal_cair'] }}</td>
                         <td>{{ $data['tanggal_tarik_data_detail'] }}</td>
                         <td>{{ $data['label_detail'] }}</td>
                     </tr>
