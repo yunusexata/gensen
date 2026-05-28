@@ -214,7 +214,7 @@ class GensenFormRepository extends MasterDataRepository
         ) AS tahun_gensen_details,
 
         STRING_AGG(
-                COALESCE(gfd.tanggal_tarik_data, '') 
+                COALESCE(gfd.tanggal_tarik_data::TEXT, '') 
                 || ' - ' || 
                 COALESCE(gfd.label, ''),
             ';'
