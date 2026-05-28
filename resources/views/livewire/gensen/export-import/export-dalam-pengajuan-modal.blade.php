@@ -34,12 +34,12 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>ID Customer</th>
+                                                    {{-- <th>ID Customer</th> --}}
+                                                    <th>No Input Jepang</th>
                                                     <th>Nama</th>
                                                     <th>Tgl Lahir</th>
                                                     <th>tahun Gensen</th>
                                                     <th>Nominal Gensen</th>
-                                                    <th>No Input Jepang</th>
                                                     <th>Tanggal Tarik Data</th>
                                                     <th>Label</th>
                                                     <th>Tanggal Lengkap</th>
@@ -59,13 +59,13 @@
                                                         <tr>
                                                         {{-- <tr class="{{ count($row['error']) ? '--kt-gray-100' : '' }}"> --}}
                                                                 <td>{{ $no++ }}</td>
-                                                                <td>{{ $row['data']['id_customer'] }}</td>
+                                                                {{-- <td>{{ $row['data']['id_customer'] }}</td> --}}
+                                                                <td>{{ $row['data']['no_input_jepang'] }}</td>
                                                                 <td>{{ $row['data']['nama_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['tgl_lahir'] }}</td>
                                                                 <td>{{ $row['data']['tahun_gensen'] }} / 
                                                                      @fromReiwaToYear($row['data']['tahun_gensen'])</td>
                                                                 <td>{{ $row['data']['nominal_gensen'] }}</td>
-                                                                <td>{{ $row['data']['no_input_jepang'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_tarik_data'] }}</td>
                                                                 <td>{{ $row['data']['label'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_lengkap'] }}</td>
@@ -88,12 +88,12 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>ID Customer</th>
+                                                    {{-- <th>ID Customer</th> --}}
+                                                    <th>No Input Jepang</th>
                                                     <th>Nama</th>
                                                     <th>Tgl Lahir</th>
                                                     <th>tahun Gensen</th>
                                                     <th>Nominal Gensen</th>
-                                                    <th>No Input Jepang</th>
                                                     <th>Tanggal Tarik Data</th>
                                                     <th>Label</th>
                                                     <th>Tanggal Lengkap</th>
@@ -114,13 +114,13 @@
                                                         <tr>
                                                         {{-- <tr class="{{ count($row['error']) ? '--kt-gray-100' : '' }}"> --}}
                                                                 <td>{{ $no_error++ }}</td>
-                                                                <td>{{ $row['data']['id_customer'] }}</td>
+                                                                {{-- <td>{{ $row['data']['id_customer'] }}</td> --}}
+                                                                <td>{{ $row['data']['no_input_jepang'] }}</td>
                                                                 <td>{{ $row['data']['nama_lengkap'] }}</td>
                                                                 <td>{{ $row['data']['tgl_lahir'] }}</td>
                                                                 <td>{{ $row['data']['tahun_gensen'] }} / 
                                                                      @fromReiwaToYear($row['data']['tahun_gensen'])</td>
                                                                 <td>{{ $row['data']['nominal_gensen'] }}</td>
-                                                                <td>{{ $row['data']['no_input_jepang'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_tarik_data'] }}</td>
                                                                 <td>{{ $row['data']['label'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_lengkap'] }}</td>
