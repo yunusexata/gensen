@@ -51,7 +51,7 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
                     'id_customer' => $data['id_customer'],
                     'nomor_whatsapp' => $data['nomor_whatsapp'],
                     'nomor_whatsapp_darurat' => $data['nomor_whatsapp_darurat'],
-                    'error' => null,
+                    'error' => [],
                 ], $validateData);
             } else {
 
@@ -61,7 +61,7 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
                     'id_customer' => '',
                     'nomor_whatsapp' => '',
                     'nomor_whatsapp_darurat' => '',
-                    'error' => 'Data tidak ditemukan!',
+                    'error' => ['Data tidak ditemukan!'],
                 ], $validateData);
             }
             $this->rows[] = $validateData;
