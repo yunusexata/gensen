@@ -106,7 +106,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
     {
         try {
             DB::beginTransaction();
-            $disk = 'supabase';
+            $disk = env('DEFAULT_STORE_DISK', 'private');
 
             $extension = $this->inputFileBulkStatus
                 ->extension();
@@ -119,7 +119,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
             //         $fileName,
             //         $disk
             //     );
-            $filePath = Storage::disk('supabase')->putFileAs(
+            $filePath = Storage::disk($disk)->putFileAs(
                 'imports/gensen',
                 $this->inputFileBulkStatus,
                 $fileName,

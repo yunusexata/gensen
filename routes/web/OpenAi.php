@@ -60,12 +60,14 @@ Route::get('/ai-test', function () {
 
     // $gensen = GensenForm::first();
     // SendGensenFormCreatedEmailJob::dispatch($gensen);
-    $url = Storage::disk('supabase')->temporaryUrl(
+
+    $disk = env('DEFAULT_STORE_DISK', 'private');
+    $url = Storage::disk($disk)->temporaryUrl(
         'test.txt',
         now()->addMinutes(5)
     );
     // $url = 'oke';
-    Storage::disk('supabase')->put(
+    Storage::disk($disk)->put(
         'test.txt',
         'Hello Supabase Storage'
     );

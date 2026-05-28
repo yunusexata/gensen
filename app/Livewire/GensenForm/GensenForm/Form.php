@@ -55,7 +55,7 @@ class Form extends Component
     #[Validate('required', message: 'Email Harus Diisi', onUpdate: false)]
     public $email;
 
-    // #[Validate('required', message: 'Tanggal Kepulangan Harus Diisi', onUpdate: false)]
+    #[Validate('required', message: 'Tanggal Kepulangan Harus Diisi', onUpdate: false)]
     public $tanggal_kepulangan;
     #[Validate('required', message: 'Nama Instagram Harus Diisi', onUpdate: false)]
     public $nama_instagram;
@@ -838,7 +838,9 @@ class Form extends Component
         //     $storedName,
         //     'private'
         // );
-        $path = Storage::disk('supabase')->putFileAs(
+
+        $disk = env('DEFAULT_STORE_DISK', 'private');
+        $path = Storage::disk($disk)->putFileAs(
             $filePath,
             $file,
             $storedName,
@@ -852,7 +854,7 @@ class Form extends Component
             'upload_batch_id' => $batchId,
 
             'type' => $type,
-            'disk' => 'supabase',
+            'disk' => $disk,
             'path' => $path,
             'remittance_type' => $remittance_type,
 

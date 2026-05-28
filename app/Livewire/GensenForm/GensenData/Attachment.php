@@ -767,7 +767,8 @@ class Attachment extends Component
         //     $storedName,
         //     'private'
         // );
-        $path = Storage::disk('supabase')->putFileAs(
+        $disk = env('DEFAULT_STORE_DISK', 'private');
+        $path = Storage::disk($disk)->putFileAs(
             $filePath,
             $file,
             $storedName,
@@ -779,7 +780,7 @@ class Attachment extends Component
 
         $validatedData =  [
             'type' => $type,
-            'disk' => 'supabase',
+            'disk' => $disk,
             'path' => $path,
 
             'stored_name' => $storedName,
@@ -902,7 +903,9 @@ class Attachment extends Component
         //     $storedName,
         //     'private'
         // );
-        $path = Storage::disk('supabase')->putFileAs(
+
+        $disk = env('DEFAULT_STORE_DISK', 'private');
+        $path = Storage::disk($disk)->putFileAs(
             $filePath,
             $file,
             $storedName,
@@ -914,7 +917,7 @@ class Attachment extends Component
             'gensen_form_id' => $gensenForm->id,
 
             'type' => $type,
-            'disk' => 'supabase',
+            'disk' => $disk,
             'path' => $path,
             'remittance_type' => $remittance_type,
 

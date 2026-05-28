@@ -141,7 +141,8 @@
                                         @if ($gensenFormId)
                                             <div class="flex flex-col gap-2">
                                                 <label class="font-label text-xs font-medium text-on-surface-variant"
-                                                    for="tanggal_kepulangan">Tanggal kepulangan</label>
+                                                    for="tanggal_kepulangan">Tanggal kepulangan<span
+                                                        class="text-red-500">*</span></label>
                                                 <input
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('tanggal_kepulangan') is-invalid border border-red-500 @enderror"
                                                     id="tanggal_kepulangan" wire:model="tanggal_kepulangan"

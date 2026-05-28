@@ -62,7 +62,7 @@ class ExportGensenJob implements ShouldQueue
                     'type' => ExportHelper::TYPE_EXCEL,
                 ],
                 $data,
-                'app.gensen.gensen-data.export',
+                $history->export_template ?? 'app.gensen.gensen-data.export',
             ), $filePath, $disk);
 
             $history->update([

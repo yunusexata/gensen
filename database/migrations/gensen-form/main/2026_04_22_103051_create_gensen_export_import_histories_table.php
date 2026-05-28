@@ -43,6 +43,7 @@ return new class extends Migration
         $table->string('type'); // export or import
         $table->string('job_key'); // Example : Import Data Belum Lengkap, Export Data Lengkap
         $table->string('status'); // pending, processing, success, failed
+        $table->string('export_tempalte')->nullable(); // Export Template View
 
         $table->string('file_name')->nullable(); // nama file
         $table->string('disk')->nullable();                // local / s3

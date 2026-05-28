@@ -16,7 +16,9 @@ class GensenAttachmentService
 
 
         $localDisk = 'private';
-        $remoteDisk = 'supabase';
+
+        $remoteDisk = env('DEFAULT_STORE_DISK', 'private');
+        // $remoteDisk = 'supabase';
 
         $fullPath = Storage::disk($localDisk)->path($filePath);
         // $storedName = basename($filePath);

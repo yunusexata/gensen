@@ -24,6 +24,7 @@ class GensenExportImportHistory extends Model
         'role',
         'type',
         'job_key',
+        'export_template',
         'status',
 
         'file_name',
