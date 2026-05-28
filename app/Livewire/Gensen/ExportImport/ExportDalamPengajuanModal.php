@@ -8,6 +8,7 @@ use App\Helpers\Alert;
 use App\Imports\ExcelImportBulkStatusGensen;
 use App\Imports\ExcelImportTarikData;
 use App\Repositories\Gensen\GensenExportImportHistoryRepository;
+use App\Repositories\GensenForm\GensenFormDetailRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -73,7 +74,22 @@ class ExportDalamPengajuanModal extends Component
     {
         try {
             DB::beginTransaction();
+            $path = $this->inputFileBulkStatus->getRealPath();
+            $successCount = 0;
+            foreach ($this->previewBulkStatusRows as $key => $value) {
+                if (!$value['error']) {
+                    $updated = GensenFormDetailRepository::update($value['data']['gensen_form_detail_id'], [
+                        'tanggal_tarik_data' => $value['data']['tanggal_tarik_data'],
+                        'label' => $value['data']['label'],
+                    ]);
 
+                    if ($updated > 0) {
+                        $successCount++;
+                    }
+                }
+            }
+            unlink($path);
+            DB::commit();
             // $disk = 'env('DEFAULT_STORE_DISK', 'private');'
             $disk = 'private';
 

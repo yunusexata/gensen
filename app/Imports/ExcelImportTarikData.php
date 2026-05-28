@@ -17,7 +17,11 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
     {
         foreach ($rows as $key => $value) {
             $data = GensenForm::select(
-                'gensen_forms.id_customer'
+                'gensen_forms.id_customer',
+                'gensen_forms.nomor_whatsapp',
+                'gensen_forms.nomor_whatsapp_darurat',
+
+                'gfd.id as gensen_form_detail_id',
             )
                 ->where('no_input_jepang', $value['no_input_jepang'])
                 ->where('nama_lengkap', $value['nama_lengkap'])
@@ -48,6 +52,7 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
             if ($data) {
                 $validateData = array_merge([
                     // From DB Query
+                    'gensen_form_detail_id' => $data['gensen_form_detail_id'],
                     'id_customer' => $data['id_customer'],
                     'nomor_whatsapp' => $data['nomor_whatsapp'],
                     'nomor_whatsapp_darurat' => $data['nomor_whatsapp_darurat'],
@@ -58,6 +63,7 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
                 $validateData = array_merge([
                     // From DB Query
 
+                    'gensen_form_detail_id' => '',
                     'id_customer' => '',
                     'nomor_whatsapp' => '',
                     'nomor_whatsapp_darurat' => '',
