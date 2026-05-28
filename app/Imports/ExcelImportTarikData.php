@@ -50,7 +50,8 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
                     // From DB Query
                     'id_customer' => $data['id_customer'],
                     'nomor_whatsapp' => $data['nomor_whatsapp'],
-                    'nomor_whatsapp_darurat' => $data['nomor_whatsapp_darurat']
+                    'nomor_whatsapp_darurat' => $data['nomor_whatsapp_darurat'],
+                    'error' => null,
                 ], $validateData);
             } else {
 
