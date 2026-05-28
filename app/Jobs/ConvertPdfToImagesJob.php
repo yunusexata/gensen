@@ -138,8 +138,9 @@ class ConvertPdfToImagesJob implements ShouldQueue
             $dir
         ]);
 
-        if (!Storage::disk('private')->exists($dir)) {
-            Storage::disk('private')->makeDirectory($dir);
+        $store_disk = env('DEFAULT_STORE_CONVERT', 'private');
+        if (!Storage::disk($store_disk)->exists($dir)) {
+            Storage::disk($store_disk)->makeDirectory($dir);
         }
 
         $outputDir = storage_path("app/private/{$dir}");
@@ -211,7 +212,6 @@ class ConvertPdfToImagesJob implements ShouldQueue
             ]);
             $targetPath = "{$dir}/{$stored_name}";
 
-            $disk = 'private';
             /**
              * Upload using SAME disk as original
              */
@@ -241,7 +241,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 'stored_name' => $stored_name,
                 'description' => $attachment->description,
 
-                'disk' => $disk,
+                'disk' => $store_disk,
                 'path' => $targetPath,
 
                 'checksum' => hash_file('sha256', $file),
