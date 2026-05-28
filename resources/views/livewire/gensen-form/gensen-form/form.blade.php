@@ -367,7 +367,7 @@
                                             
                                         </div>
                                         <div class="flex justify-center items-center gap-3 mb-5">
-                                            <h5 class=" font-normal text-lg text-center">Boleh menggunakan rek keluarga jika tidak memiliki rek pribadi</h5>
+                                            <h5 class=" font-normal text-lg text-center">Boleh menggunakan rekening keluarga jika tidak memiliki rekening pribadi</h5>
                                         </div>
 
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
@@ -429,7 +429,7 @@
                                                     id="hubungan_penerima" wire:model="hubungan_penerima"
                                                     name="first_name" placeholder="Istri" type="text" />
                                                 
-                                                <div class="form-text" id="basic-addon4">Kosongkan jika menggunakan rek pribadi</div>
+                                                <div class="form-text" id="basic-addon4">Kosongkan jika menggunakan rekening pribadi</div>
 
                                                 @error('hubungan_penerima')
                                                     <div class="invalid-feedback">
