@@ -414,7 +414,7 @@ class Datatable extends Component
                     // ], true);
                     $html = '';
                     foreach ($tarik_data_details as $index => $data) {
-                        $html .= "<div class='text-nowrap'>" . ($item->allGensenDetailsTarikData() ? 'TARIK' : 'KOSONG') . " {$data}</div>";
+                        $html .= "<div class='text-nowrap'>{$data}</div>";
                     }
                     return $html;
                 }
