@@ -42,8 +42,8 @@
                                                     <th>Nominal Gensen</th>
                                                     <th>Tanggal Tarik Data</th>
                                                     <th>Label</th>
-                                                    <th>Tanggal Lengkap</th>
-                                                    <th>Tanggal Verified</th>
+                                                    {{-- <th>Tanggal Lengkap</th>
+                                                    <th>Tanggal Verified</th> --}}
                                                     <th>Status</th>
                                                     <th>Keterangan</th>
                                                     <th>Jumlah Kirim Uang</th>
@@ -68,8 +68,8 @@
                                                                 <td>{{ $row['data']['nominal_gensen'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_tarik_data'] }}</td>
                                                                 <td>{{ $row['data']['label'] }}</td>
-                                                                <td>{{ $row['data']['tanggal_lengkap'] }}</td>
-                                                                <td>{{ $row['data']['tanggal_verified'] }}</td>
+                                                                {{-- <td>{{ $row['data']['tanggal_lengkap'] }}</td>
+                                                                <td>{{ $row['data']['tanggal_verified'] }}</td> --}}
                                                                 <td>{{ $row['data']['status'] }}</td>
                                                                 <td>{{ $row['data']['keterangan'] }}</td>
                                                                 <td>{{ $row['data']['jumlah_kirim_uang'] }}</td>
@@ -96,8 +96,8 @@
                                                     <th>Nominal Gensen</th>
                                                     <th>Tanggal Tarik Data</th>
                                                     <th>Label</th>
-                                                    <th>Tanggal Lengkap</th>
-                                                    <th>Tanggal Verified</th>
+                                                    {{-- <th>Tanggal Lengkap</th>
+                                                    <th>Tanggal Verified</th> --}}
                                                     <th>Status</th>
                                                     <th>Keterangan</th>
                                                     <th>Jumlah Kirim Uang</th>
@@ -123,8 +123,8 @@
                                                                 <td>{{ $row['data']['nominal_gensen'] }}</td>
                                                                 <td>{{ $row['data']['tanggal_tarik_data'] }}</td>
                                                                 <td>{{ $row['data']['label'] }}</td>
-                                                                <td>{{ $row['data']['tanggal_lengkap'] }}</td>
-                                                                <td>{{ $row['data']['tanggal_verified'] }}</td>
+                                                                {{-- <td>{{ $row['data']['tanggal_lengkap'] }}</td>
+                                                                <td>{{ $row['data']['tanggal_verified'] }}</td> --}}
                                                                 <td>{{ $row['data']['status'] }}</td>
                                                                 <td>{{ $row['data']['keterangan'] }}</td>
                                                                 <td>{{ $row['data']['jumlah_kirim_uang'] }}</td>

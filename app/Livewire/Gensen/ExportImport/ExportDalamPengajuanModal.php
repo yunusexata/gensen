@@ -47,6 +47,10 @@ class ExportDalamPengajuanModal extends Component
                 'no_input_jepang' => $row['no_input_jepang'],
                 'tanggal_tarik_data' => $row['tanggal_tarik_data'],
                 'label' => $row['label'],
+                'status' => $row['status'],
+                'keterangan' => $row['keterangan'],
+                'jumlah_kirim_uang' => $row['jumlah_kirim_uang'],
+                'hubungan_keluarga' => $row['hubungan_keluarga'],
             ];
             $validator = Validator::make($d, [
                 'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
