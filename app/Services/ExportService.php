@@ -238,7 +238,8 @@ class ExportService
             ';
         logger([
             'SQL export service',
-            $sql
+            $sql,
+            $bindings
         ]);
         return GensenForm::query()
             ->join('gensen_form_details as gfd', function ($join) {
