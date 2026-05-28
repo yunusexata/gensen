@@ -432,6 +432,7 @@
                                                     <div class="border rounded p-4 text-center bg-light"  wire:key="rekap_pengirian_old_{{ $item['id'] }}">
                                                         <i class="bi bi-file-earmark fs-1"></i>
                                                         <div class="mt-2">
+                                                    {{$item['path']}} <br>
                                                             {{$item['url']}}
                                                         </div>
                                                     </div>
@@ -646,6 +647,7 @@
                                             <div class="border rounded p-4 text-center bg-light" wire:key="kartu_keluarga_old_{{ $item['id'] }}">
                                                 <i class="bi bi-file-earmark fs-1"></i>
                                                 <div class="mt-2">
+                                                    {{$item['path']}} <br>
                                                     {{$item['url']}}
                                                 </div>
                                             </div>
