@@ -1678,10 +1678,10 @@
                         <div class="w-80 border-r border-outline-variant/10 bg-surface-container-low flex flex-col">
                             
                             <div class="flex-1 overflow-y-auto p-4 space-y-3 file-scroll-mask"  
-                                @if(!$seluruh_berkas_old['isJobProcessDone']
+                                {{-- @if(!$seluruh_berkas_old['isJobProcessDone']
                                     || !$persyaratan_pengurusan_gensen_old['isJobProcessDone'])
                                     wire:poll.5s="refreshData"
-                                @endif>
+                                @endif> --}}
                                 <h3>Persyaratan Pengurusan Gensen</h3>
                                 @if ($seluruh_berkas_old['isJobProcess'] && $seluruh_berkas_old['isJobProcess']->status == App\Enums\Gensen\JobStatus::DONE)
                                     @if ($seluruh_berkas_old['id'] == $showData['id'])
