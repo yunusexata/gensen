@@ -248,7 +248,7 @@
                                                         <button 
                                                             type="button"
                                                             wire:click.stop="showDialogConvertToImage('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')"
-                                                            class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-success/50 text-success rounded h-8 w-8 transition-colors"
+                                                            class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-primary/50 text-primary rounded h-8 w-8 transition-colors"
                                                         >
                                                             <span class="material-symbols-outlined text-xl">wand_stars</span>
                                                         </button>
@@ -646,7 +646,7 @@
                                                         <button 
                                                             type="button"
                                                             wire:click.stop="showDialogConvertToImage('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KARTU_KELUARGA }}')"
-                                                            class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-success/50 text-success rounded h-8 w-8 transition-colors"
+                                                            class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-primary/50 text-primary rounded h-8 w-8 transition-colors"
                                                         >
                                                             <span class="material-symbols-outlined text-xl">wand_stars</span>
                                                         </button>
