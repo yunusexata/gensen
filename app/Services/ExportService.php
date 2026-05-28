@@ -236,6 +236,10 @@ class ExportService
                 ' . implode(',', $placeholders) . '
             )
             ';
+        logger([
+            'SQL export service',
+            $sql
+        ]);
         return GensenForm::query()
             ->join('gensen_form_details as gfd', function ($join) {
                 $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id')
