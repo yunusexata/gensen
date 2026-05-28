@@ -9,6 +9,7 @@ use App\Imports\ExcelImportBulkStatusGensen;
 use App\Imports\ExcelImportTarikData;
 use App\Repositories\Gensen\GensenExportImportHistoryRepository;
 use App\Repositories\GensenForm\GensenFormDetailRepository;
+use App\Repositories\GensenForm\GensenFormRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -82,6 +83,11 @@ class ExportDalamPengajuanModal extends Component
                         'tanggal_tarik_data' => $value['data']['tanggal_tarik_data'],
                         'label' => $value['data']['label'],
                     ]);
+                    $gensen_form = GensenFormRepository::findBy([
+                        ['id_customer', $value['data']['id_customer']]
+                    ]);
+
+                    $gensen_form->onSubmitted();
 
                     if ($updated > 0) {
                         $successCount++;
