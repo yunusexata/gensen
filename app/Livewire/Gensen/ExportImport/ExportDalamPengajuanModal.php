@@ -41,7 +41,7 @@ class ExportDalamPengajuanModal extends Component
         foreach ($import->rows as $index => $row) {
             $d = [
                 'nama_lengkap' => $row['nama_lengkap'],
-                'tlg_lahir' => $row['tgl_lahir'],
+                'tgl_lahir' => $row['tgl_lahir'],
                 'nominal_gensen' => $row['nominal_gensen'],
                 'tahun_gensen' => $row['tahun_gensen'],
                 'no_input_jepang' => $row['no_input_jepang'],
