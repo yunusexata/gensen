@@ -30,28 +30,40 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
                 'data export dalam pengajuan query',
                 $data
             ]);
-            if ($data) {
-                $this->rows[] =
-                    [
-                        // From DB Query
-                        'id_customer' => $data['id_customer'],
-                        'nomor_whatsapp' => $data['nomor_whatsapp'],
-                        'nomor_whatsapp_darurat' => $data['nomor_whatsapp_darurat'],
+            $validateData = [
 
-                        // From Excel
-                        'nama_lengkap' => $value['nama_lengkap'],
-                        'tgl_lahir' => $value['tgl_lahir'],
-                        'nominal_gensen' => $value['nominal_gensen'],
-                        'tahun_gensen' => $value['tahun_gensen'],
-                        'no_input_jepang' => $value['no_input_jepang'],
-                        'tanggal_tarik_data' => $value['tanggal_tarik_data'],
-                        'label' => $value['label'],
-                        'status' => $value['status'],
-                        'keterangan' => $value['keterangan'],
-                        'jumlah_kirim_uang' => $value['jumlah_kirim_uang'],
-                        'hubungan_keluarga' => $value['hubungan_keluarga'],
-                    ];
+                // From Excel
+                'nama_lengkap' => $value['nama_lengkap'],
+                'tgl_lahir' => $value['tgl_lahir'],
+                'nominal_gensen' => $value['nominal_gensen'],
+                'tahun_gensen' => $value['tahun_gensen'],
+                'no_input_jepang' => $value['no_input_jepang'],
+                'tanggal_tarik_data' => $value['tanggal_tarik_data'],
+                'label' => $value['label'],
+                'status' => $value['status'],
+                'keterangan' => $value['keterangan'],
+                'jumlah_kirim_uang' => $value['jumlah_kirim_uang'],
+                'hubungan_keluarga' => $value['hubungan_keluarga'],
+            ];
+            if ($data) {
+                $validateData = array_merge([
+                    // From DB Query
+                    'id_customer' => $data['id_customer'],
+                    'nomor_whatsapp' => $data['nomor_whatsapp'],
+                    'nomor_whatsapp_darurat' => $data['nomor_whatsapp_darurat']
+                ], $validateData);
+            } else {
+
+                $validateData = array_merge([
+                    // From DB Query
+
+                    'id_customer' => '',
+                    'nomor_whatsapp' => '',
+                    'nomor_whatsapp_darurat' => '',
+                    'error' => 'Data tidak ditemukan!',
+                ], $validateData);
             }
+            $this->rows[] = $validateData;
         }
     }
 

@@ -60,7 +60,7 @@ class ExportDalamPengajuanModal extends Component
 
             $this->previewBulkStatusRows[] = [
                 'data' => $d,
-                'error' => $validator->errors()->toArray()
+                'error' => array_merge($validator->errors()->toArray(), $row['error'])
             ];
 
             if ($validator->fails()) {
