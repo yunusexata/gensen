@@ -404,10 +404,12 @@ class GensenForm extends Model
             ->every(fn($field) => filled($this->{$field}));
     }
 
-    public function attachmentGroups($types = null)
+    public function attachmentGroups($types = null, $not_converted = true)
     {
         $attachments = $this->attachments
-            ->where('status', '!=', GensenAttachmenStatus::STATUS_CONVERTED)
+            ->when($not_converted, function ($q) {
+                $q->where('status', '!=', GensenAttachmenStatus::STATUS_CONVERTED);
+            })
             ->when($types, function ($q) use ($types) {
                 $q->whereIn('type', $types);
             })
@@ -438,10 +440,14 @@ class GensenForm extends Model
                                             'id' => Crypt::encrypt($file->id),
                                             'filename' => $file->original_name,
                                             'remittance_type' => $file->remittance_type,
-                                            'size' => $file->file_size,
                                             'note' => $file->note,
+                                            'path' => $file->path,
+                                            'disk' => $file->disk,
+                                            'convert_image' => $file->convert_image,
+                                            'size' => $file->file_size,
                                             'type' => $file->type,
                                             'created_at' => $file->created_at,
+                                            'printStatus' => $file?->status?->print(),
                                             'isPdf' => $file->isPdf(),
                                             'isImage' => $file->isImage(),
                                             'url' => $file->previewUrl(),

@@ -1001,6 +1001,10 @@ video {
   max-height: 80vh;
 }
 
+.max-h-\[50vh\] {
+  max-height: 50vh;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }
@@ -2421,6 +2425,10 @@ video {
 
 .hover\:bg-white\/20:hover {
   background-color: rgb(255 255 255 / 0.2);
+}
+
+.hover\:bg-primary\/10:hover {
+  background-color: rgb(62 97 133 / 0.1);
 }
 
 .hover\:text-error:hover {

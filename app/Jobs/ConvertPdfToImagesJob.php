@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Enums\Gensen\GensenAttachmenStatus;
 use App\Enums\Gensen\GensenAttachmentType;
+use App\Events\ConvertPdfToIMageFinished;
 use App\Jobs\GensenExtractJob\ExtractionDocumentJob;
 use App\Models\Ai\AiJob;
 use App\Models\GensenForm\GensenForm;
@@ -32,194 +33,21 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
     public function handle(): void
     {
+        logger(['convert to image Job', $this->type]);
         if ($this->type == AiJob::class) {
 
             $attachments = $this->model->subject->attachmentsToConvert;
 
             foreach ($attachments as $attachment) {
-                $disk = $attachment->disk ?? 'private';
-
-                $storage = Storage::disk($disk);
-
-                if (!$storage->exists($attachment->path)) {
-                    throw new Exception("File missing: {$attachment->path}");
-                }
-
                 $tmpDir = "gensen/{$this->model->subject->id}/convert_{$attachment->type->value}";
-
-                logger([
-                    'tmp dir 45',
-                    $tmpDir
-                ]);
-
-                if (!Storage::disk('private')->exists($tmpDir)) {
-                    Storage::disk('private')->makeDirectory($tmpDir);
-                }
-
                 $tmpPdfPath = $tmpDir . '/' . basename($attachment->path);
-
-
-                logger([
-                    'tmp pdf path 56',
-                    $tmpPdfPath
-                ]);
-                /*
-                |--------------------------------------------------------------------------
-                | STREAM DOWNLOAD (Supabase → Local)
-                |--------------------------------------------------------------------------
-                */
-                $readStream = $storage->readStream($attachment->path);
-
-                if ($readStream === false) {
-                    throw new Exception("Failed to read remote file");
-                }
-
-                $writeStream = fopen(storage_path('app/private/' . $tmpPdfPath), 'w');
-
-                stream_copy_to_stream($readStream, $writeStream);
-
-                fclose($readStream);
-                fclose($writeStream);
                 $local_path = $tmpPdfPath;
-
                 $extension = strtolower(pathinfo($local_path, PATHINFO_EXTENSION));
 
                 if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
                     continue;
                 }
-
-                /*
-                |--------------------------------------------------------------------------
-                | STEP 4 — Ghostscript Convert
-                |--------------------------------------------------------------------------
-                */
-                $dir = "gensen/{$this->model->subject->id}/convert_{$attachment->type->value}";
-
-
-                logger([
-                    'dir convert',
-                    $dir
-                ]);
-
-                if (!Storage::disk('private')->exists($dir)) {
-                    Storage::disk('private')->makeDirectory($dir);
-                }
-
-                $outputDir = storage_path("app/private/{$dir}");
-
-                $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
-                $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
-
-                logger([
-                    'stored name 97',
-                    $storedName
-                ]);
-
-                $process = new Process([
-                    // '/usr/local/bin/gs',
-                    'gs',
-                    '-sDEVICE=jpeg',
-                    '-r200',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
-                    '-dNOPAUSE',
-                    '-dBATCH',
-                    '-dSAFER',
-                    '-dFirstPage=1',        // Secure: Process only what you need
-                    '-dINTERPOLATE',        // Smoother scaling
-                    '-dJPEGQ=85',           // Q=100 is wasteful; 85 is indistinguishable for AI
-                    '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
-                    "-sOutputFile={$outputPattern}",
-                    storage_path('app/private/' . $tmpPdfPath),
-                ]);
-                $process->run();
-
-                logger($process->getCommandLine());
-
-                if (!$process->isSuccessful()) {
-                    throw new \Exception(
-                        'PDF conversion failed: ' . $process->getErrorOutput()
-                    );
-                }
-
-                /*
-                |--------------------------------------------------------------------------
-                | STEP 5 — Collect Generated Images
-                |--------------------------------------------------------------------------
-                */
-
-                $generatedFiles = glob(
-                    "{$outputDir}/{$storedName}_page-*.jpg"
-                );
-
-                if ($attachment->type !== GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
-                    GensenFormAttachmentRepository::update($attachment->id, [
-                        'convert_image' => true
-                    ]);
-                }
-
-                /*
-                |--------------------------------------------------------------------------
-                | STEP 6 — Upload BACK to STORAGE (SUPABASE OR LOCAL)
-                |--------------------------------------------------------------------------
-                */
-
-                foreach ($generatedFiles as $file) {
-
-                    $info = pathinfo($file);
-                    $stored_name = $info['filename'] . '.' . $info['extension'];
-
-
-                    logger([
-                        'stored name 155',
-                        $stored_name
-                    ]);
-                    $targetPath = "{$dir}/{$stored_name}";
-
-                    $disk = 'private';
-                    /**
-                     * Upload using SAME disk as original
-                     */
-                    // Storage::disk($disk)->put(
-                    //     $targetPath,
-                    //     fopen($file, 'r')
-                    // );
-
-                    // Storage::disk($disk)->putFileAs(
-                    //     dirname($targetPath),
-                    //     new File($file),
-                    //     basename($targetPath)
-                    // );
-                    // Storage::disk($disk)->put(
-                    //     $targetPath,
-                    //     fopen($file, 'r'),
-                    //     [
-                    //         'visibility' => 'private', // or 'public'
-                    //     ]
-                    // );
-
-                    GensenFormAttachmentRepository::create([
-                        'gensen_form_id' => $this->model->subject->id,
-                        'type' => $attachment->type,
-                        'original_name' => $attachment->original_name,
-                        'stored_name' => $stored_name,
-                        'description' => $attachment->description,
-
-                        'disk' => $disk,
-                        'path' => $targetPath,
-
-                        'checksum' => hash_file('sha256', $file),
-
-                        'note' => $attachment->note,
-                        'remittance_type' => $attachment->remittance_type,
-
-                        'extension' => 'jpg',
-                        'mime_type' => 'image/jpeg',
-                        'file_size' => filesize($file),
-
-                        'status' => GensenAttachmenStatus::STATUS_CONVERTED,
-                        'convert_image' => true,
-                    ]);
-                }
-                // TemporaryFile::cleanup($tmpPdfPath);
+                $this->convertToImage($attachment);
             }
 
             /*
@@ -229,7 +57,207 @@ class ConvertPdfToImagesJob implements ShouldQueue
             */
 
             ExtractionDocumentJob::dispatch($this->model);
+        } else {
+            $attachment = $this->model;
+            $tmpDir = "gensen/{$attachment->gensen_form_id}/convert_{$attachment->type->value}";
+            $tmpPdfPath = $tmpDir . '/' . basename($attachment->path);
+            $local_path = $tmpPdfPath;
+            $extension = strtolower(pathinfo($local_path, PATHINFO_EXTENSION));
+
+            if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
+                return;
+            }
+            $this->convertToImage($attachment);
+            event(new ConvertPdfToIMageFinished($this->model->gensen_form_id, $this->model->type->value));
         }
+    }
+
+    private function convertToImage($attachment)
+    {
+        $disk = $attachment->disk ?? 'private';
+
+        $storage = Storage::disk($disk);
+
+        if (!$storage->exists($attachment->path)) {
+            throw new Exception("File missing: {$attachment->path}");
+        }
+
+
+        $tmpDir = $this->type == AiJob::class ? "gensen/{$this->model->subject->id}/convert_{$attachment->type->value}"
+            : "gensen/{$attachment->gensen_form_id}/convert_{$attachment->type->value}";
+
+        logger([
+            'tmp dir 45',
+            $tmpDir
+        ]);
+
+        if (!Storage::disk('private')->exists($tmpDir)) {
+            Storage::disk('private')->makeDirectory($tmpDir);
+        }
+
+        $tmpPdfPath = $tmpDir . '/' . basename($attachment->path);
+
+
+        logger([
+            'tmp pdf path 56',
+            $tmpPdfPath
+        ]);
+        /*
+                |--------------------------------------------------------------------------
+                | STREAM DOWNLOAD (Supabase → Local)
+                |--------------------------------------------------------------------------
+                */
+        $readStream = $storage->readStream($attachment->path);
+
+        if ($readStream === false) {
+            throw new Exception("Failed to read remote file");
+        }
+
+        $writeStream = fopen(storage_path('app/private/' . $tmpPdfPath), 'w');
+
+        stream_copy_to_stream($readStream, $writeStream);
+
+        fclose($readStream);
+        fclose($writeStream);
+        $local_path = $tmpPdfPath;
+
+        $extension = strtolower(pathinfo($local_path, PATHINFO_EXTENSION));
+
+        /*
+                |--------------------------------------------------------------------------
+                | STEP 4 — Ghostscript Convert
+                |--------------------------------------------------------------------------
+                */
+
+        $dir = $this->type == AiJob::class ? "gensen/{$this->model->subject->id}/convert_{$attachment->type->value}"
+            : "gensen/{$attachment->gensen_form_id}/convert_{$attachment->type->value}";
+
+
+        logger([
+            'dir convert',
+            $dir
+        ]);
+
+        if (!Storage::disk('private')->exists($dir)) {
+            Storage::disk('private')->makeDirectory($dir);
+        }
+
+        $outputDir = storage_path("app/private/{$dir}");
+
+        $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
+        $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
+
+        logger([
+            'stored name 97',
+            $storedName
+        ]);
+
+        $process = new Process([
+            // '/usr/local/bin/gs',
+            'gs',
+            '-sDEVICE=jpeg',
+            '-r200',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
+            '-dNOPAUSE',
+            '-dBATCH',
+            '-dSAFER',
+            '-dFirstPage=1',        // Secure: Process only what you need
+            '-dINTERPOLATE',        // Smoother scaling
+            '-dJPEGQ=85',           // Q=100 is wasteful; 85 is indistinguishable for AI
+            '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
+            "-sOutputFile={$outputPattern}",
+            storage_path('app/private/' . $tmpPdfPath),
+        ]);
+        $process->run();
+
+        logger($process->getCommandLine());
+
+        if (!$process->isSuccessful()) {
+            throw new \Exception(
+                'PDF conversion failed: ' . $process->getErrorOutput()
+            );
+        }
+
+        /*
+                |--------------------------------------------------------------------------
+                | STEP 5 — Collect Generated Images
+                |--------------------------------------------------------------------------
+                */
+
+        $generatedFiles = glob(
+            "{$outputDir}/{$storedName}_page-*.jpg"
+        );
+
+        if ($attachment->type !== GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
+            GensenFormAttachmentRepository::update($attachment->id, [
+                'convert_image' => true
+            ]);
+        }
+
+        /*
+                |--------------------------------------------------------------------------
+                | STEP 6 — Upload BACK to STORAGE (SUPABASE OR LOCAL)
+                |--------------------------------------------------------------------------
+                */
+
+        foreach ($generatedFiles as $file) {
+
+            $info = pathinfo($file);
+            $stored_name = $info['filename'] . '.' . $info['extension'];
+
+
+            logger([
+                'stored name 155',
+                $stored_name
+            ]);
+            $targetPath = "{$dir}/{$stored_name}";
+
+            $disk = 'private';
+            /**
+             * Upload using SAME disk as original
+             */
+            // Storage::disk($disk)->put(
+            //     $targetPath,
+            //     fopen($file, 'r')
+            // );
+
+            // Storage::disk($disk)->putFileAs(
+            //     dirname($targetPath),
+            //     new File($file),
+            //     basename($targetPath)
+            // );
+            // Storage::disk($disk)->put(
+            //     $targetPath,
+            //     fopen($file, 'r'),
+            //     [
+            //         'visibility' => 'private', // or 'public'
+            //     ]
+            // );
+
+            $gensen_form_id = $this->type == AiJob::class ? $this->model->subject->id : $attachment->gensen_form_id;
+            GensenFormAttachmentRepository::create([
+                'gensen_form_id' => $gensen_form_id,
+                'type' => $attachment->type,
+                'original_name' => $attachment->original_name,
+                'stored_name' => $stored_name,
+                'description' => $attachment->description,
+
+                'disk' => $disk,
+                'path' => $targetPath,
+
+                'checksum' => hash_file('sha256', $file),
+
+                'note' => $attachment->note,
+                'remittance_type' => $attachment->remittance_type,
+
+                'extension' => 'jpg',
+                'mime_type' => 'image/jpeg',
+                'file_size' => filesize($file),
+
+                'status' => GensenAttachmenStatus::STATUS_CONVERTED,
+                'convert_image' => true,
+            ]);
+        }
+        // TemporaryFile::cleanup($tmpPdfPath);
     }
     // public function handleOld(): void
     // {

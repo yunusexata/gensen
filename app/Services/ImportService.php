@@ -214,6 +214,7 @@ class ImportService
 
             $validatedData = [
                 'tanggal_lengkap' => $row['tanggal_lengkap'],
+                'keterangan' => $row['keterangan'],
             ];
 
             $updated = GensenFormRepository::updateBy([
@@ -252,6 +253,7 @@ class ImportService
 
             $validatedData = [
                 'tanggal_verified' => $row['tanggal_verified'],
+                'keterangan' => $row['keterangan'],
             ];
 
             $updated = GensenFormRepository::updateBy([
@@ -363,6 +365,7 @@ class ImportService
 
             $validatedData = [
                 'tanggal_pengajuan' => $row['tanggal_pengajuan'],
+                'keterangan' => $row['keterangan'],
             ];
 
             $updated = GensenFormRepository::updateBy([
@@ -407,6 +410,7 @@ class ImportService
             $validatedData = [
                 'tanggal_cair' => $row['tanggal_cair'],
                 'nominal_cair' => $row['nominal_cair'],
+                'keterangan' => $row['keterangan'],
             ];
 
             logger([

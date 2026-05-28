@@ -222,13 +222,6 @@
                                                     >
                                                         <span class="material-symbols-outlined text-xl">delete</span>
                                                     </button>
-                                                    
-                                                    <button 
-                                                        type="button"
-                                                        class="inline-flex items-center justify-center p-1 bg-white hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                    >
-                                                    IMG
-                                                    </button>
                                                 </div>
 
                                             </div>
@@ -242,17 +235,14 @@
                                                 </a>       
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
-                                                    <!-- Tag A (Convert To Image) -->
-                                                    @if (!$item['convert_image'])
-                                                        
-                                                        <button 
-                                                            type="button"
-                                                            wire:click.stop="showDialogConvertToImage('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')"
-                                                            class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-success/50 text-success rounded h-8 w-8 transition-colors"
-                                                        >
-                                                            <span class="material-symbols-outlined text-xl">wand_stars</span>
-                                                        </button>
-                                                    @endif
+                                                    <!-- Tag A (Download) -->
+                                                    <button 
+                                                        type="button"
+                                                        wire:click.stop="showDialogConvertToImage('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')"
+                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-success/50 text-success rounded h-8 w-8 transition-colors"
+                                                    >
+                                                        <span class="material-symbols-outlined text-xl">wand_stars</span>
+                                                    </button>
                                                 
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
@@ -261,13 +251,6 @@
                                                         class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
                                                     >
                                                         <span class="material-symbols-outlined text-xl">delete</span>
-                                                    </button>
-                                                    
-                                                    <button 
-                                                        type="button"
-                                                        class="inline-flex items-center justify-center p-1 bg-white hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                    >
-                                                    PDF
                                                     </button>
                                                 </div>
                                                 {{-- Iframe Full Preview --}}
@@ -584,12 +567,6 @@
                                                     >
                                                         <span class="material-symbols-outlined text-xl">delete</span>
                                                     </button>
-                                                    <button 
-                                                        type="button"
-                                                        class="inline-flex items-center justify-center p-1 bg-white hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                    >
-                                                    IMG
-                                                    </button>
                                                 </div>
 
                                             </div>
@@ -603,16 +580,8 @@
                                                 </a>       
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
-                                                   <!-- Tag A (Convert To Image) -->
-                                                   @if (!$item['convert_image'])
-                                                        <button 
-                                                            type="button"
-                                                            wire:click.stop="showDialogConvertToImage('{{ $item['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::KARTU_KELUARGA }}')"
-                                                            class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-success/50 text-success rounded h-8 w-8 transition-colors"
-                                                        >
-                                                            <span class="material-symbols-outlined text-xl">wand_stars</span>
-                                                        </button>
-                                                    @endif
+                                                    <!-- Tag A (Download) -->
+                                                   
 
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
@@ -621,13 +590,6 @@
                                                         class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
                                                     >
                                                         <span class="material-symbols-outlined text-xl">delete</span>
-                                                    </button>
-                                                    
-                                                    <button 
-                                                        type="button"
-                                                        class="inline-flex items-center justify-center p-1 bg-white hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
-                                                    >
-                                                    PDF
                                                     </button>
                                                 </div>
                                                 {{-- Iframe Full Preview --}}
@@ -1217,80 +1179,7 @@
                         <div class="mb-6">
                             <h3 class="text-lg font-extrabold tracking-tight">Select Image</h3> 
                         </div>
-                        <div class="flex-1 overflow-y-auto max-h-[50vh] space-y-4 pr-2 custom-scrollbar row d-flex justify-content-between">
-                            
-                            {{-- Kertas Gensen --}}
-                            <div class="row">
-                                <h3 class="fw-bold text-center">Kertas Gensen</h3>
-                                
-                                @if (!empty($kertas_gensen_old && $kertas_gensen_old['groups']))
-                                    @foreach ($kertas_gensen_old['groups'][0]['files'] as $index => $item)
-                                        {{-- {!! $kertas_gensen_old_note[$index] !!} --}}
-                                        @if($item['isImage'] ?? 0)
-                                            <div class="col-md-6 mt-5">
-                                                <!-- Thumbnail Item 2 -->
-                                                <div class="relative group cursor-pointer active:scale-95 transition-all">
-                                                    <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
-                                                            <div class="col-auto"> 
-                                                            {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$zairyou_card_front_old['filename']}}</span> --}}
-                                                            {!!$item['printStatus']!!}
-                                                        </div>
-                                                        <div class="col-auto d-flex align-items-center">
-                                                            <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
-                                                                wire:click="showDialogDeleteFile('{{$item['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')">
-                                                                <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
-                                                            </button>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="{{ ($item['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
-                                                        <img class="w-full object-cover"  
-                                                        wire:click="clickFile('{{$item['id']}}', '{{$item['disk']}}', '{{$item['path']}}', '{{$item['type']?->label()}}')"
-                                                        src="{{ $item['url'] }}"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                @endif
-                                
-                            </div>
-                            {{-- Kartu Keluarga --}}
-                            <div class="row">
-                                <h3 class="fw-bold text-center">Kartu Keluarga</h3>
-                                
-                                @if (!empty($kartu_keluarga_old && $kartu_keluarga_old['groups']))
-                                    @foreach ($kartu_keluarga_old['groups'][0]['files'] as $index => $item)
-                                        {{-- {!! $kartu_keluarga_old_note[$index] !!} --}}
-                                        @if($item['isImage'] ?? 0)
-                                            <div class="col-md-6 mt-5">
-                                                <!-- Thumbnail Item 2 -->
-                                                <div class="relative group cursor-pointer active:scale-95 transition-all">
-                                                    <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
-                                                            <div class="col-auto"> 
-                                                            {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$zairyou_card_front_old['filename']}}</span> --}}
-                                                            {!!$item['printStatus']!!}
-                                                        </div>
-                                                        <div class="col-auto d-flex align-items-center">
-                                                            <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
-                                                                wire:click="showDialogDeleteFile('{{$item['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')">
-                                                                <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
-                                                            </button>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="{{ ($item['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
-                                                        <img class="w-full object-cover"  
-                                                        wire:click="clickFile('{{$item['id']}}', '{{$item['disk']}}', '{{$item['path']}}', '{{$item['type']?->label()}}')"
-                                                        src="{{ $item['url'] }}"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                @endif
-                                
-                            </div>
+                        <div class="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar row d-flex justify-content-between">
                            
                             {{-- Zaryoy Card Depan --}}
                             <div class="col-md-6 mt-5">
@@ -1315,11 +1204,101 @@
                                             </div>
                                             <div class="{{ ($zairyou_card_front_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
                                                 <img class="w-full object-cover"  
-                                                wire:click="clickFile('{{$zairyou_card_front_old['id']}}', '{{$zairyou_card_front_old['disk']}}','{{$zairyou_card_front_old['path']}}', '{{$zairyou_card_front_old['type']?->label()}}')"
+                                                wire:click="clickFile('{{$zairyou_card_front_old['id']}}', 'zairyou_card_front_old', '{{$zairyou_card_front_old['type']?->label()}}')"
                                                 src="{{ $zairyou_card_front_old['url'] }}"/>
                                             </div>
                                         </div>
+                                    @elseif($zairyou_card_front_old['isPdf'] && !$zairyou_card_front_old['isImage'])
+                                        <embed src="{{ $zairyou_card_front_old['url'] }}" type="application/pdf" width="100%" style="min-height: 400px;" class="mb-2">
+                
+                                    @else
+                                        <div class="border rounded p-4 text-center bg-light mb-2">
+                                            <i class="bi bi-file-earmark fs-1"></i>
+                                            <div class="mt-2">
+                                                {{$zairyou_card_front_old['filename']}}
+                                            </div>
+                                        </div>
                                     @endif
+                                @else
+                                <section class="mt-5">
+                                    <div
+                                        x-data="{
+                                            isDragging: false,
+                                            handleDrop(event) {
+                                                const file = event.dataTransfer.files[0]; // Only take the first file
+                                                if (file) {
+                                                    const dataTransfer = new DataTransfer();
+                                                    dataTransfer.items.add(file);
+                                                    $refs.input.files = dataTransfer.files;
+                                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                }
+                                                this.isDragging = false;
+                                            },
+                                            handleFiles(event) {
+                                                const file = event.target.files[0];
+                                                // Optional: you can limit or validate here
+                                            }
+                                        }"
+                                        @dragover.prevent="isDragging = true"
+                                        @dragleave.prevent="isDragging = false"
+                                        @drop.prevent="handleDrop($event)"
+                                        :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                        class="form-group mt-5"
+                                    >
+                                        <div class="border-2 border-dashed border-outline-variant/30 rounded-xl p-2 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
+                                            <input class="hidden validate-upload-file" id="zairyou_card_front" name="zairyou_card_front" type="file"
+                                            
+                                            x-ref="input"
+                                            {{-- wire:model="zairyou_card_front" --}}
+                                            {{-- @change="handleFiles" --}}
+                                            accept="image/jpeg, image/png"
+                                            class="position-absolute invisible"/>
+                                            <label class="cursor-pointer flex flex-col items-center gap-3" for="zairyou_card_front">
+                                                <span class="material-symbols-outlined text-5xl text-primary-container" data-icon="description">description</span>
+                                                <p class="font-body text-on-surface-variant"><span class="text-primary font-semibold">CARI FILE</span></p>
+                                                <p class="text-xs text-outline font-medium">Format: JPG/ PNG (Max 10MB)</p>
+                                            </label>
+                                        </div>
+                                        <div class="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0">
+                                            @if ($zairyou_card_front)
+                                                @php
+                                                    $ext = $zairyou_card_front->getClientOriginalExtension();
+                                                    if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                                        $url = $zairyou_card_front->temporaryUrl();
+                                                        // $url = route('preview.temp.image', $zairyou_card_front->getFileName());
+                                                        $filename = $zairyou_card_front->getClientOriginalName();
+                                                    }elseif(in_array($ext, ['pdf'])){
+                                                        $url = route('preview.temp.pdf', $zairyou_card_front->getFileName());
+                                                        $filename = $zairyou_card_front->getClientOriginalName();
+                                                    }else{
+                                                        $filename = $zairyou_card_front->getClientOriginalName();
+                                                    }
+                                                    $ext = strtolower($ext);
+                                                    
+                                                @endphp
+                                                @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
+                        
+                                                    <img src="{{ $url }}" class="img-fluid rounded img-thumbnail">
+                                                @elseif(in_array($ext, ['pdf']))
+                                                    <embed src="{{ $url }}" type="application/pdf" width="100%">
+                                                        {{-- <iframe
+                                                            src="{{ $url }}#toolbar=0"
+                                                            width="100%"
+                                                            style="border:none">
+                                                        </iframe> --}}
+                                                @else
+                                                    <div class="border rounded p-4 text-center bg-light">
+                                                        <i class="bi bi-file-earmark fs-1"></i>
+                                                        <div class="mt-2">
+                                                            {{$filename}}
+                                                        </div>
+                                                    </div>
+
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                </section>
                                 
                                 @endif
                             </div>
@@ -1345,12 +1324,105 @@
                                             </div>
                                             <div class="{{ ($zairyou_card_back_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
                                                 <img class="w-full object-cover"  
-                                                wire:click="clickFile('{{$zairyou_card_back_old['id']}}', {{$zairyou_card_back_old['disk']}}, '{{$zairyou_card_back_old['path']}}', '{{$zairyou_card_back_old['type']?->label()}}')"
+                                                wire:click="clickFile('{{$zairyou_card_back_old['id']}}', 'zairyou_card_back_old', '{{$zairyou_card_back_old['type']?->label()}}')"
                                                 src="{{ $zairyou_card_back_old['url'] }}"/>
                                             </div>
                                         </div>
+                                    @elseif($zairyou_card_back_old['isPdf'] && !$zairyou_card_back_old['isImage'])
+                                        <embed src="{{ $zairyou_card_back_old['url'] }}" type="application/pdf" width="100%" style="min-height: 400px;" class="mb-2">
+                                            {{-- <iframe
+                                                src="{{ $zairyou_card_back_old['url'] }}#toolbar=0"
+                                                width="100%"
+                                                style="border:none">
+                                            </iframe> --}}
+                                    @else
+                                        <div class="border rounded p-4 text-center bg-light mb-2">
+                                            <i class="bi bi-file-earmark fs-1"></i>
+                                            <div class="mt-2">
+                                                {{$zairyou_card_back_old['filename']}}
+                                            </div>
+                                        </div>
                                     @endif
-                            
+                                @else
+                                <section class="mt-5">
+                                    <div
+                                        x-data="{
+                                            isDragging: false,
+                                            handleDrop(event) {
+                                                const file = event.dataTransfer.files[0]; // Only take the first file
+                                                if (file) {
+                                                    const dataTransfer = new DataTransfer();
+                                                    dataTransfer.items.add(file);
+                                                    $refs.input.files = dataTransfer.files;
+                                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                }
+                                                this.isDragging = false;
+                                            },
+                                            handleFiles(event) {
+                                                const file = event.target.files[0];
+                                                // Optional: you can limit or validate here
+                                            }
+                                        }"
+                                        @dragover.prevent="isDragging = true"
+                                        @dragleave.prevent="isDragging = false"
+                                        @drop.prevent="handleDrop($event)"
+                                        :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                        class="form-group mt-5"
+                                    >
+                                        <div class="border-2 border-dashed border-outline-variant/30 rounded-xl p-2 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
+                                            <input class="hidden validate-upload-file" id="zairyou_card_back" name="zairyou_card_back" type="file"
+                                            
+                                            x-ref="input"
+                                            {{-- wire:model="zairyou_card_back" --}}
+                                            {{-- @change="handleFiles" --}}
+                                            accept="image/jpeg, image/png"
+                                            class="position-absolute invisible"/>
+                                            <label class="cursor-pointer flex flex-col items-center gap-3" for="zairyou_card_back">
+                                                <span class="material-symbols-outlined text-5xl text-primary-container" data-icon="description">description</span>
+                                                <p class="font-body text-on-surface-variant"><span class="text-primary font-semibold">CARI FILE</span></p>
+                                                <p class="text-xs text-outline font-medium">Format: JPG/ PNG (Max 10MB)</p>
+                                            </label>
+                                        </div>
+                                        <div class="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0">
+                                            @if ($zairyou_card_back)
+                                                @php
+                                                    $ext = $zairyou_card_back->getClientOriginalExtension();
+                                                    if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                                        // $url = $zairyou_card_back->temporaryUrl();
+                                                        $url = $zairyou_card_back->temporaryUrl();
+                                                        // $url = route('preview.temp.image', $zairyou_card_back->getFileName());
+                                                    }elseif(in_array($ext, ['pdf'])){
+                                                        $url = route('preview.temp.pdf', $zairyou_card_back->getFileName());
+                                                        $filename = $zairyou_card_back->getClientOriginalName();
+                                                    }else{
+                                                        $filename = $zairyou_card_back->getClientOriginalName();
+                                                    }
+                                                    $ext = strtolower($ext);
+                                                    
+                                                @endphp
+                                                @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
+                        
+                                                    <img src="{{ $url }}" class="img-fluid rounded img-thumbnail">
+                                                @elseif(in_array($ext, ['pdf']))
+                                                    <embed src="{{ $url }}" type="application/pdf" width="100%">
+                                                        {{-- <iframe
+                                                            src="{{ $url }}#toolbar=0"
+                                                            width="100%"
+                                                            style="border:none">
+                                                        </iframe> --}}
+                                                @else
+                                                    <div class="border rounded p-4 text-center bg-light">
+                                                        <i class="bi bi-file-earmark fs-1"></i>
+                                                        <div class="mt-2">
+                                                            {{$filename}}
+                                                        </div>
+                                                    </div>
+
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                </section>
                                 @endif
                             </div>
                             {{-- My Number Depan --}}
@@ -1375,12 +1447,109 @@
                                             </div>
                                             <div class="{{ ($my_number_front_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
                                                 <img class="w-full object-cover"  
-                                                wire:click="clickFile('{{$my_number_front_old['id']}}', {{$my_number_front_old['disk']}}, '{{$my_number_front_old['path']}}', '{{$my_number_front_old['type']?->label()}}')"
+                                                wire:click="clickFile('{{$my_number_front_old['id']}}', 'my_number_front_old', '{{$my_number_front_old['type']?->label()}}')"
                                                 src="{{ $my_number_front_old['url'] }}"/>
                                             </div>
                                         </div>
+                                    @elseif($my_number_front_old['isPdf'] && !$my_number_front_old['isImage'])
+                                        <embed src="{{ $my_number_front_old['url'] }}" type="application/pdf" width="100%" style="min-height: 400px;" class="mb-2">
+                                            {{-- <iframe
+                                                src="{{ $my_number_front_old['url'] }}#toolbar=0"
+                                                width="100%"
+                                                style="border:none">
+                                            </iframe> --}}
+                                    @else
+                                        <div class="border rounded p-4 text-center bg-light mb-2">
+                                            <i class="bi bi-file-earmark fs-1"></i>
+                                            <div class="mt-2">
+                                                {{$my_number_front_old['filename']}}
+                                            </div>
+                                        </div>
                                     @endif
-                                
+                                @else
+                                <section class="mt-5">
+                                    <div
+                                        x-data="{
+                                            isDragging: false,
+                                            handleDrop(event) {
+                                                const file = event.dataTransfer.files[0]; // Only take the first file
+                                                if (file) {
+                                                    const dataTransfer = new DataTransfer();
+                                                    dataTransfer.items.add(file);
+                                                    $refs.input.files = dataTransfer.files;
+                                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                }
+                                                this.isDragging = false;
+                                            },
+                                            handleFiles(event) {
+                                                const file = event.target.files[0];
+                                                // Optional: you can limit or validate here
+                                            }
+                                        }"
+                                        @dragover.prevent="isDragging = true"
+                                        @dragleave.prevent="isDragging = false"
+                                        @drop.prevent="handleDrop($event)"
+                                        :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                        class="form-group mt-5"
+                                    >
+                                        <div class="border-2 border-dashed border-outline-variant/30 rounded-xl p-2 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
+                                            <input class="hidden validate-upload-file" id="my_number_front" name="my_number_front" type="file"
+                                            
+                                            x-ref="input"
+                                            {{-- wire:model="my_number_front" --}}
+                                            {{-- @change="handleFiles" --}}
+                                            accept="image/jpeg, image/png"
+                                            class="position-absolute invisible"/>
+                                            <label class="cursor-pointer flex flex-col items-center gap-3" for="my_number_front">
+                                                <span class="material-symbols-outlined text-5xl text-primary-container" data-icon="description">description</span>
+                                                <p class="font-body text-on-surface-variant"><span class="text-primary font-semibold">CARI FILE</span></p>
+                                                <p class="text-xs text-outline font-medium">Format: JPG/ PNG (Max 10MB)</p>
+                                            </label>
+                                        </div>
+                                        <div class="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0">
+                                            @if ($my_number_front)
+                                                @php
+                                                    $ext = $my_number_front->getClientOriginalExtension();
+                                                    if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                                        $url = $my_number_front->temporaryUrl();
+                                                        // $url = route('preview.temp.image', $my_number_front->getFileName());
+                                                                //                                                     $fullPath = $my_number_front->getRealPath();
+                                                                // $relativePath = Str::after($fullPath, 'livewire-tmp/');
+
+                                                                // $url = route('preview.temp.file', $relativePath);
+                                                                $filename = $my_number_front->getClientOriginalName();
+                                                    }elseif(in_array($ext, ['pdf'])){
+                                                        $url = route('preview.temp.pdf', $my_number_front->getFileName());
+                                                        $filename = $my_number_front->getClientOriginalName();
+                                                    }else{
+                                                        $filename = $my_number_front->getClientOriginalName();
+                                                    }
+                                                    $ext = strtolower($ext);
+                                                    
+                                                @endphp
+                                                {{-- {{ $my_number_front->temporaryUrl() }} --}}
+                                                @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
+                                                    <img src="{{ $url }}" class="img-fluid rounded img-thumbnail">
+                                                @elseif(in_array($ext, ['pdf']))
+                                                    <embed src="{{ $url }}" type="application/pdf" width="100%">
+                                                        {{-- <iframe
+                                                            src="{{ $url }}#toolbar=0"
+                                                            width="100%"
+                                                            style="border:none">
+                                                        </iframe> --}}
+                                                @else
+                                                    <div class="border rounded p-4 text-center bg-light">
+                                                        <i class="bi bi-file-earmark fs-1"></i>
+                                                        <div class="mt-2">
+                                                            {{$filename}}
+                                                        </div>
+                                                    </div>
+
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                </section>
                                 @endif
                             </div>
                             {{-- My Number Back --}}
@@ -1405,12 +1574,106 @@
                                             </div>
                                             <div class="{{ ($my_number_back_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
                                                 <img class="w-full object-cover"  
-                                                wire:click="clickFile('{{$my_number_back_old['id']}}', {{$my_number_back_old['disk']}}, '{{$my_number_back_old['path']}}', '{{$my_number_back_old['type']?->label()}}')"
+                                                wire:click="clickFile('{{$my_number_back_old['id']}}', 'my_number_back_old', '{{$my_number_back_old['type']?->label()}}')"
                                                 src="{{ $my_number_back_old['url'] }}"/>
                                             </div>
                                         </div>
+                                    @elseif($my_number_back_old['isPdf'] && !$my_number_back_old['isImage'])
+                                        <embed src="{{ $my_number_back_old['url'] }}" type="application/pdf" width="100%" style="min-height: 400px;" class="mb-2">
+                                            {{-- <iframe
+                                                src="{{ $my_number_back_old['url'] }}#toolbar=0"
+                                                width="100%"
+                                                style="border:none">
+                                            </iframe> --}}
+                                    @else
+                                        <div class="border rounded p-4 text-center bg-light mb-2">
+                                            <i class="bi bi-file-earmark fs-1"></i>
+                                            <div class="mt-2">
+                                                {{$my_number_front_old['filename']}}
+                                            </div>
+                                        </div>
                                     @endif
-                                
+                                @else
+                                <section class="mt-5">
+                                    <div
+                                        x-data="{
+                                            isDragging: false,
+                                            handleDrop(event) {
+                                                const file = event.dataTransfer.files[0]; // Only take the first file
+                                                if (file) {
+                                                    const dataTransfer = new DataTransfer();
+                                                    dataTransfer.items.add(file);
+                                                    $refs.input.files = dataTransfer.files;
+                                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                }
+                                                this.isDragging = false;
+                                            },
+                                            handleFiles(event) {
+                                                const file = event.target.files[0];
+                                                // Optional: you can limit or validate here
+                                            }
+                                        }"
+                                        @dragover.prevent="isDragging = true"
+                                        @dragleave.prevent="isDragging = false"
+                                        @drop.prevent="handleDrop($event)"
+                                        :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                        class="form-group mt-5"
+                                    >
+                                        <div class="border-2 border-dashed border-outline-variant/30 rounded-xl p-2 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
+                                            <input class="hidden validate-upload-file" id="my_number_back" name="my_number_back" type="file"
+                                            
+                                            x-ref="input"
+                                            {{-- wire:model="my_number_back" --}}
+                                            {{-- @change="handleFiles" --}}
+                                            accept="image/jpeg, image/png"
+                                            class="position-absolute invisible"/>
+                                            <label class="cursor-pointer flex flex-col items-center gap-3" for="my_number_back">
+                                                <span class="material-symbols-outlined text-5xl text-primary-container" data-icon="description">description</span>
+                                                <p class="font-body text-on-surface-variant"><span class="text-primary font-semibold">CARI FILE</span></p>
+                                                <p class="text-xs text-outline font-medium">Format: JPG/ PNG (Max 10MB)</p>
+                                            </label>
+                                        </div>
+                                        <div class="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0">
+                                            @if ($my_number_back)
+                                                @php
+                                                    $ext = $my_number_back->getClientOriginalExtension();
+                                                    if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                                        // $url = $my_number_back->temporaryUrl();
+                                                        $url = $my_number_back->temporaryUrl();
+                                                        // $url = route('preview.temp.image', $my_number_back->getFileName());
+                                                        $filename = $my_number_back->getClientOriginalName();
+                                                    }elseif(in_array($ext, ['pdf'])){
+                                                        $url = route('preview.temp.pdf', $my_number_back->getFileName());
+                                                        $filename = $my_number_back->getClientOriginalName();
+                                                    }else{
+                                                        $filename = $my_number_back->getClientOriginalName();
+                                                    }
+                                                    $ext = strtolower($ext);
+                                                    
+                                                @endphp
+                                                @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
+                        
+                                                    <img src="{{ $url }}" class="img-fluid rounded img-thumbnail">
+                                                @elseif(in_array($ext, ['pdf']))
+                                                    <embed src="{{ $url }}" type="application/pdf" width="100%">
+                                                        {{-- <iframe
+                                                            src="{{ $url }}#toolbar=0"
+                                                            width="100%"
+                                                            style="border:none">
+                                                        </iframe> --}}
+                                                @else
+                                                    <div class="border rounded p-4 text-center bg-light">
+                                                        <i class="bi bi-file-earmark fs-1"></i>
+                                                        <div class="mt-2">
+                                                            {{$filename}}
+                                                        </div>
+                                                    </div>
+
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                </section>
                                 @endif
                             </div>
                             {{-- Rekening Indonesia --}}
@@ -1434,12 +1697,106 @@
                                         </div>
                                         <div class="{{ ($rekening_indonesia_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
                                             <img class="w-full object-cover"  
-                                            wire:click="clickFile('{{$rekening_indonesia_old['id']}}', {{$rekening_indonesia_old['disk']}}, '{{$rekening_indonesia_old['path']}}', '{{$rekening_indonesia_old['type']?->label()}}')"
+                                            wire:click="clickFile('{{$rekening_indonesia_old['id']}}', 'rekening_indonesia_old', '{{$rekening_indonesia_old['type']?->label()}}')"
                                             src="{{ $rekening_indonesia_old['url'] }}"/>
                                         </div>
                                     </div>
+                                @elseif($rekening_indonesia_old['isPdf'] && !$rekening_indonesia_old['isImage'])
+                                    <embed src="{{ $rekening_indonesia_old['url'] }}" type="application/pdf" width="100%" style="min-height: 400px;" class="mb-2">
+                                        {{-- <iframe
+                                            src="{{ $rekening_indonesia_old['url'] }}#toolbar=0"
+                                            width="100%"
+                                            style="border:none">
+                                        </iframe> --}}
+                                @else
+                                    <div class="border rounded p-4 text-center bg-light mb-2">
+                                        <i class="bi bi-file-earmark fs-1"></i>
+                                        <div class="mt-2">
+                                            {{$rekening_indonesia_old['filename']}}
+                                        </div>
+                                    </div>
                                 @endif
-                            
+                            @else
+                                <section class="mt-5">
+                                    <div
+                                        x-data="{
+                                            isDragging: false,
+                                            handleDrop(event) {
+                                                const file = event.dataTransfer.files[0]; // Only take the first file
+                                                if (file) {
+                                                    const dataTransfer = new DataTransfer();
+                                                    dataTransfer.items.add(file);
+                                                    $refs.input.files = dataTransfer.files;
+                                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                }
+                                                this.isDragging = false;
+                                            },
+                                            handleFiles(event) {
+                                                const file = event.target.files[0];
+                                                // Optional: you can limit or validate here
+                                            }
+                                        }"
+                                        @dragover.prevent="isDragging = true"
+                                        @dragleave.prevent="isDragging = false"
+                                        @drop.prevent="handleDrop($event)"
+                                        :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                        class="form-group mt-5"
+                                    >
+                                        <div class="border-2 border-dashed border-outline-variant/30 rounded-xl p-2 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
+                                            <input class="hidden validate-upload-file" id="rekening_indonesia" name="rekening_indonesia" type="file"
+                                            
+                                            x-ref="input"
+                                            {{-- wire:model="rekening_indonesia" --}}
+                                            {{-- @change="handleFiles" --}}
+                                            accept="image/jpeg, image/png"
+                                            class="position-absolute invisible"/>
+                                            <label class="cursor-pointer flex flex-col items-center gap-3" for="rekening_indonesia">
+                                                <span class="material-symbols-outlined text-5xl text-primary-container" data-icon="description">description</span>
+                                                <p class="font-body text-on-surface-variant"><span class="text-primary font-semibold">CARI FILE</span></p>
+                                                <p class="text-xs text-outline font-medium">Format: JPG/ PNG (Max 10MB)</p>
+                                            </label>
+                                        </div>
+                                        <div class="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0">
+                                            @if ($rekening_indonesia)
+                                                @php
+                                                    $ext = $rekening_indonesia->getClientOriginalExtension();
+                                                    if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                                        $url = $rekening_indonesia->temporaryUrl();
+                                                        
+                                                        // $url = route('preview.temp.image', $rekening_indonesia->getFileName());
+                                                        $filename = $rekening_indonesia->getClientOriginalName();
+                                                    }elseif(in_array($ext, ['pdf'])){
+                                                        $url = route('preview.temp.pdf', $rekening_indonesia->getFileName());
+                                                        $filename = $rekening_indonesia->getClientOriginalName();
+                                                    }else{
+                                                        $filename = $rekening_indonesia->getClientOriginalName();
+                                                    }
+                                                    $ext = strtolower($ext);
+                                                    
+                                                @endphp
+                                                @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
+                        
+                                                    <img src="{{ $url }}" class="img-fluid rounded img-thumbnail">
+                                                @elseif(in_array($ext, ['pdf']))
+                                                    <embed src="{{ $url }}" type="application/pdf" width="100%">
+                                                        {{-- <iframe
+                                                            src="{{ $url }}#toolbar=0"
+                                                            width="100%"
+                                                            style="border:none">
+                                                        </iframe> --}}
+                                                @else
+                                                    <div class="border rounded p-4 text-center bg-light">
+                                                        <i class="bi bi-file-earmark fs-1"></i>
+                                                        <div class="mt-2">
+                                                            {{$filename}}
+                                                        </div>
+                                                    </div>
+
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                </section>
                             @endif
 
                         </div>
@@ -1682,7 +2039,7 @@
                                     || !$persyaratan_pengurusan_gensen_old['isJobProcessDone'])
                                     wire:poll.5s="refreshData"
                                 @endif>
-                                <h3>Persyaratan Pengurusan Gensen</h3>
+                                <h3>Seluruh Berkas</h3>
                                 @if ($seluruh_berkas_old['isJobProcess'] && $seluruh_berkas_old['isJobProcess']->status == App\Enums\Gensen\JobStatus::DONE)
                                     @if ($seluruh_berkas_old['id'] == $showData['id'])
                                         <div class="bg-surface-container-lowest p-3 rounded-xl shadow-[0px_8px_32px_rgba(25,28,30,0.06)] border-l-4 border-primary group cursor-pointer transition-all duration-200"
@@ -1717,7 +2074,7 @@
                                     </div>
                                 </div>
                                 @endif
-                                {{-- <h3>Persyaratan Pengurusan Gensen</h3>
+                                <h3>Persyaratan Pengurusan Gensen</h3>
                                 @if ($persyaratan_pengurusan_gensen_old['isJobProcess'] && $persyaratan_pengurusan_gensen_old['isJobProcess']->status == App\Enums\Gensen\JobStatus::DONE)
                                     @if ($persyaratan_pengurusan_gensen_old['id'] == $showData['id'])
                                         <div class="bg-surface-container-lowest p-3 rounded-xl shadow-[0px_8px_32px_rgba(25,28,30,0.06)] border-l-4 border-primary group cursor-pointer transition-all duration-200"
@@ -1954,7 +2311,7 @@
 
                                     @endforeach
 
-                                @endif --}}
+                                @endif
                             </div>
                         </div>
                         <!-- Preview Area -->
@@ -2264,25 +2621,16 @@
                     }, 200); 
                 });
                 window.Echo.channel('export-remittance-extranction')
-                    .subscribed(() => console.log('SUBSCRIBED AI EXTRACT'))
+                    .subscribed(() => console.log('SUBSCRIBED'))
                     .listen('.export.remittance-extraction.finished', (e) => {
                         console.log('EVENT MASUK:', e);
                         Livewire.dispatch('remittance-extraction-updated',{gensen_form_id: e.gensen_form_id});
                 });
                 window.Echo.channel('export-merge-attachment-status')
-                    .subscribed(() => console.log('SUBSCRIBED MERGE ATTACHMENT'))
+                    .subscribed(() => console.log('SUBSCRIBED'))
                     .listen('.export.merge-attachment-status.updated', (e) => {
                         console.log('EVENT MASUK:', e);
                         Livewire.dispatch('merge-attachment-updated',{gensen_form_id: e.gensen_form_id});
-                });
-                window.Echo.channel('convert-attachment')
-                    .subscribed(() => console.log('SUBSCRIBED CONVERT ATTACHMENT'))
-                    .listen('.export.convert-attachment.finished', (e) => {
-                        console.log('EVENT MASUK:', e);
-                        Livewire.dispatch('convert-attachment-finished',{
-                            gensen_form_id: e.gensen_form_id,
-                            attachment_type: e.attachment_type,
-                        });
                 });
             });
             {{-- Compress File Upload --}}

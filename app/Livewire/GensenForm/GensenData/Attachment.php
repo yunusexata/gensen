@@ -98,14 +98,14 @@ class Attachment extends Component
 
     protected $listeners = [
         'remittance-extraction-updated' => 'getRemittanceExtraction',
-        'merge-attachment-updated' => 'getMergeAttachment'
+        'merge-attachment-updated' => 'getMergeAttachment',
+        'convert-attachment-finished' => 'getConvertedAttachment',
     ];
 
     public function mount()
     {
-        $this->getData($data);
+        $this->getData();
     }
-    consoleLog($this, $data);
 
     public function updatedRemittanceExtractionGroups($value, $index)
     {
@@ -229,9 +229,9 @@ class Attachment extends Component
         }
     }
 
-    public function getData($data)
+    public function getData($data = null)
     {
-        consoleLog($this, $data);
+        consoleLog($this, ['get data', $data]);
         if ($this->objId) {
             $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
             $this->nama_lengkap = $gensen->nama_lengkap;
@@ -284,7 +284,7 @@ class Attachment extends Component
             $this->kertas_gensen_old = $attachments[GensenAttachmentType::KERTAS_GENSEN->value];
             $this->kartu_keluarga_old = $attachments[GensenAttachmentType::KARTU_KELUARGA->value];
             $this->rekap_pengiriman_uang_old = $attachments[GensenAttachmentType::REKAP_PENGIRIMAN_UANG->value];
-            $this->persyaratan_pengurusan_gensen_old = $attachments[GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value];
+            // $this->persyaratan_pengurusan_gensen_old = $attachments[GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value];
             $this->seluruh_berkas_old = $attachments[GensenAttachmentType::SELURUH_BERKAS->value];
 
             $this->isCanDelete = $gensen->isCanDelete();
@@ -365,7 +365,7 @@ class Attachment extends Component
             return;
         }
 
-        $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
+        $gensen = GensenFormRepository::find($gensen_form_id);
 
         $attachments = $gensen->attachmentGroups([
             GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN,
@@ -373,6 +373,25 @@ class Attachment extends Component
         ]);
         $this->persyaratan_pengurusan_gensen_old = $attachments[GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value];
         $this->seluruh_berkas_old = $attachments[GensenAttachmentType::SELURUH_BERKAS->value];
+    }
+    public function getConvertedAttachment($gensen_form_id = null, $attachment_type = null)
+    {
+        if (!$gensen_form_id && ($gensen_form_id && Crypt::decrypt($this->objId) != $gensen_form_id)) {
+            return;
+        }
+
+        $gensen = GensenFormRepository::find($gensen_form_id);
+
+        $attachments = $gensen->attachmentGroups([
+            $attachment_type
+        ]);
+        match ($attachment_type) {
+            GensenAttachmentType::KERTAS_GENSEN->value =>
+            $this->kertas_gensen_old = $attachments[GensenAttachmentType::KERTAS_GENSEN->value],
+            GensenAttachmentType::KARTU_KELUARGA->value =>
+            $this->kartu_keluarga_old = $attachments[GensenAttachmentType::KARTU_KELUARGA->value],
+            default => null,
+        };
     }
     private function getDataGenerated()
     {
@@ -480,7 +499,7 @@ class Attachment extends Component
         Alert::information($this, 'Data berhasil di convert');
 
         $this->targetConvertId = null;
-        $this->dispatch('handleGetData');
+        $this->dispatch('handleGetData', ['attachment_type' => $gensen_form_attachment->type->value]);
     }
 
 
@@ -529,22 +548,28 @@ class Attachment extends Component
         $this->dispatch('initializeFileInputs');
     }
 
-    public function clickFile($id, $name, $type)
+    public function clickFile($id, $disk, $path, $type)
     {
-        $attachmentData = $this->{$name};
-
+        // $attachmentData = $this->{$name};
+        // consoleLog($this, [
+        //     'click attachmentInputs',
+        //     $attachmentData
+        // ]);
+        // return;
         // Package path and mime_type into a single, URL-safe base64 string
         $payload = base64_encode(json_encode([
-            'path' => $attachmentData['path'],
-            'mime_type' => $attachmentData['mime_type']
+            'path' => $path,
         ]));
 
         // Generate the clean URL
-        // $url = route('preview.crop.image', [
-        //     'disk' => $attachmentData['disk'],
-        //     'payload' => $payload
-        // ]);
-        $url = 'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $attachmentData['path'];
+        if ($disk == 'supabase') {
+            $url = 'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $path;
+        } else {
+            $url = route('preview.crop.image', [
+                'disk' => $disk,
+                'payload' => $payload
+            ]);
+        }
         // $url = Storage::disk($attachmentData['disk'])->temporaryUrl(
         //     $attachmentData['path'],
         //     now()->addMinutes(15)

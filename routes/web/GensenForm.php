@@ -42,6 +42,7 @@ Route::get('/preview-temp-pdf/{filename}', function ($filename) {
         'Content-Disposition' => 'inline'
     ]);
 })->name('preview.temp.pdf');
+
 Route::get('/preview-temp-file/{path}', function ($path) {
 
     // Safety check to prevent escaping the livewire-tmp directory
@@ -60,12 +61,11 @@ Route::get('/preview-temp-file/{path}', function ($path) {
 Route::get('/preview-image/{disk}/{payload}', function ($disk, $payload) {
     $decoded = json_decode(base64_decode($payload), true);
 
-    if (!$decoded || !isset($decoded['path'], $decoded['mime_type'])) {
+    if (!$decoded || !isset($decoded['path'])) {
         abort(404, 'Invalid payload');
     }
 
     $path = $decoded['path'];
-    $mimeType = $decoded['mime_type'];
 
     $disk = Storage::disk($disk);
     if (!$disk->exists($path)) {
@@ -80,9 +80,7 @@ Route::get('/preview-image/{disk}/{payload}', function ($disk, $payload) {
         if (is_resource($stream)) {
             fclose($stream);
         }
-    }, 200, [
-        'Content-Type' => $mimeType,
-    ]);
+    }, 200);
 })->name('preview.crop.image');
 Route::middleware(['auth', 'access_permission'])->group(function () {
     Route::group(["controller" => GensenDataController::class, "prefix" => "gensen_data", "as" => "gensen_data."], function () {

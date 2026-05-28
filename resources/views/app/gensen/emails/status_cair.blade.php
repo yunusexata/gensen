@@ -67,6 +67,22 @@
             padding: 15px;
             border-radius: 5px;
         }
+        
+        .btn-container {
+            text-align: center;
+            margin: 25px 0 15px 0;
+        }
+
+        .btn-action {
+            display: inline-block;
+            background-color: #25D366;
+            color: #1D2121 !important;
+            padding: 12px 30px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
@@ -104,6 +120,10 @@
                 <strong>Best Regards,</strong><br>
                 <span style="color: #1a2a6c; font-weight: bold;">{{ $form->getPicAttribute()->name }} Exata</span><br>
                 Exata Indonesia
+            </div>
+            
+            <div class="btn-container">
+                <a target="_BLANK" href="https://api.whatsapp.com/send/?phone={{ $form->getPicAttribute()->no_whatsapp }}&type=phone_number&app_absent=0" class="btn-action">Hubungi Sales</a>
             </div>
         </div>
 
