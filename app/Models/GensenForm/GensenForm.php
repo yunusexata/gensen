@@ -326,8 +326,8 @@ class GensenForm extends Model
 
     public function allGensenDetailsCair(): bool
     {
-        $query = $this->gensenFormDetails()
-            ->whereNull('deleted_at');
+        $query = $this->gensenFormDetails();
+        // ->whereNull('deleted_at');
 
         return !$query->whereNull('tanggal_cair')
             ->where(function ($q) {
@@ -338,8 +338,8 @@ class GensenForm extends Model
 
     public function allGensenDetailsTarikData(): bool
     {
-        $query = $this->gensenFormDetails()
-            ->whereNull('deleted_at');
+        $query = $this->gensenFormDetails();
+        // ->whereNull('deleted_at');
 
         return !$query->whereNull('tanggal_tarik_data')
             ->where(function ($q) {
