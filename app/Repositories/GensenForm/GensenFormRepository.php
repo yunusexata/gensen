@@ -273,7 +273,7 @@ class GensenFormRepository extends MasterDataRepository
             ->leftJoinSub($gensenDetailAgg, 'gfd', function ($join) {
                 $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id');
             })
-            ->leftJoinSub($gensenDetailCairAgg, 'gfd_filter_cair', function ($join) {
+            ->leftJoinSub($gensenDetailCairAgg, 'gfd_cair', function ($join) {
                 $join->on('gfd_cair.gensen_form_id', '=', 'gensen_forms.id');
             })
             ->select([
