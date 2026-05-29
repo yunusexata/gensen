@@ -62,12 +62,12 @@
         </div>
         <div class="col-auto mb-0 row">
             <div class="col-auto mb-0"  style="scale: 1;">
-                <label class="form-label mb-0">Tanggal Kepulangan Dari</label>
-                <input type="date" class="form-control" wire:model.live="filter_tanggal_kepulangan_dari"  />
+                <label class="form-label mb-0">Tanggal Cair Dari</label>
+                <input type="date" class="form-control" wire:model.live="filter_tanggal_cair_dari"  />
             </div>
             <div class="col-auto mb-0"  style="scale: 1;">
-                <label class="form-label mb-0">Tanggal Kepulangan Sampai</label>
-                <input type="date" class="form-control" wire:model.live="filter_tanggal_kepulangan_sampai"  />
+                <label class="form-label mb-0">Tanggal Cair Sampai</label>
+                <input type="date" class="form-control" wire:model.live="filter_tanggal_cair_sampai"  />
             </div>
         </div>
     </div>
