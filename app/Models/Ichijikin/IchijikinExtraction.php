@@ -5,14 +5,14 @@ namespace App\Models\Ichijikin;
 use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Jobs\ExportGensenJob;
+use App\Jobs\IchijikinExtraction\SplitIchijikinJob;
 use App\Jobs\ImportGensenJob;
-use App\Jobs\SplitIchijikinJob;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Muhammadyunus1072\TrackHistory\HasTrackHistory;
 use Illuminate\Support\Facades\URL;
+use Muhammadyunus1072\TrackHistory\HasTrackHistory;
 
 class IchijikinExtraction extends Model
 {
