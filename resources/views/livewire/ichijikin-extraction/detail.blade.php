@@ -49,7 +49,7 @@
                         <input class="hidden validate-upload-file"
                             id="file_ichijikin"
                             name="file_ichijikin" type="file"
-                            multiple x-ref="input"
+                            x-ref="input"
                             wire:model="file_ichijikin"
                             @change="handleFiles" accept="application/pdf"
                             class="position-absolute invisible" />
