@@ -401,9 +401,16 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 // 'page' => $index + 1,
             ]);
 
+            logger([
+                'exists_last_save' => file_exists($file),
+                'filesize_last_save' => file_exists($file)
+                    ? filesize($file)
+                    : null,
+            ]);
             if (is_resource($stream)) {
                 fclose($stream);
             }
+
             // =====================================================
             // CLEANUP TEMP FILE
             // VERY IMPORTANT
