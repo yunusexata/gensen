@@ -263,6 +263,12 @@ class ConvertPdfToImagesJob implements ShouldQueue
             // =====================================================
             // IMAGE OPTIMIZATION
             // =====================================================
+            logger([
+                'exists_before_save' => file_exists($file),
+                'filesize_before_save' => file_exists($file)
+                    ? filesize($file)
+                    : null,
+            ]);
             try {
                 Image::load($file)
 
@@ -290,6 +296,12 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
                 throw $e;
             }
+            logger([
+                'exists_after_save' => file_exists($file),
+                'filesize_after_save' => file_exists($file)
+                    ? filesize($file)
+                    : null,
+            ]);
             // =====================================================
             // SECOND PASS OPTIMIZATION
             // =====================================================
