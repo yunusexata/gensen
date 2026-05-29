@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\URL;
 class IchijikinExtractionResult extends Model
 {
     // php artisan reverb:start
-    use HasFactory, SoftDeletes, HasTrackHistory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
 
