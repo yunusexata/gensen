@@ -327,7 +327,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 'final store',
                 'stream_valid' => is_resource($stream),
             ]);
-            Storage::disk($store_disk)->put(
+            $result = Storage::disk($store_disk)->put(
                 $targetPath,
                 $stream,
                 [
@@ -335,6 +335,14 @@ class ConvertPdfToImagesJob implements ShouldQueue
                     'ContentType' => 'image/jpeg',
                 ]
             );
+            logger([
+                'upload_result' => $result,
+                'exists_after_upload' => Storage::disk($store_disk)
+                    ->exists($targetPath),
+                'target_path' => $targetPath,
+                'real_path' => Storage::disk($store_disk)
+                    ->path($targetPath),
+            ]);
 
             if (is_resource($stream)) {
                 fclose($stream);
