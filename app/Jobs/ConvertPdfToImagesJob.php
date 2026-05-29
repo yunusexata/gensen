@@ -73,7 +73,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
     private function convertToImage($attachment)
     {
-        $disk = $attachment->disk ?? 'private';
+        $disk = $attachment->disk;
         $store_disk = env('DEFAULT_STORE_CONVERT', 'private');
 
         $storage = Storage::disk($disk);
@@ -108,6 +108,10 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 |--------------------------------------------------------------------------
                 */
         $readStream = $storage->readStream($attachment->path);
+        logger([
+            'content stream att',
+            stream_get_contents($readStream)
+        ]);
 
         if ($readStream === false) {
             throw new Exception("Failed to read remote file");
