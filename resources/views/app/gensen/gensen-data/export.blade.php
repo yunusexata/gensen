@@ -72,8 +72,8 @@
                         <td>{{ $data['tanggal_verified'] ? Carbon\Carbon::parse($data['tanggal_verified'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['no_input_jepang']}}</td>
                         <td>{{ $data['tanggal_pengajuan'] ? Carbon\Carbon::parse($data['tanggal_pengajuan'])->format('Ymd') : '' }}</td>
-                        <td>{{ $data['tanggal_tarik_data'] ? Carbon\Carbon::parse($data['tanggal_tarik_data'])->format('Ymd') : '' }}</td>
-                        <td>{{ $data['label'] }}</td>
+                        <td>{{ $data['tanggal_tarik_data_detail'] ? Carbon\Carbon::parse($data['tanggal_tarik_data_detail'])->format('Ymd') : '' }}</td>
+                        <td>{{ $data['label_detail'] }}</td>
                         <td>{{ $data['tanggal_cair'] ? Carbon\Carbon::parse($data['tanggal_cair'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['nominal_cair'] }}</td>
                         <td>{{ $data['status']}}</td>
