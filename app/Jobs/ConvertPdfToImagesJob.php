@@ -162,11 +162,15 @@ class ConvertPdfToImagesJob implements ShouldQueue
         $outputDir = storage_path("app/{$store_disk}/{$dir}");
 
         $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
-        $outputPattern = "{$outputDir}/{$storedName}_page-%03d.jpg";
+        $outputPattern = storage_path("app/{$store_disk}/{$dir}/{$storedName}_page-%03d.jpg");;
 
         logger([
             'stored name 97',
             $storedName
+        ]);
+        logger([
+            'stored output dir 97',
+            $outputPattern
         ]);
 
         $process = new Process([
@@ -183,8 +187,8 @@ class ConvertPdfToImagesJob implements ShouldQueue
             "-sOutputFile={$outputPattern}",
             storage_path('app/' . $store_disk . '/' . $tmpPdfPath),
         ]);
-
         // '-dFirstPage=1',        // Secure: Process only what you need
+
         $process->run();
         logger([
             'successful' => $process->isSuccessful(),
@@ -258,25 +262,41 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 // =====================================================
                 // IMAGE OPTIMIZATION
                 // =====================================================
+                try {
+                    Image::load($file)
 
-                Image::load($file)
+                        // huge filesize reduction here
+                        ->width(1600)
 
-                    // huge filesize reduction here
-                    ->width(1600)
+                        // sweet spot for OCR
+                        ->quality(80)
 
-                    // sweet spot for OCR
-                    ->quality(80)
+                        ->optimize()
 
-                    ->optimize()
+                        ->save($file);
+                } catch (\Throwable $e) {
 
-                    ->save();
+                    logger([
+                        'image_optimize_error' => $e->getMessage(),
+                        'file' => $file,
+                    ]);
 
+                    throw $e;
+                }
                 // =====================================================
                 // SECOND PASS OPTIMIZATION
                 // =====================================================
+                try {
+                    $optimizerChain->optimize($file);
+                } catch (\Throwable $e) {
 
-                $optimizerChain->optimize($file);
+                    logger([
+                        'optimizer_chain_error' => $e->getMessage(),
+                        'file' => $file,
+                    ]);
 
+                    throw $e;
+                }
                 // =====================================================
                 // STREAM UPLOAD
                 // Best for memory usage
