@@ -31,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
             database_path('migrations/gensen-form/*'),
             database_path('migrations/buku-nenkin'),
             database_path('migrations/ai'),
+            database_path('migrations/ichijikin-extraction'),
         ]);
 
         Blade::directive('currency', function ($expression) {
