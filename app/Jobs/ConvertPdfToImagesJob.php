@@ -215,6 +215,11 @@ class ConvertPdfToImagesJob implements ShouldQueue
             "{$outputDir}/{$storedName}_page-*.jpg"
         );
 
+        logger([
+            'get generated file',
+            $generatedFiles
+        ]);
+
         if ($attachment->type !== GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
             GensenFormAttachmentRepository::update($attachment->id, [
                 'convert_image' => true
@@ -273,6 +278,12 @@ class ConvertPdfToImagesJob implements ShouldQueue
                         ->optimize()
 
                         ->save($file);
+                    if (!file_exists($file)) {
+
+                        throw new Exception(
+                            "Optimized image missing: {$file}"
+                        );
+                    }
                 } catch (\Throwable $e) {
 
                     logger([
@@ -301,7 +312,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 // Best for memory usage
                 // =====================================================
 
-                $stream = fopen($file, 'r');
+                $stream = fopen($file, 'rb');
 
                 logger([
                     'final store',
