@@ -564,6 +564,8 @@ class Attachment extends Component
         // Generate the clean URL
         if ($disk == 'supabase') {
             $url = 'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $path;
+        } else if ($disk == 'public') {
+            $url = Storage::disk($disk)->url($path);
         } else {
             $url = route('preview.crop.image', [
                 'disk' => $disk,
