@@ -108,10 +108,10 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 |--------------------------------------------------------------------------
                 */
         $readStream = $storage->readStream($attachment->path);
-        logger([
-            'content stream att',
-            stream_get_contents($readStream)
-        ]);
+        // logger([
+        //     'content stream att',
+        //     stream_get_contents($readStream)
+        // ]);
 
         if ($readStream === false) {
             throw new Exception("Failed to read remote file");
@@ -186,6 +186,12 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
         // '-dFirstPage=1',        // Secure: Process only what you need
         $process->run();
+        logger([
+            'successful' => $process->isSuccessful(),
+            'exit_code' => $process->getExitCode(),
+            'output' => $process->getOutput(),
+            'error_output' => $process->getErrorOutput(),
+        ]);
 
         logger($process->getCommandLine());
 
