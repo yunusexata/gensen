@@ -49,21 +49,8 @@ class IchijikinExtractionFile extends Model
 
     protected static function onBoot()
     {
-        self::creating(function ($model) {
-            if (is_null($model->status)) {
-                $model->status = JobStatus::PENDING;
-            }
-        });
-        self::created(function ($model) {
-            if ($model->type === 'export') {
-                // if ($model->job_key != ExportImportJobKey::EXPORT_LIST_DATA_DALAM_PENGAJUAN) {
-                ExportGensenJob::dispatch($model->id)->onQueue('excel');
-                // }
-            }
-            if ($model->type === 'import') {
-                ImportGensenJob::dispatch($model->id)->onQueue('excel');
-            }
-        });
+        self::creating(function ($model) {});
+        self::created(function ($model) {});
     }
 
     public function creator()
