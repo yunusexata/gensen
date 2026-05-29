@@ -147,17 +147,33 @@ class SplitIchijikinJob implements ShouldQueue
             $outputPattern
         ]);
 
+        // $process = new Process([
+        //     // '/usr/local/bin/gs',
+        //     'gs',
+        //     '-sDEVICE=jpeg',
+        //     '-r150',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
+        //     '-dNOPAUSE',
+        //     '-dBATCH',
+        //     '-dSAFER',
+        //     '-dINTERPOLATE',        // Smoother scaling
+        //     '-dJPEGQ=80',           // Q=100 is wasteful; 85 is indistinguishable for AI
+        //     '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
+        //     "-sOutputFile={$outputPattern}",
+        //     storage_path('app/' . $store_disk . '/' . $tmpPdfPath),
+        // ]);
         $process = new Process([
-            // '/usr/local/bin/gs',
             'gs',
             '-sDEVICE=jpeg',
-            '-r150',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
+            '-r150',                            // Perfect resolution match (~1240x1754 A4 size)
             '-dNOPAUSE',
             '-dBATCH',
             '-dSAFER',
-            '-dINTERPOLATE',        // Smoother scaling
-            '-dJPEGQ=80',           // Q=100 is wasteful; 85 is indistinguishable for AI
-            '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
+            '-dINTERPOLATE',                    // High-quality image scaling
+            '-dTextAlphaBits=4',                // CRITICAL: Max anti-aliasing for readable fonts/Kanji
+            '-dGraphicsAlphaBits=4',            // Max anti-aliasing for clear document lines
+            '-sProcessColorModel=DeviceGray',   // Forces Ghostscript pipeline to grayscale internal engine
+            '-sColorConversionStrategy=Gray',   // Outputs pure single-channel grayscale 
+            '-dJPEGQ=85',                       // Sweet spot for OCR text retention without compression artifacts
             "-sOutputFile={$outputPattern}",
             storage_path('app/' . $store_disk . '/' . $tmpPdfPath),
         ]);
@@ -237,33 +253,33 @@ class SplitIchijikinJob implements ShouldQueue
                     ? filesize($file)
                     : null,
             ]);
-            try {
-                Image::load($file)
+            // try {
+            // Image::load($file)
 
-                    // huge filesize reduction here
-                    // ->width(1240)
+            //     // huge filesize reduction here
+            //     // ->width(1240)
 
-                    // sweet spot for OCR
-                    ->quality(80)
+            //     // sweet spot for OCR
+            //     ->quality(80)
 
-                    ->optimize()
+            //     ->optimize()
 
-                    ->save($file);
-                if (!file_exists($file)) {
+            //     ->save($file);
+            //     if (!file_exists($file)) {
 
-                    throw new Exception(
-                        "Optimized image missing: {$file}"
-                    );
-                }
-            } catch (\Throwable $e) {
+            //         throw new Exception(
+            //             "Optimized image missing: {$file}"
+            //         );
+            //     }
+            // } catch (\Throwable $e) {
 
-                logger([
-                    'image_optimize_error' => $e->getMessage(),
-                    'file' => $file,
-                ]);
+            //     logger([
+            //         'image_optimize_error' => $e->getMessage(),
+            //         'file' => $file,
+            //     ]);
 
-                throw $e;
-            }
+            //     throw $e;
+            // }
             logger([
                 'exists_after_save' => file_exists($file),
                 'filesize_after_save' => file_exists($file)
