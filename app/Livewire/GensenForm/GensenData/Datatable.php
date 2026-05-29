@@ -582,38 +582,41 @@ class Datatable extends Component
         try {
             DB::transaction(function () {});
             consoleLog($this, $this->editingData['status']);
-            $validatedData = [
-                'status' => $this->editingData['status'],
-                'tanggal_lengkap' => $this->editingData['tanggal_lengkap'] ? $this->editingData['tanggal_lengkap'] : null,
-                'tanggal_verified' => $this->editingData['tanggal_verified'] ? $this->editingData['tanggal_verified'] : null,
-                'tanggal_pengajuan' => $this->editingData['tanggal_pengajuan'] ? $this->editingData['tanggal_pengajuan'] : null,
-                'no_input_jepang' => $this->editingData['no_input_jepang'],
-                'nama_instagram' => $this->editingData['nama_instagram'],
-                'nama_tiktok' => $this->editingData['nama_tiktok'],
-                'nomor_whatsapp' => $this->editingData['nomor_whatsapp'],
-                'nomor_whatsapp_darurat' => $this->editingData['nomor_whatsapp_darurat'],
-                'email' => $this->editingData['email'],
+            $validatedData = [];
+            if ($this->isCanUpdate) {
+                $validatedData = [
+                    'status' => $this->editingData['status'],
+                    'tanggal_lengkap' => $this->editingData['tanggal_lengkap'] ? $this->editingData['tanggal_lengkap'] : null,
+                    'tanggal_verified' => $this->editingData['tanggal_verified'] ? $this->editingData['tanggal_verified'] : null,
+                    'tanggal_pengajuan' => $this->editingData['tanggal_pengajuan'] ? $this->editingData['tanggal_pengajuan'] : null,
+                    'no_input_jepang' => $this->editingData['no_input_jepang'],
+                    'nama_instagram' => $this->editingData['nama_instagram'],
+                    'nama_tiktok' => $this->editingData['nama_tiktok'],
+                    'nomor_whatsapp' => $this->editingData['nomor_whatsapp'],
+                    'nomor_whatsapp_darurat' => $this->editingData['nomor_whatsapp_darurat'],
+                    'email' => $this->editingData['email'],
 
-                'nama_lengkap' => $this->editingData['nama_lengkap'],
-                'tanggal_lahir' => $this->editingData['tanggal_lahir'],
-                'no_rekening_penerima' => $this->editingData['no_rekening_penerima'],
-                'nama_bank_penerima' => $this->editingData['nama_bank_penerima'],
-                'nama_penerima' => $this->editingData['nama_penerima'],
-                'hubungan_penerima' => $this->editingData['hubungan_penerima'],
-                // 'tanggal_cair' => $this->editingData['tanggal_cair'] ? $this->editingData['tanggal_cair'] : null,
-                // 'nominal_cair' => imaskToValue($this->editingData['nominal_cair']),
-                // 'nominal_gensen' => imaskToValue($this->editingData['nominal_gensen']),
-                // 'jumlah_kirim_uang' => imaskToValue($this->editingData['jumlah_kirim_uang']),
-                // 'tanggal_kepulangan' => $this->editingData['tanggal_kepulangan'] ? $this->editingData['tanggal_kepulangan'] : null,
-                // REK PENERIMA
-                // 'status' => $this->editingData['status'],
-                // 'tahun_gensen' => $this->editingData['tahun_gensen'],
-                // 'tahun_transfer' => $this->editingData['tahun_transfer'],
-                // 'alamat_jepang' => $this->editingData['alamat_jepang'],
-                // 'kode_pos_jepang' => $this->editingData['kode_pos_jepang'],
-                // 'nama_lpk' => $this->editingData['nama_lpk'],
-                'keterangan' => $this->editingData['keterangan'],
-            ];
+                    'nama_lengkap' => $this->editingData['nama_lengkap'],
+                    'tanggal_lahir' => $this->editingData['tanggal_lahir'],
+                    'no_rekening_penerima' => $this->editingData['no_rekening_penerima'],
+                    'nama_bank_penerima' => $this->editingData['nama_bank_penerima'],
+                    'nama_penerima' => $this->editingData['nama_penerima'],
+                    'hubungan_penerima' => $this->editingData['hubungan_penerima'],
+                    // 'tanggal_cair' => $this->editingData['tanggal_cair'] ? $this->editingData['tanggal_cair'] : null,
+                    // 'nominal_cair' => imaskToValue($this->editingData['nominal_cair']),
+                    // 'nominal_gensen' => imaskToValue($this->editingData['nominal_gensen']),
+                    // 'jumlah_kirim_uang' => imaskToValue($this->editingData['jumlah_kirim_uang']),
+                    // 'tanggal_kepulangan' => $this->editingData['tanggal_kepulangan'] ? $this->editingData['tanggal_kepulangan'] : null,
+                    // REK PENERIMA
+                    // 'status' => $this->editingData['status'],
+                    // 'tahun_gensen' => $this->editingData['tahun_gensen'],
+                    // 'tahun_transfer' => $this->editingData['tahun_transfer'],
+                    // 'alamat_jepang' => $this->editingData['alamat_jepang'],
+                    // 'kode_pos_jepang' => $this->editingData['kode_pos_jepang'],
+                    // 'nama_lpk' => $this->editingData['nama_lpk'],
+                    'keterangan' => $this->editingData['keterangan'],
+                ];
+            }
             if (
                 auth()->user()->can(PermissionHelper::transform(
                     PermissionHelper::UPDATE_GENSEN_TANGGAL_LENGKAP,
