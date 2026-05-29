@@ -111,6 +111,8 @@ class ExportService
                 'gensen_forms.*',
                 'gfd.tahun_gensen as tahun_gensen_detail',
                 'gfd.nominal_gensen as nominal_gensen_detail',
+                'gfd.tanggal_tarik_data as tanggal_tarik_data_detail',
+                'gfd.label as label_detail',
                 'remittances.remittance_total_amounts',
                 'remittances.remittance_receiver_names',
             ])
