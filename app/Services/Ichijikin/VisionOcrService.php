@@ -4,6 +4,7 @@ namespace App\Services\Ichijikin;
 
 use App\Repositories\ConvertDataIchijikin\ConvertDataIchijikinRepository;
 use Carbon\Carbon;
+use Exception;
 use Google\Cloud\Vision\V1\AnnotateImageRequest;
 use Google\Cloud\Vision\V1\BatchAnnotateImagesRequest;
 use Google\Cloud\Vision\V1\Client\ImageAnnotatorClient;
@@ -16,99 +17,142 @@ class VisionOcrService
 {
     public function cropImage($path, $coords, $des, $name)
     {
-        $srcPath = storage_path('app/public/' . $path);
+        try {
+            //code...
 
-        if (!file_exists($srcPath)) {
-            throw new \Exception("Image not found: " . $srcPath);
-        }
+            $srcPath = storage_path('app/public/' . $path);
 
-        // Load image (JPEG only as per your original code)
-        $src = imagecreatefromjpeg($srcPath);
-
-        // ==============================
-        // 1️⃣ FIX EXIF ORIENTATION
-        // ==============================
-        $exif = @exif_read_data($srcPath);
-
-        if (!empty($exif['Orientation'])) {
-            switch ($exif['Orientation']) {
-                case 3:
-                    $src = imagerotate($src, 180, 0);
-                    break;
-                case 6:
-                    $src = imagerotate($src, -90, 0);
-                    break;
-                case 8:
-                    $src = imagerotate($src, 90, 0);
-                    break;
+            if (!file_exists($srcPath)) {
+                throw new \Exception("Image not found: " . $srcPath);
             }
+
+            // Load image (JPEG only as per your original code)
+            // $src = imagecreatefromjpeg($srcPath);
+            $mime = mime_content_type($srcPath);
+
+            switch ($mime) {
+
+                case 'image/jpeg':
+                    $src = imagecreatefromjpeg($srcPath);
+                    break;
+
+                case 'image/png':
+                    $src = imagecreatefrompng($srcPath);
+                    break;
+
+                case 'image/webp':
+                    $src = imagecreatefromwebp($srcPath);
+                    break;
+
+                default:
+                    throw new Exception("Unsupported image type");
+            }
+
+            // ==============================
+            // 1️⃣ FIX EXIF ORIENTATION
+            // ==============================
+            $exif = @exif_read_data($srcPath);
+
+            if (!empty($exif['Orientation'])) {
+                switch ($exif['Orientation']) {
+                    case 3:
+                        $src = imagerotate($src, 180, 0);
+                        break;
+                    case 6:
+                        $src = imagerotate($src, -90, 0);
+                        break;
+                    case 8:
+                        $src = imagerotate($src, 90, 0);
+                        break;
+                }
+            }
+
+            // ==============================
+            // 2️⃣ GET ORIGINAL SIZE
+            // ==============================
+            $srcWidth  = imagesx($src);
+            $srcHeight = imagesy($src);
+
+            // Reference size (size used when defining coordinates)
+            $referenceWidth  = 1131;
+            $referenceHeight = 1600;
+
+            // ==============================
+            // 3️⃣ CALCULATE SCALE FACTOR
+            // ==============================
+            $scaleX = $srcWidth  / $referenceWidth;
+            $scaleY = $srcHeight / $referenceHeight;
+
+            // ==============================
+            // 4️⃣ SCALE COORDINATES
+            // ==============================
+            $x      = (int) round($coords['x'] * $scaleX);
+            $y      = (int) round($coords['y'] * $scaleY);
+            $width  = (int) round($coords['width'] * $scaleX);
+            $height = (int) round($coords['height'] * $scaleY);
+
+            // Safety boundary check
+            $x = max(0, min($x, $srcWidth - 1));
+            $y = max(0, min($y, $srcHeight - 1));
+
+            if ($x + $width > $srcWidth) {
+                $width = $srcWidth - $x;
+            }
+
+            if ($y + $height > $srcHeight) {
+                $height = $srcHeight - $y;
+            }
+
+            // ==============================
+            // 5️⃣ CROP
+            // ==============================
+            $dst = imagecreatetruecolor($width, $height);
+
+            // imagecopy(
+            //     $dst,
+            //     $src,
+            //     0,
+            //     0,
+            //     $x,
+            //     $y,
+            //     $width,
+            //     $height
+            // );
+            imagecopyresampled(
+                $dst,
+                $src,
+                0,
+                0,
+                $x,
+                $y,
+                $width,
+                $height,
+                $width,
+                $height
+            );
+
+            // ==============================
+            // 6️⃣ SAVE RESULT
+            // ==============================
+            $destFolder = storage_path('app/public/' . $des);
+            $destPath   = $destFolder . "/$name.png";
+
+            if (!file_exists($destFolder)) {
+                mkdir($destFolder, 0755, true);
+            }
+
+            imagepng($dst, $destPath);
+            imagedestroy($src);
+            imagedestroy($dst);
+
+            return $destPath;
+        } catch (\Throwable $th) {
+            //throw $th;
+            logger([
+                'CROP SERVICE ERROR',
+                $th
+            ]);
         }
-
-        // ==============================
-        // 2️⃣ GET ORIGINAL SIZE
-        // ==============================
-        $srcWidth  = imagesx($src);
-        $srcHeight = imagesy($src);
-
-        // Reference size (size used when defining coordinates)
-        $referenceWidth  = 1131;
-        $referenceHeight = 1600;
-
-        // ==============================
-        // 3️⃣ CALCULATE SCALE FACTOR
-        // ==============================
-        $scaleX = $srcWidth  / $referenceWidth;
-        $scaleY = $srcHeight / $referenceHeight;
-
-        // ==============================
-        // 4️⃣ SCALE COORDINATES
-        // ==============================
-        $x      = (int) round($coords['x'] * $scaleX);
-        $y      = (int) round($coords['y'] * $scaleY);
-        $width  = (int) round($coords['width'] * $scaleX);
-        $height = (int) round($coords['height'] * $scaleY);
-
-        // Safety boundary check
-        $x = max(0, min($x, $srcWidth - 1));
-        $y = max(0, min($y, $srcHeight - 1));
-
-        if ($x + $width > $srcWidth) {
-            $width = $srcWidth - $x;
-        }
-
-        if ($y + $height > $srcHeight) {
-            $height = $srcHeight - $y;
-        }
-
-        // ==============================
-        // 5️⃣ CROP
-        // ==============================
-        $dst = imagecreatetruecolor($width, $height);
-
-        imagecopy(
-            $dst,
-            $src,
-            0,
-            0,
-            $x,
-            $y,
-            $width,
-            $height
-        );
-
-        // ==============================
-        // 6️⃣ SAVE RESULT
-        // ==============================
-        $destFolder = storage_path('app/public/' . $des);
-        $destPath   = $destFolder . "/$name.png";
-
-        if (!file_exists($destFolder)) {
-            mkdir($destFolder, 0755, true);
-        }
-
-        imagepng($dst, $destPath);
-
-        return $destPath;
     }
 
     public function handleDocument($model, $path)
