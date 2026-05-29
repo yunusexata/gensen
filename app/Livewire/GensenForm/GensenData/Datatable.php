@@ -65,8 +65,8 @@ class Datatable extends Component
     public $filter_status;
     public $filter_tanggal_input_dari;
     public $filter_tanggal_input_sampai;
-    public $filter_tanggal_kepulangan_dari;
-    public $filter_tanggal_kepulangan_sampai;
+    public $filter_tanggal_cair_dari;
+    public $filter_tanggal_cair_sampai;
 
     // public int $length = 5;
     public function onMount()
@@ -563,10 +563,10 @@ class Datatable extends Component
                     Carbon::parse($this->filter_tanggal_input_dari)->startOfDay(),
                     Carbon::parse($this->filter_tanggal_input_sampai)->endOfDay(),
                 ] : null,
-            $this->filter_tanggal_kepulangan_dari ?
+            $this->filter_tanggal_cair_dari ?
                 [
-                    Carbon::parse($this->filter_tanggal_kepulangan_dari)->startOfDay(),
-                    Carbon::parse($this->filter_tanggal_kepulangan_sampai)->endOfDay(),
+                    Carbon::parse($this->filter_tanggal_cair_dari)->startOfDay(),
+                    Carbon::parse($this->filter_tanggal_cair_sampai)->endOfDay(),
                 ] : null,
         );
     }

@@ -156,7 +156,7 @@ class GensenFormRepository extends MasterDataRepository
         $status,
         $pic,
         $tanggal_input = null,
-        $tanggal_kepulangan = null,
+        $tanggal_cair = null,
     ) {
 
         $pic_code = $pic ? $pic : Auth::user()->pic_code;
@@ -301,8 +301,20 @@ class GensenFormRepository extends MasterDataRepository
             ->when($tanggal_input, function ($query) use ($tanggal_input) {
                 $query->whereBetween('created_at', $tanggal_input);
             })
-            ->when($tanggal_kepulangan, function ($query) use ($tanggal_kepulangan) {
-                $query->whereBetween('tanggal_kepulangan', $tanggal_kepulangan);
+            ->when($tanggal_cair, function ($query) use ($tanggal_cair) {
+
+                $query->join(
+                    'gensen_form_details as gfd_cair',
+                    'gfd_cair.gensen_form_id',
+                    '=',
+                    'gensen_forms.id'
+                )
+
+                    ->whereBetween(
+                        'gfd_cair.tanggal_cair',
+                        $tanggal_cair
+                    )
+                    ->distinct();
             })
             ->when($status && !in_array($status, [GensenForm::STATUS_SIAP_VERIFIKASI, GensenForm::STATUS_NO_INPUT_JEPANG]), function ($q) use ($status) {
                 $q->where('status', $status);
