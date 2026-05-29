@@ -59,7 +59,7 @@ class Detail extends Component
 
                 $fileName =  'ICHIJIKIN EXTRACTION - ' . $this->batch_name . ' - ' . now()->format('Ymd') . ' - ' . Str::uuid() . '.' . $extension;
                 $filePath = Storage::disk($disk)->putFileAs(
-                    'exports/gensen/template_dalam_pengajuan',
+                    'ichijikin/' . $this->batch_name,
                     $this->inputFileBulkStatus,
                     $fileName,
                     [
@@ -73,9 +73,9 @@ class Detail extends Component
                     'stored_name' => $fileName,
                     'description' => null,
 
-                    'disk' => $this->batch_name,
-                    'path' => $this->batch_name,
-                    'note' => $this->batch_name,
+                    'disk' => $disk,
+                    'path' => $filePath,
+                    'note' => null,
 
                     'extension' => $this->file_ichijikin->extension(),
                     'mime_type' => $this->file_ichijikin->getMimeType(),

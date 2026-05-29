@@ -6,6 +6,7 @@ use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Jobs\ExportGensenJob;
 use App\Jobs\ImportGensenJob;
+use App\Jobs\SplitIchijikinJob;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,20 +40,8 @@ class IchijikinExtraction extends Model
 
     protected static function onBoot()
     {
-        self::creating(function ($model) {
-            if (is_null($model->status)) {
-                $model->status = JobStatus::PENDING;
-            }
-        });
         self::created(function ($model) {
-            if ($model->type === 'export') {
-                // if ($model->job_key != ExportImportJobKey::EXPORT_LIST_DATA_DALAM_PENGAJUAN) {
-                ExportGensenJob::dispatch($model->id)->onQueue('excel');
-                // }
-            }
-            if ($model->type === 'import') {
-                ImportGensenJob::dispatch($model->id)->onQueue('excel');
-            }
+            SplitIchijikinJob::dispatch($model)->onQueue('extract');
         });
     }
 

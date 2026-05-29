@@ -14,65 +14,72 @@
             </p>
         </div>
     </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label>Expired Pada</label>
-                <input placeholder="Expired Pada" type="datetime-local" wire:model="expired_at" class="form-control" disabled>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-8 mb-3">
+                <div wire:key="file_ichijikin" x-data="{
+                    isDragging: false,
+                    handleDrop(event) {
+                        {{-- Multi --}}
+                        const files = event.dataTransfer.files;
+                
+                        if (files.length) {
+                            const dataTransfer = new DataTransfer();
+                
+                            [...files].forEach(file => {
+                                dataTransfer.items.add(file);
+                            });
+                
+                            $refs.input.files = dataTransfer.files;
+                            $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                
+                        this.isDragging = false;
+                    },
+                    handleFiles(event) {
+                        const file = event.target.files[0];
+                        // Optional: you can limit or validate here
+                    }
+                }"
+                    @dragover.prevent="isDragging = true" @dragleave.prevent="isDragging = false"
+                    @drop.prevent="handleDrop($event)"
+                    :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                    class="form-group">
+                    <div
+                        class="border-2 border-dashed border-outline-variant/30 rounded-xl p-10 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
+                        <input class="hidden validate-upload-file"
+                            id="file_ichijikin"
+                            name="file_ichijikin" type="file"
+                            multiple x-ref="input"
+                            wire:model="file_ichijikin"
+                            @change="handleFiles" accept="application/pdf"
+                            class="position-absolute invisible" />
 
-                @error('expired_at')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="col-md-6 mb-3">
-                <label>Password</label>
-                <input placeholder="Password" type="text" wire:model="password" class="form-control" disabled>
-
-                @error('password')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="col-md-6 mb-3">
-                <label>Jumlah Penggunaan</label>
-                <input placeholder="max_usage" type="number" wire:model="max_usage" class="form-control">
-
-                @error('max_usage')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="col-md-6 mb-3">
-                <label>Nama</label>
-                <input placeholder="Nama" type="text" wire:model="name" class="form-control">
-
-                @error('name')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-            @if ($user)
-                <div class="col-md-6 mb-3">
-                    <label>Pembuat</label>
-                    <p class="form-control">{{$user['name']}}</p>
-
+                        <label
+                            class="cursor-pointer w-full md:w-3/4 flex flex-col items-center gap-2 border-2 border-dashed border-blue-100 rounded-lg p-2 rounded"
+                            for="file_ichijikin">
+                            <span
+                                class=" my-0 material-symbols-outlined text-5xl text-primary-container"
+                                data-icon="description">description</span>
+                            <p class=" my-0 font-body text-on-surface-variant">Drag and drop file
+                                kamu disini, atau <span
+                                    class=" my-0 text-primary font-semibold">CARI FILE</span></p>
+                            <p class=" my-0 text-xs text-outline font-medium">Format: PDF</p>
+                        </label>
+                    </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label>Link</label>
-                    <p class="form-control">{{$link}}</p>
-                </div>
-            @endif
+         
+            <div class="col-md-6 mb-3">
+                <label>Nama Batch</label>
+                <input placeholder="Nama Batch" type="text" wire:model="batch_name" class="form-control">
+
+                @error('batch_name')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
         </div>
         <button type="submit" wire:loading.attr="disabled" class="btn btn-primary mt-3">
             Save
         </button>
-        @if ($objId)
-            <button type="button" class='btn btn-success mt-3'
-                onclick="copyToClipboard('{{$link}}')"
-            >
-            Copy Link
-            </button>
-            <div class="row mt-3">
-                <livewire:gensen-form.gensen-data.datatable :gensenFormLinkId="$objId" />
-            </div>
-        @endif
-        
 
     </form>
 
