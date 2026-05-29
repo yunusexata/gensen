@@ -266,7 +266,7 @@
                                                                 <label for="">No Input Jepang</label>
                                                                 <div class="d-flex align-items-center col-auto">
                                                                     <input
-                                                                        type="date"
+                                                                        type="text"
                                                                         class="form-control"
 
                                                                         wire:model.defer="editingData.no_input_jepang"
