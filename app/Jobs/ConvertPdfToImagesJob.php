@@ -257,8 +257,8 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 $storedName,
             ]);
 
-            $targetPath = storage_path("app/{$store_disk}/{$dir}/{$storedName}");
-            // $targetPath = "{$dir}/{$storedName}";
+            // $targetPath = storage_path("app/{$store_disk}/{$dir}/{$storedName}");
+            $targetPath = "{$dir}/{$storedName}";
 
             // =====================================================
             // IMAGE OPTIMIZATION
@@ -325,15 +325,13 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
             logger([
                 'final store',
-                $store_disk,
-                $targetPath,
-                $stream
+                'stream_valid' => is_resource($stream),
             ]);
             Storage::disk($store_disk)->put(
                 $targetPath,
                 $stream,
                 [
-                    'visibility' => 'private',
+                    'visibility' => 'public',
                     'ContentType' => 'image/jpeg',
                 ]
             );
