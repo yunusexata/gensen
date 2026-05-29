@@ -151,12 +151,12 @@ class SplitIchijikinJob implements ShouldQueue
             // '/usr/local/bin/gs',
             'gs',
             '-sDEVICE=jpeg',
-            '-r200',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
+            '-r150',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
             '-dNOPAUSE',
             '-dBATCH',
             '-dSAFER',
             '-dINTERPOLATE',        // Smoother scaling
-            '-dJPEGQ=85',           // Q=100 is wasteful; 85 is indistinguishable for AI
+            '-dJPEGQ=80',           // Q=100 is wasteful; 85 is indistinguishable for AI
             '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
             "-sOutputFile={$outputPattern}",
             storage_path('app/' . $store_disk . '/' . $tmpPdfPath),
@@ -241,7 +241,7 @@ class SplitIchijikinJob implements ShouldQueue
                 Image::load($file)
 
                     // huge filesize reduction here
-                    // ->width(1600)
+                    // ->width(1240)
 
                     // sweet spot for OCR
                     ->quality(80)
