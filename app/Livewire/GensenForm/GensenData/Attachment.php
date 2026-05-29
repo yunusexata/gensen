@@ -368,10 +368,10 @@ class Attachment extends Component
         $gensen = GensenFormRepository::find($gensen_form_id);
 
         $attachments = $gensen->attachmentGroups([
-            GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN,
+            // GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN,
             GensenAttachmentType::SELURUH_BERKAS,
         ]);
-        $this->persyaratan_pengurusan_gensen_old = $attachments[GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value];
+        // $this->persyaratan_pengurusan_gensen_old = $attachments[GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value];
         $this->seluruh_berkas_old = $attachments[GensenAttachmentType::SELURUH_BERKAS->value];
     }
     public function getConvertedAttachment($gensen_form_id = null, $attachment_type = null)
@@ -730,6 +730,13 @@ class Attachment extends Component
                 $this->saveData(true);
                 $gensenForm = GensenFormRepository::find(Crypt::decrypt($this->objId));
                 $gensenForm->handleMergePersyaratanGensen();
+
+                $attachments = $gensenForm->attachmentGroups([
+                    // GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN,
+                    GensenAttachmentType::SELURUH_BERKAS,
+                ]);
+                // $this->persyaratan_pengurusan_gensen_old = $attachments[GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value];
+                $this->seluruh_berkas_old = $attachments[GensenAttachmentType::SELURUH_BERKAS->value];
             });
 
             DB::commit();
