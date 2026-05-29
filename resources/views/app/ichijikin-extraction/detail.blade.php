@@ -18,7 +18,7 @@
 
         <div class='row'>
             <div class="col-md-auto mt-2">
-                <a class="btn btn-info" href="{{ route('gensen_form_link.index') }}">
+                <a class="btn btn-info" href="{{ route('ichijikin_extraction.index') }}">
                     <i class="ki-duotone ki-arrow-left fs-1">
                         <span class="path1"></span>
                         <span class="path2"></span>
@@ -33,7 +33,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <livewire:gensen-form.gensen-form-link.detail :objId="$objId" />
+            <livewire:ichijikin-extraction.detail :objId="$objId" />
         </div>
     </div>
 @stop
