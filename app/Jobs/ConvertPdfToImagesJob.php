@@ -162,7 +162,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
         $outputDir = storage_path("app/{$store_disk}/{$dir}");
 
         $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
-        $outputPattern = storage_path("app/{$store_disk}/{$dir}/{$storedName}_page-%03d.jpg");;
+        $outputPattern = storage_path("app/{$store_disk}/{$dir}/{$storedName}_page-%03d.jpg");
 
         logger([
             'stored name 97',
@@ -237,166 +237,164 @@ class ConvertPdfToImagesJob implements ShouldQueue
         // $optimizerChain = OptimizerChainFactory::create()
         //     ->setTimeout(60);
 
-        DB::transaction(function () use (
-            $generatedFiles,
-            $attachment,
-            $store_disk,
-            $dir,
-        ) {
 
-            foreach ($generatedFiles as $index => $file) {
+        // DB::beginTransaction();
 
-                // =====================================================
-                // FILE INFO
-                // =====================================================
+        foreach ($generatedFiles as $index => $file) {
 
-                $info = pathinfo($file);
+            // =====================================================
+            // FILE INFO
+            // =====================================================
 
-                // safer filename
-                $storedName =
-                    $info['filename'] . '.jpg';
+            $info = pathinfo($file);
+
+            // safer filename
+            $storedName =
+                $info['filename'] . '.jpg';
+
+            logger([
+                'stored_name',
+                $storedName,
+            ]);
+
+            $targetPath = storage_path("app/{$store_disk}/{$dir}/{$storedName}");
+            // $targetPath = "{$dir}/{$storedName}";
+
+            // =====================================================
+            // IMAGE OPTIMIZATION
+            // =====================================================
+            try {
+                Image::load($file)
+
+                    // huge filesize reduction here
+                    ->width(1600)
+
+                    // sweet spot for OCR
+                    ->quality(80)
+
+                    ->optimize()
+
+                    ->save($file);
+                if (!file_exists($file)) {
+
+                    throw new Exception(
+                        "Optimized image missing: {$file}"
+                    );
+                }
+            } catch (\Throwable $e) {
 
                 logger([
-                    'stored_name',
-                    $storedName,
+                    'image_optimize_error' => $e->getMessage(),
+                    'file' => $file,
                 ]);
 
-                $targetPath = "{$dir}/{$storedName}";
-
-                // =====================================================
-                // IMAGE OPTIMIZATION
-                // =====================================================
-                try {
-                    Image::load($file)
-
-                        // huge filesize reduction here
-                        ->width(1600)
-
-                        // sweet spot for OCR
-                        ->quality(80)
-
-                        ->optimize()
-
-                        ->save($file);
-                    if (!file_exists($file)) {
-
-                        throw new Exception(
-                            "Optimized image missing: {$file}"
-                        );
-                    }
-                } catch (\Throwable $e) {
-
-                    logger([
-                        'image_optimize_error' => $e->getMessage(),
-                        'file' => $file,
-                    ]);
-
-                    throw $e;
-                }
-                // =====================================================
-                // SECOND PASS OPTIMIZATION
-                // =====================================================
-                // try {
-                //     $optimizerChain->optimize($file);
-                // } catch (\Throwable $e) {
-
-                //     logger([
-                //         'optimizer_chain_error' => $e->getMessage(),
-                //         'file' => $file,
-                //     ]);
-
-                //     throw $e;
-                // }
-                // =====================================================
-                // STREAM UPLOAD
-                // Best for memory usage
-                // =====================================================
-
-                $stream = fopen($file, 'rb');
-
-                logger([
-                    'final store',
-                    $store_disk,
-                    $targetPath,
-                    $stream
-                ]);
-                Storage::disk($store_disk)->put(
-                    $targetPath,
-                    $stream,
-                    [
-                        'visibility' => 'private',
-                        'ContentType' => 'image/jpeg',
-                    ]
-                );
-
-                if (is_resource($stream)) {
-                    fclose($stream);
-                }
-
-                // =====================================================
-                // FILESIZE AFTER OPTIMIZATION
-                // =====================================================
-
-                $fileSize = filesize($file);
-
-                // =====================================================
-                // CREATE DATABASE RECORD
-                // =====================================================
-
-                $gensen_form_id =
-                    $this->type === AiJob::class
-                    ? $this->model->subject->id
-                    : $attachment->gensen_form_id;
-
-                GensenFormAttachmentRepository::create([
-
-                    'gensen_form_id' => $gensen_form_id,
-
-                    'type' => $attachment->type,
-
-                    'original_name' =>
-                    $attachment->original_name,
-
-                    'stored_name' => $storedName,
-
-                    'description' =>
-                    $attachment->description,
-
-                    'disk' => $store_disk,
-
-                    'path' => $targetPath,
-
-                    'checksum' =>
-                    hash_file('sha256', $file),
-
-                    'note' => $attachment->note,
-
-                    'remittance_type' =>
-                    $attachment->remittance_type,
-
-                    'extension' => 'jpg',
-
-                    'mime_type' => 'image/jpeg',
-
-                    'file_size' => $fileSize,
-
-                    'status' =>
-                    GensenAttachmenStatus::STATUS_CONVERTED,
-
-                    'convert_image' => true,
-
-                    // useful for sorting later
-                    'page' => $index + 1,
-                ]);
-
-                // =====================================================
-                // CLEANUP TEMP FILE
-                // VERY IMPORTANT
-                // =====================================================
-
-                @unlink($file);
+                throw $e;
             }
-        });
+            // =====================================================
+            // SECOND PASS OPTIMIZATION
+            // =====================================================
+            // try {
+            //     $optimizerChain->optimize($file);
+            // } catch (\Throwable $e) {
+
+            //     logger([
+            //         'optimizer_chain_error' => $e->getMessage(),
+            //         'file' => $file,
+            //     ]);
+
+            //     throw $e;
+            // }
+            // =====================================================
+            // STREAM UPLOAD
+            // Best for memory usage
+            // =====================================================
+
+            $stream = fopen($file, 'rb');
+
+            logger([
+                'final store',
+                $store_disk,
+                $targetPath,
+                $stream
+            ]);
+            Storage::disk($store_disk)->put(
+                $targetPath,
+                $stream,
+                [
+                    'visibility' => 'private',
+                    'ContentType' => 'image/jpeg',
+                ]
+            );
+
+            if (is_resource($stream)) {
+                fclose($stream);
+            }
+
+            // =====================================================
+            // FILESIZE AFTER OPTIMIZATION
+            // =====================================================
+
+            $fileSize = filesize($file);
+
+            // =====================================================
+            // CREATE DATABASE RECORD
+            // =====================================================
+
+            $gensen_form_id =
+                $this->type === AiJob::class
+                ? $this->model->subject->id
+                : $attachment->gensen_form_id;
+
+            GensenFormAttachmentRepository::create([
+
+                'gensen_form_id' => $gensen_form_id,
+
+                'type' => $attachment->type,
+
+                'original_name' =>
+                $attachment->original_name,
+
+                'stored_name' => $storedName,
+
+                'description' =>
+                $attachment->description,
+
+                'disk' => $store_disk,
+
+                'path' => $targetPath,
+
+                'checksum' =>
+                hash_file('sha256', $file),
+
+                'note' => $attachment->note,
+
+                'remittance_type' =>
+                $attachment->remittance_type,
+
+                'extension' => 'jpg',
+
+                'mime_type' => 'image/jpeg',
+
+                'file_size' => $fileSize,
+
+                'status' =>
+                GensenAttachmenStatus::STATUS_CONVERTED,
+
+                'convert_image' => true,
+
+                // useful for sorting later
+                // 'page' => $index + 1,
+            ]);
+
+            // =====================================================
+            // CLEANUP TEMP FILE
+            // VERY IMPORTANT
+            // =====================================================
+
+            @unlink($file);
+        }
+
+        // DB::commit();
         // foreach ($generatedFiles as $file) {
 
         //     $info = pathinfo($file);
