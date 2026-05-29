@@ -1503,7 +1503,7 @@
                             <div class="row my-3 d-flex">
                                 @foreach ($tahun_gensen_details as $index_tahun_gensen => $tahun_gensen_detail)
                                     <div class="my-2 d-flex justify-content-between w-full" wire:key="tahun_gensen_details_{{ $tahun_gensen_detail['id'] ? $tahun_gensen_detail['id'] : $tahun_gensen_detail['key'] }}">
-                                        <div class="col-md-2">
+                                        <div class="col-md-4">
                                             <select wire:model="tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen"
                                                 name="tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen"
                                                 class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus w-full @error('tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen') is-invalid border border-red-500 @enderror">
