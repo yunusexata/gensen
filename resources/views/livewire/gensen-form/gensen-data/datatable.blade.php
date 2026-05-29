@@ -206,56 +206,80 @@
                                                                 <label for="">Tanggal Lengkap</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="date" class="form-control" 
-                                                                        @if ($this->isCanUpdate && !$editingData['tanggal_lengkap'])
+                                                                        type="date"
+                                                                        class="form-control"
+
                                                                         wire:model.defer="editingData.tanggal_lengkap"
-                                                                        @else
-                                                                        value="{{ $editingData['tanggal_lengkap'] }}"
-                                                                        readonly
-                                                                        @endif
-                                                                    />
+
+                                                                        @cannot(
+                                                                            PermissionHelper::transform(
+                                                                                PermissionHelper::UPDATE_GENSEN_TANGGAL_LENGKAP,
+                                                                                PermissionHelper::TYPE_UPDATE
+                                                                            )
+                                                                        )
+                                                                            readonly
+                                                                        @endcannot
+                                                                    > 
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <label for="">Tanggal Verified</label>
                                                                 <div class="d-flex align-items-center">
-                                                                    <input
-                                                                        type="date" class="form-control" 
-                                                                        @if ($this->isCanUpdate && !$editingData['tanggal_verified'])
+                                                                   <input
+                                                                        type="date"
+                                                                        class="form-control"
+
                                                                         wire:model.defer="editingData.tanggal_verified"
-                                                                        @else
-                                                                        value="{{ $editingData['tanggal_verified'] }}"
-                                                                        readonly
-                                                                        @endif
-                                                                    />
+
+                                                                        @cannot(
+                                                                            PermissionHelper::transform(
+                                                                                PermissionHelper::UPDATE_GENSEN_TANGGAL_VERIFIED,
+                                                                                PermissionHelper::TYPE_UPDATE
+                                                                            )
+                                                                        )
+                                                                            readonly
+                                                                        @endcannot
+                                                                    > 
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <label for="">Tanggal Pengajuan</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="date" class="form-control" 
-                                                                        @if ($this->isCanUpdate && !$editingData['tanggal_pengajuan'])
+                                                                        type="date"
+                                                                        class="form-control"
+
                                                                         wire:model.defer="editingData.tanggal_pengajuan"
-                                                                        @else
-                                                                        value="{{ $editingData['tanggal_pengajuan'] }}"
-                                                                        readonly
-                                                                        @endif
-                                                                    />
+
+                                                                        @cannot(
+                                                                            PermissionHelper::transform(
+                                                                                PermissionHelper::UPDATE_GENSEN_TANGGAL_PENGAJUAN,
+                                                                                PermissionHelper::TYPE_UPDATE
+                                                                            )
+                                                                        )
+                                                                            readonly
+                                                                        @endcannot
+                                                                    > 
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <label for="">No Input Jepang</label>
                                                                 <div class="d-flex align-items-center col-auto">
                                                                     <input
-                                                                        type="text" class="form-control" 
-                                                                        @if ($this->isCanUpdate && !$editingData['no_input_jepang'])
+                                                                        type="date"
+                                                                        class="form-control"
+
                                                                         wire:model.defer="editingData.no_input_jepang"
-                                                                        @else
-                                                                        value="{{ $editingData['no_input_jepang'] }}"
-                                                                        readonly
-                                                                        @endif
-                                                                    />
+
+                                                                        @cannot(
+                                                                            PermissionHelper::transform(
+                                                                                PermissionHelper::UPDATE_GENSEN_NO_INPUT_JEPANG,
+                                                                                PermissionHelper::TYPE_UPDATE
+                                                                            )
+                                                                        )
+                                                                            readonly
+                                                                        @endcannot
+                                                                    > 
                                                                 </div>
                                                             </td>
                                                             <td>

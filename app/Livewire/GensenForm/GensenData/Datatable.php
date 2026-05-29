@@ -614,6 +614,42 @@ class Datatable extends Component
                 // 'nama_lpk' => $this->editingData['nama_lpk'],
                 'keterangan' => $this->editingData['keterangan'],
             ];
+            if (
+                auth()->user()->can(PermissionHelper::transform(
+                    PermissionHelper::UPDATE_GENSEN_TANGGAL_LENGKAP,
+                    PermissionHelper::TYPE_UPDATE
+                ))
+            ) {
+                $validatedData['tanggal_lengkap'] =
+                    $this->editingData['tanggal_lengkap'];
+            }
+            if (
+                auth()->user()->can(PermissionHelper::transform(
+                    PermissionHelper::UPDATE_GENSEN_TANGGAL_VERIFIED,
+                    PermissionHelper::TYPE_UPDATE
+                ))
+            ) {
+                $validatedData['tanggal_verified'] =
+                    $this->editingData['tanggal_verified'];
+            }
+            if (
+                auth()->user()->can(PermissionHelper::transform(
+                    PermissionHelper::UPDATE_GENSEN_TANGGAL_PENGAJUAN,
+                    PermissionHelper::TYPE_UPDATE
+                ))
+            ) {
+                $validatedData['tanggal_pengajuan'] =
+                    $this->editingData['tanggal_pengajuan'];
+            }
+            if (
+                auth()->user()->can(PermissionHelper::transform(
+                    PermissionHelper::UPDATE_GENSEN_NO_INPUT_JEPANG,
+                    PermissionHelper::TYPE_UPDATE
+                ))
+            ) {
+                $validatedData['no_input_jepang'] =
+                    $this->editingData['no_input_jepang'];
+            }
             GensenFormRepository::update($this->editingRowId, $validatedData);
 
             DB::commit();

@@ -53,6 +53,11 @@ class PermissionHelper
     const IMPORT_LIST_DATA_DALAM_PENGAJUAN = 'import_list_data_dalam_pengajuan';
     const IMPORT_LIST_DATA_GENSEN_CAIR = 'import_list_data_gensen_cair';
 
+    const UPDATE_GENSEN_TANGGAL_LENGKAP = 'update_gensen_tanggal_lengkap';
+    const UPDATE_GENSEN_TANGGAL_VERIFIED = 'update_gensen_tanggal_verified';
+    const UPDATE_GENSEN_TANGGAL_PENGAJUAN = 'update_gensen_tanggal_pangajuan';
+    const UPDATE_GENSEN_NO_INPUT_JEPANG = 'update_gensen_tanggal_no_input_jepang';
+
     // BUKU NENKIN
     const ACCESS_BUKU_NENKIN = 'buku_nenkin';
 
@@ -98,6 +103,12 @@ class PermissionHelper
         self::IMPORT_LIST_DATA_DALAM_PENGAJUAN => 'Data Gensen - Import Dalam pengajuan',
         self::IMPORT_LIST_DATA_GENSEN_CAIR => 'Data Gensen - Import Gensen cair',
 
+        // UPDATE GENSEN
+        self::UPDATE_GENSEN_TANGGAL_LENGKAP => 'Data Gensen - Update Tanggal Lengkap',
+        self::UPDATE_GENSEN_TANGGAL_VERIFIED => 'Data Gensen - Update Tanggal Verified',
+        self::UPDATE_GENSEN_TANGGAL_PENGAJUAN => 'Data Gensen - Update Tanggal Pengajuan',
+        self::UPDATE_GENSEN_NO_INPUT_JEPANG => 'Data Gensen - Update No Input Jepang',
+
         // BUKU NENKIN
         self::ACCESS_BUKU_NENKIN => 'Data Pengganti Buku Nenkin',
     ];
@@ -131,6 +142,12 @@ class PermissionHelper
         self::IMPORT_LIST_DATA_NO_INPUT_JAPAN => [self::TYPE_CREATE],
         self::IMPORT_LIST_DATA_DALAM_PENGAJUAN => [self::TYPE_CREATE],
         self::IMPORT_LIST_DATA_GENSEN_CAIR => [self::TYPE_CREATE],
+
+        // UPDATE GENSEN 
+        self::UPDATE_GENSEN_TANGGAL_LENGKAP => [self::TYPE_UPDATE],
+        self::UPDATE_GENSEN_TANGGAL_VERIFIED => [self::TYPE_UPDATE],
+        self::UPDATE_GENSEN_TANGGAL_PENGAJUAN => [self::TYPE_UPDATE],
+        self::UPDATE_GENSEN_NO_INPUT_JEPANG => [self::TYPE_UPDATE],
 
         // Export Import
         self::ACCESS_BUKU_NENKIN => self::TYPE_ALL,

@@ -112,8 +112,21 @@ class ConvertPdfToImagesJob implements ShouldQueue
         if ($readStream === false) {
             throw new Exception("Failed to read remote file");
         }
+        $localPdfPath = storage_path(
+            'app/' . $store_disk . '/' . $tmpPdfPath
+        );
 
-        $writeStream = fopen(storage_path('app/' . $store_disk . '/' . $tmpPdfPath), 'w');
+        $localDir = dirname($localPdfPath);
+
+        if (!is_dir($localDir)) {
+
+            mkdir(
+                $localDir,
+                0755,
+                true
+            );
+        }
+        $writeStream = fopen($localPdfPath, 'w');
 
         stream_copy_to_stream($readStream, $writeStream);
 

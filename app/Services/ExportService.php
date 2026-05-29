@@ -167,18 +167,7 @@ class ExportService
         //     ->unique()
         //     ->values()
         //     ->toArray();
-        //             CREATE INDEX 
-        //             CREATE INDEX idx_gensen_bulk_filter
-        // ON gensen_forms (
-        //     no_input_jepang,
-        //     nama_lengkap
-        // )
 
-        //         CREATE INDEX idx_gfd_bulk
-        // ON gensen_form_details (
-        //     gensen_form_id,
-        //     tahun_gensen
-        // )
         // WHERE deleted_at IS NULL;
         $rows = collect($filters)
 
