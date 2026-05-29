@@ -45,6 +45,7 @@ class PermissionHelper
     const EXPORT_LIST_DATA_VERIFIED = 'export_list_data_verified';
     const EXPORT_LIST_DATA_NO_INPUT_JAPAN = 'export_list_data_no_input_japan';
     const EXPORT_LIST_DATA_DALAM_PENGAJUAN = 'export_list_data_dalam_pengajuan';
+    const EXPORT_LIST_DATA_TARIK_DATA_ACC = 'export_list_data_tarik_data_acc';
 
     // IMPORT
     const IMPORT_LIST_DATA_LENGKAP = 'import_list_data_lengkap';
@@ -95,6 +96,7 @@ class PermissionHelper
         self::EXPORT_LIST_DATA_VERIFIED => 'Data Gensen - Export Verified',
         self::EXPORT_LIST_DATA_NO_INPUT_JAPAN => 'Data Gensen - Export No input Japan',
         self::EXPORT_LIST_DATA_DALAM_PENGAJUAN => 'Data Gensen - Export Dalam pengajuan',
+        self::EXPORT_LIST_DATA_TARIK_DATA_ACC => 'Data Gensen - Export Data Tarik Data ACC',
 
         // IMPORT
         self::IMPORT_LIST_DATA_LENGKAP => 'Data Gensen - Import Lengkap',
@@ -135,6 +137,7 @@ class PermissionHelper
         self::EXPORT_LIST_DATA_VERIFIED => [self::TYPE_READ],
         self::EXPORT_LIST_DATA_NO_INPUT_JAPAN => [self::TYPE_READ],
         self::EXPORT_LIST_DATA_DALAM_PENGAJUAN => [self::TYPE_READ],
+        self::EXPORT_LIST_DATA_TARIK_DATA_ACC => [self::TYPE_READ],
 
         // IMPORT
         self::IMPORT_LIST_DATA_LENGKAP => [self::TYPE_CREATE],

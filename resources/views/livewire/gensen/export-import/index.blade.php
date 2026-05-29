@@ -59,6 +59,18 @@
                 </button>
             </div>    
         @endCan
+        @can(PermissionHelper::transform(PermissionHelper::EXPORT_LIST_DATA_TARIK_DATA_ACC, PermissionHelper::TYPE_READ))
+        <h1>HS2</h1>
+            <div class="col-6">
+                <button type="button" class="w-full btn btn-success d-flex gap-2"  data-bs-toggle="modal" data-bs-target="#exportModal" x-data 
+                @click="$dispatch('setExportJobKey', { job_key: '{{\App\Enums\Gensen\ExportImportJobKey::EXPORT_LIST_DATA_TARIK_DATA_ACC}}'})">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cloud-arrow-down-fill" viewBox="0 0 16 16">
+                    <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
+                    </svg>
+                    Export List Data Tarik Data Acc
+                </button>
+            </div>    
+        @endCan
     </div>
     <div class="col-md-6 row flex flex-col gap-3">
         @can(PermissionHelper::transform(PermissionHelper::IMPORT_LIST_DATA_LENGKAP, PermissionHelper::TYPE_CREATE))
@@ -105,8 +117,12 @@
                 </button>
             </div>    
         @endCan
+        @can(PermissionHelper::transform(PermissionHelper::IMPORT_LIST_DATA_DALAM_PENGAJUAN, PermissionHelper::TYPE_CREATE))
+            <div class="col-6">
+            </div>    
+        @endCan
         @can(PermissionHelper::transform(PermissionHelper::IMPORT_LIST_DATA_GENSEN_CAIR, PermissionHelper::TYPE_CREATE))
-        <h1>Accounting Exata</h1>
+        <h1>HS2</h1>
             <div class="col-6">
                 <button type="button" data-bs-toggle="modal" data-bs-target="#bulkUpdateGensenStatusModalToGensenCair" class="btn btn-primary d-flex gap-2 w-full">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 16 16">

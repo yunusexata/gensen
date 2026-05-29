@@ -19,6 +19,7 @@ class ExportService
             ExportImportJobKey::EXPORT_LIST_DATA_VERIFIED => $this->exportListDataVerified($filters),
             ExportImportJobKey::EXPORT_LIST_DATA_NO_INPUT_JAPAN => $this->exportListDataNoInputJapan($filters),
             ExportImportJobKey::EXPORT_LIST_DATA_DALAM_PENGAJUAN => $this->exportListDataDalamPengajuan($filters),
+            ExportImportJobKey::EXPORT_LIST_DATA_TARIK_DATA_ACC => $this->exportListDataTarikDataAcc($filters),
             default => throw new \Exception("Role tidak dikenali"),
         };
     }
@@ -312,18 +313,19 @@ class ExportService
     {
         return $this->queryGetTarikDataDalamPengajuan($filters);
     }
-    // private function exportListDataDalamPengajuan($filters)
-    // {
-    //     return $this->query($filters)
-    //         ->where('gensen_forms.status', GensenForm::STATUS_DALAM_PENGAJUAN)
-    //         ->whereNotNull('gensen_forms.tanggal_lengkap')
-    //         ->whereNotNull('gensen_forms.tanggal_verified')
-    //         ->whereNotNull('gensen_forms.no_input_jepang')
-    //         ->whereNotNull('gensen_forms.tanggal_pengajuan')
-    //         ->where(function ($q) {
-    //             $q->whereNull('gfd.nominal_cair')
-    //                 ->orWhere('gfd.nominal_cair', 0);
-    //         })
-    //         ->whereNull('gfd.tanggal_cair');
-    // }
+
+    private function exportListDataTarikDataAcc($filters)
+    {
+        return $this->query($filters)
+            ->where('gensen_forms.status', GensenForm::STATUS_TARIK_DATA)
+            ->whereNotNull('gensen_forms.tanggal_lengkap')
+            ->whereNotNull('gensen_forms.tanggal_verified')
+            ->whereNotNull('gensen_forms.no_input_jepang')
+            ->whereNotNull('gensen_forms.tanggal_pengajuan')
+            ->where(function ($q) {
+                $q->whereNull('gfd.nominal_cair')
+                    ->orWhere('gfd.nominal_cair', 0);
+            })
+            ->whereNull('gfd.tanggal_cair');
+    }
 }
