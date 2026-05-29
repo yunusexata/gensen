@@ -241,7 +241,7 @@ class SplitIchijikinJob implements ShouldQueue
                 Image::load($file)
 
                     // huge filesize reduction here
-                    ->width(1600)
+                    // ->width(1600)
 
                     // sweet spot for OCR
                     ->quality(80)
