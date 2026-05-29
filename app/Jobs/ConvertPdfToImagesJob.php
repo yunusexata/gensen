@@ -408,8 +408,6 @@ class ConvertPdfToImagesJob implements ShouldQueue
             // CLEANUP TEMP FILE
             // VERY IMPORTANT
             // =====================================================
-
-            @unlink($file);
         }
 
         // DB::commit();
