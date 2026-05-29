@@ -62,6 +62,9 @@ class PermissionHelper
     // BUKU NENKIN
     const ACCESS_BUKU_NENKIN = 'buku_nenkin';
 
+    // ICHIJIKIN EXTRACTION
+    const ACCESS_ICHIJIKIN_EXTRACTION = 'ichijikin_extraction';
+
     const ACCESS_ALL = [
         self::ACCESS_DASHBOARD,
         self::ACCESS_USER,
@@ -74,6 +77,9 @@ class PermissionHelper
 
         // Import Export
         self::ACCESS_GENSEN_EXPORT_IMPORT,
+
+        // Ichijikin Extraction
+        self::ACCESS_ICHIJIKIN_EXTRACTION,
     ];
 
     const TRANSLATE_ACCESS = [
@@ -113,6 +119,9 @@ class PermissionHelper
 
         // BUKU NENKIN
         self::ACCESS_BUKU_NENKIN => 'Data Pengganti Buku Nenkin',
+
+        // ICHIJIKIN EXTRCTION
+        self::ACCESS_ICHIJIKIN_EXTRACTION => 'Extrak Ichijikin',
     ];
 
     const ACCESS_TYPE_ALL = [
@@ -154,6 +163,9 @@ class PermissionHelper
 
         // Export Import
         self::ACCESS_BUKU_NENKIN => self::TYPE_ALL,
+
+        // ICHIJIKIN EXTRACTION
+        self::ACCESS_ICHIJIKIN_EXTRACTION => self::TYPE_ALL,
     ];
 
     /*

@@ -48,6 +48,18 @@ return [
         // ],
         [
             // 'id' => 'menu_admin'
+            'text' => 'Extrak Ichijikin',
+            'icon' => 'ki-duotone ki-shield-tick',
+            'submenu' => [
+                [
+                    'text' => 'Upload Batch',
+                    'route' => 'user.index',
+                    'icon_color' => 'success',
+                ],
+            ],
+        ],
+        [
+            // 'id' => 'menu_admin'
             'text' => 'Admin',
             'icon' => 'ki-duotone ki-shield-tick',
             'submenu' => [

@@ -207,6 +207,7 @@ class VisionOcrService
 
         $this->drawLabelImage(storage_path('app/public/' . $path), $folder, ConvertDataIchijikinRepository::find($model->id));
     }
+
     public function detectDocumentText($path, string $name)
     {
         $client = new ImageAnnotatorClient([
@@ -340,8 +341,6 @@ class VisionOcrService
         return $result;
         // return $result['pages'][0]['blocks'];
     }
-
-
 
     public function drawLabelImage($imagePath, $desPath, $model)
     {
@@ -585,6 +584,7 @@ class VisionOcrService
         // $pdf->Output('F', storage_path('app/public/labeled/' . $model->number . '-' . $model->name . '.pdf'));
         $pdf->Close();
     }
+
     public function drawBlocksOnPdf($imagePath, $blocks, $outputPath)
     {
         $pdf = new Fpdi();
