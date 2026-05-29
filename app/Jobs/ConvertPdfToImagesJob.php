@@ -327,22 +327,22 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 'final store',
                 'stream_valid' => is_resource($stream),
             ]);
-            $result = Storage::disk($store_disk)->put(
-                $targetPath,
-                $stream,
-                [
-                    'visibility' => 'public',
-                    'ContentType' => 'image/jpeg',
-                ]
-            );
-            logger([
-                'upload_result' => $result,
-                'exists_after_upload' => Storage::disk($store_disk)
-                    ->exists($targetPath),
-                'target_path' => $targetPath,
-                'real_path' => Storage::disk($store_disk)
-                    ->path($targetPath),
-            ]);
+            // $result = Storage::disk($store_disk)->put(
+            //     $targetPath,
+            //     $stream,
+            //     [
+            //         'visibility' => 'public',
+            //         'ContentType' => 'image/jpeg',
+            //     ]
+            // );
+            // logger([
+            //     'upload_result' => $result,
+            //     'exists_after_upload' => Storage::disk($store_disk)
+            //         ->exists($targetPath),
+            //     'target_path' => $targetPath,
+            //     'real_path' => Storage::disk($store_disk)
+            //         ->path($targetPath),
+            // ]);
 
 
             // =====================================================
