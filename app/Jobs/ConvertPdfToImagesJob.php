@@ -229,15 +229,14 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
         sort($generatedFiles);
 
-        $optimizerChain = OptimizerChainFactory::create()
-            ->setTimeout(60);
+        // $optimizerChain = OptimizerChainFactory::create()
+        //     ->setTimeout(60);
 
         DB::transaction(function () use (
             $generatedFiles,
             $attachment,
             $store_disk,
             $dir,
-            $optimizerChain
         ) {
 
             foreach ($generatedFiles as $index => $file) {
@@ -286,17 +285,17 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 // =====================================================
                 // SECOND PASS OPTIMIZATION
                 // =====================================================
-                try {
-                    $optimizerChain->optimize($file);
-                } catch (\Throwable $e) {
+                // try {
+                //     $optimizerChain->optimize($file);
+                // } catch (\Throwable $e) {
 
-                    logger([
-                        'optimizer_chain_error' => $e->getMessage(),
-                        'file' => $file,
-                    ]);
+                //     logger([
+                //         'optimizer_chain_error' => $e->getMessage(),
+                //         'file' => $file,
+                //     ]);
 
-                    throw $e;
-                }
+                //     throw $e;
+                // }
                 // =====================================================
                 // STREAM UPLOAD
                 // Best for memory usage
@@ -304,6 +303,12 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
                 $stream = fopen($file, 'r');
 
+                logger([
+                    'final store',
+                    $store_disk,
+                    $targetPath,
+                    $stream
+                ]);
                 Storage::disk($store_disk)->put(
                     $targetPath,
                     $stream,
