@@ -1742,7 +1742,10 @@
                                             <div class="flex-1 overflow-hidden">
                                                 <h6 class="text-[10px] text-on-surface">{{$seluruh_berkas_old['nama_file']}}</h6>
                                                 <div class="flex items-center justify-between mt-1">
-                                                    <span class="text-[10px] text-outline font-medium">{{ formatFileSize($seluruh_berkas_old['size']) }} • {{ Carbon\Carbon::parse($seluruh_berkas_old['created_at'])->format('M j, Y') }}</span>
+                                                    <span class="text-[10px] text-outline font-medium">{{ formatFileSize($seluruh_berkas_old['size']) }} •
+                                                         {{-- {{ Carbon\Carbon::parse($seluruh_berkas_old['created_at'])->format('M j, Y H:i:s') }} --}}
+                                                         {{ Carbon\Carbon::parse($seluruh_berkas_old['created_at'])->diffForHumans() }}
+                                                        </span>
                                                     <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
                                                 </div>
                                             </div>
