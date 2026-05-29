@@ -167,7 +167,6 @@ class Form extends Component
 
     public function mount()
     {
-
         $this->tahun_gensen_choice =  collect(range(now()->year, now()->year - 4))
             ->map(function ($year) {
                 return [

@@ -96,6 +96,8 @@ class Attachment extends Component
 
     public $photo;
 
+    public $tahun_gensen_choice;
+
     protected $listeners = [
         'remittance-extraction-updated' => 'getRemittanceExtraction',
         'merge-attachment-updated' => 'getMergeAttachment',
@@ -104,6 +106,13 @@ class Attachment extends Component
 
     public function mount()
     {
+        $this->tahun_gensen_choice =  collect(range(now()->year, now()->year - 4))
+            ->map(function ($year) {
+                return [
+                    'value' => toReiwaYear($year),
+                    'label' => toReiwaYear($year) . " / " . $year,
+                ];
+            })->values();
         $this->getData();
     }
 

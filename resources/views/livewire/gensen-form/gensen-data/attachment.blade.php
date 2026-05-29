@@ -1504,12 +1504,21 @@
                                 @foreach ($tahun_gensen_details as $index_tahun_gensen => $tahun_gensen_detail)
                                     <div class="my-2 d-flex justify-content-between w-full" wire:key="tahun_gensen_details_{{ $tahun_gensen_detail['id'] ? $tahun_gensen_detail['id'] : $tahun_gensen_detail['key'] }}">
                                         <div class="col-md-2">
-                                            <input
-                                                    class="form-control"
-                                                    wire:model="tahun_gensen_details.{{ $index_tahun_gensen }}.tahun_gensen"
-                                                    type="text"
-                                                    placeholder="Reiwa"
-                                                />
+                                            <select wire:model="tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen"
+                                                name="tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen"
+                                                class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus w-full @error('tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen') is-invalid border border-red-500 @enderror">
+                                                <option value="">-- ISI --</option>
+                                                @foreach ($tahun_gensen_choice as $choice)
+                                                    <option value="{{ $choice['value'] }}">{{ $choice['label'] }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+
+                                            @error('tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                         </div>
                                         <div class="col">
                                             <input
