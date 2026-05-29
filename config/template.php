@@ -53,7 +53,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Upload Batch',
-                    'route' => 'user.index',
+                    'route' => 'ichijikin_extraction.index',
                     'icon_color' => 'success',
                 ],
             ],
