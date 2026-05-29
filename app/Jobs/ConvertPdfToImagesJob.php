@@ -344,9 +344,6 @@ class ConvertPdfToImagesJob implements ShouldQueue
                     ->path($targetPath),
             ]);
 
-            if (is_resource($stream)) {
-                fclose($stream);
-            }
 
             // =====================================================
             // FILESIZE AFTER OPTIMIZATION
@@ -404,6 +401,9 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 // 'page' => $index + 1,
             ]);
 
+            if (is_resource($stream)) {
+                fclose($stream);
+            }
             // =====================================================
             // CLEANUP TEMP FILE
             // VERY IMPORTANT
