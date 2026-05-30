@@ -7,6 +7,8 @@ use App\Enums\Gensen\JobStatus;
 use App\Jobs\ExportGensenJob;
 use App\Jobs\IchijikinExtraction\SplitIchijikinJob;
 use App\Jobs\ImportGensenJob;
+use App\Models\Ichijikin\IchijikinExtractionFile;
+use App\Models\Ichijikin\IchijikinExtractionResult;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
