@@ -118,7 +118,7 @@ class DatatableBatch extends Component
                 'searchable' => false,
                 'name' => 'Jumlah Data',
                 'render' => function ($item) {
-                    return $item->ichijikinExtractionFiles()->count();
+                    return $item->ichijikinExtractionFiles->count();
                 }
             ],
         ];
