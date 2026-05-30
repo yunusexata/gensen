@@ -260,6 +260,7 @@ return [
             ],
             'supervisor-crop' => [
 
+                'connection' => 'redis',
                 'queue' => ['crop'],
 
                 'maxProcesses' => 4,
