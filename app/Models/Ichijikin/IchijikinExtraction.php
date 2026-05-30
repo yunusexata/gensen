@@ -19,7 +19,7 @@ use Muhammadyunus1072\TrackHistory\HasTrackHistory;
 class IchijikinExtraction extends Model
 {
     // php artisan reverb:start
-    use HasFactory, SoftDeletes, HasTrackHistory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
 
@@ -40,7 +40,7 @@ class IchijikinExtraction extends Model
 
     protected $guarded = ['id'];
 
-    protected static function onBoot()
+    public static function boot()
     {
         self::created(function ($model) {
             SplitIchijikinJob::dispatch($model)->onQueue('pdf');
