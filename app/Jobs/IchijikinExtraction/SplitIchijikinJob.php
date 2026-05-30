@@ -60,7 +60,7 @@ class SplitIchijikinJob implements ShouldQueue
         }
 
 
-        $tmpDir = "ichijikin/{$attachment->batch_name}/converted";
+        $tmpDir = "ichijikin/{$attachment->batch_name}/resource";
         logger([
             'tmp dir 63',
             $tmpDir
