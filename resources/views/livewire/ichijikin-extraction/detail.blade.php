@@ -16,7 +16,15 @@
     </div>
         @if ($objId)
 
-            <livewire:ichijikin-extraction.datatable-batch-detail lazy />
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-6 mb-3">
+                    <label>Nama Batch</label>
+                    <input placeholder="Nama Batch" type="text" value="{{$batch_name}}" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <livewire:ichijikin-extraction.datatable-batch-detail lazy />
+            </div>
         @else
             <div class="row d-flex justify-content-center">
                 <div class="col-md-8 mb-3">
