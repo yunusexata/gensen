@@ -17,6 +17,7 @@ class IchijikinExtractionFileRepository extends MasterDataRepository
         return IchijikinExtractionFile::query()
             ->select(
                 'ichijikin_extraction_files.id',
+                'ichijikin_extraction_files.file_stored_name',
                 'results.nama_lengkap',
                 'results.no_nenkin',
                 'results.lama_kerja',
