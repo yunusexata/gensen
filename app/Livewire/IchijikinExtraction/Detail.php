@@ -34,7 +34,7 @@ class Detail extends Component
     public function mount()
     {
         if ($this->objId) {
-            $this->batch_name = IchijikinExtractionRepository::find(Crypt::decrypt($this->objId))->bacth_name;
+            $this->batch_name = IchijikinExtractionRepository::find(Crypt::decrypt($this->objId))->batch_name;
         }
     }
 
