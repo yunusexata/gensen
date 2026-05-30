@@ -49,7 +49,7 @@ class IchijikinExtractionFile extends Model
     const TYPE_SPEED = 'speed';
     const TYPE_NORMAL = 'normal';
 
-    public static function boot()
+    protected static function onBoot()
     {
         // self::creating(function ($model) {});
         self::created(function ($model) {
