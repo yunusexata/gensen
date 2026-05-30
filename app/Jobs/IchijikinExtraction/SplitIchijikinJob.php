@@ -33,7 +33,7 @@ class SplitIchijikinJob implements ShouldQueue
 
     public function handle(): void
     {
-        logger(['Split Ichijikin Job']);
+        // logger(['Split Ichijikin Job']);
 
         $attachment = $this->model;
         $tmpDir = "ichijikin/{$attachment->batch_name}";
@@ -122,10 +122,10 @@ class SplitIchijikinJob implements ShouldQueue
         $dir = "ichijikin/{$attachment->batch_name}/converted";
 
 
-        logger([
-            'dir convert',
-            $dir
-        ]);
+        // logger([
+        //     'dir convert',
+        //     $dir
+        // ]);
 
         if (!Storage::disk($store_disk)->exists($dir)) {
             Storage::disk($store_disk)->makeDirectory($dir);
@@ -135,10 +135,10 @@ class SplitIchijikinJob implements ShouldQueue
 
         // $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
         $outputPattern = storage_path("app/{$store_disk}/{$dir}/%04d.jpg");
-        logger([
-            'stored output dir 97',
-            $outputPattern
-        ]);
+        // logger([
+        //     'stored output dir 97',
+        //     $outputPattern
+        // ]);
 
         // $process = new Process([
         //     // '/usr/local/bin/gs',
@@ -172,14 +172,14 @@ class SplitIchijikinJob implements ShouldQueue
         // '-dFirstPage=1',        // Secure: Process only what you need
 
         $process->run();
-        logger([
-            'successful' => $process->isSuccessful(),
-            'exit_code' => $process->getExitCode(),
-            'output' => $process->getOutput(),
-            'error_output' => $process->getErrorOutput(),
-        ]);
+        // logger([
+        //     'successful' => $process->isSuccessful(),
+        //     'exit_code' => $process->getExitCode(),
+        //     'output' => $process->getOutput(),
+        //     'error_output' => $process->getErrorOutput(),
+        // ]);
 
-        logger($process->getCommandLine());
+        // logger($process->getCommandLine());
 
         if (!$process->isSuccessful()) {
             throw new \Exception(
@@ -197,10 +197,10 @@ class SplitIchijikinJob implements ShouldQueue
             "{$outputDir}/*.jpg"
         );
 
-        logger([
-            'get generated file',
-            $generatedFiles
-        ]);
+        // logger([
+        //     'get generated file',
+        //     $generatedFiles
+        // ]);
 
         /*
                 |--------------------------------------------------------------------------
@@ -228,10 +228,10 @@ class SplitIchijikinJob implements ShouldQueue
             $storedName =
                 $info['filename'] . '.jpg';
 
-            logger([
-                'stored_name',
-                $storedName,
-            ]);
+            // logger([
+            //     'stored_name',
+            //     $storedName,
+            // ]);
 
             // $targetPath = storage_path("app/{$store_disk}/{$dir}/{$storedName}");
             $targetPath = "{$dir}/{$storedName}";
@@ -239,12 +239,12 @@ class SplitIchijikinJob implements ShouldQueue
             // =====================================================
             // IMAGE OPTIMIZATION
             // =====================================================
-            logger([
-                'exists_before_save' => file_exists($file),
-                'filesize_before_save' => file_exists($file)
-                    ? filesize($file)
-                    : null,
-            ]);
+            // logger([
+            //     'exists_before_save' => file_exists($file),
+            //     'filesize_before_save' => file_exists($file)
+            //         ? filesize($file)
+            //         : null,
+            // ]);
             // try {
             // Image::load($file)
 
@@ -272,12 +272,12 @@ class SplitIchijikinJob implements ShouldQueue
 
             //     throw $e;
             // }
-            logger([
-                'exists_after_save' => file_exists($file),
-                'filesize_after_save' => file_exists($file)
-                    ? filesize($file)
-                    : null,
-            ]);
+            // logger([
+            //     'exists_after_save' => file_exists($file),
+            //     'filesize_after_save' => file_exists($file)
+            //         ? filesize($file)
+            //         : null,
+            // ]);
             // =====================================================
             // STREAM UPLOAD
             // Best for memory usage
@@ -285,10 +285,10 @@ class SplitIchijikinJob implements ShouldQueue
 
             $stream = fopen($file, 'rb');
 
-            logger([
-                'final store',
-                'stream_valid' => is_resource($stream),
-            ]);
+            // logger([
+            //     'final store',
+            //     'stream_valid' => is_resource($stream),
+            // ]);
 
             // =====================================================
             // FILESIZE AFTER OPTIMIZATION
@@ -311,12 +311,12 @@ class SplitIchijikinJob implements ShouldQueue
                 'file_size' => $fileSize,
             ]);
 
-            logger([
-                'exists_last_save' => file_exists($file),
-                'filesize_last_save' => file_exists($file)
-                    ? filesize($file)
-                    : null,
-            ]);
+            // logger([
+            //     'exists_last_save' => file_exists($file),
+            //     'filesize_last_save' => file_exists($file)
+            //         ? filesize($file)
+            //         : null,
+            // ]);
             if (is_resource($stream)) {
                 fclose($stream);
             }
