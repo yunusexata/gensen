@@ -102,7 +102,7 @@ class IchijikinExtractionService
 
         $systemInstruction = "You are a precise data extraction AI. Analyze the provided Ichijikin document and extract the key fields accurately. Return the data ONLY as a valid JSON object matching the requested fields. If a field is missing, return null.";
         // 5. Send the SINGLE request to Gemini
-        $result = Gemini::generativeModel('gemini-1.5-flash')
+        $result = Gemini::generativeModel(model: config('gemini.model'))
             ->withSystemInstruction(Content::parse($systemInstruction))
             ->withGenerationConfig(
                 generationConfig: new GenerationConfig(
