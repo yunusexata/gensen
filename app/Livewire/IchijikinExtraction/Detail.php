@@ -65,7 +65,7 @@ class Detail extends Component
 
                 $fileName =  'ICHIJIKIN EXTRACTION - ' . $this->batch_name . ' - ' . now()->format('Ymd')  . '.' . $extension;
                 $filePath = Storage::disk($disk)->putFileAs(
-                    'ichijikin/' . $this->batch_name . '/resource',
+                    'ichijikin/' . $this->batch_name . '_ID_' . $this->id . '/resource',
                     $this->file_ichijikin,
                     $fileName,
                     [

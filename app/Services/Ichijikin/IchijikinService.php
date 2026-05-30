@@ -160,7 +160,7 @@ class IchijikinService
         $epath = explode('/', $model->path);
         $path = $model->path;
         // $folder = $epath[0] . '/' . $epath[1];
-        $folder = "ichijikin/{$model->ichijikinExtraction->batch_name}/crop/$model->file_stored_name";
+        $folder = "ichijikin/{$model->ichijikinExtraction->batch_name}_ID_{$model->ichijikinExtraction->id}/crop/$model->file_stored_name";
         // $storedName = pathinfo($model->stored_name, PATHINFO_FILENAME);
 
         // // Crop Date

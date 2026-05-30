@@ -7,6 +7,9 @@ use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
 use App\Events\RemittanceExtractionFinished;
 use App\Jobs\ConvertPdfToImagesJob;
+use App\Jobs\GensenExtractJob\ExtractionDocumentJob;
+use App\Jobs\IchijikinExtraction\ExtractionIchijikinJob;
+use App\Jobs\IchijikinExtraction\SplitIchijikinJob;
 use App\Models\Ai\AiPayload;
 use App\Models\Ai\AiResult;
 use App\Models\Ai\AiUsage;
@@ -53,6 +56,7 @@ class AiJob extends Model
     use HasFactory, SoftDeletes, HasTrackHistory;
 
     const JOB_TYPE_REMITTANCE_EXTRACTION = 'remittance_extraction';
+    const JOB_TYPE_ICHIJIKIN_EXTRACTION = 'ichijikin_extraction';
 
     protected $casts = [
         'payload' => 'array',
@@ -105,6 +109,9 @@ class AiJob extends Model
                     self::class,
                     $model
                 )->onQueue('pdf');
+            }
+            if ($model->job_type === self::JOB_TYPE_ICHIJIKIN_EXTRACTION) {
+                ExtractionIchijikinJob::dispatch($model)->onQueue('extract');
             }
         });
         self::updated(function ($model) {});

@@ -7,12 +7,13 @@ use App\Enums\Gensen\JobStatus;
 use App\Jobs\ExportGensenJob;
 use App\Jobs\IchijikinExtraction\CropIchijikinJob;
 use App\Jobs\ImportGensenJob;
+use App\Models\Ai\AiJob;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Muhammadyunus1072\TrackHistory\HasTrackHistory;
 use Illuminate\Support\Facades\URL;
+use Muhammadyunus1072\TrackHistory\HasTrackHistory;
 
 class IchijikinExtractionFile extends Model
 {
@@ -52,7 +53,18 @@ class IchijikinExtractionFile extends Model
     {
         // self::creating(function ($model) {});
         self::created(function ($model) {
-            CropIchijikinJob::dispatch($model)->onQueue('crop');
+            $job = AiJob::firstOrCreate(
+                [
+                    'subject_type' => self::class,
+                    'subject_id'   => $model->id,
+                    'job_type'     => AiJob::JOB_TYPE_ICHIJIKIN_EXTRACTION,
+                    'status'       => 'pending',
+                ],
+                [
+                    'provider' => 'gemini-ai',
+                    'model'    => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
+                ]
+            );
         });
     }
 

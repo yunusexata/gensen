@@ -218,6 +218,10 @@ class GeminiService
         // 3. Total Cost is just the sum of input and output costs
         // (Do NOT add the token counts to the currency amount)
         $response['total_cost']    = $response['input_cost'] + $response['output_cost'];
+        logger([
+            'RESPONSE FINAL',
+            $response
+        ]);
         return $response ?? [];
     }
 

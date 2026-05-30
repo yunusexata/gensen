@@ -2,122 +2,47 @@
 
 namespace App\AiServices\Services;
 
-use App\Enums\Gensen\GensenAttachmenStatus;
-use App\Enums\Gensen\GensenAttachmentType;
-use App\Models\Ai\AiJob;
-use App\Models\GensenForm\GensenForm;
-use Exception;
-use Gemini\Data\Blob;
-use Gemini\Data\Content;
-use Gemini\Data\GenerationConfig;
-use Gemini\Data\SafetySetting;
-use Gemini\Data\Schema;
-use Gemini\Data\ThinkingConfig;
-use Gemini\Enums\DataType;
-use Gemini\Enums\HarmBlockThreshold;
-use Gemini\Enums\HarmCategory;
-use Gemini\Enums\MediaResolution;
-use Gemini\Enums\MimeType;
-use Gemini\Enums\ResponseMimeType;
-use Gemini\Enums\ThinkingLevel;
+use App\Models\Ichijikin\IchijikinExtraction;
+use App\Models\Ichijikin\IchijikinExtractionFile;
 use Gemini\Laravel\Facades\Gemini;
-use Illuminate\Support\Facades\Storage;
-
+use Gemini\Data\Blob;
+use Gemini\Enums\MimeType;
+use Gemini\Data\GenerationConfig;
+use Gemini\Enums\ResponseMimeType;
+use Gemini\Data\Schema;
+use Gemini\Enums\DataType;
 
 class IchijikinExtractionService
 {
-    //· IDR4,310,625.10 Billing Account Tier Cap
-    /**
-     * Process multiple files for tax data extraction.
-     */
-    public function extract(GensenForm $gensen_form): array
+    public function extract(IchijikinExtractionFile $ichijikin)
     {
-        $attachments = $gensen_form->attachmentsConvertedRekapanPengirimanUang;
-
-        logger(['attachments', $attachments]);
-
-        $blobs = collect($attachments)->map(function ($file) {
-
-            $storage = Storage::disk($file['disk']);
-
-            if (!$storage->exists($file['path'])) {
-                logger("File missing: {$file['path']}");
-            }
-
-            // $stream = $storage->path($file['path']);
-
-            // if ($stream === false) {
-            //     logger("Cannot read file stream");
-            // }
-
-            $stream = $storage->readStream($file['path']);
-
-            logger(['data attachment to blob', $file['path']]);
-            if (!is_resource($stream)) {
-                logger("Unable to open stream: {$file['path']}");
-            }
-
-            $data = stream_get_contents($stream);
-
-            fclose($stream);
-            // $data = file_get_contents($stream);
-            // logger(['data stream', $stream]);
-
-            return new Blob(
-                mimeType: $this->getMimeType($file['extension']),
-                data: base64_encode($data)
-            );
-        })->toArray();
 
 
-        // High-precision configuration for tax data
-        $responseSchema = new Schema(
+        // 1. Define the Strict JSON Schema
+        // This forces Gemini to return the exact keys and data types you requested.
+        $schema = new Schema(
             type: DataType::OBJECT,
             properties: [
-                'groups' => new Schema(
-                    type: DataType::ARRAY,
-                    items: new Schema(
-                        type: DataType::OBJECT,
-                        description: "Group the data by BOTH name of the recipient AND transaction year. Do not create multiple entries for the same name/year pair.",
-                        properties: [
-                            'receiver_name' => new Schema(
-                                type: DataType::STRING,
-                                description: "The full name of the recipient (normalized to Romaji if possible)."
-                            ),
-                            'transaction_year' => new Schema(
-                                type: DataType::INTEGER,
-                                description: "The Gregorian year (YYYY). Convert Reiwa/Heisei if necessary."
-                            ),
-                            'amount_details' => new Schema(
-                                type: DataType::ARRAY,
-                                description: "AUDIT TRAIL: A list of every individual transaction amount found for this person in the year before aggregation.",
-                                items: new Schema(
-                                    type: DataType::NUMBER,
-                                    description: "The raw numeric value of a single valid transfer entry on Yen/JPY."
-                                )
-                            ),
-                            'total_amount' => new Schema(
-                                type: DataType::NUMBER,
-                                description: "The mathematical SUM of all values listed in 'amount_details'."
-                            ),
-                            'currency' => new Schema(
-                                type: DataType::STRING,
-                                description: "Standardized currency code, e.g., 'JPY'."
-                            ),
-                            'transfer_transaction_count' => new Schema(
-                                type: DataType::INTEGER,
-                                description: "The count of items in the 'amount_details' array."
-                            ),
-                        ],
-                        required: [
-                            'receiver_name',
-                            'transaction_year',
-                            'amount_details',
-                            'total_amount',
-                            'currency',
-                            'transfer_transaction_count'
-                        ]
-                    )
+                'kokumin' => new Schema(type: DataType::INTEGER, description: 'Return 0 if the image is blank/empty.', nullable: true),
+                'nama_lengkap' => new Schema(
+                    type: DataType::STRING,
+                    description: 'Extract the full name exactly as shown.'
+                ),
+                'nenkin_20' => new Schema(
+                    type: DataType::INTEGER,
+                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547'
+                ),
+                'nenkin_80' => new Schema(
+                    type: DataType::INTEGER,
+                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547'
+                ),
+                'nenkin_100' => new Schema(
+                    type: DataType::INTEGER,
+                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547'
+                ),
+                'no_nenkin' => new Schema(
+                    type: DataType::INTEGER,
+                    description: 'Remove all spaces. Example: 4161 325041 -> 4161325041'
                 ),
                 'confidence_score' => new Schema(
                     type: DataType::INTEGER,
@@ -128,116 +53,86 @@ class IchijikinExtractionService
                     description: "IF confidence_score < 85 should explain the reason, ELSE null."
                 )
             ],
-            required: ['groups', 'confidence_score',]
+            required: [
+                'kokumin',
+                'nama_lengkap',
+                'nenkin_100',
+                'nenkin_20',
+                'nenkin_80',
+                'no_nenkin',
+                'confidence_score'
+            ]
         );
-        $systemInstruction = "You are an automated OCR and data extraction system specializing in Japanese National Pension 'Lump-sum Withdrawal Payments' (Ichijikin) notices. Your strict requirement is to extract data from the provided image and return it EXCLUSIVELY as a valid, raw JSON object. Do not include markdown formatting (like ```json), do not include greetings, and do not provide explanations. If a value cannot be found, use null.";
-        $result = Gemini::generativeModel(model: config('gemini.model'))
-            ->withSystemInstruction(Content::parse($systemInstruction))
-            ->withGenerationConfig(
-                generationConfig: new GenerationConfig(
-                    responseMimeType: ResponseMimeType::APPLICATION_JSON,
-                    responseSchema: $responseSchema,
 
-                    // Critical for legal/tax accuracy:
-                    temperature: 0.0,
-                    mediaResolution: MediaResolution::MEDIA_RESOLUTION_HIGH,
+        // 2. Set up the Generation Config
+        $generationConfig = new GenerationConfig(
+            responseMimeType: ResponseMimeType::APPLICATION_JSON,
+            responseSchema: $schema,
+            temperature: 0.0 // Set to 0 for maximum factual extraction
+        );
 
-                    // Advanced Reasoning:
-                    thinkingConfig: new ThinkingConfig(
-                        includeThoughts: true,
-                        thinkingLevel: ThinkingLevel::HIGH,
-                    )
-                )
-            )
-            ->generateContent([
-                $this->getTaxPrompt(),
-                ...$blobs
-            ]);
+        // 3. Define the System Instruction / Primary Prompt
+        $promptParts = [
+            "You are an expert OCR and data extraction system. I am providing you with multiple cropped images from a document. Each image is preceded by its field name.
+            You will receive MULTIPLE image in a SINGLE request.
+            
+            GOAL: Extract valid data in images.
+            OBJECTIVE: Extract and aggregate valid value accurately
+            across all documents.
+            OUTPUT: Return strict JSON only. No preamble.
+        
+        RULES:
+        1. Extract the text from each image and map it to the corresponding field name.
+        2. For the 'nama_lengkap' field, extract the exact text.
+        3. For all 'nenkin_100', 'nenkin_80', 'nenkin_20', 'kokumin', and 'no_nenkin' fields, you MUST return ONLY an integer.
+        4. Strip out all currency symbols (like 円), commas (,), and spaces ( ). For example, '100,625円' becomes 100625. '4161 325041' becomes 4161325041.
+        5. If an image is completely blank or empty (like 'kokumin'), return 0 or null.
+        6.If value is uncertain:
+                - choose safest conservative interpretation
+                - NEVER overcount
+        "
+        ];
+
+        // 4. Interleave Field Names and Image Blobs into the payload
+        $files = [
+            'kokumin' => 'kokumin.png',
+            'nenkin_100' => 'nenkin_100.png',
+            'nenkin_20' => 'nenkin_20.png',
+            'nenkin_80' => 'nenkin_80.png',
+            'no_nenkin' => 'no_nenkin.png',
+            'nama_lengkap' => 'nama_lengkap.png'
+        ];
+        foreach ($files as $key => $fileName) {
+            $filePath = storage_path("app/public/ichijikin/{$ichijikin->ichijikinExtraction->batch_name}_ID_{$ichijikin->ichijikinExtraction->id}/crop/$ichijikin->file_stored_name/{$fileName}");
+
+            if (file_exists($filePath)) {
+                // Tell Gemini which field this image belongs to
+                $promptParts[] = "Field Name: " . $key;
+
+                // Provide the image
+                $promptParts[] = new Blob(
+                    mimeType: MimeType::IMAGE_PNG,
+                    data: base64_encode(file_get_contents($filePath))
+                );
+            }
+        }
+
+        logger([
+            'ICHIJIKIN AI PROMPT PART',
+            $promptParts
+        ]);
+
+        // 5. Send the SINGLE request to Gemini
+        $result = Gemini::generativeModel('gemini-1.5-flash')
+            ->withGenerationConfig($generationConfig)
+            ->generateContent($promptParts);
 
         logger(['result', $result]);
 
-        $response = [];
-        $thoughts = null;
-        foreach ($result->parts() as $part) {
-            if ($part->thought === true) {
-                // This part contains the model's thinking process
-                $thoughts = json_encode($part->text, true);
-            } else if ($part->text !== null) {
-                // This is the final answer
-                $response['json'] = json_decode($part->text, true);
-            }
-        }
-        $response['request_payload'] = json_encode([
-            'system_instruction' => $systemInstruction,
-            'prompt' => $this->getTaxPrompt(),
-            'attachments_count' => count($blobs),
-            'config' => [
-                'temperature' => 0.3,
-                'thinking_level' => 'HIGH',
-                'resolution' => 'HIGH'
-            ]
-        ], true);
-        logger(['score', $response['json']['confidence_score']]);
-        $response['confidence_score'] = $response['json']['confidence_score'];
-        $response['confidence_note'] = isset($response['json']['confidence_note']) ? $response['json']['confidence_note'] : null;
+        // 6. Decode and return the result
+        // Gemini will return a perfectly formatted JSON string because of our Schema
+        $extractedData = json_decode($result->text(), true);
 
-        $metadata = $result->usageMetadata;
-
-        $response['response_payload'] = json_encode([
-            'data' => $response['json'],
-            'thinking_process' => $thoughts, // Crucial for debugging why an extraction failed
-            'usage' => [
-                'prompt_tokens' => $metadata->promptTokenCount,
-                'candidates_tokens' => $metadata->candidatesTokenCount,
-                'total_tokens' => $metadata->totalTokenCount,
-            ]
-        ], true);
-
-        $response['input_tokens']    = $metadata->promptTokenCount;
-        $response['output_tokens']   = $metadata->candidatesTokenCount;
-        $response['cached_tokens']   = $metadata->cachedContentTokenCount ?? 0;
-        $response['thinking_tokens'] = $metadata->thoughtsTokenCount ?? 0;
-        $response['total_tokens']    = $metadata->totalTokenCount;
-
-        $input_price = env('GEMINI_INPUT_PRICE', 0.25); // per 1M tokens
-        $output_price = env('GEMINI_OUTPUT_PRICE', 1.50); // per 1M tokens
-
-        // 1. Calculate costs by dividing by 1,000,000
-        $response['input_cost']    = ($response['input_tokens'] / 1000000) * $input_price;
-
-        // 2. Note: 'output_tokens' usually includes the 'thinking_tokens' 
-        // if you are using candidatesTokenCount + thoughtsTokenCount
-        $response['output_cost']   = ($response['output_tokens'] / 1000000) * $output_price;
-
-        $response['thinking_cost'] = ($response['thinking_tokens'] / 1000000) * $output_price;
-
-        // 3. Total Cost is just the sum of input and output costs
-        // (Do NOT add the token counts to the currency amount)
-        $response['total_cost']    = $response['input_cost'] + $response['output_cost'];
-        return $response ?? [];
-    }
-
-    private function getTaxPrompt(): string
-    {
-  return 
-  "instruction": "Extract the following fields from the provided Ichijikin document image. Format dates as YYYY-MM-DD. Remove commas from currency amounts and return them as integers.",
-  "expected_schema": {
-    "date_of_entitlement": "Look for 'Date of entitlement' or '支給決定年月日' (e.g., 2025-10-15)",
-    "gross_payment_amount": "Look for 'Payments amount' or '支給額' under the Employees' Pension Insurance system section (Integer)",
-    "income_tax_deducted": "Look for 'Income Tax' or '所得税' (Integer)",
-    "net_payment_amount": "Look for 'Net payment amount' or '支払額' (Integer)",
-    "basic_pension_number": "Look for 'Your Basic Pension Number' or '基礎年金番号' (String)",
-    "recipient_name": "Look for the name printed above the address block at the bottom (String)",
-    "recipient_address": "Look for the full address block at the bottom right (String)";
-  
-    }
-
-    private function getMimeType(string $ext): MimeType
-    {
-        return match ($ext) {
-            'pdf' => MimeType::APPLICATION_PDF,
-            'png' => MimeType::IMAGE_PNG,
-            default => MimeType::IMAGE_JPEG,
-        };
+        return response()->json($extractedData);
     }
 }
