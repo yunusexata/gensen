@@ -9,6 +9,7 @@ use App\Models\GensenForm\GensenFormLink;
 use App\Models\Ichijikin\IchijikinExtraction;
 use App\Repositories\Exata\ExataFormCandidateRepository;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
+use App\Repositories\IchijikinExtraction\IchijikinExtractionRepository;
 use App\Repositories\MasterData\Regency\RegencyRepository;
 use Carbon\Carbon;
 use Exception;
@@ -30,7 +31,12 @@ class Detail extends Component
     public $file_ichijikin;
     public $batch_name;
 
-    public function mount() {}
+    public function mount()
+    {
+        if ($this->objId) {
+            $this->batch_name = IchijikinExtractionRepository::find(Crypt::decrypt($this->objId))->bacth_name;
+        }
+    }
 
     #[On('on-dialog-confirm')]
     public function onDialogConfirm()
