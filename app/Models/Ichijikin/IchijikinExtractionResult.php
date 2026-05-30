@@ -2,21 +2,17 @@
 
 namespace App\Models\Ichijikin;
 
-use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
-use App\Jobs\ExportGensenJob;
-use App\Jobs\ImportGensenJob;
 use App\Models\User;
+use App\Traits\Models\UppercaseAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Muhammadyunus1072\TrackHistory\HasTrackHistory;
-use Illuminate\Support\Facades\URL;
 
 class IchijikinExtractionResult extends Model
 {
     // php artisan reverb:start
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, UppercaseAttributes;
 
     protected $fillable = [
 
@@ -47,6 +43,10 @@ class IchijikinExtractionResult extends Model
 
     protected $casts = [
         'status' => JobStatus::class,
+    ];
+
+    protected array $uppercase = [
+        'nama_lengkap',
     ];
 
     protected static function onBoot()

@@ -12,8 +12,21 @@ class IchijikinExtractionFileRepository extends MasterDataRepository
         return IchijikinExtractionFile::class;
     }
 
-    public static function datatable()
+    public static function datatable($objId = null)
     {
-        return IchijikinExtractionFile::query();
+        return IchijikinExtractionFile::query()
+            ->select(
+                'ichijikin_extraction_files.id',
+                'ichijikin_extraction_results.nama_lengkap',
+            )
+            ->leftJoin(
+                'ichijikin_extraction_results as results',
+                'results.ichijikin_extraction_file_id',
+                '=',
+                'ichijikin_extraction_files.id'
+            )
+            ->when($objId, function ($q) use ($objId) {
+                $q->where('ichijikin_extraction_files.ichijikin_extraction_id', '=', $objId);
+            });
     }
 }

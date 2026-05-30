@@ -79,16 +79,8 @@ class DatatableBatchDetail extends Component
     {
         return [
             [
-                'key' => 'batch_name',
-                'name' => 'Nama Batch'
-            ],
-            [
-                'sortable' => false,
-                'searchable' => false,
-                'name' => 'Jumlah Data',
-                'render' => function ($item) {
-                    return $item->ichijikinExtractionFiles()->count();
-                }
+                'key' => 'nama_lengkap',
+                'name' => 'Nama Lengkap'
             ],
         ];
     }
