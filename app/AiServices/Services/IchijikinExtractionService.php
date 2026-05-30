@@ -11,6 +11,10 @@ use Gemini\Data\GenerationConfig;
 use Gemini\Enums\ResponseMimeType;
 use Gemini\Data\Schema;
 use Gemini\Enums\DataType;
+use Gemini\Data\Content;
+use Gemini\Enums\MediaResolution;
+use Gemini\Enums\ThinkingLevel;
+use Gemini\Data\ThinkingConfig;
 
 class IchijikinExtractionService
 {
@@ -64,34 +68,8 @@ class IchijikinExtractionService
             ]
         );
 
-        // 2. Set up the Generation Config
-        $generationConfig = new GenerationConfig(
-            responseMimeType: ResponseMimeType::APPLICATION_JSON,
-            responseSchema: $schema,
-            temperature: 0.0 // Set to 0 for maximum factual extraction
-        );
-
         // 3. Define the System Instruction / Primary Prompt
-        $promptParts = [
-            "You are an expert OCR and data extraction system. I am providing you with multiple cropped images from a document. Each image is preceded by its field name.
-            You will receive MULTIPLE image in a SINGLE request.
-            
-            GOAL: Extract valid data in images.
-            OBJECTIVE: Extract and aggregate valid value accurately
-            across all documents.
-            OUTPUT: Return strict JSON only. No preamble.
-        
-        RULES:
-        1. Extract the text from each image and map it to the corresponding field name.
-        2. For the 'nama_lengkap' field, extract the exact text.
-        3. For all 'nenkin_100', 'nenkin_80', 'nenkin_20', 'kokumin', and 'no_nenkin' fields, you MUST return ONLY an integer.
-        4. Strip out all currency symbols (like 円), commas (,), and spaces ( ). For example, '100,625円' becomes 100625. '4161 325041' becomes 4161325041.
-        5. If an image is completely blank or empty (like 'kokumin'), return 0 or null.
-        6.If value is uncertain:
-                - choose safest conservative interpretation
-                - NEVER overcount
-        "
-        ];
+        $promptParts = $this->getPrompt();
 
         // 4. Interleave Field Names and Image Blobs into the payload
         $files = [
@@ -122,17 +100,118 @@ class IchijikinExtractionService
             $promptParts
         ]);
 
+        $systemInstruction = "You are a precise data extraction AI. Analyze the provided Ichijikin document and extract the key fields accurately. Return the data ONLY as a valid JSON object matching the requested fields. If a field is missing, return null.";
         // 5. Send the SINGLE request to Gemini
         $result = Gemini::generativeModel('gemini-1.5-flash')
-            ->withGenerationConfig($generationConfig)
+            ->withSystemInstruction(Content::parse($systemInstruction))
+            ->withGenerationConfig(
+                generationConfig: new GenerationConfig(
+                    responseMimeType: ResponseMimeType::APPLICATION_JSON,
+                    responseSchema: $schema,
+
+                    // Critical for legal/tax accuracy:
+                    temperature: 0.0,
+                    mediaResolution: MediaResolution::MEDIA_RESOLUTION_HIGH,
+
+                    // Advanced Reasoning:
+                    thinkingConfig: new ThinkingConfig(
+                        includeThoughts: true,
+                        thinkingLevel: ThinkingLevel::HIGH,
+                    )
+                )
+            )
             ->generateContent($promptParts);
 
         logger(['result', $result]);
 
-        // 6. Decode and return the result
-        // Gemini will return a perfectly formatted JSON string because of our Schema
-        $extractedData = json_decode($result->text(), true);
+        $response = [];
+        $thoughts = null;
+        foreach ($result->parts() as $part) {
+            if ($part->thought === true) {
+                // This part contains the model's thinking process
+                $thoughts = json_encode($part->text, true);
+            } else if ($part->text !== null) {
+                // This is the final answer
+                $response['json'] = json_decode($part->text, true);
+            }
+        }
+        $response['request_payload'] = json_encode([
+            'system_instruction' => $systemInstruction,
+            'prompt' => $this->getPrompt(),
+            'attachments_count' => count($files),
+            'config' => [
+                'temperature' => 0.0,
+                'thinking_level' => new ThinkingConfig(
+                    includeThoughts: true,
+                    thinkingLevel: ThinkingLevel::HIGH,
+                )
+            ]
+        ], true);
+        logger(['score', $response['json']['confidence_score']]);
+        $response['confidence_score'] = $response['json']['confidence_score'];
+        $response['confidence_note'] = isset($response['json']['confidence_note']) ? $response['json']['confidence_note'] : null;
 
-        return response()->json($extractedData);
+        $metadata = $result->usageMetadata;
+
+        $response['response_payload'] = json_encode([
+            'data' => $response['json'],
+            'thinking_process' => $thoughts, // Crucial for debugging why an extraction failed
+            'usage' => [
+                'prompt_tokens' => $metadata->promptTokenCount,
+                'candidates_tokens' => $metadata->candidatesTokenCount,
+                'total_tokens' => $metadata->totalTokenCount,
+            ]
+        ], true);
+
+        $response['input_tokens']    = $metadata->promptTokenCount;
+        $response['output_tokens']   = $metadata->candidatesTokenCount;
+        $response['cached_tokens']   = $metadata->cachedContentTokenCount ?? 0;
+        $response['thinking_tokens'] = $metadata->thoughtsTokenCount ?? 0;
+        $response['total_tokens']    = $metadata->totalTokenCount;
+
+        $input_price = env('GEMINI_INPUT_PRICE', 0.25); // per 1M tokens
+        $output_price = env('GEMINI_OUTPUT_PRICE', 1.50); // per 1M tokens
+
+        // 1. Calculate costs by dividing by 1,000,000
+        $response['input_cost']    = ($response['input_tokens'] / 1000000) * $input_price;
+
+        // 2. Note: 'output_tokens' usually includes the 'thinking_tokens' 
+        // if you are using candidatesTokenCount + thoughtsTokenCount
+        $response['output_cost']   = ($response['output_tokens'] / 1000000) * $output_price;
+
+        $response['thinking_cost'] = ($response['thinking_tokens'] / 1000000) * $output_price;
+
+        // 3. Total Cost is just the sum of input and output costs
+        // (Do NOT add the token counts to the currency amount)
+        $response['total_cost']    = $response['input_cost'] + $response['output_cost'];
+        logger([
+            'RESPONSE FINAL',
+            $response
+        ]);
+        return $response ?? [];
+    }
+
+    private function getPrompt()
+    {
+        return [
+            "You are an expert OCR and data extraction system. I am providing you with multiple cropped images from a document. Each image is preceded by its field name.
+            You will receive MULTIPLE image in a SINGLE request.
+            
+            GOAL: Extract valid data in images.
+            OBJECTIVE: Extract and aggregate valid value accurately
+            across all documents.
+            OUTPUT: Return strict JSON only. No preamble.
+        
+        RULES:
+        1. Extract the text from each image and map it to the corresponding field name.
+        2. For the 'nama_lengkap' field, extract the exact text.
+        3. For all 'nenkin_100', 'nenkin_80', 'nenkin_20', 'kokumin', and 'no_nenkin' fields, you MUST return ONLY an integer.
+        4. Strip out all currency symbols (like 円), commas (,), and spaces ( ). For example, '100,625円' becomes 100625. '4161 325041' becomes 4161325041.
+        5. If an image is completely blank or empty (like 'kokumin'), return 0 or null.
+        6.If value is uncertain:
+                - choose safest conservative interpretation
+                - NEVER overcount
+        "
+        ];
     }
 }

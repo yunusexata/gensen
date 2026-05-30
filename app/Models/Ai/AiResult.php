@@ -71,6 +71,11 @@ class AiResult extends Model
 
                 event(new RemittanceExtractionFinished($model->subject_id));
             };
+
+            if ($model->result_type == AiJob::JOB_TYPE_ICHIJIKIN_EXTRACTION) {
+                logger('DAH SAMPE RESULT ICHIJIKIN');
+                logger(json_decode($model->result_json, true));
+            }
         });
     }
 

@@ -93,6 +93,9 @@ class ExtractionIchijikinJob implements ShouldQueue
                     'thinking_tokens' =>
                     $result['thinking_tokens'],
 
+                    'total_tokens' =>
+                    $result['total_tokens'],
+
                     'cached_tokens' =>
                     $result['cached_tokens'],
 

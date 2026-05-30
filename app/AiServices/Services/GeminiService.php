@@ -176,7 +176,7 @@ class GeminiService
             'prompt' => $this->getTaxPrompt(),
             'attachments_count' => count($blobs),
             'config' => [
-                'temperature' => 0.3,
+                'temperature' => 0.0,
                 'thinking_level' => 'HIGH',
                 'resolution' => 'HIGH'
             ]
