@@ -113,14 +113,14 @@ class DatatableBatch extends Component
                 'key' => 'batch_name',
                 'name' => 'Nama Batch'
             ],
-            [
-                'sortable' => false,
-                'searchable' => false,
-                'name' => 'Jumlah Data',
-                'render' => function ($item) {
-                    return $item->ichijikinExtractionFiles->count();
-                }
-            ],
+            // [
+            //     'sortable' => false,
+            //     'searchable' => false,
+            //     'name' => 'Jumlah Data',
+            //     'render' => function ($item) {
+            //         return $item->ichijikinExtractionFiles->count();
+            //     }
+            // ],
         ];
     }
 
