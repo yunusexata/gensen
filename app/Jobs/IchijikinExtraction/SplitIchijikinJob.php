@@ -197,10 +197,10 @@ class SplitIchijikinJob implements ShouldQueue
             "{$outputDir}/*.jpg"
         );
 
-        // logger([
-        //     'get generated file',
-        //     $generatedFiles
-        // ]);
+        logger([
+            'get generated file',
+            $generatedFiles
+        ]);
 
         /*
                 |--------------------------------------------------------------------------
