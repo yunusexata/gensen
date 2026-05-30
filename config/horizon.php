@@ -235,7 +235,7 @@ return [
                 'maxTime' => 3600,
                 'maxJobs' => 100,
 
-                'nice' => 0,
+                'nice' => 10,
             ],
             'supervisor-pdf' => [
                 'connection' => 'redis',
@@ -256,7 +256,7 @@ return [
                 'maxTime' => 3600,
                 'maxJobs' => 20,
 
-                'nice' => 2,
+                'nice' => 12,
             ],
             'supervisor-crop' => [
 
@@ -274,7 +274,7 @@ return [
                 'maxTime' => 3600,
                 'maxJobs' => 100,
 
-                'nice' => 5,
+                'nice' => 8,
             ],
 
             'supervisor-extract' => [
@@ -318,7 +318,7 @@ return [
                 'maxTime' => 3600,
                 'maxJobs' => 20,
 
-                'nice' => -2,
+                'nice' => 0,
             ],
         ],
     ],
