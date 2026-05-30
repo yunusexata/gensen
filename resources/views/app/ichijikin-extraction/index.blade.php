@@ -36,7 +36,7 @@
 
     <div class="card">
         <div class="card-body">
-            <livewire:gensen-form.gensen-form-link.datatable lazy />
+            <livewire:ichijikin-extraction.datatable-batch lazy />
         </div>
     </div>
 @stop

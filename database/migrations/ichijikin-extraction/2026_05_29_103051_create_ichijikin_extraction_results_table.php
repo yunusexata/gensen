@@ -37,7 +37,7 @@ return new class extends Migration
             $table->index('status', 'ichijikin_es_status_idx');
         }
 
-        $table->foreignId('ichijikin_extraction_file_id')->constrained();
+        $table->unsignedBigInteger('ichijikin_extraction_file_id');
 
         $table->string('nama_lengkap')->nullable();
         $table->string('no_nenkin')->nullable();

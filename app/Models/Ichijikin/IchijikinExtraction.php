@@ -45,6 +45,12 @@ class IchijikinExtraction extends Model
         });
     }
 
+
+    public function ichijikinExtractionFiles()
+    {
+        return $this->hasMany(IchijikinExtractionFile::class, 'ichijikin_extraction_id', 'id');
+    }
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
