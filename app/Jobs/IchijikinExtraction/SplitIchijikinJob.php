@@ -60,60 +60,58 @@ class SplitIchijikinJob implements ShouldQueue
         }
 
 
-        $tmpDir = "ichijikin/{$attachment->batch_name}/resource";
-        logger([
-            'tmp dir 63',
-            $tmpDir
-        ]);
+        // $tmpDir = "ichijikin/{$attachment->batch_name}/resource";
+        // logger([
+        //     'tmp dir 63',
+        //     $tmpDir
+        // ]);
 
-        if (!Storage::disk($store_disk)->exists($tmpDir)) {
-            Storage::disk($store_disk)->makeDirectory($tmpDir);
-        }
-
-        $tmpPdfPath = $tmpDir . '/' . basename($attachment->path);
+        // if (!Storage::disk($store_disk)->exists($tmpDir)) {
+        //     Storage::disk($store_disk)->makeDirectory($tmpDir);
+        // }
 
 
-        logger([
-            'tmp pdf path 75',
-            $tmpPdfPath
-        ]);
+        // logger([
+        //     'tmp pdf path 75',
+        //     $tmpPdfPath
+        // ]);
         /*
                 |--------------------------------------------------------------------------
                 | STREAM DOWNLOAD (Supabase → Local)
                 |--------------------------------------------------------------------------
                 */
-        $readStream = $storage->readStream($attachment->path);
+        // $readStream = $storage->readStream($attachment->path);
         // logger([
         //     'content stream att',
         //     stream_get_contents($readStream)
         // ]);
 
-        if ($readStream === false) {
-            throw new Exception("Failed to read remote file");
-        }
-        $localPdfPath = storage_path(
-            'app/' . $store_disk . '/' . $tmpPdfPath
-        );
+        // if ($readStream === false) {
+        //     throw new Exception("Failed to read remote file");
+        // }
+        // $localPdfPath = storage_path(
+        //     'app/' . $store_disk . '/' . $tmpPdfPath
+        // );
 
-        $localDir = dirname($localPdfPath);
+        // $localDir = dirname($localPdfPath);
 
-        if (!is_dir($localDir)) {
+        // if (!is_dir($localDir)) {
 
-            mkdir(
-                $localDir,
-                0755,
-                true
-            );
-        }
-        $writeStream = fopen($localPdfPath, 'w');
+        //     mkdir(
+        //         $localDir,
+        //         0755,
+        //         true
+        //     );
+        // }
+        // $writeStream = fopen($localPdfPath, 'w');
 
-        stream_copy_to_stream($readStream, $writeStream);
+        // stream_copy_to_stream($readStream, $writeStream);
 
-        fclose($readStream);
-        fclose($writeStream);
-        $local_path = $tmpPdfPath;
+        // fclose($readStream);
+        // fclose($writeStream);
+        // $local_path = $tmpPdfPath;
 
-        $extension = strtolower(pathinfo($local_path, PATHINFO_EXTENSION));
+        // $extension = strtolower(pathinfo($local_path, PATHINFO_EXTENSION));
 
         /*
                 |--------------------------------------------------------------------------
@@ -156,6 +154,7 @@ class SplitIchijikinJob implements ShouldQueue
         //     "-sOutputFile={$outputPattern}",
         //     storage_path('app/' . $store_disk . '/' . $tmpPdfPath),
         // ]);
+        $tmpPdfPath = $attachment->path;
         $process = new Process([
             'gs',
             '-sDEVICE=jpeggray',

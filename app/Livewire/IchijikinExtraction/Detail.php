@@ -52,14 +52,14 @@ class Detail extends Component
     {
         try {
             DB::transaction(function () {
-                $disk = 'private';
+                $disk = 'public';
 
                 $extension = $this->file_ichijikin
                     ->extension();
 
                 $fileName =  'ICHIJIKIN EXTRACTION - ' . $this->batch_name . ' - ' . now()->format('Ymd')  . '.' . $extension;
                 $filePath = Storage::disk($disk)->putFileAs(
-                    'ichijikin/' . $this->batch_name,
+                    'ichijikin/' . $this->batch_name . '/resource',
                     $this->file_ichijikin,
                     $fileName,
                     [
