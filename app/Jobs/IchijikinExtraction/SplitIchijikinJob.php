@@ -36,7 +36,7 @@ class SplitIchijikinJob implements ShouldQueue
         logger(['Split Ichijikin Job']);
 
         $attachment = $this->model;
-        $tmpDir = "ichijikin/{$attachment->batch_name}_ID_{$attachment->id}";
+        $tmpDir = "ichijikin/{$attachment->batch_name}";
         $tmpPdfPath = $tmpDir . '/' . basename($attachment->path);
         $local_path = $tmpPdfPath;
         $extension = strtolower(pathinfo($local_path, PATHINFO_EXTENSION));
@@ -119,7 +119,7 @@ class SplitIchijikinJob implements ShouldQueue
                 |--------------------------------------------------------------------------
                 */
 
-        $dir = "ichijikin/{$attachment->batch_name}_ID_{$attachment->id}/converted";
+        $dir = "ichijikin/{$attachment->batch_name}/converted";
 
 
         logger([
