@@ -163,7 +163,7 @@ class SplitIchijikinJob implements ShouldQueue
         // ]);
         $process = new Process([
             'gs',
-            '-sDEVICE=jpeg',
+            '-sDEVICE=jpeggray',
             '-r150',                            // Perfect resolution match (~1240x1754 A4 size)
             '-dNOPAUSE',
             '-dBATCH',
@@ -171,8 +171,6 @@ class SplitIchijikinJob implements ShouldQueue
             '-dINTERPOLATE',                    // High-quality image scaling
             '-dTextAlphaBits=4',                // CRITICAL: Max anti-aliasing for readable fonts/Kanji
             '-dGraphicsAlphaBits=4',            // Max anti-aliasing for clear document lines
-            '-sProcessColorModel=DeviceGray',   // Forces Ghostscript pipeline to grayscale internal engine
-            '-sColorConversionStrategy=Gray',   // Outputs pure single-channel grayscale 
             '-dJPEGQ=85',                       // Sweet spot for OCR text retention without compression artifacts
             "-sOutputFile={$outputPattern}",
             storage_path('app/' . $store_disk . '/' . $tmpPdfPath),
