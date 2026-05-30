@@ -167,29 +167,54 @@ class IchijikinService
         // $coord = ['x' => 30, 'y' => 250, 'width' => 250, 'height' => 45];
         // $this->cropImage($path, $coord, $folder, 'date');
 
-        // Crop Payment Top
-        $coord = ['x' => 610, 'y' => 50, 'width' => 165, 'height' => 50];
+        // New Reference Dimensions: Width = 1241, Height = 1755
+
+        // Crop Kokumin
+        $coord = ['x' => 669, 'y' => 55, 'width' => 181, 'height' => 55];
         $this->cropImage($path, $coord, $folder, 'kokumin');
 
         // Crop Payment
-        $coord = ['x' => 610, 'y' => 370, 'width' => 180, 'height' => 50];
+        $coord = ['x' => 669, 'y' => 406, 'width' => 198, 'height' => 55];
         $this->cropImage($path, $coord, $folder, 'nenkin_100');
 
         // Crop Income
-        $coord = ['x' => 610, 'y' => 440, 'width' => 180, 'height' => 50];
+        $coord = ['x' => 669, 'y' => 483, 'width' => 198, 'height' => 55];
         $this->cropImage($path, $coord, $folder, 'nenkin_20');
 
         // Crop Net
-        $coord = ['x' => 610, 'y' => 530, 'width' => 180, 'height' => 50];
+        $coord = ['x' => 669, 'y' => 581, 'width' => 198, 'height' => 55];
         $this->cropImage($path, $coord, $folder, 'nenkin_80');
 
         // Crop Number
-        $coord = ['x' => 660, 'y' => 950, 'width' => 170, 'height' => 50];
+        $coord = ['x' => 724, 'y' => 1042, 'width' => 187, 'height' => 55];
         $this->cropImage($path, $coord, $folder, 'no_nenkin');
 
         // Crop Name
-        $coord = ['x' => 420, 'y' => 1000, 'width' => 700, 'height' => 70];
+        $coord = ['x' => 461, 'y' => 1097, 'width' => 768, 'height' => 77];
         $this->cropImage($path, $coord, $folder, 'nama_lengkap');
+        // // Crop Payment Top
+        // $coord = ['x' => 610, 'y' => 50, 'width' => 165, 'height' => 50];
+        // $this->cropImage($path, $coord, $folder, 'kokumin');
+
+        // // Crop Payment
+        // $coord = ['x' => 610, 'y' => 370, 'width' => 180, 'height' => 50];
+        // $this->cropImage($path, $coord, $folder, 'nenkin_100');
+
+        // // Crop Income
+        // $coord = ['x' => 610, 'y' => 440, 'width' => 180, 'height' => 50];
+        // $this->cropImage($path, $coord, $folder, 'nenkin_20');
+
+        // // Crop Net
+        // $coord = ['x' => 610, 'y' => 530, 'width' => 180, 'height' => 50];
+        // $this->cropImage($path, $coord, $folder, 'nenkin_80');
+
+        // // Crop Number
+        // $coord = ['x' => 660, 'y' => 950, 'width' => 170, 'height' => 50];
+        // $this->cropImage($path, $coord, $folder, 'no_nenkin');
+
+        // // Crop Name
+        // $coord = ['x' => 420, 'y' => 1000, 'width' => 700, 'height' => 70];
+        // $this->cropImage($path, $coord, $folder, 'nama_lengkap');
 
         // Crop Address
         // $coord = ['x' => 400, 'y' => 1050, 'width' => 700, 'height' => 100];
