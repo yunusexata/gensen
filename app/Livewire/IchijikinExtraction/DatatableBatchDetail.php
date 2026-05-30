@@ -79,6 +79,13 @@ class DatatableBatchDetail extends Component
     {
         return [
             [
+                'key' => 'file_stored_name',
+                'name' => 'Nama File',
+                'render' => function ($item) {
+                    return $item->file_stored_name;
+                }
+            ],
+            [
                 'key' => 'nama_lengkap',
                 'name' => 'Nama Lengkap',
                 'render' => function ($item) {
