@@ -18,6 +18,12 @@ class IchijikinExtractionFileRepository extends MasterDataRepository
             ->select(
                 'ichijikin_extraction_files.id',
                 'results.nama_lengkap',
+                'results.no_nenkin',
+                'results.lama_kerja',
+                'results.nenkin_100',
+                'results.nenkin_80',
+                'results.nenkin_20',
+                'results.type',
             )
             ->leftJoin(
                 'ichijikin_extraction_results as results',

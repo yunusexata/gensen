@@ -85,6 +85,41 @@ class DatatableBatchDetail extends Component
                     return $item->nama_lengkap ?? 'Belum Di Proses';
                 }
             ],
+            [
+                'key' => 'no_nenkin',
+                'name' => 'No Nenkin',
+                'render' => function ($item) {
+                    return $item->no_nenkin ?? 'Belum Di Proses';
+                }
+            ],
+            [
+                'key' => 'nenkin_100',
+                'name' => 'Nenkin 100',
+                'render' => function ($item) {
+                    return $item->nenkin_100 ?? 'Belum Di Proses';
+                }
+            ],
+            [
+                'key' => 'nenkin_80',
+                'name' => 'Nenkin 80',
+                'render' => function ($item) {
+                    return $item->nenkin_80 ?? 'Belum Di Proses';
+                }
+            ],
+            [
+                'key' => 'nenkin_20',
+                'name' => 'Nenkin 20',
+                'render' => function ($item) {
+                    return $item->nenkin_20 ?? 'Belum Di Proses';
+                }
+            ],
+            [
+                'key' => 'type',
+                'name' => 'Tipe',
+                'render' => function ($item) {
+                    return $item->type ?? 'Belum Di Proses';
+                }
+            ],
         ];
     }
 
