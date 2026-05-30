@@ -74,8 +74,8 @@ class VisionOcrService
             $srcHeight = imagesy($src);
 
             // Reference size (size used when defining coordinates)
-            $referenceWidth  = 1131;
-            $referenceHeight = 1600;
+            $referenceWidth  = 1241;
+            $referenceHeight = 1755;
 
             // ==============================
             // 3️⃣ CALCULATE SCALE FACTOR
@@ -158,7 +158,9 @@ class VisionOcrService
     public function handleDocument($model, $path)
     {
         $epath = explode('/', $path);
-        $folder = $epath[0] . '/' . $epath[1];
+        // $folder = $epath[0] . '/' . $epath[1];
+        $folder = "ichijikin/{$model->batch_name}/crop";
+        $storedName = pathinfo($model->stored_name, PATHINFO_FILENAME);
 
         // Crop Date
         $coord = ['x' => 30, 'y' => 250, 'width' => 250, 'height' => 45];

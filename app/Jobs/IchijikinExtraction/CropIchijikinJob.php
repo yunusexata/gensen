@@ -22,7 +22,7 @@ use Spatie\Image\Image;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Symfony\Component\Process\Process;
 
-class SplitIchijikinJob implements ShouldQueue
+class CropIchijikinJob implements ShouldQueue
 {
     use Dispatchable, Queueable, SerializesModels;
 
@@ -135,8 +135,13 @@ class SplitIchijikinJob implements ShouldQueue
 
         $outputDir = storage_path("app/{$store_disk}/{$dir}");
 
-        // $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
-        $outputPattern = storage_path("app/{$store_disk}/{$dir}/%04d.jpg");
+        $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
+        $outputPattern = storage_path("app/{$store_disk}/{$dir}/{$storedName} - %04d.jpg");
+
+        logger([
+            'stored name 97',
+            $storedName
+        ]);
         logger([
             'stored output dir 97',
             $outputPattern
@@ -195,7 +200,7 @@ class SplitIchijikinJob implements ShouldQueue
                 */
 
         $generatedFiles = glob(
-            "{$outputDir}/*.jpg"
+            "{$outputDir}/{$storedName}_page-*.jpg"
         );
 
         logger([

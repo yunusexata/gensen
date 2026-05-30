@@ -57,7 +57,7 @@ class Detail extends Component
                 $extension = $this->file_ichijikin
                     ->extension();
 
-                $fileName =  'ICHIJIKIN EXTRACTION - ' . $this->batch_name . ' - ' . now()->format('Ymd') . ' - ' . Str::uuid() . '.' . $extension;
+                $fileName =  'ICHIJIKIN EXTRACTION - ' . $this->batch_name . ' - ' . now()->format('Ymd')  . '.' . $extension;
                 $filePath = Storage::disk($disk)->putFileAs(
                     'ichijikin/' . $this->batch_name,
                     $this->file_ichijikin,

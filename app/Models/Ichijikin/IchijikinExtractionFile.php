@@ -50,7 +50,9 @@ class IchijikinExtractionFile extends Model
     protected static function onBoot()
     {
         // self::creating(function ($model) {});
-        // self::created(function ($model) {});
+        self::created(function ($model) {
+            // SplitIchijikinJob::dispatch($model)->onQueue('extract');
+        });
     }
 
     public function creator()
