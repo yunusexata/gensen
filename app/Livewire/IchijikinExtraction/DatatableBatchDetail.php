@@ -80,7 +80,10 @@ class DatatableBatchDetail extends Component
         return [
             [
                 'key' => 'nama_lengkap',
-                'name' => 'Nama Lengkap'
+                'name' => 'Nama Lengkap',
+                'render' => function ($item) {
+                    return $item->nama_lengkap ?? 'KOSONG';
+                }
             ],
         ];
     }
