@@ -5,7 +5,6 @@ namespace App\Livewire\IchijikinExtraction;
 use App\Helpers\Alert;
 use App\Helpers\PermissionHelper;
 use App\Repositories\Account\UserRepository;
-use App\Repositories\GensenForm\GensenFormLinkRepository;
 use App\Repositories\IchijikinExtraction\IchijikinExtractionRepository;
 use App\Traits\Livewire\WithDatatable;
 use Illuminate\Database\Eloquent\Builder;
@@ -127,7 +126,7 @@ class DatatableBatch extends Component
 
     public function getQuery(): Builder
     {
-        return GensenFormLinkRepository::datatable();
+        return IchijikinExtractionRepository::datatable();
     }
 
     public function getView(): string
