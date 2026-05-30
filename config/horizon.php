@@ -218,7 +218,7 @@ return [
             'supervisor-default' => [
                 'connection' => 'redis',
                 'queue' => ['default'],
-                'maxProcesses' => 1,
+                'maxProcesses' => 2,
                 'memory' => 512,
                 'timeout' => 120,
                 'tries' => 1,
@@ -232,7 +232,7 @@ return [
                 'balanceCooldown' => 5,
 
 
-                'maxTime' => 0,
+                'maxTime' => 3600,
                 'maxJobs' => 100,
 
                 'nice' => 0,
@@ -240,31 +240,8 @@ return [
             'supervisor-pdf' => [
                 'connection' => 'redis',
                 'queue' => ['pdf'],
-                'maxProcesses' => 1,
+                'maxProcesses' => 2,
                 'memory' => 1024,
-                'timeout' => 600,
-                'tries' => 1,
-
-                'balance' => 'auto',
-                'autoScalingStrategy' => 'time',
-
-                'minProcesses' => 1,
-
-                'balanceMaxShift' => 1,
-                'balanceCooldown' => 5,
-
-
-                'maxTime' => 0,
-                'maxJobs' => 100,
-
-                'nice' => 0,
-            ],
-
-            'supervisor-extract' => [
-                'connection' => 'redis',
-                'queue' => ['extract'],
-                'maxProcesses' => 1,
-                'memory' => 768,
                 'timeout' => 600,
                 'tries' => 1,
 
@@ -276,11 +253,50 @@ return [
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 5,
 
+                'maxTime' => 3600,
+                'maxJobs' => 20,
 
-                'maxTime' => 0,
+                'nice' => 2,
+            ],
+            'supervisor-crop' => [
+
+                'queue' => ['crop'],
+
+                'maxProcesses' => 4,
+
+                'memory' => 256,
+
+                'timeout' => 120,
+
+                'tries' => 1,
+
+                'maxTime' => 3600,
                 'maxJobs' => 100,
 
-                'nice' => 0,
+                'nice' => 5,
+            ],
+
+            'supervisor-extract' => [
+                'connection' => 'redis',
+                'queue' => ['extract'],
+                'maxProcesses' => 2,
+                'memory' => 1024,
+                'timeout' => 600,
+                'tries' => 3,
+
+                'balance' => 'simple',
+                'autoScalingStrategy' => 'time',
+
+                'minProcesses' => 1,
+
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 5,
+
+
+                'maxTime' => 3600,
+                'maxJobs' => 30,
+
+                'nice' => 7,
             ],
             'supervisor-excel' => [
                 'connection' => 'redis',
@@ -292,16 +308,16 @@ return [
                 'maxProcesses' => 1,
                 'minProcesses' => 1,
 
-                'memory' => 512,
+                'memory' => 768,
 
                 'timeout' => 300,
 
                 'tries' => 1,
 
-                'maxTime' => 0,
-                'maxJobs' => 100,
+                'maxTime' => 3600,
+                'maxJobs' => 20,
 
-                'nice' => 5,
+                'nice' => -2,
             ],
         ],
     ],

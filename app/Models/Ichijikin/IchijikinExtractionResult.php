@@ -16,14 +16,17 @@ class IchijikinExtractionResult extends Model
 
     protected $fillable = [
 
+        'ichijikin_extraction_id',
         'ichijikin_extraction_file_id',
 
         'nama_lengkap',
         'no_nenkin',
         'lama_kerja',
+        'kokumin',
         'nenkin_100',
         'nenkin_80',
         'nenkin_20',
+
         'type',
 
         'error_message',

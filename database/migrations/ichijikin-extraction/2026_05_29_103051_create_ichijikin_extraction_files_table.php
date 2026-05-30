@@ -36,7 +36,7 @@ return new class extends Migration
             $table->index('merge_path', 'ichijikin_ef_merge_path_idx');
         }
 
-        $table->unsignedBigInteger('ichijikin_extraction_id')();
+        $table->unsignedBigInteger('ichijikin_extraction_id');
         $table->text('file_stored_name')->nullable();
 
         $table->string('disk')->nullable();                // local / s3

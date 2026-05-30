@@ -41,14 +41,18 @@ class IchijikinExtraction extends Model
     protected static function onBoot()
     {
         self::created(function ($model) {
-            SplitIchijikinJob::dispatch($model)->onQueue('extract');
+            SplitIchijikinJob::dispatch($model)->onQueue('pdf');
         });
     }
-
 
     public function ichijikinExtractionFiles()
     {
         return $this->hasMany(IchijikinExtractionFile::class, 'ichijikin_extraction_id', 'id');
+    }
+
+    public function ichijikinExtractionResults()
+    {
+        return $this->hasMany(IchijikinExtractionResult::class, 'ichijikin_extraction_id', 'id');
     }
 
     public function creator()

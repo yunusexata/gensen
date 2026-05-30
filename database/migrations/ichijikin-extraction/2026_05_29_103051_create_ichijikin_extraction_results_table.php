@@ -37,11 +37,13 @@ return new class extends Migration
             $table->index('status', 'ichijikin_es_status_idx');
         }
 
+        $table->unsignedBigInteger('ichijikin_extraction_id');
         $table->unsignedBigInteger('ichijikin_extraction_file_id');
 
         $table->string('nama_lengkap')->nullable();
         $table->string('no_nenkin')->nullable();
         $table->integer('lama_kerja')->nullable();
+        $table->double('kokumin', 20, 2, true)->nullable();
         $table->double('nenkin_100', 20, 2, true)->nullable();
         $table->double('nenkin_80', 20, 2, true)->nullable();
         $table->double('nenkin_20', 20, 2, true)->nullable();

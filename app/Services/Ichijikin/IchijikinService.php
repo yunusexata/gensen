@@ -13,7 +13,7 @@ use Google\Cloud\Vision\V1\Image;
 use setasign\Fpdi\Fpdi;
 
 
-class VisionOcrService
+class IchijikinService
 {
     public function cropImage($path, $coords, $des, $name)
     {
@@ -155,59 +155,60 @@ class VisionOcrService
         }
     }
 
-    public function handleDocument($model, $path)
+    public function handleCropDocument($model)
     {
-        $epath = explode('/', $path);
+        $epath = explode('/', $model->path);
+        $path = $model->path;
         // $folder = $epath[0] . '/' . $epath[1];
-        $folder = "ichijikin/{$model->batch_name}/crop";
-        $storedName = pathinfo($model->stored_name, PATHINFO_FILENAME);
+        $folder = "ichijikin/{$model->ichijikinExtraction->batch_name}/crop/$model->file_stored_name";
+        // $storedName = pathinfo($model->stored_name, PATHINFO_FILENAME);
 
-        // Crop Date
-        $coord = ['x' => 30, 'y' => 250, 'width' => 250, 'height' => 45];
-        $this->cropImage($path, $coord, $folder, 'date');
+        // // Crop Date
+        // $coord = ['x' => 30, 'y' => 250, 'width' => 250, 'height' => 45];
+        // $this->cropImage($path, $coord, $folder, 'date');
 
         // Crop Payment Top
         $coord = ['x' => 610, 'y' => 50, 'width' => 165, 'height' => 50];
-        $this->cropImage($path, $coord, $folder, 'payment_top');
+        $this->cropImage($path, $coord, $folder, 'kokumin');
 
         // Crop Payment
         $coord = ['x' => 610, 'y' => 370, 'width' => 180, 'height' => 50];
-        $this->cropImage($path, $coord, $folder, 'payment');
+        $this->cropImage($path, $coord, $folder, 'nenkin_100');
 
         // Crop Income
         $coord = ['x' => 610, 'y' => 440, 'width' => 180, 'height' => 50];
-        $this->cropImage($path, $coord, $folder, 'income');
+        $this->cropImage($path, $coord, $folder, 'nenkin_20');
 
         // Crop Net
         $coord = ['x' => 610, 'y' => 530, 'width' => 180, 'height' => 50];
-        $this->cropImage($path, $coord, $folder, 'net');
+        $this->cropImage($path, $coord, $folder, 'nenkin_80');
 
         // Crop Number
         $coord = ['x' => 660, 'y' => 950, 'width' => 170, 'height' => 50];
-        $this->cropImage($path, $coord, $folder, 'number');
+        $this->cropImage($path, $coord, $folder, 'no_nenkin');
 
         // Crop Name
         $coord = ['x' => 420, 'y' => 1000, 'width' => 700, 'height' => 70];
-        $this->cropImage($path, $coord, $folder, 'name');
+        $this->cropImage($path, $coord, $folder, 'nama_lengkap');
 
         // Crop Address
-        $coord = ['x' => 400, 'y' => 1050, 'width' => 700, 'height' => 100];
-        $this->cropImage($path, $coord, $folder, 'address');
+        // $coord = ['x' => 400, 'y' => 1050, 'width' => 700, 'height' => 100];
+        // $this->cropImage($path, $coord, $folder, 'address');
 
-        $nenkin = ConvertDataIchijikinRepository::update($model->id, [
-            'date' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/date.png'), 'date')['text'] ?? null,
-            'payment_top' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/payment_top.png'), 'payment_top')['text'] ?? null,
-            'payment' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/payment.png'), 'payment')['text'] ?? null,
-            'income' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/income.png'), 'income')['text'] ?? null,
-            'net' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/net.png'), 'net')['text'] ?? null,
-            'number' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/number.png'), 'number')['text'] ?? null,
-            'name' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/name.png'), 'name')['text'] ?? null,
-            'address' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/address.png'), 'address')['text'] ?? null,
-        ]);
+        // $nenkin = ConvertDataIchijikinRepository::update($model->id, [
+        //     'date' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/date.png'), 'date')['text'] ?? null,
+        //     'payment_top' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/payment_top.png'), 'payment_top')['text'] ?? null,
+        //     'payment' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/payment.png'), 'payment')['text'] ?? null,
+        //     'income' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/income.png'), 'income')['text'] ?? null,
+        //     'net' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/net.png'), 'net')['text'] ?? null,
+        //     'number' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/number.png'), 'number')['text'] ?? null,
+        //     'name' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/name.png'), 'name')['text'] ?? null,
+        //     'address' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/address.png'), 'address')['text'] ?? null,
+        // ]);
 
-        $this->drawLabelPdf(storage_path('app/public/' . $path), $folder, ConvertDataIchijikinRepository::find($model->id));
+        // $this->drawLabelPdf(storage_path('app/public/' . $path), $folder, ConvertDataIchijikinRepository::find($model->id));
 
-        $this->drawLabelImage(storage_path('app/public/' . $path), $folder, ConvertDataIchijikinRepository::find($model->id));
+        // $this->drawLabelImage(storage_path('app/public/' . $path), $folder, $model->kokumin, $model->nenkin_100);
     }
 
     public function detectDocumentText($path, string $name)
@@ -344,7 +345,7 @@ class VisionOcrService
         // return $result['pages'][0]['blocks'];
     }
 
-    public function drawLabelImage($imagePath, $desPath, $model)
+    public function drawLabelImage($imagePath, $desPath, $kokumin = null, $nenkin_100 = null)
     {
         // Load image
         $image = imagecreatefromjpeg($imagePath);
@@ -367,7 +368,7 @@ class VisionOcrService
 
         imagesetthickness($image, 6);
 
-        if ($model->payment_top) {
+        if ($kokumin) {
 
             // === SCALE POSITION ===
             $x = 285 * $scaleX;
@@ -407,7 +408,7 @@ class VisionOcrService
             );
         }
 
-        if ($model->payment) {
+        if ($nenkin_100) {
             /*
         === DRAW 100% LABEL ===
         */

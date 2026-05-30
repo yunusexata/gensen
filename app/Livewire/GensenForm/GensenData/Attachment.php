@@ -503,7 +503,7 @@ class Attachment extends Component
         ConvertPdfToImagesJob::dispatch(
             self::class,
             $gensen_form_attachment
-        )->onQueue('default');
+        )->onQueue('pdf');
 
         Alert::information($this, 'Data berhasil di convert');
 

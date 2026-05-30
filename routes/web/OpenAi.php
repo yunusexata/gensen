@@ -1,15 +1,18 @@
 <?php
 
 use App\Ai\Agents\DocumentClassificationEngine;
+use App\Jobs\IchijikinExtraction\CropIchijikinJob;
 use App\Jobs\SendGensenFormCreatedEmailJob;
 use App\Models\Ai\AiJob;
 use App\Models\GensenForm\GensenForm;
+use App\Models\Ichijikin\IchijikinExtractionFile;
 use App\Repositories\GensenForm\GensenFormRepository;
+use App\Services\Ichijikin\IchijikinService;
+use Gemini\Laravel\Facades\Gemini;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Ai\Files;
 use OpenAI\Laravel\Facades\OpenAI;
-use Gemini\Laravel\Facades\Gemini;
 
 Route::get('/ai-test', function () {
     // $response = Gemini::models()->retrieve('models/gemini-2.5-flash-lite');
@@ -61,15 +64,23 @@ Route::get('/ai-test', function () {
     // $gensen = GensenForm::first();
     // SendGensenFormCreatedEmailJob::dispatch($gensen);
 
-    $disk = env('DEFAULT_STORE_DISK', 'private');
-    $url = Storage::disk($disk)->temporaryUrl(
-        'test.txt',
-        now()->addMinutes(5)
-    );
-    // $url = 'oke';
-    Storage::disk($disk)->put(
-        'test.txt',
-        'Hello Supabase Storage'
-    );
-    return $url;
+    // $disk = env('DEFAULT_STORE_DISK', 'private');
+    // $url = Storage::disk($disk)->temporaryUrl(
+    //     'test.txt',
+    //     now()->addMinutes(5)
+    // );
+    // // $url = 'oke';
+    // Storage::disk($disk)->put(
+    //     'test.txt',
+    //     'Hello Supabase Storage'
+    // );
+    // return $url;
+    $att = IchijikinExtractionFile::first();
+
+
+    CropIchijikinJob::dispatch($att)->onQueue('crop');
+    // $data = app(IchijikinService::class)
+    //     ->handleCropDocument($this->model);
+
+    return 'oke';
 });

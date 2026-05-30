@@ -5,6 +5,7 @@ namespace App\Models\Ichijikin;
 use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Jobs\ExportGensenJob;
+use App\Jobs\IchijikinExtraction\CropIchijikinJob;
 use App\Jobs\ImportGensenJob;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,13 +52,18 @@ class IchijikinExtractionFile extends Model
     {
         // self::creating(function ($model) {});
         self::created(function ($model) {
-            // SplitIchijikinJob::dispatch($model)->onQueue('extract');
+            CropIchijikinJob::dispatch($model)->onQueue('crop');
         });
     }
 
     public function result()
     {
         return $this->hasOne(IchijikinExtractionResult::class);
+    }
+
+    public function ichijikinExtraction()
+    {
+        return $this->belongsTo(IchijikinExtraction::class, 'ichijikin_extraction_id', 'id');
     }
 
     public function creator()
