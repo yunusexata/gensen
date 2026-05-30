@@ -18,7 +18,7 @@ use Muhammadyunus1072\TrackHistory\HasTrackHistory;
 class IchijikinExtractionFile extends Model
 {
     // php artisan reverb:start
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasTrackHistory;
 
     protected $fillable = [
 

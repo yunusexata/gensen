@@ -14,11 +14,15 @@ return new class extends Migration
         Schema::create('ichijikin_extraction_files', function (Blueprint $table) {
             $this->scheme($table, false);
         });
+        Schema::create('_history_ichijikin_extraction_files', function (Blueprint $table) {
+            $this->scheme($table, true);
+        });
     }
 
     public function down()
     {
         Schema::dropIfExists('ichijikin_extraction_files');
+        Schema::dropIfExists('_history_ichijikin_extraction_files');
     }
 
     private function scheme(Blueprint $table, $is_history = false)
