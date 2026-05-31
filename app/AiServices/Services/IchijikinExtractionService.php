@@ -94,21 +94,20 @@ class IchijikinExtractionService
                 // Provide the image
                 $promptParts[] = new Blob(
                     mimeType: MimeType::IMAGE_PNG,
-                    data: filesize($filePath)
-                    // data: base64_encode(file_get_contents($filePath))
+                    // data: filesize($filePath)
+                    data: base64_encode(file_get_contents($filePath))
                 );
             }
         }
-        logger([
-            'FILE ATTACHMENTS',
-            $promptParts
-        ]);
-        return;
+        // logger([
+        //     'FILE ATTACHMENTS',
+        //     $promptParts
+        // ]);
 
-        logger([
-            'ICHIJIKIN AI PROMPT PART',
-            $promptParts
-        ]);
+        // logger([
+        //     'ICHIJIKIN AI PROMPT PART',
+        //     $promptParts
+        // ]);
 
         $systemInstruction = "You are a precise data extraction AI. Analyze the provided Ichijikin document and extract the key fields accurately. Return the data ONLY as a valid JSON object matching the requested fields. If a field is missing, return null.";
         // 5. Send the SINGLE request to Gemini
