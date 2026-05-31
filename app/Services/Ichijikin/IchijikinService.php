@@ -200,8 +200,12 @@ class IchijikinService
         $coord = ['x' => 461, 'y' => 1097, 'width' => 780, 'height' => 80];
         $this->cropImage($path, $coord, $folder, 'nama_lengkap');
 
+        // Crop Lama Kerja
+        $coord = ['x' => 690, 'y' => 650, 'width' => 173, 'height' => 70];
+        $this->cropImage($path, $coord, $folder, 'lama_kerja');
 
-        ExtractionIchijikinJob::dispatch($model)->onQueue('extract');
+
+        // ExtractionIchijikinJob::dispatch($model)->onQueue('extract');
         // // Crop Payment Top
         // $coord = ['x' => 610, 'y' => 50, 'width' => 165, 'height' => 50];
         // $this->cropImage($path, $coord, $folder, 'kokumin');
