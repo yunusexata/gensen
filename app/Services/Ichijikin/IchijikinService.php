@@ -386,6 +386,14 @@ class IchijikinService
 
     public function drawLabelImage($imagePath, $desPath, $fileName, $kokumin = null, $nenkin_100 = null)
     {
+        logger([
+            'draw label',
+            $imagePath,
+            $desPath,
+            $fileName,
+            $kokumin,
+            $nenkin_100
+        ]);
         // Load image
         $image = imagecreatefromjpeg($imagePath);
 
