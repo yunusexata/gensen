@@ -73,6 +73,11 @@ class IchijikinExtractionFile extends Model
         return $this->hasOne(IchijikinExtractionResult::class);
     }
 
+    public function aiJob()
+    {
+        return $this->belongsTo(AiJob::class, 'ichijikin_extraction_id', 'id');
+    }
+
     public function ichijikinExtraction()
     {
         return $this->belongsTo(IchijikinExtraction::class, 'ichijikin_extraction_id', 'id');

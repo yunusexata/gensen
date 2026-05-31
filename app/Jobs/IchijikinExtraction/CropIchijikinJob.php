@@ -38,7 +38,7 @@ class CropIchijikinJob implements ShouldQueue
 
             logger(['Split Ichijikin Job']);
 
-            $attachment = $this->model;
+            $attachment = $this->model->subject;
             $tmpPdfPath = basename($attachment->path);
             $local_path = $tmpPdfPath;
             $extension = strtolower(pathinfo($local_path, PATHINFO_EXTENSION));

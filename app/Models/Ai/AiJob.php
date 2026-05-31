@@ -8,6 +8,7 @@ use App\Enums\Gensen\JobStatus;
 use App\Events\RemittanceExtractionFinished;
 use App\Jobs\ConvertPdfToImagesJob;
 use App\Jobs\GensenExtractJob\ExtractionDocumentJob;
+use App\Jobs\IchijikinExtraction\CropIchijikinJob;
 use App\Jobs\IchijikinExtraction\ExtractionIchijikinJob;
 use App\Jobs\IchijikinExtraction\SplitIchijikinJob;
 use App\Models\Ai\AiPayload;
@@ -111,7 +112,7 @@ class AiJob extends Model
                 )->onQueue('pdf');
             }
             if ($model->job_type === self::JOB_TYPE_ICHIJIKIN_EXTRACTION) {
-                ExtractionIchijikinJob::dispatch($model)->onQueue('extract');
+                CropIchijikinJob::dispatch($model)->onQueue('crop');
             }
         });
         self::updated(function ($model) {});

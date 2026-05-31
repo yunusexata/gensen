@@ -2,6 +2,7 @@
 
 namespace App\Services\Ichijikin;
 
+use App\Jobs\IchijikinExtraction\ExtractionIchijikinJob;
 use App\Repositories\ConvertDataIchijikin\ConvertDataIchijikinRepository;
 use Carbon\Carbon;
 use Exception;
@@ -162,11 +163,12 @@ class IchijikinService
 
     public function handleCropDocument($model)
     {
-        $epath = explode('/', $model->path);
-        $path = $model->path;
+        $file = $model->subject;
+        $epath = explode('/', $file->path);
+        $path = $file->path;
         // $folder = $epath[0] . '/' . $epath[1];
-        $folder = "ichijikin/{$model->ichijikinExtraction->batch_name}/crop/$model->file_stored_name";
-        // $storedName = pathinfo($model->stored_name, PATHINFO_FILENAME);
+        $folder = "ichijikin/{$file->ichijikinExtraction->batch_name}/crop/$file->file_stored_name";
+        // $storedName = pathinfo($file->stored_name, PATHINFO_FILENAME);
 
         // // Crop Date
         // $coord = ['x' => 30, 'y' => 250, 'width' => 250, 'height' => 45];
@@ -197,6 +199,9 @@ class IchijikinService
         // Crop Name
         $coord = ['x' => 461, 'y' => 1097, 'width' => 780, 'height' => 80];
         $this->cropImage($path, $coord, $folder, 'nama_lengkap');
+
+
+        ExtractionIchijikinJob::dispatch($model)->onQueue('extract');
         // // Crop Payment Top
         // $coord = ['x' => 610, 'y' => 50, 'width' => 165, 'height' => 50];
         // $this->cropImage($path, $coord, $folder, 'kokumin');
