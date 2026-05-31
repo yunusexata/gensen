@@ -300,7 +300,9 @@ class SplitIchijikinJob implements ShouldQueue
             // CREATE DATABASE RECORD
             // =====================================================
 
-            IchijikinExtractionFileRepository::create([
+            IchijikinExtractionFile::firstOrCreate([
+                'ichijikin_extraction_id' => $attachment->id,
+            ], [
                 'ichijikin_extraction_id' => $attachment->id,
                 'file_stored_name' => $storedName,
 
