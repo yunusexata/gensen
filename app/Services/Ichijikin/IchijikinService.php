@@ -201,7 +201,7 @@ class IchijikinService
         $this->cropImage($path, $coord, $folder, 'nama_lengkap');
 
         // Crop Lama Kerja
-        $coord = ['x' => 690, 'y' => 650, 'width' => 173, 'height' => 70];
+        $coord = ['x' => 690, 'y' => 700, 'width' => 173, 'height' => 70];
         $this->cropImage($path, $coord, $folder, 'lama_kerja');
 
 
