@@ -113,8 +113,7 @@ class AiJob extends Model
                 )->onQueue('pdf');
             }
             if ($model->job_type === self::JOB_TYPE_ICHIJIKIN_EXTRACTION) {
-                IchijikinExtractionResult::where('subject_type', $model->subject_type)
-                    ->where('subject_id', $model->subject_id)
+                IchijikinExtractionResult::where('ichijikin_extraction_file_id', $model->subject_id)
                     ->where('ai_job_id', '!=', $model->id)
                     ->each(function ($result) {
                         $result->delete();
