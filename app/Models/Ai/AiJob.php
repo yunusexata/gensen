@@ -17,6 +17,7 @@ use App\Models\Ai\AiUsage;
 use App\Models\Gensen\Ai\RemittanceExtraction;
 use App\Models\Gensen\Ai\RemittanceExtractionGroup;
 use App\Models\GensenForm\GensenFormAttachment;
+use App\Models\Ichijikin\IchijikinExtractionResult;
 use App\Repositories\Gensen\Ai\RemittanceExtractionGroupRepository;
 use App\Repositories\Gensen\Ai\RemittanceExtractionRepository;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -112,6 +113,13 @@ class AiJob extends Model
                 )->onQueue('pdf');
             }
             if ($model->job_type === self::JOB_TYPE_ICHIJIKIN_EXTRACTION) {
+                IchijikinExtractionResult::where('subject_type', $model->subject_type)
+                    ->where('subject_id', $model->subject_id)
+                    ->where('ai_job_id', '!=', $model->id)
+                    ->each(function ($result) {
+                        $result->delete();
+                    });
+
                 CropIchijikinJob::dispatch($model)->onQueue('crop');
             }
         });

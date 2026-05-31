@@ -35,6 +35,7 @@ return new class extends Migration
         if ($is_history) {
             $table->bigInteger('obj_id')->unsigned();
         } else {
+            $table->index('ai_job_id', 'ichijikin_es_ai_job_id_idx');
             $table->index('ichijikin_extraction_file_id', 'ichijikin_es_ichijikin_extraction_file_id_idx');
             $table->index('nama_lengkap', 'ichijikin_es_nama_lengkap_idx');
             $table->index('no_nenkin', 'ichijikin_es_no_nenkin_idx');
@@ -42,6 +43,7 @@ return new class extends Migration
             $table->index('status', 'ichijikin_es_status_idx');
         }
 
+        $table->unsignedBigInteger('ai_job_id');
         $table->unsignedBigInteger('ichijikin_extraction_id');
         $table->unsignedBigInteger('ichijikin_extraction_file_id');
 

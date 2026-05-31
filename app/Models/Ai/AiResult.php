@@ -6,6 +6,8 @@ use App\Enums\Gensen\JobStatus;
 use App\Events\RemittanceExtractionFinished;
 use App\Models\Gensen\Ai\RemittanceExtraction;
 use App\Models\Gensen\Ai\RemittanceExtractionGroup;
+use App\Models\Ichijikin\IchijikinExtractionResult;
+use App\Repositories\IchijikinExtraction\IchijikinExtractionResultRepository;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Guarded;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -74,7 +76,32 @@ class AiResult extends Model
 
             if ($model->result_type == AiJob::JOB_TYPE_ICHIJIKIN_EXTRACTION) {
                 logger('DAH SAMPE RESULT ICHIJIKIN');
-                logger(json_decode($model->result_json, true));
+                $result = json_decode($model->result_json, true);
+                IchijikinExtractionResultRepository::create([
+                    'ichijikin_extraction_id' => $model->aiJob->subject->ichijikin_extraction_id,
+                    'ichijikin_extraction_file_id' => $model->aiJob->subject_id,
+
+                    'nama_lengkap' => $result['nama_lengkap'],
+                    'no_nenkin' => $result['no_nenkin'],
+                    'lama_kerja' => $result['lama_kerja'],
+                    'kokumin' => $result['kokumin'],
+                    'nenkin_100' => $result['nenkin_100'],
+                    'nenkin_80' => $result['nenkin_80'],
+                    'nenkin_20' => $result['nenkin_20'],
+
+                    'type' => IchijikinExtractionResult::TYPE_SPEED,
+
+                    'error_message' => null,
+
+                    // 'started_at' => $model->aiJob,
+                    // 'finished_at' => $model->aiJob,
+                    'confidence_score' => $result['confidence_score'],
+                    // 'confidence_note' => isset($result['confidence_note']) ? $result['confidence_note'] : null,
+
+                    // lifecycle state
+                    'status' => JobStatus::DONE,
+
+                ]);
             }
         });
     }
