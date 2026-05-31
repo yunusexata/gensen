@@ -48,6 +48,10 @@ class IchijikinExtractionService
                     type: DataType::INTEGER,
                     description: 'Remove all spaces. Example: 4161 325041 -> 4161325041'
                 ),
+                'lama_kerja' => new Schema(
+                    type: DataType::INTEGER,
+                    description: 'Remove all spaces. Example: 48'
+                ),
                 'confidence_score' => new Schema(
                     type: DataType::INTEGER,
                     description: "Extraction confidence (0-100) based on document clarity."
@@ -64,6 +68,7 @@ class IchijikinExtractionService
                 'nenkin_20',
                 'nenkin_80',
                 'no_nenkin',
+                'lama_kerja',
                 'confidence_score'
             ]
         );
@@ -78,6 +83,7 @@ class IchijikinExtractionService
             'nenkin_20' => 'nenkin_20.png',
             'nenkin_80' => 'nenkin_80.png',
             'no_nenkin' => 'no_nenkin.png',
+            'lama_kerja' => 'lama_kerja.png',
             'nama_lengkap' => 'nama_lengkap.png'
         ];
         foreach ($files as $key => $fileName) {
