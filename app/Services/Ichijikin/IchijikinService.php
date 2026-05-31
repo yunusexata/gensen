@@ -163,7 +163,8 @@ class IchijikinService
 
     public function handleCropDocument($model)
     {
-        $file = $model->subject;
+        // $file = $model->subject;
+        $file = $model;
         $epath = explode('/', $file->path);
         $path = $file->path;
         // $folder = $epath[0] . '/' . $epath[1];

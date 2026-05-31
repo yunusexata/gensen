@@ -76,22 +76,22 @@ Route::get('/ai-test', function () {
     // );
     // return $url;
     $att = IchijikinExtractionFile::first();
-    $job = AiJob::firstOrCreate(
-        [
-            'subject_type' => IchijikinExtractionFile::class,
-            'subject_id'   => $att->id,
-            'job_type'     => AiJob::JOB_TYPE_ICHIJIKIN_EXTRACTION,
-            'status'       => 'pending',
-        ],
-        [
-            'provider' => 'gemini-ai',
-            'model'    => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
-        ]
-    );
+    // $job = AiJob::firstOrCreate(
+    //     [
+    //         'subject_type' => IchijikinExtractionFile::class,
+    //         'subject_id'   => $att->id,
+    //         'job_type'     => AiJob::JOB_TYPE_ICHIJIKIN_EXTRACTION,
+    //         'status'       => 'pending',
+    //     ],
+    //     [
+    //         'provider' => 'gemini-ai',
+    //         'model'    => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
+    //     ]
+    // );
 
     // CropIchijikinJob::dispatch($att)->onQueue('crop');
-    // $data = app(IchijikinService::class)
-    //     ->handleCropDocument($this->model);
+    $data = app(IchijikinService::class)
+        ->handleCropDocument($att);
 
-    return $job;
+    return 'oke';
 });
