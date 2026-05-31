@@ -100,6 +100,20 @@ class DatatableBatchDetail extends Component
                 }
             ],
             [
+                'key' => 'lama_kerja',
+                'name' => 'Lama Kerja',
+                'render' => function ($item) {
+                    return $item->lama_kerja ? $item->lama_kerja . " Bulan" : 'Belum Di Proses';
+                }
+            ],
+            [
+                'key' => 'kokumin',
+                'name' => 'Kokumin',
+                'render' => function ($item) {
+                    return $item->kokumin ?? 'Belum Di Proses';
+                }
+            ],
+            [
                 'key' => 'nenkin_100',
                 'name' => 'Nenkin 100',
                 'render' => function ($item) {
