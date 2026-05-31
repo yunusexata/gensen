@@ -228,10 +228,10 @@ class SplitIchijikinJob implements ShouldQueue
             $storedName =
                 $info['filename'] . '.jpg';
 
-            // logger([
-            //     'stored_name',
-            //     $storedName,
-            // ]);
+            logger([
+                'stored_name',
+                $storedName,
+            ]);
 
             // $targetPath = storage_path("app/{$store_disk}/{$dir}/{$storedName}");
             $targetPath = "{$dir}/{$storedName}";
