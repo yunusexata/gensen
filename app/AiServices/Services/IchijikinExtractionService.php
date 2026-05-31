@@ -81,7 +81,7 @@ class IchijikinExtractionService
             'nama_lengkap' => 'nama_lengkap.png'
         ];
         foreach ($files as $key => $fileName) {
-            $filePath = storage_path("app/public/ichijikin/{$ichijikin->ichijikinExtraction->batch_name}_ID_{$ichijikin->ichijikinExtraction->id}/crop/$ichijikin->file_stored_name/{$fileName}");
+            $filePath = storage_path("app/public/sd{$ichijikin->ichijikinExtraction->batch_name}/crop/$ichijikin->file_stored_name/{$fileName}");
 
             if (file_exists($filePath)) {
                 // Tell Gemini which field this image belongs to
@@ -90,10 +90,16 @@ class IchijikinExtractionService
                 // Provide the image
                 $promptParts[] = new Blob(
                     mimeType: MimeType::IMAGE_PNG,
-                    data: base64_encode(file_get_contents($filePath))
+                    data: filesize($filePath)
+                    // data: base64_encode(file_get_contents($filePath))
                 );
             }
         }
+        logger([
+            'FILE ATTACHMENTS',
+            $promptParts
+        ]);
+        return;
 
         logger([
             'ICHIJIKIN AI PROMPT PART',
