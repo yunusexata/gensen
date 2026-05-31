@@ -110,6 +110,7 @@ class DatatableBatchDetail extends Component
                 'key' => 'kokumin',
                 'name' => 'Kokumin',
                 'render' => function ($item) {
+                    return $item->kokumin;
                     return is_null($item->kokumin) ? 'Belum Di Proses' : $item->kokumin;
                 }
             ],
