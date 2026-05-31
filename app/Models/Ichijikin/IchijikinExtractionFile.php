@@ -53,18 +53,14 @@ class IchijikinExtractionFile extends Model
     {
         // self::creating(function ($model) {});
         self::created(function ($model) {
-            $job = AiJob::firstOrCreate(
-                [
-                    'subject_type' => self::class,
-                    'subject_id'   => $model->id,
-                    'job_type'     => AiJob::JOB_TYPE_ICHIJIKIN_EXTRACTION,
-                    'status'       => 'pending',
-                ],
-                [
-                    'provider' => 'gemini-ai',
-                    'model'    => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
-                ]
-            );
+            $job = AiJob::create([
+                'subject_type' => self::class,
+                'subject_id'   => $model->id,
+                'job_type'     => AiJob::JOB_TYPE_ICHIJIKIN_EXTRACTION,
+                'status'       => 'pending',
+                'provider'     => 'gemini-ai',
+                'model'        => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
+            ]);
         });
     }
 
