@@ -81,7 +81,7 @@ class IchijikinExtractionService
             'nama_lengkap' => 'nama_lengkap.png'
         ];
         foreach ($files as $key => $fileName) {
-            $filePath = storage_path("app/public/{$ichijikin->ichijikinExtraction->batch_name}/crop/$ichijikin->file_stored_name/{$fileName}");
+            $filePath = storage_path("app/public/ichijikin/{$ichijikin->ichijikinExtraction->batch_name}/crop/$ichijikin->file_stored_name/{$fileName}");
 
             logger([
                 'param att path',

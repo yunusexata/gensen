@@ -46,6 +46,7 @@ class CropIchijikinJob implements ShouldQueue
             if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
                 return;
             }
+            logger('HANDLE CROP DOCUMENT');
             app(IchijikinService::class)
                 ->handleCropDocument($this->model);
         } catch (\Throwable $th) {

@@ -137,6 +137,11 @@ class IchijikinService
             $destFolder = storage_path('app/public/' . $des);
             $destPath   = $destFolder . "/$name.png";
 
+            logger([
+                'DEST CROP',
+                $destPath
+            ]);
+
             if (!file_exists($destFolder)) {
                 mkdir($destFolder, 0755, true);
             }
