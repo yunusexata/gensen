@@ -48,7 +48,7 @@ class DrawLabelIchijikinJob implements ShouldQueue
             }
             logger('HANDLE DRAW LABEL DOCUMENT');
             app(IchijikinService::class)
-                ->drawLabelImage($attachment->path, "ichijikin/{$attachment->ichijikinExtraction->batch_name}/result/{$this->model->nama_lengkap}", $this->model->kokumin, $this->model->nenkin_100);
+                ->drawLabelImage($attachment->path, "ichijikin/{$attachment->ichijikinExtraction->batch_name}/result", $this->model->nama_lengkap, $this->model->kokumin, $this->model->nenkin_100);
         } catch (\Throwable $th) {
             //throw $th;
         }

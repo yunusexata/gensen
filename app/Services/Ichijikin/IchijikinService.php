@@ -384,7 +384,7 @@ class IchijikinService
         // return $result['pages'][0]['blocks'];
     }
 
-    public function drawLabelImage($imagePath, $desPath, $kokumin = null, $nenkin_100 = null)
+    public function drawLabelImage($imagePath, $desPath, $fileName, $kokumin = null, $nenkin_100 = null)
     {
         // Load image
         $image = imagecreatefromjpeg($imagePath);
@@ -592,7 +592,7 @@ class IchijikinService
         }
 
         // Fixed Bug: Defined the actual output path before saving
-        $outputPath = $destFolder . '.jpg';
+        $outputPath = $destFolder . "/$fileName.jpg";
 
         // Save as JPG
         imagejpeg($image, $outputPath, 100);
