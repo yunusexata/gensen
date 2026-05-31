@@ -92,6 +92,6 @@ Route::get('/ai-test', function () {
     // CropIchijikinJob::dispatch($att)->onQueue('crop');
     $data = app(IchijikinService::class)
         ->handleCropDocument($att);
-
+    return $att;
     return 'oke';
 });
