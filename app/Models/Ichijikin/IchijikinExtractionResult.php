@@ -3,6 +3,7 @@
 namespace App\Models\Ichijikin;
 
 use App\Enums\Gensen\JobStatus;
+use App\Jobs\IchijikinExtraction\DrawLabelIchijikinJob;
 use App\Models\User;
 use App\Traits\Models\UppercaseAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -56,7 +57,14 @@ class IchijikinExtractionResult extends Model
     protected static function onBoot()
     {
         self::creating(function ($model) {});
-        self::created(function ($model) {});
+        self::created(function ($model) {
+            DrawLabelIchijikinJob::dispatch($model)->onQueue('crop');
+        });
+    }
+
+    public function ichijikinExtractionFile()
+    {
+        return $this->belongsTo(IchijikinExtractionFile::class, 'ichijikin_extraction_file_id', 'id');
     }
 
     public function creator()

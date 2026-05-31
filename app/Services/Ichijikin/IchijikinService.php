@@ -392,6 +392,224 @@ class IchijikinService
         $currentWidth  = imagesx($image);
         $currentHeight = imagesy($image);
 
+        // New Blueprint / Reference Size
+        $referenceWidth  = 1241;
+        $referenceHeight = 1755;
+
+        // Calculate dynamic ratio based on the newly uploaded image vs reference
+        $scaleX = $currentWidth / $referenceWidth;
+        $scaleY = $currentHeight / $referenceHeight;
+
+        // Colors
+        $blue   = imagecolorallocate($image, 0, 2, 245);
+        $red    = imagecolorallocate($image, 245, 5, 1);
+        $orange = imagecolorallocate($image, 250, 100, 6);
+
+        imagesetthickness($image, 6);
+
+        if ($kokumin) {
+            // === SCALE POSITION (Kokumin) ===
+            $x = 313 * $scaleX;
+            $y = 55  * $scaleY;
+
+            $rectX1 = 669 * $scaleX;
+            $rectY1 = 55  * $scaleY;
+            $rectX2 = 889 * $scaleX; // 669 + 220 width
+            $rectY2 = 132 * $scaleY; // 55 + 77 height
+
+            // Resize label
+            $labelImage = imagecreatefrompng(public_path('100%.png'));
+
+            $labelWidth  = 219 * $scaleX;
+            $labelHeight = 77  * $scaleY;
+
+            imagecopyresampled(
+                $image,
+                $labelImage,
+                $x,
+                $y,
+                0,
+                0,
+                $labelWidth,
+                $labelHeight,
+                imagesx($labelImage),
+                imagesy($labelImage)
+            );
+
+            // === SCALE POSITION (Kokumin) ===
+            $x = 300 * $scaleX;
+            $y = 1  * $scaleY;
+
+            // $rectX1 = 669 * $scaleX;
+            // $rectY1 = 55  * $scaleY;
+            // $rectX2 = 889 * $scaleX; // 669 + 220 width
+            // $rectY2 = 132 * $scaleY; // 55 + 77 height
+
+            // Resize label
+            $labelImage = imagecreatefrompng(public_path('kokumin_nenkin.png'));
+
+            $labelWidth  = 219 * $scaleX;
+            $labelHeight = 50  * $scaleY;
+
+            imagecopyresampled(
+                $image,
+                $labelImage,
+                $x,
+                $y,
+                0,
+                0,
+                $labelWidth,
+                $labelHeight,
+                imagesx($labelImage),
+                imagesy($labelImage)
+            );
+
+            imagerectangle($image, $rectX1, $rectY1, $rectX2, $rectY2, $blue);
+        }
+
+        if ($nenkin_100) {
+
+            // === SCALE POSITION (Kokumin) ===
+            $x = 300 * $scaleX;
+            $y = 350  * $scaleY;
+
+            // $rectX1 = 669 * $scaleX;
+            // $rectY1 = 55  * $scaleY;
+            // $rectX2 = 889 * $scaleX; // 669 + 220 width
+            // $rectY2 = 132 * $scaleY; // 55 + 77 height
+
+            // Resize label
+            $labelImage = imagecreatefrompng(public_path('kousei_nenkin.png'));
+
+            $labelWidth  = 219 * $scaleX;
+            $labelHeight = 50  * $scaleY;
+
+            imagecopyresampled(
+                $image,
+                $labelImage,
+                $x,
+                $y,
+                0,
+                0,
+                $labelWidth,
+                $labelHeight,
+                imagesx($labelImage),
+                imagesy($labelImage)
+            );
+            /*
+        === DRAW 100% LABEL ===
+        */
+            $x = 313 * $scaleX;
+            $y = 406 * $scaleY;
+
+            $rectX1 = 669 * $scaleX;
+            $rectY1 = 406 * $scaleY;
+            $rectX2 = 889 * $scaleX;
+            $rectY2 = 483 * $scaleY;
+
+            $labelImage = imagecreatefrompng(public_path('100%.png'));
+
+            $labelWidth  = 219 * $scaleX;
+            $labelHeight = 77  * $scaleY;
+
+            imagecopyresampled(
+                $image,
+                $labelImage,
+                $x,
+                $y,
+                0,
+                0,
+                $labelWidth,
+                $labelHeight,
+                imagesx($labelImage),
+                imagesy($labelImage)
+            );
+
+            imagerectangle($image, $rectX1, $rectY1, $rectX2, $rectY2, $blue);
+
+            /*
+        === DRAW 20% LABEL ===
+        */
+            $x = 313 * $scaleX;
+            $y = 494 * $scaleY;
+
+            $rectX1 = 669 * $scaleX;
+            $rectY1 = 494 * $scaleY;
+            $rectX2 = 889 * $scaleX;
+            $rectY2 = 570 * $scaleY;
+
+            $labelImage = imagecreatefrompng(public_path('20%.png'));
+
+            imagecopyresampled(
+                $image,
+                $labelImage,
+                $x,
+                $y,
+                0,
+                0,
+                $labelWidth,
+                $labelHeight,
+                imagesx($labelImage),
+                imagesy($labelImage)
+            );
+
+            imagerectangle($image, $rectX1, $rectY1, $rectX2, $rectY2, $red);
+
+            /*
+        === DRAW 80% LABEL ===
+        */
+            $x = 313 * $scaleX;
+            $y = 581 * $scaleY;
+
+            $rectX1 = 669 * $scaleX;
+            $rectY1 = 581 * $scaleY;
+            $rectX2 = 889 * $scaleX;
+            $rectY2 = 658 * $scaleY;
+
+            $labelImage = imagecreatefrompng(public_path('80%.png'));
+
+            imagecopyresampled(
+                $image,
+                $labelImage,
+                $x,
+                $y,
+                0,
+                0,
+                $labelWidth,
+                $labelHeight,
+                imagesx($labelImage),
+                imagesy($labelImage)
+            );
+
+            imagerectangle($image, $rectX1, $rectY1, $rectX2, $rectY2, $orange);
+        }
+
+        // Destination folder
+        $destFolder = storage_path('app/public/' . $desPath);
+
+        if (!file_exists($destFolder)) {
+            mkdir($destFolder, 0755, true);
+        }
+
+        // Fixed Bug: Defined the actual output path before saving
+        $outputPath = $destFolder . '.jpg';
+
+        // Save as JPG
+        imagejpeg($image, $outputPath, 100);
+
+        // Free up memory
+        imagedestroy($image);
+
+        return $outputPath;
+    }
+    public function drawLabelImageOld($imagePath, $desPath, $kokumin = null, $nenkin_100 = null)
+    {
+        // Load image
+        $image = imagecreatefromjpeg($imagePath);
+
+        $currentWidth  = imagesx($image);
+        $currentHeight = imagesy($image);
+
         // Blueprint size (acuan desain koordinat Anda)
         $baseWidth  = 1131;
         $baseHeight = 1600;
@@ -449,8 +667,8 @@ class IchijikinService
 
         if ($nenkin_100) {
             /*
-        === DRAW 100% LABEL ===
-        */
+            === DRAW 100% LABEL ===
+            */
 
             // === SCALE POSITION ===
             $x = 285 * $scaleX;
@@ -489,8 +707,8 @@ class IchijikinService
             );
 
             /*
-        === DRAW 20% LABEL ===
-        */
+            === DRAW 20% LABEL ===
+            */
             // === SCALE POSITION ===
             $x = 285 * $scaleX;
             $y = 450  * $scaleY;
@@ -528,8 +746,8 @@ class IchijikinService
             );
 
             /*
-        === DRAW 80% LABEL ===
-        */
+            === DRAW 80% LABEL ===
+            */
             // === SCALE POSITION ===
             $x = 285 * $scaleX;
             $y = 530  * $scaleY;
@@ -574,7 +792,7 @@ class IchijikinService
             mkdir($destFolder, 0755, true);
         }
 
-        $outputPath = $destFolder . '/' . $model->number . '-' . $model->name . '.jpg';
+        // $outputPath = $destFolder . '/' . $model->number . '-' . $model->name . '.jpg';
 
         // Save as JPG
         imagejpeg($image, $outputPath, 100);

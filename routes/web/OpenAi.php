@@ -90,8 +90,11 @@ Route::get('/ai-test', function () {
     // );
 
     // CropIchijikinJob::dispatch($att)->onQueue('crop');
+    $path = storage_path('app/public/test/0002.jpg');
+    // $des = storage_path('app/public/result');
     $data = app(IchijikinService::class)
-        ->handleCropDocument($att);
-    return $att;
+        // ->handleCropDocument($att);
+        ->drawLabelImage($path, 'result', true, true);
+    // return $att;
     return 'oke';
 });
