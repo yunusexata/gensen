@@ -18,7 +18,6 @@ class IchijikinExtractionController extends Controller
 
     public function edit(Request $request)
     {
-        return $request->id;
         return view('app.ichijikin-extraction.detail', ["objId" => $request->id]);
     }
 }

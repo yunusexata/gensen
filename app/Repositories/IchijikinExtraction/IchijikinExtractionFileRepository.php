@@ -14,6 +14,7 @@ class IchijikinExtractionFileRepository extends MasterDataRepository
 
     public static function datatable($objId = null)
     {
+        dd($objId);
         return IchijikinExtractionFile::query()
             ->select(
                 'ichijikin_extraction_files.id',
