@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="row">
-                <livewire:ichijikin-extraction.datatable-batch-detail lazy />
+                <livewire:ichijikin-extraction.datatable-batch-detail :objId="$objId" />
             </div>
         @else
             <div class="row d-flex justify-content-center">
