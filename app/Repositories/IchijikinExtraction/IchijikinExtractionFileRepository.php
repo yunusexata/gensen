@@ -21,6 +21,7 @@ class IchijikinExtractionFileRepository extends MasterDataRepository
                 'results.nama_lengkap',
                 'results.no_nenkin',
                 'results.lama_kerja',
+                'results.kokumin',
                 'results.nenkin_100',
                 'results.nenkin_80',
                 'results.nenkin_20',
