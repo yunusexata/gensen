@@ -132,7 +132,7 @@ class DatatableBatchDetail extends Component
 
     public function getQuery(): Builder
     {
-        return IchijikinExtractionFileRepository::datatable($this->objId);
+        return IchijikinExtractionFileRepository::datatable(Crypt::decrypt($this->objId));
     }
 
     public function getView(): string
