@@ -16,7 +16,7 @@
     </div>
         @if ($objId)
 
-            <div class="row d-flex flex-col justify-content-center">
+            <div class="row d-flex flex-col justify-content-center align-items-center">
                 <div class="col-md-6 mb-3">
                     <label>Nama Batch</label>
                     <input placeholder="Nama Batch" type="text" value="{{$batch_name}}" class="form-control" readonly>
