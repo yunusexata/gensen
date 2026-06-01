@@ -84,16 +84,6 @@ class GensenFormAttachment extends Model
             $filename = $this->original_name;
         }
 
-        if ($this->disk == 'public') {
-            dd(URL::temporarySignedRoute(
-                'gensen.attachment.preview',
-                now()->addMinutes(30),
-                [
-                    'attachment' => $this->id,
-                ]
-            ));
-        }
-
         return match ($this->disk) {
 
             // =========================================
