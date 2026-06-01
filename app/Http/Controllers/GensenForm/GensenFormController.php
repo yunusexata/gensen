@@ -87,7 +87,7 @@ class GensenFormController extends Controller
         } else {
             $filename = $attachment->original_name;
         }
-        logger(['preview filename', $filename, $attachment]);
+
         return response()->file(
             $disk->path($attachment->path),
             [
@@ -101,17 +101,18 @@ class GensenFormController extends Controller
 
     public function previewSupabase(GensenFormAttachment $attachment)
     {
+        $url = "https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/{$attachment->path}";
 
         $response = Http::withOptions([
             'stream' => true,
-        ])->get("https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $attachment->path");
+        ])->get($url);
 
         if ($attachment->type === GensenAttachmentType::SELURUH_BERKAS) {
             $filename = "G " . $attachment->gensenForm->nama_lengkap . " " . Carbon::parse($attachment->gensenForm->tanggal_lahir)->format('Ymd') . "." . $attachment->extension;
         } else {
             $filename = $attachment->original_name;
         }
-        logger(['preview filename', $filename, $attachment]);
+        logger(['preview filename supabase', $filename, $attachment]);
 
         return response()->stream(
             function () use ($response) {
