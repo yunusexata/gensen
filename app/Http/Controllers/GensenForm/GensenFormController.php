@@ -86,7 +86,7 @@ class GensenFormController extends Controller
         } else {
             $filename = $attachment->original_name;
         }
-        logger(['preview filename', $filename, $attachment->type]);
+        logger(['preview filename', $filename, $attachment]);
         return response()->file(
             $disk->path($attachment->path),
             [
