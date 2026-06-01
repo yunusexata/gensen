@@ -112,7 +112,11 @@ class GensenFormAttachment extends Model
             // =========================================
             // SUPABASE
             // =========================================
-            'supabase' => 'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $this->path,
+            'supabase' =>
+            'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/'
+                . $this->path
+                . '?download=' . urlencode("G " . $this->gensenForm->nama_lengkap . " " . Carbon::parse($this->gensenForm->tanggal_lahir)->format('Ymd') . "." . $this->extension),
+            // 'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $this->path,
 
             default => throw new \Exception(
                 "Unsupported disk [{$this->disk}]"
