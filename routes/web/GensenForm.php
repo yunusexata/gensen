@@ -22,6 +22,11 @@ Route::get(
 )
     ->name('gensen.attachment.preview');
 Route::get(
+    '/gensen/attachment/{attachment}/preview-supabase',
+    [GensenFormController::class, 'previewSupabase']
+)
+    ->name('gensen.attachment.preview-supabase');
+Route::get(
     '/gensen/export-import/{history_id}/preview',
     [GensenFormController::class, 'previewExportImport']
 )

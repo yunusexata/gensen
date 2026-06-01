@@ -11,6 +11,7 @@ use App\Repositories\GensenForm\GensenFormLinkRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class GensenFormController extends Controller
 {
@@ -97,7 +98,34 @@ class GensenFormController extends Controller
             ]
         );
     }
-    // public function previewSuabase(GensenFormAttachment $attachment)
+
+    public function previewSupabase(GensenFormAttachment $attachment)
+    {
+
+        $response = Http::withOptions([
+            'stream' => true,
+        ])->get("https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $attachment->path");
+
+        if ($attachment->type === GensenAttachmentType::SELURUH_BERKAS) {
+            $filename = "G " . $attachment->gensenForm->nama_lengkap . " " . Carbon::parse($attachment->gensenForm->tanggal_lahir)->format('Ymd') . "." . $attachment->extension;
+        } else {
+            $filename = $attachment->original_name;
+        }
+        logger(['preview filename', $filename, $attachment]);
+
+        return response()->stream(
+            function () use ($response) {
+                echo $response->body();
+            },
+            200,
+            [
+                'Content-Type' => $attachment->mime_type,
+                'Content-Disposition' =>
+                "inline; filename=\"{$filename}\"",
+            ]
+        );
+    }
+    // public function previewSupabase(GensenFormAttachment $attachment)
     // {
     //     $disk = Storage::disk($attachment->disk);
 
