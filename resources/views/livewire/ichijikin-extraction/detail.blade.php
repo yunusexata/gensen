@@ -21,6 +21,16 @@
                     <label>Nama Batch</label>
                     <input placeholder="Nama Batch" type="text" value="{{$batch_name}}" class="form-control" readonly>
                 </div>
+                
+                <div class="col-auto">
+                    <button
+                        class="btn btn-success btn-sm"
+                        x-data
+                        @click="$dispatch('export', { type: '{{ App\Helpers\ExportHelper::TYPE_EXCEL }}' })">
+                        <i class="fa fa-file-excel"></i>
+                        Download
+                    </button>
+                </div>
             </div>
             <div class="row">
                 <livewire:ichijikin-extraction.datatable-batch-detail :objId="$objId" />

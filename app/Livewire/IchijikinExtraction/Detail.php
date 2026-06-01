@@ -3,12 +3,14 @@
 namespace App\Livewire\IchijikinExtraction;
 
 use App\Helpers\Alert;
+use App\Helpers\ExportHelper;
 use App\Models\Exata\ExataFormCandidate;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\GensenFormLink;
 use App\Models\Ichijikin\IchijikinExtraction;
 use App\Repositories\Exata\ExataFormCandidateRepository;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
+use App\Repositories\IchijikinExtraction\IchijikinExtractionFileRepository;
 use App\Repositories\IchijikinExtraction\IchijikinExtractionRepository;
 use App\Repositories\MasterData\Regency\RegencyRepository;
 use Carbon\Carbon;
@@ -53,6 +55,28 @@ class Detail extends Component
     {
         $this->redirectRoute('ichijikin_extraction.index');
     }
+
+
+    #[On('export')]
+    public function export($type)
+    {
+        $fileName = "Data Ichijikin $this->batch_name " . Carbon::now()->format('Y-m-d H:i:s');
+        return ExportHelper::export(
+            $type,
+            $fileName,
+            IchijikinExtractionFileRepository::datatable(Crypt::decrypt($this->objId)),
+            'app.ichijikin-extraction.export',
+            [
+                'title' => "Data Ichijikin $this->batch_name",
+                'type' => $type,
+            ],
+            [
+                'size' => 'legal',
+                'orientation' => 'landscape',
+            ]
+        );
+    }
+
 
     public function store()
     {
