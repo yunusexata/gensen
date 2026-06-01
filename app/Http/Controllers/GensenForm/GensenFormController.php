@@ -91,7 +91,9 @@ class GensenFormController extends Controller
             $disk->path($attachment->path),
             [
                 'Content-Type' => $attachment->mime_type,
-                'Content-Disposition' => 'inline; filename="' . $filename . '"',
+                'Content-Disposition' =>
+                "inline; filename=\"{$filename}\"; filename*=UTF-8''" .
+                    rawurlencode($filename),
             ]
         );
     }

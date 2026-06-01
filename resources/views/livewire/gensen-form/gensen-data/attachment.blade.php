@@ -1731,7 +1731,6 @@
                                     wire:poll.5s="refreshData"
                                 @endif> --}}
                                 <h3>Persyaratan Pengurusan Gensen</h3>
-                                {{ $seluruh_berkas_old['isJobProcessDone'] ? 'YA' : 'TIDAK' }} <br>
                                 @if ($seluruh_berkas_old['isJobProcessDone'] && $seluruh_berkas_old['isJobProcessDone'])
                                     @if ($seluruh_berkas_old['id'] == $showData['id'])
                                         <div class="bg-surface-container-lowest p-3 rounded-xl shadow-[0px_8px_32px_rgba(25,28,30,0.06)] border-l-4 border-primary group cursor-pointer transition-all duration-200"
