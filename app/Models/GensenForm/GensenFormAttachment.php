@@ -112,14 +112,14 @@ class GensenFormAttachment extends Model
             // =========================================
             // SUPABASE
             // =========================================
-            'supabase' =>
-            URL::temporarySignedRoute(
-                'gensen.attachment.preview-supabase',
-                now()->addMinutes(30),
-                [
-                    'attachment' => $this->id,
-                ]
-            ),
+            'supabase' => ($this->type === GensenAttachmentType::SELURUH_BERKAS) ?
+                URL::temporarySignedRoute(
+                    'gensen.attachment.preview-supabase',
+                    now()->addMinutes(30),
+                    [
+                        'attachment' => $this->id,
+                    ]
+                ) : 'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $this->path,
             // 'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/'
             //     . $this->path
             //     . '?download=' . urlencode("G " . $this->gensenForm->nama_lengkap . " " . Carbon::parse($this->gensenForm->tanggal_lahir)->format('Ymd') . "." . $this->extension),
