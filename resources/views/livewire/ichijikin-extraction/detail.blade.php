@@ -22,7 +22,7 @@
                     <input placeholder="Nama Batch" type="text" value="{{$batch_name}}" class="form-control" readonly>
                 </div>
                 
-                <div class="col-auto">
+                <div class="col-md-6">
                     <button
                         class="btn btn-success btn-sm"
                         x-data
