@@ -89,9 +89,15 @@ class GensenFormAttachment extends Model
             // =========================================
             // LOCAL PUBLIC
             // =========================================
-            'public' => Storage::disk('public')
-                ->url($this->path),
-
+            // 'public' => Storage::disk('public')
+            //     ->url($this->path),
+            'public' => URL::temporarySignedRoute(
+                'gensen.attachment.preview',
+                now()->addMinutes(30),
+                [
+                    'attachment' => $this->id,
+                ]
+            ),
             // =========================================
             // LOCAL PRIVATE
             // =========================================
