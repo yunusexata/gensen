@@ -24,6 +24,7 @@
                 
                 <div class="col-md-6">
                     <button
+                        type="button"
                         class="btn btn-success btn-sm"
                         x-data
                         @click="$dispatch('export', { type: '{{ App\Helpers\ExportHelper::TYPE_EXCEL }}' })">
