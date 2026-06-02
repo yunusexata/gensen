@@ -90,10 +90,10 @@ class IchijikinExtractionService
         foreach ($files as $key => $fileName) {
             $filePath = storage_path("app/public/ichijikin/{$ichijikin->ichijikinExtraction->batch_name}/crop/$ichijikin->file_stored_name/{$fileName}");
 
-            logger([
-                'param att path',
-                $filePath
-            ]);
+            // logger([
+            //     'param att path',
+            //     $filePath
+            // ]);
             if (file_exists($filePath)) {
                 // Tell Gemini which field this image belongs to
                 $promptParts[] = "Field Name: " . $key;
@@ -138,7 +138,7 @@ class IchijikinExtractionService
             )
             ->generateContent($promptParts);
 
-        logger(['result', $result]);
+        // logger(['result', $result]);
 
         $response = [];
         $thoughts = null;
@@ -163,7 +163,7 @@ class IchijikinExtractionService
                 )
             ]
         ], true);
-        logger(['score', $response['json']['confidence_score']]);
+        // logger(['score', $response['json']['confidence_score']]);
         $response['confidence_score'] = $response['json']['confidence_score'];
         $response['confidence_note'] = isset($response['json']['confidence_note']) ? $response['json']['confidence_note'] : null;
 
@@ -200,10 +200,10 @@ class IchijikinExtractionService
         // 3. Total Cost is just the sum of input and output costs
         // (Do NOT add the token counts to the currency amount)
         $response['total_cost']    = $response['input_cost'] + $response['output_cost'];
-        logger([
-            'RESPONSE FINAL',
-            $response
-        ]);
+        // logger([
+        //     'RESPONSE FINAL',
+        //     $response
+        // ]);
         return $response ?? [];
     }
 

@@ -997,12 +997,12 @@ video {
   max-height: 42vw;
 }
 
-.max-h-\[80vh\] {
-  max-height: 80vh;
-}
-
 .max-h-\[50vh\] {
   max-height: 50vh;
+}
+
+.max-h-\[80vh\] {
+  max-height: 80vh;
 }
 
 .min-h-screen {
@@ -2413,6 +2413,14 @@ video {
   background-color: rgb(208 228 255 / 0.1);
 }
 
+.hover\:bg-primary\/10:hover {
+  background-color: rgb(62 97 133 / 0.1);
+}
+
+.hover\:bg-primary\/50:hover {
+  background-color: rgb(62 97 133 / 0.5);
+}
+
 .hover\:bg-surface-container-low:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 245 / var(--tw-bg-opacity, 1));
@@ -2425,10 +2433,6 @@ video {
 
 .hover\:bg-white\/20:hover {
   background-color: rgb(255 255 255 / 0.2);
-}
-
-.hover\:bg-primary\/10:hover {
-  background-color: rgb(62 97 133 / 0.1);
 }
 
 .hover\:text-error:hover {

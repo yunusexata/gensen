@@ -79,6 +79,30 @@ class DatatableBatchDetail extends Component
     public function getColumns(): array
     {
         return [
+
+            [
+                'name' => 'Action',
+                'sortable' => false,
+                'searchable' => false,
+                'render' => function ($item) {
+                    $editHtml = "";
+
+                    $id = Crypt::encrypt($item->id);
+                    if ($this->isCanUpdate) {
+                        $editUrl = route('ichijikin_extraction.edit', $id);
+                        $editHtml = "<div class='col-auto'>
+                            <a type='button' href='$editUrl' class='p-0 hover:bg-error/10 text-primary rounded transition-colors'>
+                                <span class='material-symbols-outlined text-lg' data-icon='edit'>edit</span>
+                            </a>
+                        </div>";
+                    }
+                    $html = "<div class='row p-0 m-0 d-flex justify-content-start flex-nowrap'>
+                        $editHtml 
+                    </div>";
+
+                    return $html;
+                },
+            ],
             [
                 'key' => 'file_stored_name',
                 'name' => 'Nama File',

@@ -84,7 +84,7 @@ class DatatableBatch extends Component
 
                     $id = Crypt::encrypt($item->id);
                     if ($this->isCanUpdate) {
-                        $editUrl = route('ichijikin_extraction.edit', $id);
+                        $editUrl = route('ichijikin_extraction.detail', $id);
                         $editHtml = "<div class='col-auto'>
                             <a type='button' href='$editUrl' class='p-0 hover:bg-error/10 text-primary rounded transition-colors'>
                                 <span class='material-symbols-outlined text-lg' data-icon='edit'>edit</span>
