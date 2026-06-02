@@ -77,7 +77,7 @@ class AiResult extends Model
             if ($model->result_type == AiJob::JOB_TYPE_ICHIJIKIN_EXTRACTION) {
                 logger('DAH SAMPE RESULT ICHIJIKIN');
                 $result = json_decode($model->result_json, true);
-                IchijikinExtractionResultRepository::create([
+                $validatedData = [
                     'ai_job_id' => $model->aiJob->id,
                     'ichijikin_extraction_id' => $model->aiJob->subject->ichijikin_extraction_id,
                     'ichijikin_extraction_file_id' => $model->aiJob->subject_id,
@@ -102,7 +102,9 @@ class AiResult extends Model
                     // lifecycle state
                     'status' => JobStatus::DONE,
 
-                ]);
+                ];
+                logger(['insert validated data', $validatedData]);
+                IchijikinExtractionResultRepository::create($validatedData);
             }
         });
     }
