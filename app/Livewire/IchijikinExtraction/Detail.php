@@ -83,7 +83,10 @@ class Detail extends Component
         try {
             DB::transaction(function () {
                 $disk = 'public';
-                dd($this->file_ichijikin);
+                dd(
+                    $this->file_ichijikin,
+                    $this->getErrorBag()->toArray()
+                );
 
                 $extension = $this->file_ichijikin
                     ->extension();
