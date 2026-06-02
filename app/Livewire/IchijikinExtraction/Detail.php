@@ -85,7 +85,8 @@ class Detail extends Component
                 $disk = 'public';
                 dd(
                     $this->file_ichijikin,
-                    $this->getErrorBag()->toArray()
+                    $this->getErrorBag()->toArray(),
+                    config('livewire.temporary_file_upload')
                 );
 
                 $extension = $this->file_ichijikin
