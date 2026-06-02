@@ -415,7 +415,7 @@ class IchijikinService
 
         imagesetthickness($image, 6);
 
-        if ($kokumin) {
+        if ($kokumin && !$nenkin_100) {
             // === SCALE POSITION (Kokumin) ===
             $x = 313 * $scaleX;
             $y = 55  * $scaleY;

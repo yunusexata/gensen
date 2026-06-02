@@ -45,8 +45,8 @@ class IchijikinExtractionService
                     description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547'
                 ),
                 'no_nenkin' => new Schema(
-                    type: DataType::INTEGER,
-                    description: 'Remove all spaces. Example: 4161 325041 -> 4161325041'
+                    type: DataType::STRING,
+                    description: 'Remove all spaces but PRESERVE any leading zeros. Return as a single continuous string. Example: "0160 618880" -> "0160618880"'
                 ),
                 'lama_kerja' => new Schema(
                     type: DataType::INTEGER,

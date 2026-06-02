@@ -134,7 +134,7 @@ class SplitIchijikinJob implements ShouldQueue
         $outputDir = storage_path("app/{$store_disk}/{$dir}");
 
         // $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
-        $outputPattern = storage_path("app/{$store_disk}/{$dir}/%04d.jpg");
+        $outputPattern = storage_path("app/{$store_disk}/{$dir}/{$attachment->batch_name}_{$attachment->id}_%04d.jpg");
         // logger([
         //     'stored output dir 97',
         //     $outputPattern
@@ -194,7 +194,7 @@ class SplitIchijikinJob implements ShouldQueue
                 */
 
         $generatedFiles = glob(
-            "{$outputDir}/*.jpg"
+            "{$outputDir}/{$attachment->batch_name}_{$attachment->id}_*.jpg"
         );
 
         logger([
