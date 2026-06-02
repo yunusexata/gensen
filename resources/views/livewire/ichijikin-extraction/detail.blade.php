@@ -69,7 +69,7 @@
                         class="form-group">
                         <div
                             class="border-2 border-dashed border-outline-variant/30 rounded-xl p-10 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
-                            @if ($file_ichijikin)
+                            @if (!$file_ichijikin)
                                 
                                 <input class="hidden validate-upload-file"
                                     id="file_ichijikin"
