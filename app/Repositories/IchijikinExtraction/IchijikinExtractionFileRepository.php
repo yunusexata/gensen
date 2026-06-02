@@ -25,6 +25,8 @@ class IchijikinExtractionFileRepository extends MasterDataRepository
                 'results.nenkin_100',
                 'results.nenkin_80',
                 'results.nenkin_20',
+                'results.confidence_score',
+                'results.confidence_note',
                 'results.type',
             )
             ->leftJoin(
