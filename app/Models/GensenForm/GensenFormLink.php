@@ -37,7 +37,7 @@ class GensenFormLink extends Model
     const STATUS_CHOICE = [
 
         self::STATUS_ACTIVE => 'ACTIVE',
-        self::STATUS_INACTIVE => 'INACTIVE',
+        // self::STATUS_INACTIVE => 'INACTIVE',
         self::STATUS_EXPIRED => 'EXPIRED',
         self::STATUS_SUCCESS => 'SUCCESS',
     ];

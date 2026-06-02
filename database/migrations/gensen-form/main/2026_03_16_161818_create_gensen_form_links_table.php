@@ -62,12 +62,7 @@ return new class extends Migration
         $table->timestamp('expired_at')->nullable();
 
         // lifecycle state
-        $table->enum('status', [
-            GensenFormLink::STATUS_ACTIVE,
-            GensenFormLink::STATUS_INACTIVE,
-            GensenFormLink::STATUS_EXPIRED,
-            GensenFormLink::STATUS_SUCCESS,
-        ])->default(GensenFormLink::STATUS_ACTIVE);
+        $table->string('status')->default(GensenFormLink::STATUS_ACTIVE);
 
         $table->bigInteger("created_by")->unsigned()->nullable();
         $table->bigInteger("updated_by")->unsigned()->nullable();
