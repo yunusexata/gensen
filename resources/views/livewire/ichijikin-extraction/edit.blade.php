@@ -30,10 +30,10 @@
                 <!-- Main Preview Stage -->
                 <div class="flex-1 bg-surface-container-lowest rounded-xl ambient-shadow p-8 flex flex-col relative overflow-hidden group">
                     <div wire:ignore
-                        class="flex-1 relative rounded-xl bg-surface-container flex items-center justify-center w-50 mx-auto">
+                        class="flex-1 relative rounded-xl bg-surface-container flex items-center justify-center w-75 mx-auto">
                         <img
                             id="preview"
-                            class="w-full object-cover border border-danger"
+                            class="w-50 object-cover border border-danger"
                             src="{{  asset('storage/' . $this->ichijikin_file->path)  }}"
                         />
                     </div>
@@ -231,7 +231,7 @@
                 // });
                 cropper = new Cropper(image, {
     viewMode: 0,
-                    // autoCropArea:1,
+                    autoCropArea:1,
 
     dragMode: 'move',
     movable: true,
