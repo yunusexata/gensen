@@ -83,6 +83,7 @@ class Detail extends Component
         try {
             DB::transaction(function () {
                 $disk = 'public';
+                dd($this->file_ichijikin);
 
                 $extension = $this->file_ichijikin
                     ->extension();
