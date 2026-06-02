@@ -35,6 +35,10 @@
 @section('content')
 
     <div class="card">
+        <div class="card-header">
+            <livewire:gensen-form.gensen-form-link.filter />
+
+        </div>
         <div class="card-body">
             <livewire:gensen-form.gensen-form-link.datatable lazy />
         </div>

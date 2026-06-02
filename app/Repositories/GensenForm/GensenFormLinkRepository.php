@@ -13,12 +13,21 @@ class GensenFormLinkRepository extends MasterDataRepository
         return GensenFormLink::class;
     }
 
-    public static function datatable()
+    public static function datatable($status)
     {
         $pic_code = Auth::user()->pic_code;
         return GensenFormLink::when($pic_code, function ($q) use ($pic_code) {
             $q->where('pic_code', $pic_code);
-        });
+        })
+            ->when($status == GensenFormLink::STATUS_ACTIVE, function ($q) use ($status) {
+                $q->where('status', $status);
+            })
+            ->when($status == GensenFormLink::STATUS_SUCCESS, function ($q) use ($status) {
+                $q->where('status', $status);
+            })
+            ->when($status == GensenFormLink::STATUS_EXPIRED, function ($q) use ($status) {
+                $q->where('expired_at', '<', now());
+            });
     }
     public static function incrementUsedCount($id)
     {

@@ -4,6 +4,7 @@ namespace App\Livewire\GensenForm\GensenFormLink;
 
 use App\Helpers\Alert;
 use App\Helpers\PermissionHelper;
+use App\Models\GensenForm\GensenFormLink;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\Exata\ExataFormCandidateRepository;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
@@ -22,6 +23,8 @@ class Datatable extends Component
     public $isCanDelete;
     public $isCanUpdateBookingTime;
     public $isCanUpdateDetail;
+
+    public $status;
 
     // Delete Dialog
     public $targetDeleteId;
@@ -135,7 +138,10 @@ class Datatable extends Component
             ],
             [
                 'key' => 'expired_at',
-                'name' => 'Expired Pada'
+                'name' => 'Expired Pada',
+                'render' => function ($item) {
+                    return $item->expired_at;
+                }
             ],
             [
                 'key' => 'name',
@@ -147,7 +153,14 @@ class Datatable extends Component
             ],
             [
                 'key' => 'status',
-                'name' => 'Status'
+                'name' => 'Status',
+                'render' => function ($item) {
+
+                    if ($item->status == GensenFormLink::STATUS_ACTIVE && now()->greaterThan($item->expired_at)) {
+                        return GensenFormLink::STATUS_EXPIRED;
+                    }
+                    return $item->status;
+                }
             ],
             [
                 'key' => 'max_usage',
@@ -171,7 +184,7 @@ class Datatable extends Component
 
     public function getQuery(): Builder
     {
-        return GensenFormLinkRepository::datatable();
+        return GensenFormLinkRepository::datatable($this->status);
     }
 
     public function getView(): string
