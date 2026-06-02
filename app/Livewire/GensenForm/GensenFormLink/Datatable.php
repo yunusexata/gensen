@@ -158,7 +158,7 @@ class Datatable extends Component
 
                     if ($item->status == GensenFormLink::STATUS_ACTIVE && now()->greaterThan($item->expired_at)) {
                         GensenFormLinkRepository::update($item->id, [
-                            'status' => GensenFormLink::STATUS_EXPIRED;
+                            'status' => GensenFormLink::STATUS_EXPIRED,
                         ]);
                         return GensenFormLink::STATUS_EXPIRED;
                     }
