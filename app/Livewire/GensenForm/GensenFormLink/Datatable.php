@@ -105,9 +105,30 @@ class Datatable extends Component
                         </div>";
                     }
 
+                    $link = route('gensen_form.form', simple_encrypt($item->token));
+                    $linkHtml = "
+                        <div class='d-flex flex-nowrap justify-content-start gap-2 p-0 m-0'>
+                            <div class='col-auto p-0 m-0'>
+                                <button class='p-0 hover:bg-error/10 text-success rounded transition-colors'
+                                    onclick=\"copyToClipboard('$link')\"
+                                >
+                                <span class='material-symbols-outlined text-lg' data-icon='edit'>Link</span>
+                                </button>
+                            </div>
+                            <div class='col-auto p-0 m-0'>
+                                <p
+                                    class='form-control m-0 py-0'
+                                    onclick=\"copyToClipboard('$link')\"
+                                ></p>
+                            </div>
+                        </div>
+                        
+                        ";
+
                     $html = "<div class='row p-0 m-0 d-flex justify-content-start flex-nowrap'>
-                        $editHtml $destroyHtml 
+                        $editHtml $destroyHtml $linkHtml
                     </div>";
+
 
                     return $html;
                 },
@@ -145,35 +166,6 @@ class Datatable extends Component
                 }
             ],
 
-            [
-                'sortable' => false,
-                'searcable' => false,
-                'name' => 'Link',
-                'render' => function ($item) {
-                    // $link = route('gensen_form_link.form', Crypt::encrypt($item->id));
-                    // $link = route('gensen_form_link.create', $item->token);
-                    $link = route('gensen_form.form', simple_encrypt($item->token));
-                    $linkHtml = "
-                        <div class='d-flex flex-nowrap justify-content-start gap-2 p-0 m-0'>
-                            <div class='col-auto p-0 m-0'>
-                                <button class='p-0 hover:bg-error/10 text-success rounded transition-colors'
-                                    onclick=\"copyToClipboard('$link')\"
-                                >
-                                <span class='material-symbols-outlined text-lg' data-icon='edit'>Link</span>
-                                </button>
-                            </div>
-                            <div class='col-auto p-0 m-0'>
-                                <p
-                                    class='form-control m-0 py-0'
-                                    onclick=\"copyToClipboard('$link')\"
-                                >" . $link . "</p>
-                            </div>
-                        </div>
-                        
-                        ";
-                    return $linkHtml;
-                }
-            ],
         ];
     }
 

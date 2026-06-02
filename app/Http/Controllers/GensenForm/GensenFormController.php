@@ -63,7 +63,7 @@ class GensenFormController extends Controller
             );
             abort(403, "Form {$form['name']} sudah expired");
         }
-        if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_CLOSED) {
+        if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_SUCCESS) {
             abort(403, "Form {$form['name']} sudah Maksimal");
         }
         $title = "Access form - {$form['name']} | Exata Indonesia";

@@ -33,13 +33,13 @@ class GensenFormLink extends Model
     const STATUS_ACTIVE = 'ACTIVE';
     const STATUS_INACTIVE = 'INACTIVE';
     const STATUS_EXPIRED = 'EXPIRED';
-    const STATUS_CLOSED = 'CLOSED';
+    const STATUS_SUCCESS = 'SUCCESS';
     const STATUS_CHOICE = [
 
         self::STATUS_ACTIVE => 'ACTIVE',
         self::STATUS_INACTIVE => 'INACTIVE',
         self::STATUS_EXPIRED => 'EXPIRED',
-        self::STATUS_CLOSED => 'CLOSED',
+        self::STATUS_SUCCESS => 'SUCCESS',
     ];
 
     protected $guarded = ['id'];
@@ -67,7 +67,7 @@ class GensenFormLink extends Model
                 $model->isDirty('used_count') &&
                 $model->used_count >= $model->max_usage
             ) {
-                $model->status = self::STATUS_CLOSED;
+                $model->status = self::STATUS_SUCCESS;
             }
             if (
                 $model->isDirty('used_count') &&
@@ -87,7 +87,7 @@ class GensenFormLink extends Model
                 $model->isDirty('max_usage') &&
                 $model->used_count >= $model->max_usage
             ) {
-                $model->status = self::STATUS_CLOSED;
+                $model->status = self::STATUS_SUCCESS;
             }
         });
     }

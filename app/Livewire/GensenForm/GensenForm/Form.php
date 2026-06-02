@@ -217,7 +217,7 @@ class Form extends Component
                 );
                 abort(403, "Form {$form['name']} sudah expired");
             }
-            if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_CLOSED) {
+            if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_SUCCESS) {
                 abort(403, "Form {$form['name']} sudah Maksimal");
             }
             $this->password = $form->password;

@@ -66,7 +66,7 @@ return new class extends Migration
             GensenFormLink::STATUS_ACTIVE,
             GensenFormLink::STATUS_INACTIVE,
             GensenFormLink::STATUS_EXPIRED,
-            GensenFormLink::STATUS_CLOSED,
+            GensenFormLink::STATUS_SUCCESS,
         ])->default(GensenFormLink::STATUS_ACTIVE);
 
         $table->bigInteger("created_by")->unsigned()->nullable();
