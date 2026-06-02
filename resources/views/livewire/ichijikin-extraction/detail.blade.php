@@ -69,25 +69,36 @@
                         class="form-group">
                         <div
                             class="border-2 border-dashed border-outline-variant/30 rounded-xl p-10 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
-                            <input class="hidden validate-upload-file"
-                                id="file_ichijikin"
-                                name="file_ichijikin" type="file"
-                                x-ref="input"
-                                wire:model="file_ichijikin"
-                                @change="handleFiles" accept="application/pdf"
-                                class="position-absolute invisible" />
+                            @if ($file_ichijikin)
+                                
+                                <input class="hidden validate-upload-file"
+                                    id="file_ichijikin"
+                                    name="file_ichijikin" type="file"
+                                    x-ref="input"
+                                    wire:model="file_ichijikin"
+                                    @change="handleFiles" accept="application/pdf"
+                                    class="position-absolute invisible" />
 
-                            <label
-                                class="cursor-pointer w-full md:w-3/4 flex flex-col items-center gap-2 border-2 border-dashed border-blue-100 rounded-lg p-2 rounded"
-                                for="file_ichijikin">
-                                <span
-                                    class=" my-0 material-symbols-outlined text-5xl text-primary-container"
-                                    data-icon="description">description</span>
-                                <p class=" my-0 font-body text-on-surface-variant">Drag and drop file
-                                    kamu disini, atau <span
-                                        class=" my-0 text-primary font-semibold">CARI FILE</span></p>
-                                <p class=" my-0 text-xs text-outline font-medium">Format: PDF</p>
-                            </label>
+                                <label
+                                    class="cursor-pointer w-full md:w-3/4 flex flex-col items-center gap-2 border-2 border-dashed border-blue-100 rounded-lg p-2 rounded"
+                                    for="file_ichijikin">
+                                    <span
+                                        class=" my-0 material-symbols-outlined text-5xl text-primary-container"
+                                        data-icon="description">description</span>
+                                    <p class=" my-0 font-body text-on-surface-variant">Drag and drop file
+                                        kamu disini, atau <span
+                                            class=" my-0 text-primary font-semibold">CARI FILE</span></p>
+                                    <p class=" my-0 text-xs text-outline font-medium">Format: PDF</p>
+                                </label>
+                            @else
+
+                                <div class="border rounded p-4 text-center bg-light">
+                                    <i class="bi bi-file-earmark fs-1"></i>
+                                    <div class="mt-2">
+                                        {{$file_ichijikin->getClientOriginalName();}}
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

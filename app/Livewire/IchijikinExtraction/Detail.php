@@ -83,11 +83,6 @@ class Detail extends Component
         try {
             DB::transaction(function () {
                 $disk = 'public';
-                dd(
-                    $this->file_ichijikin,
-                    $this->getErrorBag()->toArray(),
-                    config('livewire.temporary_file_upload')
-                );
 
                 $extension = $this->file_ichijikin
                     ->extension();
