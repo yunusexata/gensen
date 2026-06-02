@@ -78,6 +78,7 @@ class AiResult extends Model
                 logger('DAH SAMPE RESULT ICHIJIKIN');
                 $result = json_decode($model->result_json, true);
                 IchijikinExtractionResultRepository::create([
+                    'ai_job_id' => $model->aiJob_id,
                     'ichijikin_extraction_id' => $model->aiJob->subject->ichijikin_extraction_id,
                     'ichijikin_extraction_file_id' => $model->aiJob->subject_id,
 

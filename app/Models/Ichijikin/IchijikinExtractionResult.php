@@ -18,6 +18,7 @@ class IchijikinExtractionResult extends Model
 
     protected $fillable = [
 
+        'ai_job_id',
         'ichijikin_extraction_id',
         'ichijikin_extraction_file_id',
 

@@ -29,6 +29,7 @@ class GensenFormLinkRepository extends MasterDataRepository
                 $q->where('expired_at', '<', now());
             });
     }
+
     public static function incrementUsedCount($id)
     {
         return GensenFormLink::where('id', $id)
