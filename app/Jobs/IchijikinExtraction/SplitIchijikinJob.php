@@ -51,7 +51,7 @@ class SplitIchijikinJob implements ShouldQueue
     private function convertToImage($attachment)
     {
         $disk = $attachment->disk;
-        $store_disk = env('DEFAULT_STORE_CONVERT', 'private');
+        $store_disk = env('DEFAULT_STORE_CONVERT', 'public');
 
         $storage = Storage::disk($disk);
 

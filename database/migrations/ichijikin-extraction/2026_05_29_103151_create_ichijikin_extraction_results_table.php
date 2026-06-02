@@ -61,6 +61,7 @@ return new class extends Migration
         $table->timestamp('started_at')->nullable();
         $table->timestamp('finished_at')->nullable();
         $table->integer('confidence_score')->nullable();
+        $table->text('confidence_note')->nullable();
 
         // lifecycle state
         $table->string('status');

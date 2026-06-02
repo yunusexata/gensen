@@ -142,13 +142,20 @@ class DatatableBatchDetail extends Component
                     return $item->type ?? 'Belum Di Proses';
                 }
             ],
-            // [
-            //     'key' => 'confidence_score',
-            //     'name' => 'Nilai',
-            //     'render' => function ($item) {
-            //         return $item->confidence_score ?? 'Belum Di Proses';
-            //     }
-            // ],
+            [
+                'key' => 'confidence_score',
+                'name' => 'Nilai',
+                'render' => function ($item) {
+                    return $item->confidence_score ?? 'Belum Di Proses';
+                }
+            ],
+            [
+                'key' => 'confidence_note',
+                'name' => 'Catatan',
+                'render' => function ($item) {
+                    return $item->confidence_note;
+                }
+            ],
         ];
     }
 

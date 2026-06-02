@@ -36,6 +36,7 @@ class IchijikinExtractionResult extends Model
         'started_at',
         'finished_at',
         'confidence_score',
+        'confidence_note',
 
         // lifecycle state
         'status',

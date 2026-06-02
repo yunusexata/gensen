@@ -97,7 +97,7 @@ class AiResult extends Model
                     // 'started_at' => $model->aiJob,
                     // 'finished_at' => $model->aiJob,
                     'confidence_score' => $result['confidence_score'],
-                    // 'confidence_note' => isset($result['confidence_note']) ? $result['confidence_note'] : null,
+                    'confidence_note' => isset($result['confidence_note']) ? $result['confidence_note'] : null,
 
                     // lifecycle state
                     'status' => JobStatus::DONE,

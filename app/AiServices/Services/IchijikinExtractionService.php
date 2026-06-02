@@ -54,11 +54,12 @@ class IchijikinExtractionService
                 ),
                 'confidence_score' => new Schema(
                     type: DataType::INTEGER,
-                    description: "Extraction confidence (0-100) based on document clarity."
+                    description: "MUST be 0 if ALL or MOST image crops are blank, empty, or contain no data values. Otherwise, provide a score from 1 to 100 based on text readability."
                 ),
                 'confidence_note' => new Schema(
                     type: DataType::STRING,
-                    description: "IF confidence_score < 85 should explain the reason, ELSE null."
+                    description: "IF confidence_score < 85, explain the exact reason (e.g., 'All crops are blank, layout might be rotated or incorrect'). ELSE, return null.",
+                    nullable: true
                 )
             ],
             required: [
