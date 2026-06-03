@@ -27,6 +27,7 @@
     <table class="table-border" style="width: 100%">
         <thead>
             <tr>
+                <th class="text-center">FILE</th>
                 <th class="text-center">NAMA LENGKAP</th>
                 <th class="text-center">NO NENKIN</th>
                 <th class="text-center">LAMA KERJA</th>
@@ -44,6 +45,7 @@
             @endphp
             @foreach ($collection as $index => $data)
                 <tr>
+                    <td>{{ $data['file_stored_name'] }}</td>
                     <td>{{ $data['nama_lengkap'] }}</td>
                     <td>{{ $data['no_nenkin'] }}</td>
                     <td>{{ $data['lama_kerja'] }}</td>
