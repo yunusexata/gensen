@@ -76,34 +76,42 @@
         </div>
         <div class="row d-flex justify-content-center align-items-center">
             <div class="col-md-6 mb-3">
+                <img src="{{ asset('storage/ichijikin/'.$ichijikin_file->ichijikinExtraction->batch_name. '/crop/'.$ichijikin_file->file_stored_name.'/nama_lengkap.png') }}?t={{ time() }}" alt="">
                 <label>Nama Lengkap</label>
                 <input placeholder="Nama Lengkap" type="text" wire:model.defer="nama_lengkap" class="form-control">
             </div>
             <div class="col-md-6 mb-3">
+                <img src="{{ asset('storage/ichijikin/'.$ichijikin_file->ichijikinExtraction->batch_name. '/crop/'.$ichijikin_file->file_stored_name.'/no_nenkin.png') }}?t={{ time() }}" alt="">
                 <label>No Nenkin</label>
                 <input placeholder="No Nenkin" type="text" wire:model.defer="no_nenkin" class="form-control">
             </div>
             <div class="col-md-6 mb-3">
+                <img src="{{ asset('storage/ichijikin/'.$ichijikin_file->ichijikinExtraction->batch_name. '/crop/'.$ichijikin_file->file_stored_name.'/lama_kerja.png') }}?t={{ time() }}" alt="">
                 <label>Lama Kerja</label>
                 <input placeholder="Lama Kerja" type="text" wire:model.defer="lama_kerja" class="form-control">
             </div>
             <div class="col-md-6 mb-3">
+                <img src="{{ asset('storage/ichijikin/'.$ichijikin_file->ichijikinExtraction->batch_name. '/crop/'.$ichijikin_file->file_stored_name.'/kokumin.png') }}?t={{ time() }}" alt="">
                 <label>Kokumin</label>
                 <input placeholder="Kokumin" type="text" wire:model.defer="kokumin" class="form-control">
             </div>
             <div class="col-md-6 mb-3">
+                <img src="{{ asset('storage/ichijikin/'.$ichijikin_file->ichijikinExtraction->batch_name. '/crop/'.$ichijikin_file->file_stored_name.'/nenkin_100.png') }}?t={{ time() }}" alt="">
                 <label>Nenkin 100</label>
                 <input placeholder="Nenkin 100" type="text" wire:model.defer="nenkin_100" class="form-control">
             </div>
             <div class="col-md-6 mb-3">
+                <img src="{{ asset('storage/ichijikin/'.$ichijikin_file->ichijikinExtraction->batch_name. '/crop/'.$ichijikin_file->file_stored_name.'/nenkin_80.png') }}?t={{ time() }}" alt="">
                 <label>Nenkin 80</label>
                 <input placeholder="Nenkin 80" type="text" wire:model.defer="nenkin_80" class="form-control">
             </div>
             <div class="col-md-6 mb-3">
+                <img src="{{ asset('storage/ichijikin/'.$ichijikin_file->ichijikinExtraction->batch_name. '/crop/'.$ichijikin_file->file_stored_name.'/nenkin_20.png') }}?t={{ time() }}" alt="">
                 <label>Nenkin 20</label>
                 <input placeholder="Nenkin 20" type="text" wire:model.defer="nenkin_20" class="form-control">
             </div>
             <div class="col-md-6 mb-3">
+                <img src="{{ asset('storage/ichijikin/'.$ichijikin_file->ichijikinExtraction->batch_name. '/crop/'.$ichijikin_file->file_stored_name.'/alamat.png') }}?t={{ time() }}" alt="">
                 <label>Alamat</label>
                 <textarea class="form-control" placeholder="Alamat" wire:model.defer="alamat">
                 </textarea>
