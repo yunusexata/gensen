@@ -36,4 +36,13 @@ Route::get('/php-check', function () {
         'loaded_ini' => php_ini_loaded_file(),
     ]);
 });
+Route::get('/sentry-test', function () {
+    throw new Exception('Sentry Test');
+});
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'ok',
+        'time' => now(),
+    ]);
+});
 // Route::get('/phpinfo', fn() => phpinfo());
