@@ -180,7 +180,7 @@ class DatatableBatchDetail extends Component
                 'render' => function ($item) {
 
                     $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/alamat.png');
-                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->alamat;
+                    return "<img src='" . $url . "' style='width:500px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->alamat;
                 }
             ],
 
