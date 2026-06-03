@@ -64,7 +64,7 @@ class Detail extends Component
         return ExportHelper::export(
             $type,
             $fileName,
-            IchijikinExtractionFileRepository::datatable(Crypt::decrypt($this->objId)),
+            IchijikinExtractionFileRepository::datatable(Crypt::decrypt($this->objId))->orderBy('file_stored_name', 'ASC'),
             'app.ichijikin-extraction.export',
             [
                 'title' => "Data Ichijikin $this->batch_name",
