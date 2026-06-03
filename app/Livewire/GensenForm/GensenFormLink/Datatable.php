@@ -110,15 +110,13 @@ class Datatable extends Component
 
                     $link = route('gensen_form.form', simple_encrypt($item->token));
                     $linkHtml = "
-                        <div class='d-flex flex-nowrap justify-content-start gap-2 p-0 m-0'>
-                            <div class='col-auto p-0 m-0'>
+                            <div class='col-auto'>
                                 <button class='p-0 hover:bg-error/10 text-success rounded transition-colors'
                                     onclick=\"copyToClipboard('$link')\"
                                 >
                                 <span class='material-symbols-outlined text-lg' data-icon='edit'>Link</span>
                                 </button>
                             </div>
-                        </div>
                         
                         ";
 
