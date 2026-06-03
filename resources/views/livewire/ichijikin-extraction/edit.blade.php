@@ -34,7 +34,7 @@
                         <img
                             id="preview"
                             class="w-50 object-cover border border-danger"
-                            src="{{  asset('storage/' . $this->ichijikin_file->path)  }}"
+                            src="{{ asset('storage/' . $this->ichijikin_file->path) }}?t={{ time() }}"
                         />
                     </div>
                     <!-- Bottom Controls -->
