@@ -35,6 +35,7 @@
                 <th class="text-center">NENKIN 100</th>
                 <th class="text-center">NENKIN 80</th>
                 <th class="text-center">NENKIN 20</th>
+                <th class="text-center">ALAMAT</th>
                 <th class="text-center">TIPE</th>
                 <th class="text-center">NILAI</th>
                 <th class="text-center">CATATAN</th>
@@ -55,6 +56,7 @@
                     <td>{{ $data['nenkin_100'] }}</td>
                     <td>{{ $data['nenkin_80'] }}</td>
                     <td>{{ $data['nenkin_20'] }}</td>
+                    <td>{{ $data['alamat'] }}</td>
                     <td>{{ $data['type'] }}</td>
                     <td>{{ $data['confidence_score'] }}</td>
                     <td>{{ $data['confidence_note'] }}</td>
