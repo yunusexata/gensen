@@ -118,12 +118,6 @@ class Datatable extends Component
                                 <span class='material-symbols-outlined text-lg' data-icon='edit'>Link</span>
                                 </button>
                             </div>
-                            <div class='col-auto p-0 m-0'>
-                                <p
-                                    class='form-control m-0 py-0'
-                                    onclick=\"copyToClipboard('$link')\"
-                                ></p>
-                            </div>
                         </div>
                         
                         ";
