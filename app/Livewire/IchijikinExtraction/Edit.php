@@ -42,6 +42,7 @@ class Edit extends Component
     public $nenkin_100;
     public $nenkin_80;
     public $nenkin_20;
+    public $alamat;
     public $type;
     public $confidence_score;
     public $confidence_note;
@@ -64,6 +65,7 @@ class Edit extends Component
             $this->nenkin_20 = $ichijikin_result->nenkin_20;
             $this->confidence_score = $ichijikin_result->confidence_score;
             $this->confidence_note = $ichijikin_result->confidence_note;
+            $this->alamat = $ichijikin_result->alamat;
             $this->type = $ichijikin_result->type;
         }
     }
@@ -100,6 +102,7 @@ class Edit extends Component
                     'nenkin_20' => $this->nenkin_20,
                     'confidence_score' => $this->confidence_score,
                     'confidence_note' => $this->confidence_note,
+                    'alamat' => $this->alamat,
                     'type' => $this->type,
                 ];
                 IchijikinExtractionResultRepository::updateBy([

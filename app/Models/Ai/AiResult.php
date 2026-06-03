@@ -89,6 +89,7 @@ class AiResult extends Model
                     'nenkin_100' => $result['nenkin_100'],
                     'nenkin_80' => $result['nenkin_80'],
                     'nenkin_20' => $result['nenkin_20'],
+                    'alamat' => $result['alamat'],
 
                     'type' => IchijikinExtractionResult::TYPE_SPEED,
 

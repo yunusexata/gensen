@@ -204,6 +204,8 @@ class IchijikinService
         $coord = ['x' => 700, 'y' => 780, 'width' => 150, 'height' => 90];
         $this->cropImage($path, $coord, $folder, 'lama_kerja');
 
+        $coord = ['x' => 439, 'y' => 1152, 'width' => 768, 'height' => 110];
+        $this->cropImage($path, $coord, $folder, 'alamat');
 
         ExtractionIchijikinJob::dispatch($model)->onQueue('extract');
         // // Crop Payment Top
@@ -232,7 +234,7 @@ class IchijikinService
 
         // Crop Address
         // $coord = ['x' => 400, 'y' => 1050, 'width' => 700, 'height' => 100];
-        // $this->cropImage($path, $coord, $folder, 'address');
+        // $this->cropImage($path, $coord, $folder, 'alamat');
 
         // $nenkin = ConvertDataIchijikinRepository::update($model->id, [
         //     'date' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/date.png'), 'date')['text'] ?? null,
@@ -605,8 +607,8 @@ class IchijikinService
         // Save as JPG
         $resized = imagescale(
             $image,
-            (int)($currentWidth * 0.5),
-            (int)($currentHeight * 0.5)
+            (int)($currentWidth * 0.7),
+            (int)($currentHeight * 0.7)
         );
 
         imagejpeg($resized, $outputPath, 60);

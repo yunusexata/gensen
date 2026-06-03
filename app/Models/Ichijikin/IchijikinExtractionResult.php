@@ -22,6 +22,7 @@ class IchijikinExtractionResult extends Model
         'ichijikin_extraction_file_id',
 
         'nama_lengkap',
+        'alamat',
         'no_nenkin',
         'lama_kerja',
         'kokumin',

@@ -160,6 +160,13 @@ class DatatableBatchDetail extends Component
                 }
             ],
             [
+                'key' => 'alamat',
+                'name' => 'Alamat',
+                'render' => function ($item) {
+                    return $item->alamat ?? 'Belum Di Proses';
+                }
+            ],
+            [
                 'key' => 'type',
                 'name' => 'Tipe',
                 'render' => function ($item) {

@@ -52,6 +52,10 @@ class IchijikinExtractionService
                     type: DataType::INTEGER,
                     description: 'Remove all spaces. Example: 48'
                 ),
+                'alamat' => new Schema(
+                    type: DataType::STRING,
+                    description: 'Extract the full address exactly as shown.'
+                ),
                 'confidence_score' => new Schema(
                     type: DataType::INTEGER,
                     description: "MUST be 0 if ALL or MOST image crops are blank, empty, or contain no data values. Otherwise, provide a score from 1 to 100 based on text readability."
@@ -70,6 +74,7 @@ class IchijikinExtractionService
                 'nenkin_80',
                 'no_nenkin',
                 'lama_kerja',
+                'alamat',
                 'confidence_score'
             ]
         );
@@ -85,7 +90,8 @@ class IchijikinExtractionService
             'nenkin_80' => 'nenkin_80.png',
             'no_nenkin' => 'no_nenkin.png',
             'lama_kerja' => 'lama_kerja.png',
-            'nama_lengkap' => 'nama_lengkap.png'
+            'nama_lengkap' => 'nama_lengkap.png',
+            'alamat' => 'alamat.png'
         ];
         foreach ($files as $key => $fileName) {
             $filePath = storage_path("app/public/ichijikin/{$ichijikin->ichijikinExtraction->batch_name}/crop/$ichijikin->file_stored_name/{$fileName}");

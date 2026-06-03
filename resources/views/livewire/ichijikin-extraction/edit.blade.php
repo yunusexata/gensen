@@ -104,6 +104,11 @@
                 <input placeholder="Nenkin 20" type="text" wire:model.defer="nenkin_20" class="form-control">
             </div>
             <div class="col-md-6 mb-3">
+                <label>Alamat</label>
+                <textarea class="form-control" placeholder="Alamat" wire:model.defer="alamat">
+                </textarea>
+            </div>
+            <div class="col-md-6 mb-3">
                 <label>Nilai</label>
                 <input placeholder="Nilai" type="text" wire:model.defer="confidence_score" class="form-control">
             </div>
