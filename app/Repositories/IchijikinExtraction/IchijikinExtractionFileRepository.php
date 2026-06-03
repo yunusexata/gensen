@@ -18,6 +18,7 @@ class IchijikinExtractionFileRepository extends MasterDataRepository
             ->select(
                 'ichijikin_extraction_files.id',
                 'ichijikin_extraction_files.file_stored_name',
+                'ichijikin_extraction_files.ichijikin_extraction_id',
                 'results.nama_lengkap',
                 'results.no_nenkin',
                 'results.lama_kerja',
@@ -30,11 +31,6 @@ class IchijikinExtractionFileRepository extends MasterDataRepository
                 'results.alamat',
                 'results.type',
             )
-            ->with([
-                'ichijikinExtraction' => function ($q) {
-                    return $q->select('id', 'batch_name');
-                },
-            ])
             ->leftJoin(
                 'ichijikin_extraction_results as results',
                 'results.ichijikin_extraction_file_id',
