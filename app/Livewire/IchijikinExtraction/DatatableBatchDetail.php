@@ -117,7 +117,7 @@ class DatatableBatchDetail extends Component
                 'render' => function ($item) {
 
                     $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/nama_lengkap.png');
-                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->nama_lengkap;
+                    return "$item->nama_lengkap<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
             [
@@ -126,7 +126,7 @@ class DatatableBatchDetail extends Component
                 'render' => function ($item) {
 
                     $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/no_nenkin.png');
-                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->no_nenkin;
+                    return "$item->no_nenkin<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
             [
@@ -135,7 +135,7 @@ class DatatableBatchDetail extends Component
                 'render' => function ($item) {
 
                     $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/lama_kerja.png');
-                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->lama_kerja;
+                    return "$item->lama_kerja<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
             [
@@ -144,7 +144,7 @@ class DatatableBatchDetail extends Component
                 'render' => function ($item) {
 
                     $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/kokumin.png');
-                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->kokumin;
+                    return "$item->kokumin<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
             [
@@ -153,7 +153,7 @@ class DatatableBatchDetail extends Component
                 'render' => function ($item) {
 
                     $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/nenkin_100.png');
-                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->nenkin_100;
+                    return "$item->nenkin_100<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
             [
@@ -162,7 +162,7 @@ class DatatableBatchDetail extends Component
                 'render' => function ($item) {
 
                     $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/nenkin_80.png');
-                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->nenkin_80;
+                    return "$item->nenkin_80<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
             [
@@ -171,7 +171,7 @@ class DatatableBatchDetail extends Component
                 'render' => function ($item) {
 
                     $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/nenkin_20.png');
-                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->nenkin_20;
+                    return "$item->nenkin_20<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
             [
@@ -180,7 +180,7 @@ class DatatableBatchDetail extends Component
                 'render' => function ($item) {
 
                     $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/alamat.png');
-                    return "<img src='" . $url . "' style='width:500px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->alamat;
+                    return "$item->alamat<br><img src='" . $url . "' style='width:500px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
 
