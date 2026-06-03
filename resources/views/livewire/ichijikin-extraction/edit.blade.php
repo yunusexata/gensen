@@ -97,6 +97,14 @@
                 <input placeholder="Nenkin 20" type="text" wire:model.defer="nenkin_20" class="form-control">
             </div>
             <div class="col-md-6 mb-3">
+                <label>Nilai</label>
+                <input placeholder="Nilai" type="text" wire:model.defer="confidence_score" class="form-control">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Catatan</label>
+                <input placeholder="Catatan" type="text" wire:model.defer="confidence_note" class="form-control">
+            </div>
+            <div class="col-md-6 mb-3">
                 <label>Tipe</label>
                 <select class="form-control" wire:model="type">
                     <option value="speed">speed</option>

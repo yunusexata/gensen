@@ -43,6 +43,8 @@ class Edit extends Component
     public $nenkin_80;
     public $nenkin_20;
     public $type;
+    public $confidence_score;
+    public $confidence_note;
 
     public $photo;
 
@@ -60,6 +62,8 @@ class Edit extends Component
             $this->nenkin_100 = $ichijikin_result->nenkin_100;
             $this->nenkin_80 = $ichijikin_result->nenkin_80;
             $this->nenkin_20 = $ichijikin_result->nenkin_20;
+            $this->confidence_score = $ichijikin_result->confidence_score;
+            $this->confidence_note = $ichijikin_result->confidence_note;
             $this->type = $ichijikin_result->type;
         }
     }
@@ -94,6 +98,8 @@ class Edit extends Component
                     'nenkin_100' => $this->nenkin_100,
                     'nenkin_80' => $this->nenkin_80,
                     'nenkin_20' => $this->nenkin_20,
+                    'confidence_score' => $this->confidence_score,
+                    'confidence_note' => $this->confidence_note,
                     'type' => $this->type,
                 ];
                 IchijikinExtractionResultRepository::updateBy([
