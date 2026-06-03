@@ -605,11 +605,11 @@ class IchijikinService
         // Save as JPG
         $resized = imagescale(
             $image,
-            (int)($currentWidth * 0.7),
-            (int)($currentHeight * 0.7)
+            (int)($currentWidth * 0.5),
+            (int)($currentHeight * 0.5)
         );
 
-        imagejpeg($resized, $outputPath, 40);
+        imagejpeg($resized, $outputPath, 60);
 
         // Free up memory
         imagedestroy($image);
