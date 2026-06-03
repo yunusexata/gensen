@@ -110,62 +110,80 @@ class DatatableBatchDetail extends Component
                     return $item->file_stored_name;
                 }
             ],
+
             [
                 'key' => 'nama_lengkap',
                 'name' => 'Nama Lengkap',
                 'render' => function ($item) {
-                    return $item->nama_lengkap ?? 'Belum Di Proses';
+
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/nama_lengkap.png');
+                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->nama_lengkap;
                 }
             ],
             [
                 'key' => 'no_nenkin',
                 'name' => 'No Nenkin',
                 'render' => function ($item) {
-                    return $item->no_nenkin ?? 'Belum Di Proses';
+
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/no_nenkin.png');
+                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->no_nenkin;
                 }
             ],
             [
                 'key' => 'lama_kerja',
                 'name' => 'Lama Kerja',
                 'render' => function ($item) {
-                    return $item->lama_kerja ? $item->lama_kerja . " Bulan" : 'Belum Di Proses';
+
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/lama_kerja.png');
+                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->lama_kerja;
                 }
             ],
             [
                 'key' => 'kokumin',
                 'name' => 'Kokumin',
                 'render' => function ($item) {
-                    return is_null($item->kokumin) ? 'Belum Di Proses' : $item->kokumin;
+
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/kokumin.png');
+                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->kokumin;
                 }
             ],
             [
                 'key' => 'nenkin_100',
                 'name' => 'Nenkin 100',
                 'render' => function ($item) {
-                    return $item->nenkin_100 ?? 'Belum Di Proses';
+
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/nenkin_100.png');
+                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->nenkin_100;
                 }
             ],
             [
                 'key' => 'nenkin_80',
                 'name' => 'Nenkin 80',
                 'render' => function ($item) {
-                    return $item->nenkin_80 ?? 'Belum Di Proses';
+
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/nenkin_80.png');
+                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->nenkin_80;
                 }
             ],
             [
                 'key' => 'nenkin_20',
                 'name' => 'Nenkin 20',
                 'render' => function ($item) {
-                    return $item->nenkin_20 ?? 'Belum Di Proses';
+
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/nenkin_20.png');
+                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->nenkin_20;
                 }
             ],
             [
                 'key' => 'alamat',
                 'name' => 'Alamat',
                 'render' => function ($item) {
-                    return $item->alamat ?? 'Belum Di Proses';
+
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/alamat.png');
+                    return "<img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'><br>" . $item->alamat;
                 }
             ],
+
             [
                 'key' => 'type',
                 'name' => 'Tipe',
