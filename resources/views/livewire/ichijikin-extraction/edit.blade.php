@@ -32,15 +32,15 @@
                     <div
                         class="flex-1 relative rounded-xl bg-surface-container flex items-center justify-center w-75 mx-auto">
                         <img
-                            class="w-50 object-cover border border-danger"
-                            src="{{ asset('storage/ichijikin/'.$ichijikin_file->ichijikinExtraction->batch_name. '/result/' . $nama_lengkap.'_'.$no_nenkin) }}?t={{ time() }}"
+                            class="w-50 object-cover"
+                            src="{{ asset('storage/ichijikin/'.$ichijikin_file->ichijikinExtraction->batch_name. '/result/' . $nama_lengkap.'_'.$no_nenkin.'.jpg') }}?t={{ time() }}"
                         />
                     </div>
                     <div wire:ignore
                         class="flex-1 relative rounded-xl bg-surface-container flex items-center justify-center w-75 mx-auto">
                         <img
                             id="preview"
-                            class="w-50 object-cover border border-danger"
+                            class="w-50 object-cover"
                             src="{{ asset('storage/' . $ichijikin_file->path) }}?t={{ time() }}"
                         />
                     </div>
