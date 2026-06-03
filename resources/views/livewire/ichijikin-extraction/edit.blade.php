@@ -29,12 +29,19 @@
             <section class="flex-1 p-6 md:p-12 flex flex-col h-full md:w-200">
                 <!-- Main Preview Stage -->
                 <div class="flex-1 bg-surface-container-lowest rounded-xl ambient-shadow p-8 flex flex-col relative overflow-hidden group">
+                    <div
+                        class="flex-1 relative rounded-xl bg-surface-container flex items-center justify-center w-75 mx-auto">
+                        <img
+                            class="w-50 object-cover border border-danger"
+                            src="{{ asset('storage/ichijikin/'.$ichijikin_file->ichijikinExtraction->batch_name. '/result/' . $nama_lengkap.'_'.$no_nenkin) }}?t={{ time() }}"
+                        />
+                    </div>
                     <div wire:ignore
                         class="flex-1 relative rounded-xl bg-surface-container flex items-center justify-center w-75 mx-auto">
                         <img
                             id="preview"
                             class="w-50 object-cover border border-danger"
-                            src="{{ asset('storage/' . $this->ichijikin_file->path) }}?t={{ time() }}"
+                            src="{{ asset('storage/' . $ichijikin_file->path) }}?t={{ time() }}"
                         />
                     </div>
                     <!-- Bottom Controls -->
