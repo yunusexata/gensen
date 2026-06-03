@@ -122,6 +122,7 @@ class IchijikinExtractionService
             'GEMINI API KEY',
             config('gemini.api_key')
         ]);
+        return;
         // 5. Send the SINGLE request to Gemini
         $result = Gemini::generativeModel(model: config('gemini.model'))
             ->withSystemInstruction(Content::parse($systemInstruction))
