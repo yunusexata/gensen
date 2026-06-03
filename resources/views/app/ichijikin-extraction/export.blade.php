@@ -36,6 +36,8 @@
                 <th class="text-center">NENKIN 80</th>
                 <th class="text-center">NENKIN 20</th>
                 <th class="text-center">TIPE</th>
+                <th class="text-center">NILAI</th>
+                <th class="text-center">CATATAN</th>
             </tr>
         </thead>
         <tbody>
@@ -54,6 +56,8 @@
                     <td>{{ $data['nenkin_80'] }}</td>
                     <td>{{ $data['nenkin_20'] }}</td>
                     <td>{{ $data['type'] }}</td>
+                    <td>{{ $data['confidence_score'] }}</td>
+                    <td>{{ $data['confidence_note'] }}</td>
                 </tr>
             @endforeach
         </tbody>
