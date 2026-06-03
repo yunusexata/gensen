@@ -603,7 +603,7 @@ class IchijikinService
         $outputPath = $destFolder . "/$fileName.jpg";
 
         // Save as JPG
-        imagejpeg($image, $outputPath, 80);
+        imagejpeg($image, $outputPath, 50);
 
         // Free up memory
         imagedestroy($image);
