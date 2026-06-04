@@ -5,6 +5,7 @@ namespace App\Livewire\IchijikinExtraction;
 use App\Helpers\Alert;
 use App\Helpers\ExportHelper;
 use App\Jobs\IchijikinExtraction\DrawLabelIchijikinJob;
+use App\Models\Ai\AiJob;
 use App\Models\Exata\ExataFormCandidate;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\GensenFormLink;
@@ -122,6 +123,15 @@ class Edit extends Component
 
                 IchijikinExtractionFileRepository::update(Crypt::decrypt($this->objId), [
                     'file_size' => $this->photo->getSize()
+                ]);
+
+                $job = AiJob::create([
+                    'subject_type' => self::class,
+                    'subject_id'   => Crypt::decrypt($this->objId),
+                    'job_type'     => AiJob::JOB_TYPE_ICHIJIKIN_EXTRACTION,
+                    'status'       => 'pending',
+                    'provider'     => 'gemini-ai',
+                    'model'        => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
                 ]);
 
                 DrawLabelIchijikinJob::dispatch(IchijikinExtractionResultRepository::findBy([
