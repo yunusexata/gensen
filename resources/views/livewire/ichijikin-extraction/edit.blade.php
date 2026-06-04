@@ -70,6 +70,12 @@
                             </div>
                             <span class="text-xs font-bold text-on-surface-variant">Rotate Right</span>
                         </button>
+                        <button type="button" class="flex flex-col items-center gap-2 group/btn" id="cropBtn">
+                            <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
+                                <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">save</span>
+                            </div>
+                            <span class="text-xs font-bold text-on-surface-variant">Save & Extract</span>
+                        </button>
                     </div>
                 </div>
             </section>
@@ -133,7 +139,7 @@
             </div>
         </div>
         <div class="row">
-            <button type="button" class="flex flex-col items-center gap-2 group/btn" id="cropBtn">
+            <button type="button" class="flex flex-col items-center gap-2 group/btn" wire:click="store">
                 <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
                     <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">save</span>
                 </div>
@@ -222,7 +228,7 @@
                         () => {
                             console.log('uploaded');
                             // ✅ NOW file exists
-                            @this.call('store');
+                            @this.call('storeExtract');
                         },
 
                         () => console.log('error'),

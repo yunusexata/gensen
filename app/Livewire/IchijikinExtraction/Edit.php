@@ -88,28 +88,10 @@ class Edit extends Component
         $this->redirectRoute('ichijikin_extraction.index');
     }
 
-
-
-    public function store()
+    public function storeExtract()
     {
         try {
             DB::transaction(function () {
-                $validatedData = [
-                    'nama_lengkap' => $this->nama_lengkap,
-                    'no_nenkin' => $this->no_nenkin,
-                    'lama_kerja' => $this->lama_kerja,
-                    'kokumin' => $this->kokumin,
-                    'nenkin_100' => $this->nenkin_100,
-                    'nenkin_80' => $this->nenkin_80,
-                    'nenkin_20' => $this->nenkin_20,
-                    'confidence_score' => $this->confidence_score,
-                    'confidence_note' => $this->confidence_note,
-                    'alamat' => $this->alamat,
-                    'type' => $this->type,
-                ];
-                IchijikinExtractionResultRepository::updateBy([
-                    ['ichijikin_extraction_file_id', Crypt::decrypt($this->objId)]
-                ], $validatedData);
 
                 // $disk = env('DEFAULT_STORE_DISK', 'public');
                 $directory = dirname($this->ichijikin_file->path);
@@ -134,10 +116,39 @@ class Edit extends Component
                     'provider'     => 'gemini-ai',
                     'model'        => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
                 ]);
+            });
 
-                // DrawLabelIchijikinJob::dispatch(IchijikinExtractionResultRepository::findBy([
-                //     ['ichijikin_extraction_file_id', Crypt::decrypt($this->objId)]
-                // ]))->onQueue('crop');
+
+            DB::commit();
+            Alert::information($this, 'Data berhasil disimpan');
+            // $this->getData();
+
+            $this->dispatch('handleGetData');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Alert::fail($this, "Gagal", $e->getMessage());
+        }
+    }
+    public function store()
+    {
+        try {
+            DB::transaction(function () {
+                $validatedData = [
+                    'nama_lengkap' => $this->nama_lengkap,
+                    'no_nenkin' => $this->no_nenkin,
+                    'lama_kerja' => $this->lama_kerja,
+                    'kokumin' => $this->kokumin,
+                    'nenkin_100' => $this->nenkin_100,
+                    'nenkin_80' => $this->nenkin_80,
+                    'nenkin_20' => $this->nenkin_20,
+                    'confidence_score' => $this->confidence_score,
+                    'confidence_note' => $this->confidence_note,
+                    'alamat' => $this->alamat,
+                    'type' => $this->type,
+                ];
+                IchijikinExtractionResultRepository::updateBy([
+                    ['ichijikin_extraction_file_id', Crypt::decrypt($this->objId)]
+                ], $validatedData);
             });
 
 
