@@ -54,7 +54,7 @@ class Edit extends Component
     {
         if ($this->objId) {
             $this->ichijikin_file = IchijikinExtractionFileRepository::find(Crypt::decrypt($this->objId));
-
+            dd($this->ichijikin_file);
             $ichijikin_result = $this->ichijikin_file->result;
 
             $this->nama_lengkap = $ichijikin_result->nama_lengkap;
