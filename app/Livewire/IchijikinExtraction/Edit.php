@@ -57,18 +57,20 @@ class Edit extends Component
             $this->ichijikin_file = IchijikinExtractionFileRepository::find(Crypt::decrypt($this->objId));
 
             $ichijikin_result = $this->ichijikin_file->result;
+            if ($ichijikin_result) {
 
-            $this->nama_lengkap = $ichijikin_result->nama_lengkap;
-            $this->no_nenkin = $ichijikin_result->no_nenkin;
-            $this->lama_kerja = $ichijikin_result->lama_kerja;
-            $this->kokumin = $ichijikin_result->kokumin;
-            $this->nenkin_100 = $ichijikin_result->nenkin_100;
-            $this->nenkin_80 = $ichijikin_result->nenkin_80;
-            $this->nenkin_20 = $ichijikin_result->nenkin_20;
-            $this->confidence_score = $ichijikin_result->confidence_score;
-            $this->confidence_note = $ichijikin_result->confidence_note;
-            $this->alamat = $ichijikin_result->alamat;
-            $this->type = $ichijikin_result->type;
+                $this->nama_lengkap = $ichijikin_result->nama_lengkap;
+                $this->no_nenkin = $ichijikin_result->no_nenkin;
+                $this->lama_kerja = $ichijikin_result->lama_kerja;
+                $this->kokumin = $ichijikin_result->kokumin;
+                $this->nenkin_100 = $ichijikin_result->nenkin_100;
+                $this->nenkin_80 = $ichijikin_result->nenkin_80;
+                $this->nenkin_20 = $ichijikin_result->nenkin_20;
+                $this->confidence_score = $ichijikin_result->confidence_score;
+                $this->confidence_note = $ichijikin_result->confidence_note;
+                $this->alamat = $ichijikin_result->alamat;
+                $this->type = $ichijikin_result->type;
+            }
         }
     }
 
