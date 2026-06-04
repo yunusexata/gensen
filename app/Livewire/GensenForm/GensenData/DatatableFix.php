@@ -12,7 +12,7 @@ use App\Models\GensenForm\GensenForm;
 use App\Models\User;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\GensenForm\GensenFormRepository;
-use App\Traits\Livewire\WithDatatable;
+// use App\Traits\Livewire\WithDatatable;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,7 +24,7 @@ use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 
-class Datatable extends Component
+class DatatableFix extends Component
 {
 
     use WithPagination, WithoutUrlPagination;
