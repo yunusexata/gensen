@@ -2,7 +2,7 @@
 
     <form wire:submit.prevent="store">
         
-    <div wire:loading wire:target="images, store, file_ichijikin"
+    <div wire:loading wire:target="images, store, file_ichijikin, storeExtract"
      class="position-fixed top-0 start-0 w-100 h-100 
             bg-dark bg-opacity-50 
             justify-content-center align-items-center"
