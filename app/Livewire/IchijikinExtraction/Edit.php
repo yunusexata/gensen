@@ -10,6 +10,7 @@ use App\Models\Exata\ExataFormCandidate;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\GensenFormLink;
 use App\Models\Ichijikin\IchijikinExtraction;
+use App\Models\Ichijikin\IchijikinExtractionFile;
 use App\Models\Ichijikin\IchijikinExtractionResult;
 use App\Repositories\Exata\ExataFormCandidateRepository;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
@@ -130,7 +131,7 @@ class Edit extends Component
                 ]);
 
                 $job = AiJob::create([
-                    'subject_type' => self::class,
+                    'subject_type' => IchijikinExtractionFile::class,
                     'subject_id'   => Crypt::decrypt($this->objId),
                     'job_type'     => AiJob::JOB_TYPE_ICHIJIKIN_EXTRACTION,
                     'status'       => 'pending',
