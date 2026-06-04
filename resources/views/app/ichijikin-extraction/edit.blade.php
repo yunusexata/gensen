@@ -18,7 +18,7 @@
 
         <div class='row'>
             <div class="col-md-auto mt-2">
-                <a class="btn btn-info" href="{{ route('ichijikin_extraction.index') }}">
+                <a class="btn btn-info" href="{{ route('ichijikin_extraction.detail', $objId) }}">
                     <i class="ki-duotone ki-arrow-left fs-1">
                         <span class="path1"></span>
                         <span class="path2"></span>
