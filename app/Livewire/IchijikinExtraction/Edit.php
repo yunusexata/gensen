@@ -138,9 +138,9 @@ class Edit extends Component
                     'model'        => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
                 ]);
 
-                DrawLabelIchijikinJob::dispatch(IchijikinExtractionResultRepository::findBy([
-                    ['ichijikin_extraction_file_id', Crypt::decrypt($this->objId)]
-                ]))->onQueue('crop');
+                // DrawLabelIchijikinJob::dispatch(IchijikinExtractionResultRepository::findBy([
+                //     ['ichijikin_extraction_file_id', Crypt::decrypt($this->objId)]
+                // ]))->onQueue('crop');
             });
 
 
