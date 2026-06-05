@@ -575,8 +575,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        
+            
             <div class="btn-container">
                 <a target="_blank"
                 href="https://api.whatsapp.com/send/?phone=6281199896308&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen"
@@ -586,13 +585,15 @@
                         alt="WhatsApp"
                         width="20"
                         height="20"
-                        style="vertical-align: middle; border: 0; margin-right: 8px;">
+                        style="vertical-align: middle; border: 0; margin-right: 8px; color: white;">
 
                     <span style="vertical-align: middle;">
                         Hubungi Sales
                     </span>
                 </a>
             </div>
+        </div>
+        
     </main>
 @endsection
 
