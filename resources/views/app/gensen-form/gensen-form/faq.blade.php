@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div class="mx-auto max-w-(--breakpoint-2xl) p-4 pb-20 md:p-6 md:pb-6">
+        <div class="mx-auto p-4 pb-20 md:p-6 md:pb-6">
             
             <!-- Breadcrumb End -->
             <div class="space-y-5 sm:space-y-6">
@@ -576,21 +576,23 @@
                 </div>
             </div>
             
-            <div class="btn-container">
-                <a target="_blank"
-                href="https://api.whatsapp.com/send/?phone=6281199896308&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen"
-                class="btn-action d-flex flex-nowrap col-auto">
-
-                    <img src="{{ asset('assets/media/logos/whatsapp_logo.svg') }}"
-                        alt="WhatsApp"
-                        width="20"
-                        height="20"
-                        style="vertical-align: middle; border: 0; margin-right: 8px; color: white;">
-
-                    <span style="vertical-align: middle;">
-                        Hubungi Sales
-                    </span>
-                </a>
+            <div class="row">
+                <div class="btn-container col-auto">
+                    <a target="_blank"
+                    href="https://api.whatsapp.com/send/?phone=6281199896308&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen"
+                    class="btn-action d-flex flex-nowrap">
+    
+                        <img src="{{ asset('assets/media/logos/whatsapp_logo.svg') }}"
+                            alt="WhatsApp"
+                            width="20"
+                            height="20"
+                            style="vertical-align: middle; border: 0; margin-right: 8px; color: white;">
+    
+                        <span style="vertical-align: middle;">
+                            Hubungi Sales
+                        </span>
+                    </a>
+                </div>
             </div>
         </div>
         
