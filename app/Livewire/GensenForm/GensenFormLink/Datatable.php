@@ -108,7 +108,7 @@ class Datatable extends Component
                         </div>";
                     }
 
-                    $link = route('gensen_form.form', simple_encrypt($item->token));
+                    $link = route('gensen_form.form', $item->token);
                     $linkHtml = "
                             <div class='col-auto'>
                                 <button class='p-0 hover:bg-error/10 text-success rounded transition-colors'

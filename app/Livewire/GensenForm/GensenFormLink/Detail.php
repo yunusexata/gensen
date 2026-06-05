@@ -41,7 +41,7 @@ class Detail extends Component
             $this->max_usage = $form->max_usage;
             $this->name = $form->name;
             $this->expired_at = Carbon::parse($form->expired_at)->format('Y-m-d\TH:i');
-            $this->link = route('gensen_form.form', simple_encrypt($form->token));
+            $this->link = route('gensen_form.form', $form->token);
         }
     }
 

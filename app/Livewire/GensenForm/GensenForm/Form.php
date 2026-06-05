@@ -175,7 +175,7 @@ class Form extends Component
                 ];
             })->values();
         if ($this->isUploadAttachment) {
-            $this->gensenFormId = Crypt::decrypt($this->gensenFormId);
+            $this->gensenFormId = simple_decrypt($this->gensenFormId);
             $this->authorized = true;
             $this->dispatch('onAuthorized');
             consoleLog($this, 'upload att');
@@ -191,7 +191,7 @@ class Form extends Component
                 $this->authorized = true;
                 $this->dispatch('onAuthorized');
             } else {
-                $token = simple_decrypt($this->objId);
+                $token = $this->objId;
                 $this->checkForm($token);
             }
         }

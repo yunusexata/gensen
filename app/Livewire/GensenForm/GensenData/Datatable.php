@@ -766,7 +766,7 @@ class Datatable extends Component
         $this->editingRowId = simple_decrypt($id);
 
         $this->editingData = [
-            'id' => Crypt::encrypt($row['id']),
+            'id' => simple_encrypt($row['id']),
             'status' => $row['status'],
             'nama_lengkap' => $row['nama_lengkap'],
             'tanggal_lahir' => $row['tanggal_lahir'],
