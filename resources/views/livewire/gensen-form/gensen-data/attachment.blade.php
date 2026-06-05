@@ -1384,7 +1384,7 @@
                                             </div>
                                             <div class="{{ ($zairyou_card_back_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
                                                 <img class="w-full object-cover"  
-                                                wire:click="clickFile('{{$zairyou_card_back_old['id']}}', {{$zairyou_card_back_old['disk']}}, '{{$zairyou_card_back_old['path']}}', '{{$zairyou_card_back_old['type']?->label()}}')"
+                                                wire:click="clickFile('{{$zairyou_card_back_old['id']}}', '{{$zairyou_card_back_old['disk']}}', '{{$zairyou_card_back_old['path']}}', '{{$zairyou_card_back_old['type']?->label()}}')"
                                                 src="{{ $zairyou_card_back_old['url'] }}"/>
                                             </div>
                                         </div>
