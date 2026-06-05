@@ -514,7 +514,6 @@ class Form extends Component
 
             Alert::success($this, "Berhasil", "Password benar");
             $this->dispatch('onAuthorized');
-            dd('ye');
         } catch (DecryptException $e) {
             abort(404, 'Form tidak tersedia');
         }
