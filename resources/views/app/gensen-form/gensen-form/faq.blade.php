@@ -609,8 +609,8 @@
 
         .btn-action {
             display: inline-block;
-            background-color: #1DAA61;
-            color: white !important;
+            background-color: #46e995;
+            color: black !important;
             padding: 12px 30px;
             font-weight: bold;
             text-decoration: none;
