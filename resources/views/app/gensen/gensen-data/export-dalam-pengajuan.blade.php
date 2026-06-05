@@ -77,7 +77,6 @@
             </tr>
         </thead>
         <tbody>
-
             @php
                 $isNumberFormat = $request['type'] == App\Helpers\ExportHelper::TYPE_PDF;
             @endphp
