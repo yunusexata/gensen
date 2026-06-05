@@ -199,7 +199,6 @@ class Form extends Component
     private function checkForm($token)
     {
         try {
-            dd($token);
             if (!$token) {
                 abort(404, 'Form Tidak Tersedia');
             }
