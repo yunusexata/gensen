@@ -118,21 +118,14 @@
 
             <div class="btn-container">
                 <a target="_blank"
-                href="https://api.whatsapp.com/send/?phone={{ $form->getPicAttribute()->no_whatsapp }}&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen"
+                href="{{ route('gensen_form.faq') }}"
                 class="btn-action">
-
-                    <img src="{{ asset('assets/media/logos/whatsapp_logo.svg') }}"
-                        alt="WhatsApp"
-                        width="20"
-                        height="20"
-                        style="vertical-align: middle; border: 0; margin-right: 8px;">
-
                     <span style="vertical-align: middle;">
-                        Hubungi Sales
+                        FAQ
                     </span>
                 </a>
             </div>
-            
+
             <div class="signature">
                 Terima kasih atas kesabaran dan kepercayaan Anda.<br><br>
                 Best Regards,<br>
