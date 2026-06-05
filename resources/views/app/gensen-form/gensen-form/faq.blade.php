@@ -27,7 +27,7 @@
                         Faq’s Gensen
                     </h3>
                     </div>
-                    <div class="border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800 flex justify-content-center">
+                    <div class="border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800 flex justify-content-center border border-danger">
                     <!-- FAQ Two -->
                         <div x-data="{ openItem: 1 }" class="gap-y- gird-cols-1 grid gap-x-8 xl:grid-cols-2">
                             <div class="space-y-3">
