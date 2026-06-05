@@ -119,7 +119,7 @@
   
             <div class="btn-container">
                 <a target="_BLANK" href="https://api.whatsapp.com/send/?phone={{ $form->getPicAttribute()->no_whatsapp }}&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen" class="btn-action">
-                        <img src="https://cloudflare.com" alt="WhatsApp" width="24" height="24" style="display: block; border: 0;"
+                        <img src="https://cloudflare.com" alt="WhatsApp" width="24" height="24" style="display: block; border: 0;">
                     Hubungi Sales</a>
             </div>
 
