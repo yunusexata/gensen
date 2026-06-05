@@ -29,8 +29,8 @@
                     </div>
                     <div class="border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800 border border-danger">
                     <!-- FAQ Two -->
-                        <div x-data="{ openItem: 1 }" class="gap-y- gird-cols-1 grid gap-x-8 xl:grid-cols-2 flex justify-content-center border border-danger">
-                            <div class="space-y-3">
+                        <div x-data="{ openItem: 1 }" class="gap-y- gird-cols-1 grid gap-x-8 xl:grid-cols-2 border border-danger">
+                            <div class="space-y-3 flex justify-content-center ">
                                 <!-- item 1 -->
                                 <div x-data="{ id: 1 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 1, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 1 }" class="overflow-hidden rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 1 ? null : 1" class="flex cursor-pointer items-center justify-between px-6 py-4">
@@ -569,24 +569,24 @@
                                     </p>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="btn-container col-auto">
-                                    <a target="_blank"
-                                    href="https://api.whatsapp.com/send/?phone=6281199896308&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen"
-                                    class="btn-action d-flex flex-nowrap">
-                    
-                                        <img src="{{ asset('assets/media/logos/whatsapp_logo.svg') }}"
-                                            alt="WhatsApp"
-                                            width="20"
-                                            height="20"
-                                            style="vertical-align: middle; border: 0; margin-right: 8px; color: white;">
-                    
-                                        <span style="vertical-align: middle;">
-                                            Hubungi Sales
-                                        </span>
-                                    </a>
+                                
+                                <div class="row">
+                                    <div class="btn-container col-auto">
+                                        <a target="_blank"
+                                        href="https://api.whatsapp.com/send/?phone=6281199896308&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen"
+                                        class="btn-action d-flex flex-nowrap">
+                        
+                                            <img src="{{ asset('assets/media/logos/whatsapp_logo.svg') }}"
+                                                alt="WhatsApp"
+                                                width="20"
+                                                height="20"
+                                                style="vertical-align: middle; border: 0; margin-right: 8px; color: white;">
+                        
+                                            <span style="vertical-align: middle;">
+                                                Hubungi Sales
+                                            </span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
