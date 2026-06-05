@@ -222,7 +222,6 @@ class Form extends Component
             }
             $this->password = $form->password;
         } catch (DecryptException $e) {
-            dd($token);
             abort(404, 'Form tidak tersedia');
         }
     }
@@ -487,7 +486,7 @@ class Form extends Component
     public function checkPassword()
     {
         try {
-            $token = simple_decrypt($this->objId);
+            $token = $this->objId;
             $this->checkForm($token);
 
             // ✅ password validation
