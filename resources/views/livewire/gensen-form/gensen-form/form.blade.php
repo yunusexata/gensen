@@ -495,9 +495,6 @@
                                     <h2 class="font-headline font-bold text-2xl">KERTAS GENSEN</h2>
                                 </div>
                                 <div class="row">
-                                    <label for="">Upload Kertas Gensen sesuai dengan contoh berikut:</label>
-                                </div>
-                                <div class="row">
                                 
                                     <div class="col-md-10">
                                         <h3 class="text-center ">Contoh: KERTAS GENSEN</h3>
@@ -505,6 +502,10 @@
                                         <img src="{{ asset('assets/media/PERSYARATAN GENSEN/KERTAS GENSEN.png') }}"
                                             alt="" class=" mb-3">
                                     </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <label for="">Upload Kertas Gensen sesuai dengan contoh berikut:</label>
                                 </div>
                                 <div
                                     class="border-2 border-dashed border-outline-variant/30 rounded-xl p-10 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
@@ -631,9 +632,6 @@
                                 <h2 class="font-headline font-bold text-2xl">ZAIRYOU CARD (Depan)</h2>
                             </div>
                             
-                                <div class="row">
-                                    <label for="">Upload Zaryu Card (Depan) sesuai dengan contoh berikut:</label>
-                                </div>
                             <div class="row">
                                 <div class="col-md-10">
                                     <h3 class="text-center my-0 ">Contoh: ZARYU CARD DEPAN</h3>
@@ -641,6 +639,10 @@
                                     <img src="{{ asset('assets/media/PERSYARATAN GENSEN/ZARYU CARD DEPAN.png') }}"
                                         alt="" class="">
                                 </div>
+                            </div>
+                            
+                            <div class="row">
+                                <label for="">Upload Zaryu Card (Depan) sesuai dengan contoh berikut:</label>
                             </div>
                             @if ($zairyou_card_front_old && $zairyou_card_front_old['id'])
                                 @if ($zairyou_card_front_old['isImage'])
@@ -732,9 +734,6 @@
                                 <h2 class="font-headline font-bold text-2xl">ZAIRYOU CARD (Belakang)</h2>
                             </div>
                             
-                                <div class="row">
-                                    <label for="">Upload Zaryu Card (Belakang) sesuai dengan contoh berikut:</label>
-                                </div>
                             <div class="row">
                                 <div class="col-md-10">
                                     <h3 class="text-center ">Contoh: ZARYU CARD BELAKANG</h3>
@@ -742,6 +741,10 @@
                                     <img src="{{ asset('assets/media/PERSYARATAN GENSEN/ZARYU CARD BELAKANG.png') }}"
                                         alt="" class="">
                                 </div>
+                            </div>
+                            
+                            <div class="row">
+                                <label for="">Upload Zaryu Card (Belakang) sesuai dengan contoh berikut:</label>
                             </div>
                             @if ($zairyou_card_back_old && $zairyou_card_back_old['id'])
                                 @if ($zairyou_card_back_old['isImage'])
@@ -834,15 +837,16 @@
                             </div>
                             
                             <div class="row">
-                                <label for="">Upload My Number (Depan) sesuai dengan contoh berikut:</label>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-10">
                                     <h3 class="text-center ">Contoh: MY NUMBER DEPAN</h3>
                                     <h3 class="text-center">(PNG, JPG)</h3>
                                     <img src="{{ asset('assets/media/PERSYARATAN GENSEN/MY NUMBER DEPAN.png') }}"
                                         alt="" class="">
                                 </div>
+                            </div>
+                            
+                            <div class="row">
+                                <label for="">Upload My Number (Depan) sesuai dengan contoh berikut:</label>
                             </div>
                             @if ($my_number_front_old && $my_number_front_old['id'])
                                 @if ($my_number_front_old['isImage'])
@@ -936,9 +940,6 @@
                             </div>
                             
                             <div class="row">
-                                <label for="">Upload My Number (Belakang) sesuai dengan contoh berikut:</label>
-                            </div>
-                            <div class="row">
                                 
                                 <div class="col-md-10">
                                     <h3 class="text-center ">Contoh: MY NUMBER BELAKANG</h3>
@@ -946,6 +947,10 @@
                                     <img src="{{ asset('assets/media/PERSYARATAN GENSEN/MY NUMBER BELAKANG.png') }}"
                                         alt="" class="">
                                 </div>
+                            </div>
+                            
+                            <div class="row">
+                                <label for="">Upload My Number (Belakang) sesuai dengan contoh berikut:</label>
                             </div>
                             @if ($my_number_back_old && $my_number_back_old['id'])
                                 @if ($my_number_back_old['isImage'])
@@ -1039,9 +1044,6 @@
                             </div>
                             
                             <div class="row">
-                                <label for="">Upload Rekening Indonesia sesuai dengan contoh berikut:</label>
-                            </div>
-                            <div class="row">
                                 
                                 <div class="col-md-10">
                                     <h3 class="text-center ">Contoh: REKENING INDONESIA</h3>
@@ -1049,6 +1051,10 @@
                                     <img src="{{ asset('assets/media/PERSYARATAN GENSEN/REKENING INDONESIA.png') }}"
                                         alt="" class="">
                                 </div>
+                            </div>
+                            
+                            <div class="row">
+                                <label for="">Upload Rekening Indonesia sesuai dengan contoh berikut:</label>
                             </div>
                             @if ($rekening_indonesia_old && $rekening_indonesia_old['id'])
                                 @if ($rekening_indonesia_old['isImage'])
@@ -1140,9 +1146,6 @@
                                 </div>
                                 
                                 <div class="row">
-                                    <label for="">Upload Remittance sesuai dengan contoh berikut:</label>
-                                </div>
-                                <div class="row">
                                     
                                     <div class="col-md-10">
                                         <h3 class="text-center ">Contoh: REMITTANCE</h3>
@@ -1150,6 +1153,10 @@
                                         <img src="{{ asset('assets/media/PERSYARATAN GENSEN/REMITTANCE.png') }}"
                                             alt="" class="">
                                     </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <label for="">Upload Remittance sesuai dengan contoh berikut:</label>
                                 </div>
                             </div>
                             {{-- REMITTANCE EXAMPLE --}}
@@ -1386,9 +1393,6 @@
                                 </div>
                                 
                                 <div class="row">
-                                    <label for="">Upload Kartu Keluarga sesuai dengan contoh berikut:</label>
-                                </div>
-                                <div class="row">
                                     
                                     <div class="col-md-10">
                                         <h3 class="text-center ">Contoh: KARTU KELUARGA</h3>
@@ -1396,6 +1400,10 @@
                                         <img src="{{ asset('assets/media/PERSYARATAN GENSEN/KARTU KELUARGA.png') }}"
                                             alt="" class="">
                                     </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <label for="">Upload Kartu Keluarga sesuai dengan contoh berikut:</label>
                                 </div>
                                 <div
                                     class="border-2 border-dashed border-outline-variant/30 rounded-xl p-10 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
