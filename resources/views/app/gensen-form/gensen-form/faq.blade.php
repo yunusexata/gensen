@@ -29,7 +29,7 @@
                     </div>
                     <div class="border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800">
                     <!-- FAQ Two -->
-                        <div x-data="{ openItem: 1 }" class="gap-y- gird-cols-1 grid gap-x-8 xl:grid-cols-2 justify-content-center">
+                        <div x-data="{ openItem: 1 }" class="gap-y- gird-cols-1 grid gap-x-8 xl:grid-cols-2 d-flex justify-content-center">
                             <div class="space-y-3 border border-danger mx-auto">
                                 <!-- item 1 -->
                                 <div x-data="{ id: 1 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 1, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 1 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
