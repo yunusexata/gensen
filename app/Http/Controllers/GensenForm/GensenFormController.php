@@ -48,6 +48,7 @@ class GensenFormController extends Controller
         }
 
         $token = $request->id;
+        dd($token);
         $form = GensenFormLinkRepository::findBy([
             ['token', $token],
         ]);
