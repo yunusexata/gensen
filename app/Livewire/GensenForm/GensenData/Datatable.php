@@ -698,6 +698,9 @@ class Datatable extends Component
 
     public function loadMore(): void
     {
+        consoleLog($this, [
+            $this->perPage,
+        ]);
         $this->length += $this->perPage;
     }
 
