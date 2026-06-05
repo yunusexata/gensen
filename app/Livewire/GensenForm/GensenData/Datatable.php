@@ -131,7 +131,7 @@ class Datatable extends Component
             return;
         }
 
-        GensenFormRepository::delete(Crypt::decrypt($this->targetDeleteId));
+        GensenFormRepository::delete(simple_decrypt($this->targetDeleteId));
         Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
     }
 
