@@ -16,10 +16,10 @@
                 </div>
             </div>
         </div>
-        <div class="mx-auto p-4 pb-20 md:p-6 md:pb-6">
+        <div class="mx-auto p-4 pb-20 md:p-6 md:pb-6 border border-danger">
             
             <!-- Breadcrumb End -->
-            <div class="space-y-5 sm:space-y-6 flex justify-content-center">
+            <div class="space-y-5 sm:space-y-6 flex justify-content-center border border-danger">
                 
                 <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
                     <div class="px-5 py-4 sm:px-6 sm:py-5">
