@@ -600,7 +600,7 @@
     <style>
         .btn-container {
             text-align: center;
-            margin: 25px 0 15px 0;
+            margin: 25px 0 15px;
         }
 
         .btn-action {
@@ -612,6 +612,7 @@
             text-decoration: none;
             border-radius: 5px;
             font-size: 15px;
+            line-height: 20px;
         }
     </style>
 @endpush
