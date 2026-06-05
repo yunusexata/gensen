@@ -32,7 +32,7 @@
                         <div x-data="{ openItem: 1 }" class="gap-y- gird-cols-1 grid gap-x-8 xl:grid-cols-2">
                             <div class="space-y-3 col-auto">
                                 <!-- item 1 -->
-                                <div x-data="{ id: 1 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 1, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 1 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 1 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 1, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 1 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 1 ? null : 1" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 1, 'text-gray-800 dark:text-white/90': openItem !== 1 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     1.	Apa itu GENSEN ?
@@ -57,7 +57,7 @@
                                     </div>
                                 </div>
                                 <!-- item 2 -->
-                                <div x-data="{ id: 2 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 2, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 2 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 2 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 2, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 2 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 2 ? null : 2" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 2, 'text-gray-800 dark:text-white/90': openItem !== 2 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     2.	Bagaimana/kapan slip/kertas GENSEN itu di dapatkan ?
@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                                 <!-- item 3 -->
-                                <div x-data="{ id: 3 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 3, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 3 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 3 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 3, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 3 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 3 ? null : 3" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 3, 'text-gray-800 dark:text-white/90': openItem !== 3 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     3.	Apa saja dokumen persyaratan yang di perlukan untuk pengurusan GENSEN ?
@@ -114,7 +114,7 @@
                                     </div>
                                 </div>
                                 <!-- item 4 -->
-                                <div x-data="{ id: 4 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 4, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 4 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 4 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 4, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 4 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 4 ? null : 4" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 4, 'text-gray-800 dark:text-white/90': openItem !== 4 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                         4.	Apa saja kriteria persyaratan gensen agar bisa di urus & di cairkan ( menurut regulasi saat ini di kantor pajak jepang ) ?
@@ -145,7 +145,7 @@
                                     </div>
                                 </div>
                                 <!-- item 5 -->
-                                <div x-data="{ id: 5 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 5, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 5 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 5 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 5, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 5 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 5 ? null : 5" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 5, 'text-gray-800 dark:text-white/90': openItem !== 5 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     5.	Apa keuntungan dan kerugian jika mengurus Gensen dan tidak mengurus GENSEN ?
@@ -211,7 +211,7 @@
                                     </div>
                                 </div>
                                 <!-- item 6 -->
-                                <div x-data="{ id: 6 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 6, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 6 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 6 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 6, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 6 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 6 ? null : 6" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 6, 'text-gray-800 dark:text-white/90': openItem !== 6 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     6.	Bagiamana jika mengurus gensen nya terlambat ?
@@ -238,7 +238,7 @@
                                     </div>
                                 </div>
                                 <!-- item 7 -->
-                                <div x-data="{ id: 7 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 7, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 7 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 7 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 7, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 7 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 7 ? null : 7" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 7, 'text-gray-800 dark:text-white/90': openItem !== 7 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     7.	Berapa lama masa kadaluarsa GENSEN ?
@@ -265,7 +265,7 @@
                                     </div>
                                 </div>
                                 <!-- item 8 -->
-                                <div x-data="{ id: 8 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 8, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 8 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 8 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 8, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 8 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 8 ? null : 8" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 8, 'text-gray-800 dark:text-white/90': openItem !== 8 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     8.	Berapa biaya administrasi pengurusan GENSEN ?
@@ -292,7 +292,7 @@
                                     </div>
                                 </div>
                                 <!-- item 9 -->
-                                <div x-data="{ id: 9 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 9, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 9 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 9 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 9, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 9 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 9 ? null : 9" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 9, 'text-gray-800 dark:text-white/90': openItem !== 9 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     9.	Berapa lama waktu yang di butuhkan untuk mencairakn GENSEN ?
@@ -319,7 +319,7 @@
                                     </div>
                                 </div>
                                 <!-- item 10 -->
-                                <div x-data="{ id: 10 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 10, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 10 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 10 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 10, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 10 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 10 ? null : 10" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 10, 'text-gray-800 dark:text-white/90': openItem !== 10 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     10.	Apa itu SHIMINZEI/JUMINZEI dan bagaimana cara mengurus nya ?
@@ -348,7 +348,7 @@
                                     </div>
                                 </div>
                                 <!-- item 11 -->
-                                <div x-data="{ id: 11 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 11, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 11 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 11 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 11, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 11 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 11 ? null : 11" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 11, 'text-gray-800 dark:text-white/90': openItem !== 11 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     11.	Bagaimana jika kirim uang nya ke rekening atas nama sendiri ?
@@ -375,7 +375,7 @@
                                     </div>
                                 </div>
                                 <!-- item 12 -->
-                                <div x-data="{ id: 12 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 12, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 12 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 12 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 12, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 12 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 12 ? null : 12" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 12, 'text-gray-800 dark:text-white/90': openItem !== 12 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     12.	Bagaimana jika penerima uang di Indonesia tersebut tidak ada di dalam 1 kartu keluarga (KK) tapi masih saudara kandung ?contoh kakak yg sudah menikah dan sudah pasti memiliki KK sendiri ?
@@ -402,7 +402,7 @@
                                     </div>
                                 </div>
                                 <!-- item 13 -->
-                                <div x-data="{ id: 13 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 13, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 13 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 13 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 13, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 13 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 13 ? null : 13" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 13, 'text-gray-800 dark:text-white/90': openItem !== 13 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     13.	Bagaimana jika penerima uang di Indonesia bukan anggota keluarga? (calon istri atau pacar/tunangan?)
@@ -429,7 +429,7 @@
                                     </div>
                                 </div>
                                 <!-- item 14 -->
-                                <div x-data="{ id: 14 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 14, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 14 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 14 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 14, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 14 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 14 ? null : 14" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 14, 'text-gray-800 dark:text-white/90': openItem !== 14 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     14.	Bagaimana cara meminta rekapan pengiriman uang selama di jepang?
@@ -456,7 +456,7 @@
                                     </div>
                                 </div>
                                 <!-- item 15 -->
-                                <div x-data="{ id: 15 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 15, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 15 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 15 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 15, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 15 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 15 ? null : 15" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 15, 'text-gray-800 dark:text-white/90': openItem !== 15 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     15.	Bagaimana cara meminta kertas Gensen sewaktu masih di Jepang?
@@ -483,7 +483,7 @@
                                     </div>
                                 </div>
                                 <!-- item 16 -->
-                                <div x-data="{ id: 16 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 16, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 16 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 16 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 16, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 16 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 16 ? null : 16" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 16, 'text-gray-800 dark:text-white/90': openItem !== 16 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     16.	Bagaimana cara meminta kertas Gensen jika sudah di Indonesia?
@@ -512,7 +512,7 @@
                                     </div>
                                 </div>
                                 <!-- item 17 -->
-                                <div x-data="{ id: 17 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 17, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 17 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 17 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 17, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 17 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 17 ? null : 17" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 17, 'text-gray-800 dark:text-white/90': openItem !== 17 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     17.	Mengurus Gensen sebaiknya masih di Jepang atau setelah di Indonesia ?
@@ -541,7 +541,7 @@
                                     </div>
                                 </div>
                                 <!-- item 18 -->
-                                <div x-data="{ id: 18 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 18, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 18 }" class="overflow-hidden mx-auto border border-danger rounded-xl bg-gray-100 dark:bg-white/[0.03]">
+                                <div x-data="{ id: 18 }" :class="{ 'bg-brand-50 dark:bg-brand-100': openItem === 18, 'bg-gray-100 dark:bg-white/[0.03]': openItem !== 18 }" class="overflow-hidden mx-auto border border-danger w-75 rounded-xl bg-gray-100 dark:bg-white/[0.03]">
                                     <div @click="openItem = openItem === 18 ? null : 18" class="flex cursor-pointer items-center justify-between px-6 py-4">
                                     <h4 :class="{ 'text-gray-800': openItem === 18, 'text-gray-800 dark:text-white/90': openItem !== 18 }" class="text-lg font-medium text-gray-800 dark:text-white/90">
                                     18.	Apa perbedaan Exata dengan konsultan lain?
