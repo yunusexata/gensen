@@ -68,7 +68,7 @@
         .btn-action {
             display: inline-block;
             background-color: #1DAA61;
-            color: #1D2121 !important;
+            color: white !important;
             padding: 12px 30px;
             font-weight: bold;
             text-decoration: none;
