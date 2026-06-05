@@ -116,9 +116,20 @@
             </div>
   
             <div class="btn-container">
-                <a target="_BLANK" href="https://api.whatsapp.com/send/?phone={{ $form->getPicAttribute()->no_whatsapp }}&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen" class="btn-action">
-                        <img src="{{ asset('assets/media/logos/whatsapp_logo.svg') }}" alt="WhatsApp" width="24" height="24" style="display: block; border: 0;">
-                    Hubungi Sales</a>
+                <a target="_blank"
+                href="https://api.whatsapp.com/send/?phone={{ $form->getPicAttribute()->no_whatsapp }}&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen"
+                class="btn-action">
+
+                    <img src="{{ asset('assets/media/logos/whatsapp_logo.svg') }}"
+                        alt="WhatsApp"
+                        width="20"
+                        height="20"
+                        style="vertical-align: middle; border: 0; margin-right: 8px;">
+
+                    <span style="vertical-align: middle;">
+                        Hubungi Sales
+                    </span>
+                </a>
             </div>
 
             <div class="signature">

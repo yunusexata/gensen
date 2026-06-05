@@ -1,6 +1,6 @@
 @extends('app.layouts.public')
 
-@section('title', $title)
+@section('title', 'FAQ Gensen')
 
 @section('content')
     <main>
