@@ -487,7 +487,6 @@ class Form extends Component
     {
         try {
             $token = $this->objId;
-            dd($token);
             $this->checkForm($token);
 
             // ✅ password validation
