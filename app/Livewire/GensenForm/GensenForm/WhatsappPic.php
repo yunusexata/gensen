@@ -15,7 +15,7 @@ class WhatsappPic extends Component
     public function mount()
     {
         if ($this->token) {
-            $token = simple_decrypt($this->token);
+            $token = $this->token;
             $this->phone = GensenFormLinkRepository::findBy([
                 ['token', $token]
             ])->creator->no_whatsapp;
