@@ -58,6 +58,23 @@
             font-size: 11px;
             color: #888888;
         }
+        
+        
+        .btn-container {
+            text-align: center;
+            margin: 25px 0 15px 0;
+        }
+
+        .btn-action {
+            display: inline-block;
+            background-color: #25D366;
+            color: #1D2121 !important;
+            padding: 12px 30px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
