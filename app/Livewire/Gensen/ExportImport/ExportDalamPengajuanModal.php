@@ -125,7 +125,7 @@ class ExportDalamPengajuanModal extends Component
                 'type' => 'export',
                 'filters' => json_encode([], true),
                 'status' => JobStatus::DONE,
-                'export_template' => 'app.gensen.gensen-data.export-dalam-pengajuan',
+                // 'export_template' => 'app.gensen.gensen-data.export-dalam-pengajuan',
                 'file_template_name' => $fileName,
                 'file_template_path' => $filePath,
                 'disk_template' => $disk,
