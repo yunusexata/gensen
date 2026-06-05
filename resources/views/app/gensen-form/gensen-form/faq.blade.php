@@ -576,5 +576,42 @@
                 </div>
             </div>
         </div>
+        
+            <div class="btn-container">
+                <a target="_blank"
+                href="https://api.whatsapp.com/send/?phone={{ $form->getPicAttribute()->no_whatsapp }}&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen"
+                class="btn-action">
+
+                    <img src="{{ asset('assets/media/logos/whatsapp_logo.svg') }}"
+                        alt="WhatsApp"
+                        width="20"
+                        height="20"
+                        style="vertical-align: middle; border: 0; margin-right: 8px;">
+
+                    <span style="vertical-align: middle;">
+                        Hubungi Sales
+                    </span>
+                </a>
+            </div>
     </main>
 @endsection
+
+@push('css')
+    <style>
+        .btn-container {
+            text-align: center;
+            margin: 25px 0 15px 0;
+        }
+
+        .btn-action {
+            display: inline-block;
+            background-color: #1DAA61;
+            color: #1D2121 !important;
+            padding: 12px 30px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+    </style>
+@endpush
