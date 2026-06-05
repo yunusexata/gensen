@@ -692,7 +692,7 @@ class Form extends Component
                     $remarks = Auth::check()
                         ? Auth::user()
                         : GensenFormLinkRepository::findBy([
-                            ['token', simple_decrypt($this->objId)]
+                            ['token', $this->objId]
                         ]);
 
                     $validateData = array_merge($validateData, [
