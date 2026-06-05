@@ -117,6 +117,9 @@
 
             <p>Rincian mengenai detail biaya dan prosedur selanjutnya akan disampaikan oleh <strong>Tim Exata Indonesia melalui WhatsApp</strong>. Mohon kesediaan Anda untuk menunggu informasi resmi dari tim kami.</p>
 
+            <div class="btn-container">
+                <a target="_BLANK" href="https://api.whatsapp.com/send/?phone={{ $form->getPicAttribute()->no_whatsapp }}&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen" class="btn-action">Hubungi Sales</a>
+            </div>
             <div class="signature">
                 Terima kasih atas kerja sama dan kepercayaan Anda.<br><br>
                 Best Regards,<br>
@@ -124,9 +127,6 @@
                 Exata Indonesia
             </div>
             
-            <div class="btn-container">
-                <a target="_BLANK" href="https://api.whatsapp.com/send/?phone={{ $form->getPicAttribute()->no_whatsapp }}&type=phone_number&app_absent=0" class="btn-action">Hubungi Sales</a>
-            </div>
 
             <div class="no-reply">
                 Pesan ini dikirimkan secara otomatis oleh sistem, mohon untuk tidak membalas email ini.

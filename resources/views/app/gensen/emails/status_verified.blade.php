@@ -129,15 +129,15 @@
                 </ul>
             </div>
 
+            <div class="btn-container">
+                <a target="_BLANK" href="https://api.whatsapp.com/send/?phone={{ $form->getPicAttribute()->no_whatsapp }}&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen" class="btn-action">Hubungi Sales</a>
+            </div>
+
             <div class="signature">
                 Terima kasih atas kepercayaan Anda menggunakan layanan kami.<br><br>
                 Best Regards,<br>
                 <strong>{{ $form->getPicAttribute()->name }} Exata</strong><br>
                 Exata Indonesia
-            </div>
-            
-            <div class="btn-container">
-                <a target="_BLANK" href="https://api.whatsapp.com/send/?phone={{ $form->getPicAttribute()->no_whatsapp }}&type=phone_number&app_absent=0" class="btn-action">Hubungi Sales</a>
             </div>
 
             <div class="no-reply">
