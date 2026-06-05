@@ -486,8 +486,8 @@ class Form extends Component
     public function checkPassword()
     {
         try {
-            $token = $this->objId;
-            $this->checkForm($token);
+            // $token = $this->objId;
+            // $this->checkForm($token);
 
             // ✅ password validation
             if ($this->input_password !== $this->password) {
