@@ -222,6 +222,7 @@ class Form extends Component
             }
             $this->password = $form->password;
         } catch (DecryptException $e) {
+            dd($token);
             abort(404, 'Form tidak tersedia');
         }
     }
