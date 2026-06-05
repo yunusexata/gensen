@@ -330,7 +330,7 @@ class Datatable extends Component
             ],
             [
                 'key' => 'tanggal_lahir',
-                'name' => 'Tanggal Lahir',
+                'name' => 'Tgl Lahir',
                 'class' => 'text-center',
             ],
             // [
@@ -339,17 +339,17 @@ class Datatable extends Component
             // ],
             [
                 'key' => 'tanggal_kepulangan',
-                'name' => 'Tanggal Kepulangan',
+                'name' => 'Tgl Kepulangan',
                 'class' => 'text-center',
             ],
 
             [
                 'key' => 'no_rekening_penerima',
-                'name' => 'No Rekening Penerima',
+                'name' => 'Rek Penerima',
             ],
             [
                 'key' => 'nama_bank_penerima',
-                'name' => 'Nama Bank Penerima',
+                'name' => 'Nama Bank',
                 'class' => 'text-center',
             ],
             [
