@@ -580,7 +580,7 @@
             <div class="btn-container">
                 <a target="_blank"
                 href="https://api.whatsapp.com/send/?phone=6281199896308&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen"
-                class="btn-action">
+                class="btn-action d-flex flex-nowrap">
 
                     <img src="{{ asset('assets/media/logos/whatsapp_logo.svg') }}"
                         alt="WhatsApp"
@@ -606,7 +606,7 @@
         .btn-action {
             display: inline-block;
             background-color: #1DAA61;
-            color: #1D2121 !important;
+            color: white !important;
             padding: 12px 30px;
             font-weight: bold;
             text-decoration: none;
