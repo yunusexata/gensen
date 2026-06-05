@@ -154,7 +154,7 @@ c.	Umur tanggungan keluarga yang masuk kriteria minimal 16 tahun
                             <div x-show="openItem === 1" class="border-brand-100 dark:border-brand-200 border-t p-6" style="display: none;">
                             <p class="text-base text-gray-800">
                                 {!!
-                                `<p>➤ Keuntungan anda mengurus Gensen adalah anda akan mendapatkan keringanan pajak daerah/shiminzei bahkan bisa sampai dengan NOL&nbsp; dan kalaupun masih bayar tidak lebih dari &yen;1.000 (NB: jika jumlah rekening penerima dan jumlah kirim uang ke indo memenuhi syarat)</p>
+                                '<p>➤ Keuntungan anda mengurus Gensen adalah anda akan mendapatkan keringanan pajak daerah/shiminzei bahkan bisa sampai dengan NOL&nbsp; dan kalaupun masih bayar tidak lebih dari &yen;1.000 (NB: jika jumlah rekening penerima dan jumlah kirim uang ke indo memenuhi syarat)</p>
 <p>➤ Kerugian anda jika tidak mengurus Gensen tepat waktu, anda akan kena potongan pajak daerah/shiminzei langsung dari gaji anda, nilai pajak daerah/shiminzei 2x lebih besar dari nilai Gensen dan itu akan mulai di tagihkan pada bulan Juni s/d Mei tahun depan nya Contoh hitungan pajak daerah : jika nominal Gensen anda &yen;38.000 maka nilai shiminzei anda &yen;66.000/tahun rumusnya adalah: &yen;66.000: 12 bulan&nbsp;=&nbsp;&yen;5.500/bulan</p>
 <p>&nbsp;</p>
 <table>
@@ -192,7 +192,7 @@ c.	Umur tanggungan keluarga yang masuk kriteria minimal 16 tahun
 </td>
 </tr>
 </tbody>
-</table>`
+</table>'
                                 !!}
 
                             </p>
