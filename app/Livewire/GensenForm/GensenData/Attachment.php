@@ -242,7 +242,7 @@ class Attachment extends Component
     {
         consoleLog($this, ['get data', $data]);
         if ($this->objId) {
-            $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
+            $gensen = GensenFormRepository::find(simple_decrypt($this->objId));
             $this->nama_lengkap = $gensen->nama_lengkap;
             $this->tanggal_lahir = $gensen->tanggal_lahir;
             $this->nomor_whatsapp = $gensen->nomor_whatsapp;
@@ -303,21 +303,21 @@ class Attachment extends Component
     public function getOnload()
     {
         // consoleLog($this, 'onload');
-        $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
+        $gensen = GensenFormRepository::find(simple_decrypt($this->objId));
 
         $this->getRemittanceExtraction($gensen);
     }
     public function getRemittanceExtraction($gensen = null, $gensen_form_id = null)
     {
 
-        if ($gensen_form_id && Crypt::decrypt($this->objId) != $gensen_form_id) {
+        if ($gensen_form_id && simple_decrypt($this->objId) != $gensen_form_id) {
             // consoleLog($this, 'g sama');
             return;
         }
         // consoleLog($this, 'sama id');
 
         if (!$gensen) {
-            $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
+            $gensen = GensenFormRepository::find(simple_decrypt($this->objId));
         }
         // dd($gensen->with('aiJobs')->first());
         // dd($gensen->aiJobs()->exists());
@@ -370,7 +370,7 @@ class Attachment extends Component
     }
     public function getMergeAttachment($gensen_form_id = null)
     {
-        if (!$gensen_form_id && ($gensen_form_id && Crypt::decrypt($this->objId) != $gensen_form_id)) {
+        if (!$gensen_form_id && ($gensen_form_id && simple_decrypt($this->objId) != $gensen_form_id)) {
             return;
         }
 
@@ -385,7 +385,7 @@ class Attachment extends Component
     }
     public function getConvertedAttachment($gensen_form_id = null, $attachment_type = null)
     {
-        if (!$gensen_form_id && ($gensen_form_id && Crypt::decrypt($this->objId) != $gensen_form_id)) {
+        if (!$gensen_form_id && ($gensen_form_id && simple_decrypt($this->objId) != $gensen_form_id)) {
             return;
         }
 
@@ -406,7 +406,7 @@ class Attachment extends Component
     {
 
         if ($this->objId) {
-            $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
+            $gensen = GensenFormRepository::find(simple_decrypt($this->objId));
 
             $attachments = $gensen->attachmentGroups(
                 [
@@ -671,7 +671,7 @@ class Attachment extends Component
 
     public function getUploadTargetPath($type)
     {
-        $formId = Crypt::decrypt($this->objId);
+        $formId = simple_decrypt($this->objId);
         $type = GensenAttachmentType::fromLabel($type);
 
         $storedName = Str::uuid() . '.jpg';
@@ -690,7 +690,7 @@ class Attachment extends Component
             DB::transaction(function () {
 
                 // consoleLog($this, 'store ac');
-                $gensenForm = GensenFormRepository::find(Crypt::decrypt($this->objId));
+                $gensenForm = GensenFormRepository::find(simple_decrypt($this->objId));
                 $this->handleGensenFormAttachemntStore(
                     $this->photo,
                     $this->editedData['type'] ? GensenAttachmentType::fromLabel($this->editedData['type']) : null,
@@ -737,7 +737,7 @@ class Attachment extends Component
         try {
             DB::transaction(function () {
                 $this->saveData(true);
-                $gensenForm = GensenFormRepository::find(Crypt::decrypt($this->objId));
+                $gensenForm = GensenFormRepository::find(simple_decrypt($this->objId));
                 $gensenForm->handleMergePersyaratanGensen();
 
                 $attachments = $gensenForm->attachmentGroups([
@@ -762,7 +762,7 @@ class Attachment extends Component
     {
         try {
             DB::transaction(function () {
-                $gensenForm = GensenFormRepository::find(Crypt::decrypt($this->objId));
+                $gensenForm = GensenFormRepository::find(simple_decrypt($this->objId));
                 $gensenForm->handleMergePersyaratanGensen();
                 $gensenForm->handleMergeSeluruhBerkas();
             });
@@ -851,7 +851,7 @@ class Attachment extends Component
     {
         try {
             DB::transaction(function () use ($isSubmitted, $withAttachment) {
-                $gensenForm = GensenFormRepository::find(Crypt::decrypt($this->objId));
+                $gensenForm = GensenFormRepository::find(simple_decrypt($this->objId));
                 if ($withAttachment) {
                     $this->storeAttachments($gensenForm);
                 }
