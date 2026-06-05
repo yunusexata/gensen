@@ -72,6 +72,12 @@ class GensenFormController extends Controller
             "title" => $title
         ]);
     }
+
+    public function faq()
+    {
+        return view('app.gensen-form.gensen-form.faq');
+    }
+
     public function preview(GensenFormAttachment $attachment)
     {
         // abort_unless(auth()->check(), 403);
