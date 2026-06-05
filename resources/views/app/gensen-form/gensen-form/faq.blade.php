@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div class="mx-auto p-4 pb-20 md:p-6 md:pb-6">
+        <div class="mx-auto p-4 pb-20 md:p-6 md:pb-6 flex justify-content-center">
             
             <!-- Breadcrumb End -->
             <div class="space-y-5 sm:space-y-6">
