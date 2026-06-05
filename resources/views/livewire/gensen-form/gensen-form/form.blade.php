@@ -495,6 +495,9 @@
                                     <h2 class="font-headline font-bold text-2xl">KERTAS GENSEN</h2>
                                 </div>
                                 <div class="row">
+                                    <label for="">Upload Kertas Gensen sesuai dengan contoh berikut:</label>
+                                </div>
+                                <div class="row">
                                 
                                     <div class="col-md-10">
                                         <h3 class="text-center ">Contoh: KERTAS GENSEN</h3>
@@ -628,6 +631,9 @@
                                 <h2 class="font-headline font-bold text-2xl">ZAIRYOU CARD (Depan)</h2>
                             </div>
                             
+                                <div class="row">
+                                    <label for="">Upload Zaryu Card (Depan) sesuai dengan contoh berikut:</label>
+                                </div>
                             <div class="row">
                                 <div class="col-md-10">
                                     <h3 class="text-center my-0 ">Contoh: ZARYU CARD DEPAN</h3>
@@ -726,6 +732,9 @@
                                 <h2 class="font-headline font-bold text-2xl">ZAIRYOU CARD (Belakang)</h2>
                             </div>
                             
+                                <div class="row">
+                                    <label for="">Upload Zaryu Card (Belakang) sesuai dengan contoh berikut:</label>
+                                </div>
                             <div class="row">
                                 <div class="col-md-10">
                                     <h3 class="text-center ">Contoh: ZARYU CARD BELAKANG</h3>
@@ -822,6 +831,10 @@
                                 <span class="material-symbols-outlined text-primary"
                                     data-icon="cloud_upload">cloud_upload</span>
                                 <h2 class="font-headline font-bold text-2xl">MY NUMBER (Depan)</h2>
+                            </div>
+                            
+                            <div class="row">
+                                <label for="">Upload My Number (Depan) sesuai dengan contoh berikut:</label>
                             </div>
                             <div class="row">
                                 <div class="col-md-10">
@@ -920,6 +933,10 @@
                                 <span class="material-symbols-outlined text-primary"
                                     data-icon="cloud_upload">cloud_upload</span>
                                 <h2 class="font-headline font-bold text-2xl">MY NUMBER (Belakang)</h2>
+                            </div>
+                            
+                            <div class="row">
+                                <label for="">Upload My Number (Belakang) sesuai dengan contoh berikut:</label>
                             </div>
                             <div class="row">
                                 
@@ -1020,6 +1037,10 @@
                                     data-icon="cloud_upload">cloud_upload</span>
                                 <h2 class="font-headline font-bold text-2xl">REKENING INDONESIA </h2>
                             </div>
+                            
+                            <div class="row">
+                                <label for="">Upload Rekening Indonesia sesuai dengan contoh berikut:</label>
+                            </div>
                             <div class="row">
                                 
                                 <div class="col-md-10">
@@ -1116,6 +1137,10 @@
                                     <span class="material-symbols-outlined text-primary"
                                         data-icon="cloud_upload">cloud_upload</span>
                                     <h2 class="font-headline font-bold text-2xl">REKAP PENGIRIMAN UANG</h2>
+                                </div>
+                                
+                                <div class="row">
+                                    <label for="">Upload Remittance sesuai dengan contoh berikut:</label>
                                 </div>
                                 <div class="row">
                                     
@@ -1358,6 +1383,10 @@
                                     <span class="material-symbols-outlined text-primary"
                                         data-icon="cloud_upload">cloud_upload</span>
                                     <h2 class="font-headline font-bold text-2xl">KARTU KELUARGA</h2>
+                                </div>
+                                
+                                <div class="row">
+                                    <label for="">Upload Kartu Keluarga sesuai dengan contoh berikut:</label>
                                 </div>
                                 <div class="row">
                                     
