@@ -47,7 +47,7 @@ class GensenFormController extends Controller
             abort(404, 'Form Tidak Tersedia');
         }
 
-        $token = simple_decrypt($request->id);
+        $token = $request->id;
         $form = GensenFormLinkRepository::findBy([
             ['token', $token],
         ]);
