@@ -23,9 +23,9 @@
                 
                 <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
                     <div class="px-5 py-4 sm:px-6 sm:py-5">
-                    <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
+                    <h1 class="mb-4 text-4xl font-bold tracking-tight text-heading md:text-5xl lg:text-6xl">
                         Faq’s Gensen
-                    </h3>
+                    </h1>
                     </div>
                     <div class="border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800">
                     <!-- FAQ Two -->
