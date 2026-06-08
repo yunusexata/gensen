@@ -175,7 +175,6 @@ class Form extends Component
                 ];
             })->values();
         if ($this->isUploadAttachment) {
-            dd(simple_decrypt($this->gensenFormId));
             $this->gensenFormId = simple_decrypt($this->gensenFormId);
             $this->authorized = true;
             $this->dispatch('onAuthorized');
