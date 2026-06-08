@@ -1434,26 +1434,46 @@
                 </div>
                 <!--end::Group-->
                 <!--begin::Actions-->
-                <div class="d-flex flex-stack justify-content-end">
-                    <!--begin::Wrapper-->
-                    <div class="">
-                        <button type="button" class="btn btn-primary" wire:ignore wire:click="submitForm"
-                            data-kt-stepper-action="submit">
-                            <span class="indicator-label">
-                                Submit
-                            </span>
-                            <span class="indicator-progress">
-                                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                            </span>
-                        </button>
+                @if ($isUploadAttachment)
 
-                        <button type="button" class="btn btn-primary" wire:ignore data-kt-stepper-action="next">
-                            Continue
-                        </button>
+                    <div class="d-flex flex-stack justify-content-end">
+                        <!--begin::Wrapper-->
+                        <div class="">
+                            <button type="button" class="btn btn-primary" wire:ignore wire:click="submitForm">
+                                <span class="indicator-label">
+                                    Submit
+                                </span>
+                                <span class="indicator-progress">
+                                    Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                        </div>
+                        <!--end::Wrapper-->
                     </div>
-                    <!--end::Wrapper-->
-                </div>
-                <!--end::Actions-->
+                    <!--end::Actions-->
+                @else
+                    
+                    <div class="d-flex flex-stack justify-content-end">
+                        <!--begin::Wrapper-->
+                        <div class="">
+                            <button type="button" class="btn btn-primary" wire:ignore wire:click="submitForm"
+                                data-kt-stepper-action="submit">
+                                <span class="indicator-label">
+                                    Submit
+                                </span>
+                                <span class="indicator-progress">
+                                    Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+
+                            <button type="button" class="btn btn-primary" wire:ignore data-kt-stepper-action="next">
+                                Continue
+                            </button>
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Actions-->
+                @endif
             </form>
 
 
