@@ -552,15 +552,7 @@
                                                 </div>
 
                                                 {!! $kertas_gensen_note[$index] !!}
-                                                {{-- <img src="{{ $url }}" class="img-fluid rounded img-thumbnail"> --}}
-                                            @elseif(in_array($ext, ['pdf']))
-                                                <embed src="{{ $url }}" type="application/pdf"
-                                                    width="100%" style="height: 60vh;">
-                                                {{-- <iframe
-                                                        src="{{ $url }}#toolbar=0"
-                                                        width="100%"
-                                                        style="border:none">
-                                                    </iframe> --}}
+                                                
                                             @else
                                                 <div class="border rounded p-4 text-center bg-light">
                                                     <i class="bi bi-file-earmark fs-1"></i>
@@ -591,12 +583,12 @@
                                                     </div>
 
                                                 </div>
-                                            @elseif($item['isPdf'])
-                                                <div class="relative group/thumb w-100">
-                                                    {{-- IFRAME PDF Preview --}}
-
-                                                    <embed src="{{ $item['url'] }}" type="application/pdf"
-                                                        width="100%" style="min-height: 450px;">
+                                            @else
+                                                <div class="border rounded p-4 text-center bg-light relative group/thumb w-100">
+                                                    <i class="bi bi-file-earmark fs-1"></i>
+                                                    <div class="mt-2">
+                                                        {{ $item['url'] }}
+                                                    </div>
                                                     <!-- Actions -->
                                                     <div class="absolute top-1 right-1 z-10">
                                                         <button type="button"
@@ -605,13 +597,6 @@
                                                             <span
                                                                 class="material-symbols-outlined text-[20]">delete</span>
                                                         </button>
-                                                    </div>
-                                                </div>
-                                            @else
-                                                <div class="border rounded p-4 text-center bg-light">
-                                                    <i class="bi bi-file-earmark fs-1"></i>
-                                                    <div class="mt-2">
-                                                        {{ $item['url'] }}
                                                     </div>
                                                 </div>
                                             @endif
@@ -1160,49 +1145,7 @@
                                 </div>
                             </div>
                             {{-- REMITTANCE EXAMPLE --}}
-                            {{-- <div class="row justify-content-evenly">
-
-                                <div class="col-6 col-md-3 d-flex justify-content-center">
-                                    <div class="card-flex text-center">
-                                        <h3 class="fw-bold mt-auto">DCOM</h3>
-                                        <div class="image-box">
-                                            <img src="{{ Storage::url('remittance_example/Remittance_DCOM.jpg') }}"
-                                                class="img-thumbnail example-img">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-6 col-md-3 d-flex justify-content-center">
-                                    <div class="card-flex text-center">
-                                        <h3 class="fw-bold mt-auto">KYODAI</h3>
-                                        <div class="image-box">
-                                            <img src="{{ Storage::url('remittance_example/Remittance_KYODAI.jpg') }}"
-                                                class="img-thumbnail example-img">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-6 col-md-3 d-flex justify-content-center">
-                                    <div class="card-flex text-center">
-                                        <h3 class="fw-bold mt-auto">RIA KYODAI</h3>
-                                        <div class="image-box">
-                                            <img src="{{ Storage::url('remittance_example/Remittance_RIA_KYODAI.jpg') }}"
-                                                class="img-thumbnail example-img">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-6 col-md-3 d-flex justify-content-center">
-                                    <div class="card-flex text-center">
-                                        <h3 class="fw-bold mt-auto">SMILES</h3>
-                                        <div class="image-box">
-                                            <img src="{{ Storage::url('remittance_example/Remittance_SMILES.jpg') }}"
-                                                class="img-thumbnail example-img">
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div> --}}
+                            
 
                             @if ($rekap_pengiriman_uang)
                                 @foreach ($rekap_pengiriman_uang as $rekap_index => $rekap)
@@ -1252,7 +1195,7 @@
                                             </select>
 
                                             <label
-                                                class="cursor-pointer w-full md:w-3/4 flex flex-col items-center gap-2 border-2 border-dashed border-blue-100 rounded-lg p-2 rounded {{ $rekap['remittance_type'] ? '' : 'd-none' }}"
+                                                class="cursor-pointer w-full md:w-3/4 flex flex-col items-center gap-2 border-2 border-dashed border-blue-100 rounded-lg p-2 rounded"
                                                 for="rekap_pengiriman_uang.{{ $rekap_index }}.file">
                                                 <span
                                                     class=" my-0 material-symbols-outlined text-5xl text-primary-container"
@@ -1283,25 +1226,14 @@
                                                         $ext = strtolower($ext);
 
                                                     @endphp
-                                                    @if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']))
-                                                        <img src="{{ $url }}"
-                                                            class="img-fluid rounded img-thumbnail">
-                                                    @elseif(in_array($ext, ['pdf']))
-                                                        <embed src="{{ $url }}" type="application/pdf"
-                                                            width="100%" style="height: 60vh;">
-                                                        {{-- <iframe
-                                                                src="{{ $url }}#toolbar=0"
-                                                                width="100%"
-                                                                style="border:none">
-                                                            </iframe> --}}
-                                                    @else
+                                                    
                                                         <div class="border rounded p-4 text-center bg-light">
                                                             <i class="bi bi-file-earmark fs-1"></i>
                                                             <div class="mt-2">
                                                                 {{ $filename }}
                                                             </div>
                                                         </div>
-                                                    @endif
+                                                    
                                                 @endforeach
 
                                             </div>
@@ -1324,30 +1256,23 @@
                                         class="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0 file-preview">
                                         @if (!empty($group['files']))
                                             @foreach ($group['files'] as $rekap_index => $item)
-                                                @if ($item['isPdf'])
-                                                    <div class="relative group/thumb w-100">
-                                                        {{-- IFRAME PDF Preview --}}
-
-                                                        <embed src="{{ $item['url'] }}" type="application/pdf"
-                                                            width="100%" style="min-height: 450px;">
-                                                        <!-- Actions -->
-                                                        <div class="absolute top-1 right-1 z-10">
-                                                            <button type="button"
-                                                                wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', 'rekap_pengiriman_uang_old')"
-                                                                class="p-1 bg-white/80 hover:bg-error/10 text-error rounded">
-                                                                <span
-                                                                    class="material-symbols-outlined text-[20]">delete</span>
-                                                            </button>
-                                                        </div>
+                                                    
+                                                <div class="border rounded p-4 text-center bg-light relative group/thumb w-100">
+                                                    <i class="bi bi-file-earmark fs-1"></i>
+                                                    <div class="mt-2">
+                                                        {{ $item['url'] }}
                                                     </div>
-                                                @else
-                                                    <div class="border rounded p-4 text-center bg-light">
-                                                        <i class="bi bi-file-earmark fs-1"></i>
-                                                        <div class="mt-2">
-                                                            {{ $item['url'] }}
-                                                        </div>
+                                                    <!-- Actions -->
+                                                    <div class="absolute top-1 right-1 z-10">
+                                                        <button type="button"
+                                                            wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', 'kertas_gensen_old')"
+                                                            class="p-1 bg-white/80 hover:bg-error/10 text-error rounded">
+                                                            <span
+                                                                class="material-symbols-outlined text-[20]">delete</span>
+                                                        </button>
                                                     </div>
-                                                @endif
+                                                </div>
+                                                
                                             @endforeach
                                         @endif
                                     </div>
@@ -1450,15 +1375,7 @@
                                                 </div>
 
                                                 {!! $kartu_keluarga_note[$index] !!}
-                                                {{-- <img src="{{ $url }}" class="img-fluid rounded img-thumbnail"> --}}
-                                            @elseif(in_array($ext, ['pdf']))
-                                                <embed src="{{ $url }}" type="application/pdf"
-                                                    width="100%" style="height: 60vh;">
-                                                {{-- <iframe
-                                                        src="{{ $url }}#toolbar=0"
-                                                        width="100%"
-                                                        style="border:none">
-                                                    </iframe> --}}
+                                            
                                             @else
                                                 <div class="border rounded p-4 text-center bg-light">
                                                     <i class="bi bi-file-earmark fs-1"></i>
@@ -1489,27 +1406,21 @@
                                                     </div>
 
                                                 </div>
-                                            @elseif($item['isPdf'])
-                                                <div class="relative group/thumb w-100">
-                                                    {{-- IFRAME PDF Preview --}}
-
-                                                    <embed src="{{ $item['url'] }}" type="application/pdf"
-                                                        width="100%" style="min-height: 450px;">
+                                            @else
+                                            
+                                                <div class="border rounded p-4 text-center bg-light relative group/thumb w-100">
+                                                    <i class="bi bi-file-earmark fs-1"></i>
+                                                    <div class="mt-2">
+                                                        {{ $item['url'] }}
+                                                    </div>
                                                     <!-- Actions -->
                                                     <div class="absolute top-1 right-1 z-10">
                                                         <button type="button"
-                                                            wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', 'kartu_keluarga_old')"
+                                                            wire:click.stop="showDialogDeleteFile('{{ $item['id'] }}', 'kertas_gensen_old')"
                                                             class="p-1 bg-white/80 hover:bg-error/10 text-error rounded">
                                                             <span
                                                                 class="material-symbols-outlined text-[20]">delete</span>
                                                         </button>
-                                                    </div>
-                                                </div>
-                                            @else
-                                                <div class="border rounded p-4 text-center bg-light">
-                                                    <i class="bi bi-file-earmark fs-1"></i>
-                                                    <div class="mt-2">
-                                                        {{ $item['url'] }}
                                                     </div>
                                                 </div>
                                             @endif
