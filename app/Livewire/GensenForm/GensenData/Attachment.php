@@ -173,7 +173,7 @@ class Attachment extends Component
                     } else {
                         if ($tahun_gensen['tahun_gensen'] && $tahun_gensen['nominal_gensen']) {
                             GensenFormDetailRepository::create([
-                                'gensen_form_id' => Crypt::decrypt($this->objId),
+                                'gensen_form_id' => simple_decrypt($this->objId),
                                 'tahun_gensen' => $tahun_gensen['tahun_gensen'],
                                 'nominal_gensen' => $tahun_gensen['nominal_gensen'],
                             ]);
@@ -181,7 +181,7 @@ class Attachment extends Component
                     }
                 }
                 $remittance_extraction = RemittanceExtractionRepository::findBy([
-                    ['subject_id', Crypt::decrypt($this->objId)],
+                    ['subject_id', simple_decrypt($this->objId)],
                     ['subject_type', GensenForm::class]
                 ]);
                 if ($remittance_extraction) {
@@ -205,7 +205,7 @@ class Attachment extends Component
                 $job = AiJob::firstOrCreate(
                     [
                         'subject_type' => GensenForm::class,
-                        'subject_id'   => Crypt::decrypt($this->objId),
+                        'subject_id'   => simple_decrypt($this->objId),
                         'job_type'     => AiJob::JOB_TYPE_REMITTANCE_EXTRACTION,
                         'status'       => 'pending',
                     ],
@@ -232,7 +232,7 @@ class Attachment extends Component
     {
 
         if ($this->objId) {
-            $gensen = GensenFormRepository::find(Crypt::decrypt($this->objId));
+            $gensen = GensenFormRepository::find(simple_decrypt($this->objId));
 
             $this->tahun_gensen_details = $gensen->gensenFormDetails->toArray();
         }
