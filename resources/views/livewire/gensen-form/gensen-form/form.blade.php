@@ -526,7 +526,6 @@
                                 <div
                                     class="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0 file-preview">
                                     @if ($kertas_gensen)
-                                        <h1>File baru</h1>
                                         @foreach ($kertas_gensen as $index => $item)
                                             @php
                                                 $ext = $item->getClientOriginalExtension();
@@ -1349,7 +1348,6 @@
                                 <div
                                     class="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0 file-preview">
                                     @if ($kartu_keluarga)
-                                        <h1>File baru</h1>
                                         @foreach ($kartu_keluarga as $index => $item)
                                             @php
                                                 $ext = $item->getClientOriginalExtension();
