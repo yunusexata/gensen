@@ -295,6 +295,7 @@ class Form extends Component
     private function validatationStepper($index)
     {
         consoleLog($this, $this->isUploadAttachment);
+        consoleLog($this, ['index', $index]);
         if ($this->isUploadAttachment) {
             match ($index) {
 
