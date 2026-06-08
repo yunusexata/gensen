@@ -134,7 +134,7 @@
                 //     console.log('DOT EVENT:', e);
                 // })
         Livewire.on('download-export', ({ url }) => {
-
+            console.log(url);
             const link = document.createElement('a');
                 link.href = url;
                 link.download = '';
