@@ -586,7 +586,7 @@
                                                 <div class="border rounded p-4 text-center bg-light relative group/thumb w-100">
                                                     <i class="bi bi-file-earmark fs-1"></i>
                                                     <div class="mt-2">
-                                                        {{ $item['url'] }}
+                                                        {{ $item['filename'] }}
                                                     </div>
                                                     <!-- Actions -->
                                                     <div class="absolute top-1 right-1 z-10">
@@ -1259,7 +1259,7 @@
                                                 <div class="border rounded p-4 text-center bg-light relative group/thumb w-100">
                                                     <i class="bi bi-file-earmark fs-1"></i>
                                                     <div class="mt-2">
-                                                        {{ $item['url'] }}
+                                                        {{ $item['filename'] }}
                                                     </div>
                                                     <!-- Actions -->
                                                     <div class="absolute top-1 right-1 z-10">
@@ -1409,7 +1409,7 @@
                                                 <div class="border rounded p-4 text-center bg-light relative group/thumb w-100">
                                                     <i class="bi bi-file-earmark fs-1"></i>
                                                     <div class="mt-2">
-                                                        {{ $item['url'] }}
+                                                        {{ $item['filename'] }}
                                                     </div>
                                                     <!-- Actions -->
                                                     <div class="absolute top-1 right-1 z-10">
