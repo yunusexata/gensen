@@ -184,6 +184,7 @@ class Attachment extends Component
                     ['subject_id', simple_decrypt($this->objId)],
                     ['subject_type', GensenForm::class]
                 ]);
+
                 if ($remittance_extraction) {
                     $remittance_extraction->syncSubjectTotal();
                 }
