@@ -48,7 +48,7 @@
 
                 <!--end::Step 1-->
                 <!--begin::Step 4-->
-                <div class="stepper-item  w-full md:w-auto mx-8 my-4" data-kt-stepper-element="nav"
+                <div class="stepper-item  w-full md:w-auto mx-8 my-4 {{ $isUploadAttachment ? 'current' : '' }}" data-kt-stepper-element="nav"
                     data-kt-stepper-action="step" wire:ignore.self>
                     <!--begin::Wrapper-->
                     <div
