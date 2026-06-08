@@ -39,6 +39,7 @@ class GensenFormController extends Controller
     }
     public function upload_attachment(Request $request)
     {
+        dd(simple_decrypt($request->id));
         return view('app.gensen-form.gensen-form.upload_attachment', ["objId" => $request->id]);
     }
     public function form(Request $request)
@@ -51,7 +52,6 @@ class GensenFormController extends Controller
         $form = GensenFormLinkRepository::findBy([
             ['token', $token],
         ]);
-        dd([$token, $form]);
         if (!$form) {
             abort(404, 'Form Tidak Tersedia');
         }
