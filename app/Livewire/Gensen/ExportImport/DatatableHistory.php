@@ -41,7 +41,7 @@ class DatatableHistory extends Component
             $encryptedId = Crypt::encrypt($data['id']);
             // $url = route('gensen_form_export_import.download', ['id' => $encryptedId]);
             $this->dispatch(
-                'download-export-none',
+                'download-export',
                 // url: $data['url']
                 url: route('gensen_form_export_import.download', ['id' => $encryptedId])
             );
