@@ -392,7 +392,7 @@ class Form extends Component
     }
     public function firstCheck()
     {
-        // consoleLog($this, 'first');
+        consoleLog($this, 'first');
 
         if ($this->gensenFormId) {
             $gensenForm = GensenFormRepository::find($this->gensenFormId);
