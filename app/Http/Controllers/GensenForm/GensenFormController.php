@@ -51,6 +51,7 @@ class GensenFormController extends Controller
         $form = GensenFormLinkRepository::findBy([
             ['token', $token],
         ]);
+        dd([$token, $form]);
         if (!$form) {
             abort(404, 'Form Tidak Tersedia');
         }
