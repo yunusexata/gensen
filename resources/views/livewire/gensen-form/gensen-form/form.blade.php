@@ -1433,7 +1433,6 @@
                     <!--begin::Upload Attachment-->
                 </div>
                 <!--end::Group-->
-
                 <!--begin::Actions-->
                 <div class="d-flex flex-stack justify-content-end">
                     <!--begin::Wrapper-->
