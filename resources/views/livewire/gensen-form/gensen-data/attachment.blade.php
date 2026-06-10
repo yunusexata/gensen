@@ -1693,7 +1693,7 @@
                                         }"
                                         x-init="init()"
                                         :class="rotate
-                                            ? '-rotate-270 max-h-[42vw] mx-auto object-contain'
+                                            ? '-rotate-180 max-h-[42vw] mx-auto object-contain'
                                             : 'w-full object-contain'
                                         "
                                         class="shadow-2xl bg-white border border-white rounded transition-all duration-300"
