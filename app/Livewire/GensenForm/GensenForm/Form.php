@@ -476,7 +476,10 @@ class Form extends Component
                 ['token', $this->objId],
             ]);
             if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_SUCCESS) {
-                abort(403, "Form {$form['name']} sudah Maksimal");
+                // abort(403, "Form {$form['name']} sudah Maksimal");
+                return redirect()
+                    ->route('form.max-usage')
+                    ->with('error', "Form {$form['name']} sudah maksimal");
             }
             consoleLog($this, 'buat baru');
             $this->saveData(false);

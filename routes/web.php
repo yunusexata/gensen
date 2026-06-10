@@ -46,3 +46,7 @@ Route::get('/health', function () {
     ]);
 });
 // Route::get('/phpinfo', fn() => phpinfo());
+
+Route::get('/403', function () {
+    abort(403, session('error'));
+})->name('form.max-usage');
