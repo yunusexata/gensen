@@ -767,6 +767,19 @@
                                             @drop.prevent="handleDrop($event)"
                                             :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
                                             class="form-group">
+                                                <label for="zairyou_card_front" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
+                                                </label>
+                                                {{-- <label for="zairyou_card_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                                    
+                                                </label> --}}
+                                            <input class="hidden validate-upload-file" id="zairyou_card_front" name="zairyou_card_front"
+                                                type="file"
+                                                x-ref="input"
+                                                {{-- wire:model="zairyou_card_front" --}}
+                                                {{-- @change="handleFiles" --}}
+                                                accept="application/pdf, image/jpeg, image/png"
+                                                class="position-absolute invisible" />
                                                 
                                     <label for="zairyou_card_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
                                         <span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
@@ -780,7 +793,7 @@
                                     x-ref="input"
                                     wire:model="zairyou_card_front"
                                     {{-- @change="handleFiles" --}}
-                                    accept="image/jpeg, image/png"
+                                    accept="application/pdf, image/jpeg, image/png"
                                     class="position-absolute invisible" />
                                         </div>
                                     @endif
@@ -858,7 +871,7 @@
                                                 {{-- <label for="zairyou_card_back" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
                                                     
                                                 </label> --}}
-                                            <input class="hidden validate-upload-file" id="zairyou_card_back.1" name="zairyou_card_back"
+                                            <input class="hidden validate-upload-file" id="zairyou_card_back" name="zairyou_card_back"
                                                 type="file"
                                                 x-ref="input"
                                                 {{-- wire:model="zairyou_card_back" --}}
@@ -955,7 +968,7 @@
                                                 {{-- <label for="my_number_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
                                                     
                                                 </label> --}}
-                                            <input class="hidden validate-upload-file" id="my_number_front.1" name="my_number_front"
+                                            <input class="hidden validate-upload-file" id="my_number_front" name="my_number_front"
                                                 type="file"
                                                 x-ref="input"
                                                 {{-- wire:model="my_number_front" --}}
@@ -1038,7 +1051,7 @@
                                                 {{-- <label for="my_number_back" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
                                                     
                                                 </label> --}}
-                                            <input class="hidden validate-upload-file" id="my_number_back.1" name="my_number_back"
+                                            <input class="hidden validate-upload-file" id="my_number_back" name="my_number_back"
                                                 type="file"
                                                 x-ref="input"
                                                 {{-- wire:model="my_number_back" --}}
@@ -1134,7 +1147,7 @@
                                                 {{-- <label for="rekening_indonesia" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
                                                     
                                                 </label> --}}
-                                            <input class="hidden validate-upload-file" id="rekening_indonesia.1" name="rekening_indonesia"
+                                            <input class="hidden validate-upload-file" id="rekening_indonesia" name="rekening_indonesia"
                                                 type="file"
                                                 x-ref="input"
                                                 {{-- wire:model="rekening_indonesia" --}}
