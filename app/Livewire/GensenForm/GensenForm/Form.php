@@ -480,13 +480,14 @@ class Form extends Component
                 return redirect()
                     ->route('form.max-usage')
                     ->with('error', "Form {$form['name']} sudah maksimal");
-            }
-            consoleLog($this, 'buat baru');
-            $this->saveData(false);
-            if (!$this->is_should_filled) {
-                throw \Illuminate\Validation\ValidationException::withMessages([
-                    'input_filled' => 'Data belum lengkap'
-                ]);
+            } else {
+                consoleLog($this, 'buat baru');
+                $this->saveData(false);
+                if (!$this->is_should_filled) {
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        'input_filled' => 'Data belum lengkap'
+                    ]);
+                }
             }
         }
     }
