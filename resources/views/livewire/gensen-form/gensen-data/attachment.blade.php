@@ -1847,7 +1847,7 @@
                                                     </span>
                                                 </div>
 
-                                                <div class="flex-1 overflow-hidden">
+                                                <div class="flex-1 overflow-hidden -rotate-90">
                                                     <h6 class="text-[10px] text-on-surface">
                                                         {{ $item['filename'] }}
                                                     </h6>
