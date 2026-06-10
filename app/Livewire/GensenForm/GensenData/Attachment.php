@@ -7,11 +7,13 @@ use App\Enums\Gensen\GensenAttachmentRemittanceType;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
+use App\Helpers\PermissionHelper;
 use App\Jobs\ConvertPdfToImagesJob;
 use App\Models\Ai\AiJob;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\GensenFormAttachment;
 use App\Models\User;
+use App\Repositories\Account\UserRepository;
 use App\Repositories\Ai\AiJobRepository;
 use App\Repositories\Gensen\Ai\RemittanceExtractionGroupRepository;
 use App\Repositories\Gensen\Ai\RemittanceExtractionRepository;
@@ -297,7 +299,8 @@ class Attachment extends Component
             // $this->persyaratan_pengurusan_gensen_old = $attachments[GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value];
             $this->seluruh_berkas_old = $attachments[GensenAttachmentType::SELURUH_BERKAS->value];
 
-            $this->isCanDelete = $gensen->isCanDelete();
+            $authUser = UserRepository::authenticatedUser();
+            $this->isCanDelete = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_ATTACHMENT, PermissionHelper::TYPE_DELETE));
             $this->isCanUpdate = $gensen->isCanUpdate();
         }
     }

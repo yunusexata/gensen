@@ -33,6 +33,7 @@ class PermissionHelper
 
     // Form Gensen
     const ACCESS_GENSEN_DATA = 'gensen_data';
+    const ACCESS_GENSEN_ATTACHMENT = 'gensen_attachment';
     const ACCESS_GENSEN_FORM_LINK = 'gensen_form_link';
 
     // EXPORT IMPORT
@@ -73,6 +74,7 @@ class PermissionHelper
 
         // Form Gensen
         self::ACCESS_GENSEN_DATA,
+        self::ACCESS_GENSEN_ATTACHMENT,
         self::ACCESS_GENSEN_FORM_LINK,
 
         // Import Export
@@ -90,6 +92,7 @@ class PermissionHelper
 
         // Form Gensen
         self::ACCESS_GENSEN_DATA => 'Data Gensen',
+        self::ACCESS_GENSEN_ATTACHMENT => 'Berkas Gensen',
         self::ACCESS_GENSEN_FORM_LINK => 'Form Gensen - Link',
 
         // EXPORT IMPORT
@@ -132,6 +135,7 @@ class PermissionHelper
 
         // Form Gensen
         self::ACCESS_GENSEN_DATA => self::TYPE_ALL,
+        self::ACCESS_GENSEN_ATTACHMENT => self::TYPE_ALL,
         self::ACCESS_GENSEN_FORM_LINK => self::TYPE_ALL,
 
         // Export Import
