@@ -217,9 +217,6 @@ class Form extends Component
                 );
                 abort(403, "Form {$form['name']} sudah expired");
             }
-            if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_SUCCESS) {
-                abort(403, "Form {$form['name']} sudah Maksimal");
-            }
             $this->password = $form->password;
         } catch (DecryptException $e) {
             abort(404, 'Form tidak tersedia');
@@ -474,6 +471,13 @@ class Form extends Component
             $this->zairyou_card_back_old = $attachments[GensenAttachmentType::ZAIRYOU_CARD_BACK->value] ?? [];
             $this->rekening_indonesia_old = $attachments[GensenAttachmentType::REKENING_INDONESIA->value] ?? [];
         } else {
+
+            $form = GensenFormLinkRepository::findBy([
+                ['token', $this->objId],
+            ]);
+            if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_SUCCESS) {
+                abort(403, "Form {$form['name']} sudah Maksimal");
+            }
             consoleLog($this, 'buat baru');
             $this->saveData(false);
             if (!$this->is_should_filled) {
