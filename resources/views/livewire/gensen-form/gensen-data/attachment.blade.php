@@ -767,19 +767,21 @@
                                             @drop.prevent="handleDrop($event)"
                                             :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
                                             class="form-group">
-                                                <label for="zairyou_card_front" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
-                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
-                                                </label>
-                                                {{-- <label for="zairyou_card_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                                    
-                                                </label> --}}
-                                            <input class="hidden validate-upload-file" id="zairyou_card_front.1" name="zairyou_card_front"
-                                                type="file"
-                                                x-ref="input"
-                                                {{-- wire:model="zairyou_card_front" --}}
-                                                {{-- @change="handleFiles" --}}
-                                                accept="application/pdf, image/jpeg, image/png"
-                                                class="position-absolute invisible" />
+                                                
+                                    <label for="zairyou_card_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                        <span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
+                                        <div class="text-body-sm">
+                                            <span class="text-primary font-semibold">Click to upload</span> or drag and drop
+                                        </div>
+                                    </label>
+                                    <input class="hidden validate-upload-file" id="zairyou_card_front" name="zairyou_card_front"
+                                    type="file"
+                                    multiple
+                                    x-ref="input"
+                                    wire:model="zairyou_card_front"
+                                    {{-- @change="handleFiles" --}}
+                                    accept="image/jpeg, image/png"
+                                    class="position-absolute invisible" />
                                         </div>
                                     @endif
                                 </div>
