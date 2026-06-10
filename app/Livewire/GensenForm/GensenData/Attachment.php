@@ -572,7 +572,7 @@ class Attachment extends Component
         ]));
 
         // Generate the clean URL
-        dd($disk);
+        // dd($disk);
         if ($disk == 'supabase') {
             $url = 'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $path;
         } else if ($disk == 'public') {

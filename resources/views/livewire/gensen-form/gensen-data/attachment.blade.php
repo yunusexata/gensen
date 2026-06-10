@@ -1415,7 +1415,7 @@
                                             </div>
                                             <div class="{{ ($my_number_front_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
                                                 <img class="w-full object-cover"  
-                                                wire:click="clickFile('{{$my_number_front_old['id']}}', {{$my_number_front_old['disk']}}, '{{$my_number_front_old['path']}}', '{{$my_number_front_old['type']?->label()}}')"
+                                                wire:click="clickFile('{{$my_number_front_old['id']}}', '{{$my_number_front_old['disk']}}', '{{$my_number_front_old['path']}}', '{{$my_number_front_old['type']?->label()}}')"
                                                 src="{{ $my_number_front_old['url'] }}"/>
                                             </div>
                                         </div>
@@ -1445,7 +1445,7 @@
                                             </div>
                                             <div class="{{ ($my_number_back_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
                                                 <img class="w-full object-cover"  
-                                                wire:click="clickFile('{{$my_number_back_old['id']}}', {{$my_number_back_old['disk']}}, '{{$my_number_back_old['path']}}', '{{$my_number_back_old['type']?->label()}}')"
+                                                wire:click="clickFile('{{$my_number_back_old['id']}}', '{{$my_number_back_old['disk']}}', '{{$my_number_back_old['path']}}', '{{$my_number_back_old['type']?->label()}}')"
                                                 src="{{ $my_number_back_old['url'] }}"/>
                                             </div>
                                         </div>
@@ -1473,9 +1473,8 @@
                                             </div>
                                         </div>
                                         <div class="{{ ($rekening_indonesia_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
-                                            {{ dd($rekening_indonesia_old) }}
                                             <img class="w-full object-cover"  
-                                            wire:click="clickFile('{{$rekening_indonesia_old['id']}}', {{$rekening_indonesia_old['disk']}}, '{{$rekening_indonesia_old['path']}}', '{{$rekening_indonesia_old['type']?->label()}}')"
+                                            wire:click="clickFile('{{$rekening_indonesia_old['id']}}', '{{$rekening_indonesia_old['disk']}}', '{{$rekening_indonesia_old['path']}}', '{{$rekening_indonesia_old['type']?->label()}}')"
                                             src="{{ $rekening_indonesia_old['url'] }}"/>
                                         </div>
                                     </div>
