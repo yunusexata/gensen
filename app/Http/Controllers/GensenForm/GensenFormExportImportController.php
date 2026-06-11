@@ -29,7 +29,7 @@ class GensenFormExportImportController extends Controller
     }
     public function download($id)
     {
-        // dd(Crypt::decrypt($id));
+        dd(Crypt::decrypt($id));
         logger([
             'dowload',
             Crypt::decrypt($id)
