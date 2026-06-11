@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Gensen\GensenExportImportHistory;
 use App\Models\GensenForm\GensenForm;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 
 class GensenFormExportImportController extends Controller
@@ -28,6 +29,7 @@ class GensenFormExportImportController extends Controller
     }
     public function download($id)
     {
+        dd(Crypt::decrypt($id));
         $history = GensenExportImportHistory::findOrFail(decrypt($id));
 
         $disk = Storage::disk($history->disk);

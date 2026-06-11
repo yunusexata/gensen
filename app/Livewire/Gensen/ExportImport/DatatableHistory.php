@@ -39,6 +39,7 @@ class DatatableHistory extends Component
         ]);
         if ($data['type'] === 'export' && $data['created_by'] == Auth::user()->id && $data['status'] === JobStatus::DONE->value) {
             $encryptedId = Crypt::encrypt($data['id']);
+            consoleLog($this, $data);
             // $url = route('gensen_form_export_import.download', ['id' => $encryptedId]);
             $this->dispatch(
                 'download-export',
