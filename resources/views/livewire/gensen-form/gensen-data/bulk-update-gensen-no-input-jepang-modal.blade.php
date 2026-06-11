@@ -38,7 +38,7 @@
                                                     <th>Nama</th>
                                                     <th>Tanggal Lengkap</th>
                                                     <th>Tanggal Verified</th>
-                                                    <th>No Input Jepang/Status</th>
+                                                    <th>No Input Jepang</th>
                                                     <th>Status</th>
                                                     <th>Keterangan</th>
                                                     <th>Tahun Gensen</th>
@@ -86,7 +86,7 @@
                                                     <th>Nama</th>
                                                     <th>Tanggal Lengkap</th>
                                                     <th>Tanggal Verified</th>
-                                                    <th>No Input Jepang/Status</th>
+                                                    <th>No Input Jepang</th>
                                                     <th>Status</th>
                                                     <th>Keterangan</th>
                                                     <th>Tahun Gensen</th>
