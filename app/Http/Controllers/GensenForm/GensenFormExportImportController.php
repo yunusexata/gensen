@@ -29,8 +29,12 @@ class GensenFormExportImportController extends Controller
     }
     public function download($id)
     {
-        dd(Crypt::decrypt($id));
-        $history = GensenExportImportHistory::findOrFail(decrypt($id));
+        // dd(Crypt::decrypt($id));
+        logger([
+            'dowload',
+            Crypt::decrypt($id)
+        ]);
+        $history = GensenExportImportHistory::findOrFail(Crypt::decrypt($id));
 
         $disk = Storage::disk($history->disk);
 
