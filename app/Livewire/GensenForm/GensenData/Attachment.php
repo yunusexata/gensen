@@ -398,7 +398,7 @@ class Attachment extends Component
 
         $attachments = $gensen->attachmentGroups([
             $attachment_type
-        ]);
+        ], true);
         match ($attachment_type) {
             GensenAttachmentType::KERTAS_GENSEN->value =>
             $this->kertas_gensen_old = $attachments[GensenAttachmentType::KERTAS_GENSEN->value],
