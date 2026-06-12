@@ -196,7 +196,7 @@ class ConvertPdfToImagesJob implements ShouldQueue
             'error_output' => $process->getErrorOutput(),
         ]);
 
-        logger($process->getCommandLine());
+        // logger($process->getCommandLine());
 
         if (!$process->isSuccessful()) {
             throw new \Exception(
@@ -214,10 +214,10 @@ class ConvertPdfToImagesJob implements ShouldQueue
             "{$outputDir}/{$storedName}_page-*.jpg"
         );
 
-        logger([
-            'get generated file',
-            $generatedFiles
-        ]);
+        // logger([
+        //     'get generated file',
+        //     $generatedFiles
+        // ]);
 
         if ($attachment->type !== GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
             GensenFormAttachmentRepository::update($attachment->id, [

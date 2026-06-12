@@ -47,10 +47,10 @@ class GeminiExtractionService
                 $path = Storage::disk('private')
                     ->path($path);
                 $mime = mime_content_type($path);
-                logger([
-                    'path',
-                    $path
-                ]);
+                // logger([
+                //     'path',
+                //     $path
+                // ]);
                 return [
                     'inlineData' => [
                         'mimeType' => $mime,
@@ -66,10 +66,10 @@ class GeminiExtractionService
         |--------------------------------------------------------------------------
         */
 
-        logger([
-            'imageParts',
-            $imageParts
-        ]);
+        // logger([
+        //     'imageParts',
+        //     $imageParts
+        // ]);
 
         $payload = [
             'contents' => [
@@ -129,14 +129,14 @@ class GeminiExtractionService
         |--------------------------------------------------------------------------
         */
 
-        logger([
-            'payload',
-            $payload
-        ]);
-        logger([
-            'endpoint',
-            $endpoint
-        ]);
+        // logger([
+        //     'payload',
+        //     $payload
+        // ]);
+        // logger([
+        //     'endpoint',
+        //     $endpoint
+        // ]);
 
         $response = Http::timeout(300)
             ->withHeaders([
@@ -156,10 +156,10 @@ class GeminiExtractionService
 
         $chunks = $response;
 
-        logger([
-            'chunks',
-            $chunks,
-        ]);
+        // logger([
+        //     'chunks',
+        //     $chunks,
+        // ]);
 
         $text = collect($chunks)
             ->pluck('candidates')
@@ -169,10 +169,10 @@ class GeminiExtractionService
             ->pluck('text')
             ->implode('');
 
-        logger([
-            'result chunks',
-            $text
-        ]);
+        // logger([
+        //     'result chunks',
+        //     $text
+        // ]);
         return json_decode($chunks, true);
     }
 

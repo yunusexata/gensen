@@ -34,7 +34,7 @@ class GeminiService
     {
         $attachments = $gensen_form->attachmentsConvertedRekapanPengirimanUang;
 
-        logger(['attachments', $attachments]);
+        // logger(['attachments', $attachments]);
 
         $blobs = collect($attachments)->map(function ($file) {
 
@@ -158,7 +158,7 @@ class GeminiService
                 ...$blobs
             ]);
 
-        logger(['result', $result]);
+        // logger(['result', $result]);
 
         $response = [];
         $thoughts = null;
