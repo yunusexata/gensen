@@ -172,17 +172,17 @@ class ConvertPdfToImagesJob implements ShouldQueue
             'stored output dir 97',
             $outputPattern
         ]);
-
         $process = new Process([
-            // '/usr/local/bin/gs',
             'gs',
             '-sDEVICE=jpeg',
-            '-r200',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
+            '-r200',                  // 200 DPI is great
             '-dNOPAUSE',
             '-dBATCH',
             '-dSAFER',
-            '-dINTERPOLATE',        // Smoother scaling
-            '-dJPEGQ=85',           // Q=100 is wasteful; 85 is indistinguishable for AI
+            '-dTextAlphaBits=4',      // FORCED: Improves text rendering/anti-aliasing
+            '-dGraphicsAlphaBits=4',  // FORCED: Smooths out vector graphics
+            '-dJPEGQ=85',
+            // REMOVED: -sColorConversionStrategy=Gray (This was dropping your text layer)
             "-sOutputFile={$outputPattern}",
             storage_path('app/' . $store_disk . '/' . $tmpPdfPath),
         ]);
