@@ -427,10 +427,10 @@ class GensenForm extends Model
     {
         $attachments = $this->attachments
             ->when($not_converted, function ($q) {
-                $q->whereNot('status', GensenAttachmenStatus::STATUS_CONVERTED);
+                return $q->where('status', '!=', GensenAttachmenStatus::STATUS_CONVERTED);
             })
             ->when($types, function ($q) use ($types) {
-                $q->whereIn('type', $types);
+                return $q->whereIn('type', $types);
             })
             ->groupBy(fn($a) => $a->type->value);
 

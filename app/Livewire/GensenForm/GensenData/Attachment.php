@@ -253,7 +253,7 @@ class Attachment extends Component
             $this->nominal_gensen = $gensen->nominal_gensen;
 
             $attachments = $gensen->attachmentGroups();
-            dd($attachments);
+
             // dd($this->remittance_extraction_groups);
             if ($this->kertas_gensen) {
                 $this->kertas_gensen_old = $attachments[GensenAttachmentType::KERTAS_GENSEN->value];
