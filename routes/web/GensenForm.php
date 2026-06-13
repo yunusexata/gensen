@@ -37,10 +37,10 @@ Route::get(
     ->name('gensen.attachment.preview-export-import');
 // ->middleware('signed');
 Route::get('/preview-temp-pdf/{filename}', function ($filename) {
-    logger([
-        'preview tmp pdf 42 route',
-        $filename
-    ]);
+    // logger([
+    //     'preview tmp pdf 42 route',
+    //     $filename
+    // ]);
     $path = storage_path('app/livewire-tmp/' . $filename);
 
     abort_unless(file_exists($path), 404);

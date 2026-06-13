@@ -85,10 +85,10 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
             $files = $gensen->attachments
                 ->keyBy(fn($item) => $item->type->value);
 
-            logger([
-                'files attachment line 89',
-                $files
-            ]);
+            // logger([
+            //     'files attachment line 89',
+            //     $files
+            // ]);
             $this->merge(
                 $this->attachmentPath($files, GensenAttachmentType::ZAIRYOU_CARD_FRONT),
                 $this->attachmentPath($files, GensenAttachmentType::ZAIRYOU_CARD_BACK),
@@ -141,10 +141,10 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
     {
         $attachment = $files->get($type->value);
 
-        logger([
-            'detail att line 145',
-            $attachment
-        ]);
+        // logger([
+        //     'detail att line 145',
+        //     $attachment
+        // ]);
         if (!$attachment) {
             logger("Attachment {$type->label()} not found");
             return false;
@@ -204,10 +204,10 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
 
         // fclose($readStream);
         // fclose($writeStream);
-        logger([
-            'attachment path line 169',
-            $path
-        ]);
+        // logger([
+        //     'attachment path line 169',
+        //     $path
+        // ]);
         return $path;
     }
 

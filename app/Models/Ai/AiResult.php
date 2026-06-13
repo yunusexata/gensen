@@ -42,11 +42,11 @@ class AiResult extends Model
     protected static function onBoot()
     {
         self::created(function ($model) {
-            logger(['model result', $model->result_type]);
+            // logger(['model result', $model->result_type]);
             if ($model->result_type == AiJob::JOB_TYPE_REMITTANCE_EXTRACTION) {
                 $result = json_decode($model->result_json, true);
-                logger(['model result all', $model]);
-                logger(['model result', $result]);
+                // logger(['model result all', $model]);
+                // logger(['model result', $result]);
                 $remittance = RemittanceExtraction::create(
                     [
                         'subject_id' => $model->aiJob->subject_id,
@@ -75,7 +75,7 @@ class AiResult extends Model
             };
 
             if ($model->result_type == AiJob::JOB_TYPE_ICHIJIKIN_EXTRACTION) {
-                logger('DAH SAMPE RESULT ICHIJIKIN');
+                // logger('DAH SAMPE RESULT ICHIJIKIN');
                 $result = json_decode($model->result_json, true);
                 $validatedData = [
                     'ai_job_id' => $model->aiJob->id,
@@ -104,7 +104,7 @@ class AiResult extends Model
                     'status' => JobStatus::DONE,
 
                 ];
-                logger(['insert validated data', $validatedData]);
+                // logger(['insert validated data', $validatedData]);
                 IchijikinExtractionResultRepository::create($validatedData);
             }
         });

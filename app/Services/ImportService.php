@@ -277,10 +277,10 @@ class ImportService
         $errorRows = [];
 
         foreach ($import->rows as $index => $row) {
-            logger([
-                'data row',
-                $row
-            ]);
+            // logger([
+            //     'data row',
+            //     $row
+            // ]);
             $validator = $this->validateListDataNoInputJapan($row->toArray());
 
             if ($validator->fails()) {
@@ -413,23 +413,23 @@ class ImportService
                 'keterangan' => $row['keterangan'],
             ];
 
-            logger([
-                'cair',
-                [
-                    ['gensen_form_id', $gensenForm->id],
-                    ['tahun_gensen', $tahun_reiwa[0]],
-                ],
-                $validatedData
-            ]);
+            // logger([
+            //     'cair',
+            //     [
+            //         ['gensen_form_id', $gensenForm->id],
+            //         ['tahun_gensen', $tahun_reiwa[0]],
+            //     ],
+            //     $validatedData
+            // ]);
             $data = GensenFormDetailRepository::findBy([
                 // ['id_customer', $row['id_customer']],
                 ['gensen_form_id', $gensenForm->id],
                 ['tahun_gensen', $tahun_reiwa[0]],
             ]);
-            logger([
-                'jika data',
-                $data
-            ]);
+            // logger([
+            //     'jika data',
+            //     $data
+            // ]);
 
             $updated = GensenFormDetailRepository::updateBy([
                 // ['id_customer', $row['id_customer']],

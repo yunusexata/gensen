@@ -58,9 +58,9 @@ class TemporaryFile
         fclose($readStream);
         fclose($writeStream);
 
-        logger([
-            'tmp_file_created' => $tmpPath
-        ]);
+        // logger([
+        //     'tmp_file_created' => $tmpPath
+        // ]);
 
         return $tmpPath;
     }

@@ -172,14 +172,14 @@ class SplitIchijikinJob implements ShouldQueue
         // '-dFirstPage=1',        // Secure: Process only what you need
 
         $process->run();
-        logger([
-            'successful' => $process->isSuccessful(),
-            'exit_code' => $process->getExitCode(),
-            'output' => $process->getOutput(),
-            'error_output' => $process->getErrorOutput(),
-        ]);
+        // logger([
+        //     'successful' => $process->isSuccessful(),
+        //     'exit_code' => $process->getExitCode(),
+        //     'output' => $process->getOutput(),
+        //     'error_output' => $process->getErrorOutput(),
+        // ]);
 
-        logger($process->getCommandLine());
+        // logger($process->getCommandLine());
 
         if (!$process->isSuccessful()) {
             throw new \Exception(
@@ -197,10 +197,10 @@ class SplitIchijikinJob implements ShouldQueue
             "{$outputDir}/{$attachment->batch_name}_{$attachment->id}_*.jpg"
         );
 
-        logger([
-            'get generated file',
-            $generatedFiles
-        ]);
+        // logger([
+        //     'get generated file',
+        //     $generatedFiles
+        // ]);
 
         /*
                 |--------------------------------------------------------------------------
@@ -228,10 +228,10 @@ class SplitIchijikinJob implements ShouldQueue
             $storedName =
                 $info['filename'] . '.jpg';
 
-            logger([
-                'stored_name',
-                $storedName,
-            ]);
+            // logger([
+            //     'stored_name',
+            //     $storedName,
+            // ]);
 
             // $targetPath = storage_path("app/{$store_disk}/{$dir}/{$storedName}");
             $targetPath = "{$dir}/{$storedName}";

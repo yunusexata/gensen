@@ -412,8 +412,8 @@ class MergeSeluruhBerkas implements ShouldQueue
         $pdf->SetAutoPageBreak(false);
         $pdf->setPrintHeader(false);
         $pdf->setPrintFooter(false);
-        logger('files all');
-        logger($files);
+        // logger('files all');
+        // logger($files);
         foreach ($files as $file) {
 
             $fullPath = Storage::disk($file->disk)

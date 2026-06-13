@@ -138,10 +138,10 @@ class IchijikinService
             $destFolder = storage_path('app/public/' . $des);
             $destPath   = $destFolder . "/$name.png";
 
-            logger([
-                'DEST CROP',
-                $destPath
-            ]);
+            // logger([
+            //     'DEST CROP',
+            //     $destPath
+            // ]);
 
             if (!file_exists($destFolder)) {
                 mkdir($destFolder, 0755, true);
@@ -154,10 +154,10 @@ class IchijikinService
             return $destPath;
         } catch (\Throwable $th) {
             //throw $th;
-            logger([
-                'CROP SERVICE ERROR',
-                $th
-            ]);
+            // logger([
+            //     'CROP SERVICE ERROR',
+            //     $th
+            // ]);
         }
     }
 
@@ -388,14 +388,14 @@ class IchijikinService
 
     public function drawLabelImage($imagePath, $desPath, $fileName, $kokumin = null, $nenkin_100 = null)
     {
-        logger([
-            'draw label',
-            $imagePath,
-            $desPath,
-            $fileName,
-            $kokumin,
-            $nenkin_100
-        ]);
+        // logger([
+        //     'draw label',
+        //     $imagePath,
+        //     $desPath,
+        //     $fileName,
+        //     $kokumin,
+        //     $nenkin_100
+        // ]);
         // Load image
         $image = imagecreatefromjpeg($imagePath);
 

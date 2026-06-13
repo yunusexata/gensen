@@ -86,10 +86,10 @@ class ConvertPdfToImagesJob implements ShouldQueue
         $tmpDir = $this->type == AiJob::class ? "gensen/{$this->model->subject->id}/convert_{$attachment->type->value}"
             : "gensen/{$attachment->gensen_form_id}/convert_{$attachment->type->value}";
 
-        logger([
-            'tmp dir 45',
-            $tmpDir
-        ]);
+        // logger([
+        //     'tmp dir 45',
+        //     $tmpDir
+        // ]);
 
         if (!Storage::disk($store_disk)->exists($tmpDir)) {
             Storage::disk($store_disk)->makeDirectory($tmpDir);
@@ -98,10 +98,10 @@ class ConvertPdfToImagesJob implements ShouldQueue
         $tmpPdfPath = $tmpDir . '/' . basename($attachment->path);
 
 
-        logger([
-            'tmp pdf path 56',
-            $tmpPdfPath
-        ]);
+        // logger([
+        //     'tmp pdf path 56',
+        //     $tmpPdfPath
+        // ]);
         /*
                 |--------------------------------------------------------------------------
                 | STREAM DOWNLOAD (Supabase → Local)
@@ -150,10 +150,10 @@ class ConvertPdfToImagesJob implements ShouldQueue
             : "gensen/{$attachment->gensen_form_id}/convert_{$attachment->type->value}";
 
 
-        logger([
-            'dir convert',
-            $dir
-        ]);
+        // logger([
+        //     'dir convert',
+        //     $dir
+        // ]);
 
         if (!Storage::disk($store_disk)->exists($dir)) {
             Storage::disk($store_disk)->makeDirectory($dir);
@@ -164,14 +164,14 @@ class ConvertPdfToImagesJob implements ShouldQueue
         $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
         $outputPattern = storage_path("app/{$store_disk}/{$dir}/{$storedName}_page-%03d.jpg");
 
-        logger([
-            'stored name 97',
-            $storedName
-        ]);
-        logger([
-            'stored output dir 97',
-            $outputPattern
-        ]);
+        // logger([
+        //     'stored name 97',
+        //     $storedName
+        // ]);
+        // logger([
+        //     'stored output dir 97',
+        //     $outputPattern
+        // ]);
         $process = new Process([
             'gs',
             '-sDEVICE=jpeg',
@@ -189,12 +189,12 @@ class ConvertPdfToImagesJob implements ShouldQueue
         // '-dFirstPage=1',        // Secure: Process only what you need
 
         $process->run();
-        logger([
-            'successful' => $process->isSuccessful(),
-            'exit_code' => $process->getExitCode(),
-            'output' => $process->getOutput(),
-            'error_output' => $process->getErrorOutput(),
-        ]);
+        // logger([
+        //     'successful' => $process->isSuccessful(),
+        //     'exit_code' => $process->getExitCode(),
+        //     'output' => $process->getOutput(),
+        //     'error_output' => $process->getErrorOutput(),
+        // ]);
 
         // logger($process->getCommandLine());
 
@@ -251,10 +251,10 @@ class ConvertPdfToImagesJob implements ShouldQueue
             $storedName =
                 $info['filename'] . '.jpg';
 
-            logger([
-                'stored_name',
-                $storedName,
-            ]);
+            // logger([
+            //     'stored_name',
+            //     $storedName,
+            // ]);
 
             // $targetPath = storage_path("app/{$store_disk}/{$dir}/{$storedName}");
             $targetPath = "{$dir}/{$storedName}";
@@ -262,12 +262,12 @@ class ConvertPdfToImagesJob implements ShouldQueue
             // =====================================================
             // IMAGE OPTIMIZATION
             // =====================================================
-            logger([
-                'exists_before_save' => file_exists($file),
-                'filesize_before_save' => file_exists($file)
-                    ? filesize($file)
-                    : null,
-            ]);
+            // logger([
+            //     'exists_before_save' => file_exists($file),
+            //     'filesize_before_save' => file_exists($file)
+            //         ? filesize($file)
+            //         : null,
+            // ]);
             try {
                 Image::load($file)
 
@@ -295,12 +295,12 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
                 throw $e;
             }
-            logger([
-                'exists_after_save' => file_exists($file),
-                'filesize_after_save' => file_exists($file)
-                    ? filesize($file)
-                    : null,
-            ]);
+            // logger([
+            //     'exists_after_save' => file_exists($file),
+            //     'filesize_after_save' => file_exists($file)
+            //         ? filesize($file)
+            //         : null,
+            // ]);
             // =====================================================
             // SECOND PASS OPTIMIZATION
             // =====================================================
@@ -400,12 +400,12 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 // 'page' => $index + 1,
             ]);
 
-            logger([
-                'exists_last_save' => file_exists($file),
-                'filesize_last_save' => file_exists($file)
-                    ? filesize($file)
-                    : null,
-            ]);
+            // logger([
+            //     'exists_last_save' => file_exists($file),
+            //     'filesize_last_save' => file_exists($file)
+            //         ? filesize($file)
+            //         : null,
+            // ]);
             if (is_resource($stream)) {
                 fclose($stream);
             }
