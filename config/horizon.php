@@ -263,9 +263,9 @@ return [
                 'connection' => 'redis',
                 'queue' => ['crop'],
 
-                'maxProcesses' => 4,
+                'maxProcesses' => 2,
 
-                'memory' => 256,
+                'memory' => 512,
 
                 'timeout' => 120,
 
@@ -280,7 +280,7 @@ return [
             'supervisor-extract' => [
                 'connection' => 'redis',
                 'queue' => ['extract'],
-                'maxProcesses' => 2,
+                'maxProcesses' => 3,
                 'memory' => 1024,
                 'timeout' => 600,
                 'tries' => 3,

@@ -96,8 +96,16 @@ class DatatableBatchDetail extends Component
                             </a>
                         </div>";
                     }
+                    $destroyHtml = "";
+                    if ($this->isCanDelete) {
+                        $destroyHtml = "<div class='col-auto'>
+                            <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' wire:click=\"showDeleteDialog($item->id)\">
+                                <span class='material-symbols-outlined text-lg' data-icon='delete'>delete</span>
+                            </button>
+                        </div>";
+                    }
                     $html = "<div class='row p-0 m-0 d-flex justify-content-start flex-nowrap'>
-                        $editHtml 
+                        $editHtml $destroyHtml
                     </div>";
 
                     return $html;
