@@ -2,6 +2,7 @@
 
 namespace App\Livewire\IchijikinExtraction;
 
+use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
 use App\Helpers\PermissionHelper;
 use App\Jobs\IchijikinExtraction\GenerateIchijikinZipJob;
@@ -136,19 +137,34 @@ class DatatableBatch extends Component
                             </a>
                         </div>";
                         } else {
+                            if ($item->zip_status === JobStatus::DONE) {
+                                // If ready, show a direct download button (or link)
+                                $downloadHtml = "<div class='col-auto'>
+                                    <button type='button' class='p-0 text-success hover:bg-success/10 rounded' wire:click=\"downloadGeneratedZip($item->id)\" title='Download ZIP'>
+                                        <span class='material-symbols-outlined text-lg'>download</span>
+                                    </button>
+                                </div>";
+                            } elseif ($item->zip_status === JobStatus::PROCESSING) {
+                                // If processing, show a disabled loading spinner/icon
+                                $downloadHtml = "<div class='col-auto'>
+                                    <span class='material-symbols-outlined text-lg text-warning animate-spin' title='Compiling ZIP...'>sync</span>
+                                </div>";
+                            } else {
+                                // If not started yet (or failed), show the trigger button to start the job
 
-                            $downloadHtml = "
-                        <div class='col-auto'>
-                            <button
-                                type='button'
-                                wire:click=\"generateZip('{$id}')\"
-                                class='p-0 hover:bg-warning/10 text-warning rounded transition-colors'
-                            >
-                                <span class='material-symbols-outlined text-lg'>
-                                    folder_zip
-                                </span>
-                            </button>
-                        </div>";
+                                $downloadHtml = "
+                                <div class='col-auto'>
+                                    <button
+                                        type='button'
+                                        wire:click=\"generateZip('{$id}')\"
+                                        class='p-0 hover:bg-warning/10 text-warning rounded transition-colors'
+                                    >
+                                        <span class='material-symbols-outlined text-lg'>
+                                            folder_zip
+                                        </span>
+                                    </button>
+                                </div>";
+                            }
                         }
                     }
 
