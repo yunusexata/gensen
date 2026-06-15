@@ -27,14 +27,7 @@ class BulkUpdateGensenNoInputJepangModal extends Component
     public $errorBulkStatusRows = [];
 
 
-    public function mount()
-    {
-        dd([
-            ini_get('upload_max_filesize'),
-            ini_get('post_max_size'),
-            ini_get('memory_limit'),
-        ]);
-    }
+    public function mount() {}
     // IMPORT PIPELINE
     public function updatedInputFileBulkStatus()
     {
