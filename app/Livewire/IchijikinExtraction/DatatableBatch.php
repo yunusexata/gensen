@@ -116,7 +116,7 @@ class DatatableBatch extends Component
                     $downloadHtml = '';
                     if ($item->ichijikinExtractionResults->count() >= $item->ichijikinExtractionFiles->count()) {
                         if (
-                            $item->zip_path &&
+                            $item->zip_status === JobStatus::DONE && $item->zip_path &&
                             file_exists(storage_path('app/public/' . $item->zip_path))
                         ) {
 
@@ -136,23 +136,15 @@ class DatatableBatch extends Component
                                 </span>
                             </a>
                         </div>";
-                        } else {
-                            if ($item->zip_status === JobStatus::DONE) {
-                                // If ready, show a direct download button (or link)
-                                $downloadHtml = "<div class='col-auto'>
-                                    <button type='button' class='p-0 text-success hover:bg-success/10 rounded' wire:click=\"downloadGeneratedZip($item->id)\" title='Download ZIP'>
-                                        <span class='material-symbols-outlined text-lg'>download</span>
-                                    </button>
-                                </div>";
-                            } elseif ($item->zip_status === JobStatus::PROCESSING) {
-                                // If processing, show a disabled loading spinner/icon
-                                $downloadHtml = "<div class='col-auto'>
+                        } elseif ($item->zip_status === JobStatus::PROCESSING) {
+                            // If processing, show a disabled loading spinner/icon
+                            $downloadHtml = "<div class='col-auto'>
                                     <span class='material-symbols-outlined text-lg text-warning animate-spin' title='Compiling ZIP...'>sync</span>
                                 </div>";
-                            } else {
-                                // If not started yet (or failed), show the trigger button to start the job
+                        } else {
+                            // If not started yet (or failed), show the trigger button to start the job
 
-                                $downloadHtml = "
+                            $downloadHtml = "
                                 <div class='col-auto'>
                                     <button
                                         type='button'
@@ -164,7 +156,6 @@ class DatatableBatch extends Component
                                         </span>
                                     </button>
                                 </div>";
-                            }
                         }
                     }
 
