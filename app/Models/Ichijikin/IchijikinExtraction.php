@@ -36,9 +36,20 @@ class IchijikinExtraction extends Model
         'file_size',
 
         'checksum',
+
+        'zip_path',
+        'zip_generated_at',
+        'zip_status',
+        'zip_error_message',
+        'zip_started_at',
+        'zip_finished_at',
     ];
 
     protected $guarded = ['id'];
+
+    protected $casts = [
+        'zip_status' => JobStatus::class,
+    ];
 
     protected static function onBoot()
     {

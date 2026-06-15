@@ -4,6 +4,7 @@ namespace App\Livewire\IchijikinExtraction;
 
 use App\Helpers\Alert;
 use App\Helpers\PermissionHelper;
+use App\Jobs\IchijikinExtraction\GenerateIchijikinZipJob;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\IchijikinExtraction\IchijikinExtractionRepository;
 use App\Traits\Livewire\WithDatatable;
@@ -71,6 +72,16 @@ class DatatableBatch extends Component
         $this->resetPage();
     }
 
+    public function generateZip($id)
+    {
+        GenerateIchijikinZipJob::dispatch(IchijikinExtractionRepository::find(Crypt::decrypt($id)))->onQueue('pdf');
+
+        Alert::success(
+            $this,
+            'Berhasil',
+            'Proses kompres sedang berjalan'
+        );
+    }
 
     public function getColumns(): array
     {
@@ -101,9 +112,48 @@ class DatatableBatch extends Component
                             </button>
                         </div>";
                     }
+                    $downloadHtml = '';
+                    if ($item->ichijikinExtractionResults->count() >= $item->ichijikinExtractionFiles->count()) {
+                        if (
+                            $item->zip_path &&
+                            file_exists(storage_path('app/public/' . $item->zip_path))
+                        ) {
+
+                            $downloadUrl = route(
+                                'ichijikin.download',
+                                $id
+                            );
+
+                            $downloadHtml = "
+                        <div class='col-auto'>
+                            <a
+                                href='{$downloadUrl}'
+                                class='p-0 hover:bg-success/10 text-success rounded transition-colors'
+                            >
+                                <span class='material-symbols-outlined text-lg'>
+                                    download
+                                </span>
+                            </a>
+                        </div>";
+                        } else {
+
+                            $downloadHtml = "
+                        <div class='col-auto'>
+                            <button
+                                type='button'
+                                wire:click=\"generateZip('{$id}')\"
+                                class='p-0 hover:bg-warning/10 text-warning rounded transition-colors'
+                            >
+                                <span class='material-symbols-outlined text-lg'>
+                                    folder_zip
+                                </span>
+                            </button>
+                        </div>";
+                        }
+                    }
 
                     $html = "<div class='row p-0 m-0 d-flex justify-content-start flex-nowrap'>
-                        $editHtml $destroyHtml 
+                        $editHtml $destroyHtml $downloadHtml
                     </div>";
 
                     return $html;

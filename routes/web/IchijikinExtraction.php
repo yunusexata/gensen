@@ -11,3 +11,9 @@ Route::middleware(['auth', 'access_permission'])->group(function () {
         Route::get('{id}/detail', 'detail')->name('detail');
     });
 });
+Route::middleware(['auth'])->group(function () {
+    Route::get(
+        '/ichijikin/download/{id}',
+        [IchijikinExtractionController::class, 'download']
+    )->name('ichijikin.download');
+});
