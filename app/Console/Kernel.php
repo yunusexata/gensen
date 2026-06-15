@@ -12,6 +12,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+
+        Schedule::command('horizon:snapshot')
+            ->daily();
+
+        Schedule::command('queue:prune-failed')
+            ->daily();
+
+        Schedule::command('queue:prune-batches')
+            ->daily();
         // Schedule::command('telescope:prune --hours=48')
         //     ->dailyAt('02:00');
         // $schedule->command('inspire')->hourly();
