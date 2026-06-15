@@ -30,7 +30,7 @@ class IchijikinExtractionService
                 'kokumin' => new Schema(type: DataType::INTEGER, description: 'Return 0 if the image is blank/empty.', nullable: true),
                 'nama_lengkap' => new Schema(
                     type: DataType::STRING,
-                    description: 'Extract the full name exactly as shown.'
+                    description: 'Extract the full name verbatim. Pay extreme attention to double or repeating letters (e.g., ZZ, AA). Copy it character-by-character exactly as written, with zero spelling corrections.'
                 ),
                 'nenkin_20' => new Schema(
                     type: DataType::INTEGER,
@@ -122,7 +122,16 @@ class IchijikinExtractionService
         //     $promptParts
         // ]);
 
-        $systemInstruction = "You are a precise data extraction AI. Analyze the provided Ichijikin document and extract the key fields accurately. Return the data ONLY as a valid JSON object matching the requested fields. If a field is missing, return null.";
+        // $systemInstruction = "You are a precise data extraction AI. Analyze the provided Ichijikin document and extract the key fields accurately. Return the data ONLY as a valid JSON object matching the requested fields. If a field is missing, return null.";
+        $systemInstruction = "You are a precise data extraction AI. Analyze the provided Ichijikin document and extract the key fields with absolute literal accuracy.
+
+        CRITICAL TRANSCRIPTION RULES:
+        1. Act as a verbatim transcription tool. Do NOT assume common spellings or attempt to 'autocorrect' names.
+        2. Perform a strict character-by-character copy for all text fields (especially 'nama_lengkap'). Pay extreme attention to consecutive identical characters (such as 'ZZ', 'RR', or 'AA') and ensure no letters are dropped.
+        3. Extract the text exactly as it appears visually on the document.
+
+        OUTPUT FORMAT:
+        Return the data ONLY as a valid JSON object matching the requested fields. If a field is missing, return null. Do not include any markdown wrapper or conversational text outside the JSON.";
 
         // return;
         // 5. Send the SINGLE request to Gemini
