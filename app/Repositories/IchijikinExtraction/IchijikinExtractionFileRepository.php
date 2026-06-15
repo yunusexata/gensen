@@ -4,6 +4,7 @@ namespace App\Repositories\IchijikinExtraction;
 
 use App\Models\Ichijikin\IchijikinExtractionFile;
 use App\Repositories\MasterDataRepository;
+use Illuminate\Support\Facades\DB;
 
 class IchijikinExtractionFileRepository extends MasterDataRepository
 {
