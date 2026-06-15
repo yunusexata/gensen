@@ -14,6 +14,15 @@ class IchijikinExtractionFileRepository extends MasterDataRepository
 
     public static function datatable($objId = null)
     {
+        $latestResults = DB::raw("
+(
+    SELECT DISTINCT ON (ichijikin_extraction_file_id)
+        *
+    FROM ichijikin_extraction_results
+    ORDER BY ichijikin_extraction_file_id, id DESC
+) as results
+");
+
         return IchijikinExtractionFile::query()
             ->select(
                 'ichijikin_extraction_files.id',
@@ -32,13 +41,16 @@ class IchijikinExtractionFileRepository extends MasterDataRepository
                 'results.type',
             )
             ->leftJoin(
-                'ichijikin_extraction_results as results',
+                $latestResults,
                 'results.ichijikin_extraction_file_id',
                 '=',
                 'ichijikin_extraction_files.id'
             )
             ->when($objId, function ($q) use ($objId) {
-                $q->where('ichijikin_extraction_files.ichijikin_extraction_id', '=', $objId);
+                $q->where(
+                    'ichijikin_extraction_files.ichijikin_extraction_id',
+                    $objId
+                );
             });
     }
 }

@@ -66,7 +66,8 @@ class IchijikinExtractionFile extends Model
 
     public function result()
     {
-        return $this->hasOne(IchijikinExtractionResult::class);
+        return $this->hasOne(IchijikinExtractionResult::class)
+            ->latestOfMany('created_at');
     }
 
     public function aiJob()
