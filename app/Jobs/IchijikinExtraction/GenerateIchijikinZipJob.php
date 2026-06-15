@@ -65,8 +65,6 @@ class GenerateIchijikinZipJob implements ShouldQueue
             $this->ichijikin->update([
                 'zip_path' => 'ichijikin/zips_label/' . $this->ichijikin->batch_name . '.zip',
                 'zip_generated_at' => now(),
-            ]);
-            $this->ichijikin->update([
                 'zip_status' => JobStatus::DONE,
                 'zip_finished_at' => now(),
             ]);
