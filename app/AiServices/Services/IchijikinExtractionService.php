@@ -46,7 +46,7 @@ class IchijikinExtractionService
                 ),
                 'no_nenkin' => new Schema(
                     type: DataType::STRING,
-                    description: 'Remove all spaces but PRESERVE any leading zeros. Return as a single continuous string. Example: "0160 618880" -> "0160618880"'
+                    description: 'The raw Nenkin pension number. Extract ONLY the raw digits (0-9). You must REMOVE all spaces, commas, periods, or punctuation. Crucially, do NOT treat this as a number—do NOT add thousands separators (e.g., never output ",8167095738") and do NOT drop leading zeros. Output as a clean, continuous string of digits. Example: "0160 618 880" -> "0160618880", "8167095738" -> "8167095738".'
                 ),
                 'lama_kerja' => new Schema(
                     type: DataType::INTEGER,

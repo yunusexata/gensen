@@ -66,6 +66,9 @@ class PermissionHelper
     // ICHIJIKIN EXTRACTION
     const ACCESS_ICHIJIKIN_EXTRACTION = 'ichijikin_extraction';
 
+    // RESI GENERATOR
+    const ACCESS_RESI_GENERATOR = 'resi_generator';
+
     const ACCESS_ALL = [
         self::ACCESS_DASHBOARD,
         self::ACCESS_USER,
@@ -82,6 +85,9 @@ class PermissionHelper
 
         // Ichijikin Extraction
         self::ACCESS_ICHIJIKIN_EXTRACTION,
+
+        // Resi Generator
+        self::ACCESS_RESI_GENERATOR,
     ];
 
     const TRANSLATE_ACCESS = [
@@ -125,6 +131,9 @@ class PermissionHelper
 
         // ICHIJIKIN EXTRCTION
         self::ACCESS_ICHIJIKIN_EXTRACTION => 'Extrak Ichijikin',
+
+        // RESI GENERATOR
+        self::ACCESS_RESI_GENERATOR => 'Resi Generator',
     ];
 
     const ACCESS_TYPE_ALL = [
@@ -170,6 +179,9 @@ class PermissionHelper
 
         // ICHIJIKIN EXTRACTION
         self::ACCESS_ICHIJIKIN_EXTRACTION => self::TYPE_ALL,
+
+        // RESI GENERATOR
+        self::ACCESS_RESI_GENERATOR => self::TYPE_ALL,
     ];
 
     /*

@@ -177,23 +177,23 @@ class IchijikinService
         // New Reference Dimensions: Width = 1241, Height = 1755
 
         // Crop Kokumin
-        $coord = ['x' => 665, 'y' => 55, 'width' => 186, 'height' => 65];
+        $coord = ['x' => 665, 'y' => 55, 'width' => 200, 'height' => 65];
         $this->cropImage($path, $coord, $folder, 'kokumin');
 
         // Crop Payment
-        $coord = ['x' => 665, 'y' => 406, 'width' => 203, 'height' => 65];
+        $coord = ['x' => 665, 'y' => 406, 'width' => 220, 'height' => 65];
         $this->cropImage($path, $coord, $folder, 'nenkin_100');
 
         // Crop Income
-        $coord = ['x' => 665, 'y' => 483, 'width' => 203, 'height' => 65];
+        $coord = ['x' => 665, 'y' => 483, 'width' => 220, 'height' => 65];
         $this->cropImage($path, $coord, $folder, 'nenkin_20');
 
         // Crop Net
-        $coord = ['x' => 665, 'y' => 581, 'width' => 203, 'height' => 65];
+        $coord = ['x' => 665, 'y' => 581, 'width' => 220, 'height' => 65];
         $this->cropImage($path, $coord, $folder, 'nenkin_80');
 
         // Crop Number
-        $coord = ['x' => 717, 'y' => 1042, 'width' => 195, 'height' => 65];
+        $coord = ['x' => 717, 'y' => 1042, 'width' => 230, 'height' => 65];
         $this->cropImage($path, $coord, $folder, 'no_nenkin');
 
         // Crop Name
