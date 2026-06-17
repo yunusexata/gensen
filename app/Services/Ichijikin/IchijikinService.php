@@ -193,7 +193,7 @@ class IchijikinService
         $this->cropImage($path, $coord, $folder, 'nenkin_80');
 
         // Crop Number
-        $coord = ['x' => 717, 'y' => 1042, 'width' => 230, 'height' => 65];
+        $coord = ['x' => 717, 'y' => 1042, 'width' => 260, 'height' => 65];
         $this->cropImage($path, $coord, $folder, 'no_nenkin');
 
         // Crop Name
