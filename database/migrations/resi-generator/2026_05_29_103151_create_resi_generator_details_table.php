@@ -41,6 +41,15 @@ return new class extends Migration
         $table->string('email_subject')->nullable();
         $table->text('email_body_raw')->nullable();
         $table->json('email_parsed')->nullable();
+        $table->string('generated_image_path')->nullable();
+
+        $table->text('error_message')->nullable();
+
+        $table->timestamp('started_at')->nullable();
+        $table->timestamp('finished_at')->nullable();
+
+        // lifecycle state
+        $table->string('status');
 
         $table->bigInteger("created_by")->unsigned()->nullable();
         $table->bigInteger("updated_by")->unsigned()->nullable();

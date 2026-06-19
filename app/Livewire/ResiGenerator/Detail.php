@@ -1,42 +1,39 @@
 <?php
 
-namespace App\Livewire\IchijikinExtraction;
+namespace App\Livewire\ResiGenerator;
 
+use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
 use App\Helpers\ExportHelper;
-use App\Models\Exata\ExataFormCandidate;
 use App\Models\GensenForm\GensenForm;
-use App\Models\GensenForm\GensenFormLink;
 use App\Models\Ichijikin\IchijikinExtraction;
-use App\Repositories\Exata\ExataFormCandidateRepository;
-use App\Repositories\GensenForm\GensenFormLinkRepository;
-use App\Repositories\IchijikinExtraction\IchijikinExtractionFileRepository;
-use App\Repositories\IchijikinExtraction\IchijikinExtractionRepository;
-use App\Repositories\MasterData\Regency\RegencyRepository;
+use App\Models\ResiGenerator\ResiGenerator;
+use App\Repositories\ResiGenerator\ResiGeneratorRepository;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 class Detail extends Component
 {
-    use WithFileUploads;
 
     public $objId;
 
-    public $file_ichijikin;
-    public $batch_name;
+    #[Validate('required', message: 'Nama Label Email Harus Diisi', onUpdate: false)]
+    public $label;
+    #[Validate('required', message: 'Nama Bank Harus Diisi', onUpdate: false)]
+    public $bank;
 
     public function mount()
     {
         if ($this->objId) {
-            $this->batch_name = IchijikinExtractionRepository::find(Crypt::decrypt($this->objId))->batch_name;
+            $resi_generator = ResiGeneratorRepository::find(Crypt::decrypt($this->objId));
+            $this->label = $resi_generator->label;
+            $this->bank = $resi_generator->bank;
         }
     }
 
@@ -44,81 +41,38 @@ class Detail extends Component
     public function onDialogConfirm()
     {
         if ($this->objId) {
-            $this->redirectRoute('ichijikin_extraction.edit', $this->objId);
+            $this->redirectRoute('resi_generator.edit', $this->objId);
         } else {
-            $this->redirectRoute('ichijikin_extraction.create');
+            $this->redirectRoute('resi_generator.create');
         }
     }
 
     #[On('on-dialog-cancel')]
     public function onDialogCancel()
     {
-        $this->redirectRoute('ichijikin_extraction.index');
-    }
-
-
-    #[On('export')]
-    public function export($type)
-    {
-        $fileName = "Data Ichijikin $this->batch_name " . Carbon::now()->format('Y-m-d H:i:s');
-        return ExportHelper::export(
-            $type,
-            $fileName,
-            IchijikinExtractionFileRepository::datatable(Crypt::decrypt($this->objId))->orderBy('file_stored_name', 'ASC'),
-            'app.ichijikin-extraction.export',
-            [
-                'title' => "Data Ichijikin $this->batch_name",
-                'type' => $type,
-            ],
-            [
-                'size' => 'legal',
-                'orientation' => 'landscape',
-            ]
-        );
+        $this->redirectRoute('resi_generator.index');
     }
 
 
     public function store()
     {
+        $this->validate();
         try {
             DB::transaction(function () {
-                $disk = 'public';
 
-                $extension = $this->file_ichijikin
-                    ->extension();
-
-                $fileName =  'ICHIJIKIN EXTRACTION - ' . $this->batch_name . ' - ' . now()->format('Ymd')  . '.' . $extension;
-                $filePath = Storage::disk($disk)->putFileAs(
-                    'ichijikin/' . $this->batch_name . '/resource',
-                    $this->file_ichijikin,
-                    $fileName,
-                    [
-                        'visibility' => 'private',
-                    ]
-                );
                 // Vehicle
                 $validateData = [
 
-                    'batch_name' => $this->batch_name,
-                    'stored_name' => $fileName,
-                    'description' => null,
-
-                    'disk' => $disk,
-                    'path' => $filePath,
-                    'note' => null,
-
-                    'extension' => $this->file_ichijikin->extension(),
-                    'mime_type' => $this->file_ichijikin->getMimeType(),
-                    'file_size' => $this->file_ichijikin->getSize(),
-
-                    'checksum' => hash_file('sha256', $this->file_ichijikin->getRealPath()),
+                    'label' => $this->label,
+                    'bank' => $this->bank,
+                    'status' => JobStatus::PENDING
                 ];
 
                 if ($this->objId) {
-                    $ichijin_id = Crypt::decrypt($this->objId);
-                    IchijikinExtraction::update($ichijin_id, $validateData);
+                    $resi_id = Crypt::decrypt($this->objId);
+                    ResiGenerator::update($resi_id, $validateData);
                 } else {
-                    $ichijikin = IchijikinExtraction::create($validateData);
+                    $resi = ResiGenerator::create($validateData);
                 }
             });
 
@@ -142,6 +96,6 @@ class Detail extends Component
 
     public function render()
     {
-        return view('livewire.ichijikin-extraction.detail');
+        return view('livewire.resi-generator.detail');
     }
 }

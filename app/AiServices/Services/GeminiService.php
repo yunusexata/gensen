@@ -78,11 +78,13 @@ class GeminiService
                     type: DataType::ARRAY,
                     items: new Schema(
                         type: DataType::OBJECT,
-                        description: "Group the data by BOTH name of the recipient AND transaction year. Do not create multiple entries for the same name/year pair.",
+                        // PERUBAHAN: Menegaskan batasan kemiripan bahkan untuk 1 karakter/huruf
+                        description: "Group the data by BOTH the exact name string of the recipient AND the transaction year. CRITICAL: Be extremely strict. Even a single character, letter, or punctuation difference (e.g., 'FAJAR' vs 'FAJAL', or 'ALWIRAWAN' vs 'ALWIRAWAM') means they are COMPLETELY DIFFERENT entities and MUST be split into separate groups. Do not perform any fuzzy matching, grouping by similarity, or name consolidation.",
                         properties: [
                             'receiver_name' => new Schema(
                                 type: DataType::STRING,
-                                description: "The full name of the recipient (normalized to Romaji if possible)."
+                                // PERUBAHAN: Memaksa pembacaan karakter-demi-karakter tanpa auto-correct
+                                description: "The full name of the recipient. Read the text CHARACTER-BY-CHARACTER exactly as visually printed on the document with zero tolerance for typos, omissions, or assumptions. Capture the raw string as-is. Do not attempt to fix typos, do not normalize spelling variations, and do not merge similar-looking names. If two names differ by even one letter, they must remain distinct."
                             ),
                             'transaction_year' => new Schema(
                                 type: DataType::INTEGER,
@@ -128,7 +130,7 @@ class GeminiService
                     description: "IF confidence_score < 85 should explain the reason, ELSE null."
                 )
             ],
-            required: ['groups', 'confidence_score',]
+            required: ['groups', 'confidence_score']
         );
         $systemInstruction = "You are a strict Financial Auditor and Remittance Extraction Engine." .
 
@@ -217,7 +219,7 @@ class GeminiService
 
         // 3. Total Cost is just the sum of input and output costs
         // (Do NOT add the token counts to the currency amount)
-        $response['total_cost']    = $response['input_cost'] + $response['output_cost'];
+        $response['total_cost']    = $response['input_cost'] + $response['output_cost'] + $response['thinking_cost'];
         logger([
             'RESPONSE FINAL',
             $response

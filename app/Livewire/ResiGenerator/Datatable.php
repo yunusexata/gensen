@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\IchijikinExtraction;
+namespace App\Livewire\ResiGenerator;
 
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
@@ -8,6 +8,7 @@ use App\Helpers\PermissionHelper;
 use App\Jobs\IchijikinExtraction\GenerateIchijikinZipJob;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\IchijikinExtraction\IchijikinExtractionRepository;
+use App\Repositories\ResiGenerator\ResiGeneratorRepository;
 use App\Traits\Livewire\WithDatatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Crypt;
@@ -15,13 +16,12 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 
 
-class DatatableBatch extends Component
+class Datatable extends Component
 {
     use WithDatatable;
 
     public $isCanUpdate;
     public $isCanDelete;
-    public $isCanUpdateBookingTime;
     public $isCanUpdateDetail;
 
     // Delete Dialog
@@ -30,8 +30,8 @@ class DatatableBatch extends Component
     public function onMount()
     {
         $authUser = UserRepository::authenticatedUser();
-        $this->isCanUpdate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_ICHIJIKIN_EXTRACTION, PermissionHelper::TYPE_UPDATE));
-        $this->isCanDelete = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_ICHIJIKIN_EXTRACTION, PermissionHelper::TYPE_DELETE));
+        $this->isCanUpdate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_RESI_GENERATOR, PermissionHelper::TYPE_UPDATE));
+        $this->isCanDelete = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_RESI_GENERATOR, PermissionHelper::TYPE_DELETE));
     }
 
     #[On('on-delete-dialog-confirm')]
@@ -41,7 +41,7 @@ class DatatableBatch extends Component
             return;
         }
 
-        IchijikinExtractionRepository::delete($this->targetDeleteId);
+        ResiGeneratorRepository::delete($this->targetDeleteId);
         Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
     }
 
@@ -96,7 +96,7 @@ class DatatableBatch extends Component
 
                     $id = Crypt::encrypt($item->id);
                     if ($this->isCanUpdate) {
-                        $editUrl = route('ichijikin_extraction.detail', $id);
+                        $editUrl = route('resi_generator.detail', $id);
                         $editHtml = "<div class='col-auto'>
                             <a type='button' href='$editUrl' class='p-0 hover:bg-error/10 text-primary rounded transition-colors'>
                                 <span class='material-symbols-outlined text-lg' data-icon='edit'>edit</span>
@@ -113,81 +113,77 @@ class DatatableBatch extends Component
                             </button>
                         </div>";
                     }
-                    $downloadHtml = '';
-                    if ($item->ichijikinExtractionResults->count() >= $item->ichijikinExtractionFiles->count()) {
-                        if (
-                            $item->zip_status === JobStatus::DONE && $item->zip_path &&
-                            file_exists(storage_path('app/public/' . $item->zip_path))
-                        ) {
+                    // $downloadHtml = '';
+                    // if ($item->ichijikinExtractionResults->count() >= $item->ichijikinExtractionFiles->count()) {
+                    //     if (
+                    //         $item->zip_status === JobStatus::DONE && $item->zip_path &&
+                    //         file_exists(storage_path('app/public/' . $item->zip_path))
+                    //     ) {
 
-                            $downloadUrl = route(
-                                'ichijikin.download',
-                                $id
-                            );
+                    //         $downloadUrl = route(
+                    //             'ichijikin.download',
+                    //             $id
+                    //         );
 
-                            $downloadHtml = "
-                        <div class='col-auto'>
-                            <a
-                                href='{$downloadUrl}'
-                                class='p-0 hover:bg-success/10 text-success rounded transition-colors'
-                            >
-                                <span class='material-symbols-outlined text-lg'>
-                                    download
-                                </span>
-                            </a>
-                        </div>";
-                        } elseif ($item->zip_status === JobStatus::PROCESSING) {
-                            // If processing, show a disabled loading spinner/icon
-                            $downloadHtml = "<div class='col-auto'>
-                                    <span class='material-symbols-outlined text-lg text-warning animate-spin' title='Compiling ZIP...'>sync</span>
-                                </div>";
-                        } else {
-                            // If not started yet (or failed), show the trigger button to start the job
+                    //         $downloadHtml = "
+                    //     <div class='col-auto'>
+                    //         <a
+                    //             href='{$downloadUrl}'
+                    //             class='p-0 hover:bg-success/10 text-success rounded transition-colors'
+                    //         >
+                    //             <span class='material-symbols-outlined text-lg'>
+                    //                 download
+                    //             </span>
+                    //         </a>
+                    //     </div>";
+                    //     } elseif ($item->zip_status === JobStatus::PROCESSING) {
+                    //         // If processing, show a disabled loading spinner/icon
+                    //         $downloadHtml = "<div class='col-auto'>
+                    //                 <span class='material-symbols-outlined text-lg text-warning animate-spin' title='Compiling ZIP...'>sync</span>
+                    //             </div>";
+                    //     } else {
+                    //         // If not started yet (or failed), show the trigger button to start the job
 
-                            $downloadHtml = "
-                                <div class='col-auto'>
-                                    <button
-                                        type='button'
-                                        wire:click=\"generateZip('{$id}')\"
-                                        class='p-0 hover:bg-warning/10 text-warning rounded transition-colors'
-                                    >
-                                        <span class='material-symbols-outlined text-lg'>
-                                            folder_zip
-                                        </span>
-                                    </button>
-                                </div>";
-                        }
-                    }
+                    //         $downloadHtml = "
+                    //             <div class='col-auto'>
+                    //                 <button
+                    //                     type='button'
+                    //                     wire:click=\"generateZip('{$id}')\"
+                    //                     class='p-0 hover:bg-warning/10 text-warning rounded transition-colors'
+                    //                 >
+                    //                     <span class='material-symbols-outlined text-lg'>
+                    //                         folder_zip
+                    //                     </span>
+                    //                 </button>
+                    //             </div>";
+                    //     }
+                    // }
 
                     $html = "<div class='row p-0 m-0 d-flex justify-content-start flex-nowrap'>
-                        $editHtml $destroyHtml $downloadHtml
+                        $editHtml $destroyHtml 
                     </div>";
 
                     return $html;
                 },
             ],
             [
-                'key' => 'batch_name',
-                'name' => 'Nama Batch'
+                'key' => 'label',
+                'name' => 'Label'
             ],
             [
-                'sortable' => false,
-                'searchable' => false,
-                'name' => 'Progress',
-                'render' => function ($item) {
-                    return $item->ichijikinExtractionResults->count() . "/" . $item->ichijikinExtractionFiles->count();
-                }
+                'key' => 'bank',
+                'name' => 'Nama Bank'
             ],
         ];
     }
 
     public function getQuery(): Builder
     {
-        return IchijikinExtractionRepository::datatable();
+        return ResiGeneratorRepository::datatable();
     }
 
     public function getView(): string
     {
-        return 'livewire.ichijikin-extraction.datatable-batch';
+        return 'livewire.resi-generator.datatable';
     }
 }

@@ -48,12 +48,17 @@ return [
         // ],
         [
             // 'id' => 'menu_admin'
-            'text' => 'Extrak Ichijikin',
+            'text' => 'Extraction Dokumen',
             'icon' => 'ki-duotone ki-shield-tick',
             'submenu' => [
                 [
-                    'text' => 'Upload Batch',
+                    'text' => 'Ichijikin Extraction',
                     'route' => 'ichijikin_extraction.index',
+                    'icon_color' => 'success',
+                ],
+                [
+                    'text' => 'Resi Generator',
+                    'route' => 'resi_generator.index',
                     'icon_color' => 'success',
                 ],
             ],

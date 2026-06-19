@@ -358,6 +358,49 @@ class ConvertPdfToImagesJob implements ShouldQueue
                 $this->type === AiJob::class
                 ? $this->model->subject->id
                 : $attachment->gensen_form_id;
+            logger([
+                'stored gensen form attachment',
+                [
+
+                    'gensen_form_id' => $gensen_form_id,
+
+                    'type' => $attachment->type,
+
+                    'original_name' =>
+                    $attachment->original_name,
+
+                    'stored_name' => $storedName,
+
+                    'description' =>
+                    $attachment->description,
+
+                    'disk' => $store_disk,
+
+                    'path' => $targetPath,
+
+                    'checksum' =>
+                    hash_file('sha256', $file),
+
+                    'note' => $attachment->note,
+
+                    'remittance_type' =>
+                    $attachment->remittance_type,
+
+                    'extension' => 'jpg',
+
+                    'mime_type' => 'image/jpeg',
+
+                    'file_size' => $fileSize,
+
+                    'status' =>
+                    GensenAttachmenStatus::STATUS_CONVERTED,
+
+                    'convert_image' => true,
+
+                    // useful for sorting later
+                    // 'page' => $index + 1,
+                ]
+            ]);
 
             GensenFormAttachmentRepository::create([
 

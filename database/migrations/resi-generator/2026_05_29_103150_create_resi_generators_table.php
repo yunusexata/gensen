@@ -34,13 +34,21 @@ return new class extends Migration
         if ($is_history) {
             $table->bigInteger('obj_id')->unsigned();
         } else {
-            $table->index('batch_name', 'resi_generators_batch_name_idx');
-            $table->index('stored_name', 'resi_generators_stored_name_idx');
+            $table->index('label', 'resi_generators_label_idx');
+            $table->index('bank', 'resi_generators_bank_idx');
         }
 
         $table->string('label');
         $table->string('bank');
         $table->integer('amount')->nullable();
+
+        $table->text('error_message')->nullable();
+
+        $table->timestamp('started_at')->nullable();
+        $table->timestamp('finished_at')->nullable();
+
+        // lifecycle state
+        $table->string('status');
 
         $table->string('zip_path')->nullable();
         $table->timestamp('zip_generated_at')->nullable();
