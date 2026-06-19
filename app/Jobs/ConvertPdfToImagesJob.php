@@ -392,8 +392,9 @@ class ConvertPdfToImagesJob implements ShouldQueue
 
                     'file_size' => $fileSize,
 
-                    'status' =>
-                    GensenAttachmenStatus::STATUS_CONVERTED,
+                    'status' => $this->type === AiJob::class
+                        ? GensenAttachmenStatus::STATUS_CONVERTED
+                        : GensenAttachmenStatus::STATUS_STORED,
 
                     'convert_image' => true,
 
