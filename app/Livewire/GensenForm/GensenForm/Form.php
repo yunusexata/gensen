@@ -660,8 +660,8 @@ class Form extends Component
                 $validateData = [
                     // Form J-Expert
                     'nama_lengkap' => trim($this->nama_lengkap),
-                    'tanggal_lahir' => trim($this->tanggal_lahir),
-                    'tanggal_kepulangan' => trim($this->tanggal_kepulangan),
+                    'tanggal_lahir' => $this->tanggal_lahir,
+                    'tanggal_kepulangan' => $this->tanggal_kepulangan,
                     'nama_instagram' => trim($this->nama_instagram),
                     'nama_tiktok' => trim($this->nama_tiktok),
                     'nomor_whatsapp' => trim($this->nomor_whatsapp),
