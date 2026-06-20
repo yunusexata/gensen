@@ -10,8 +10,9 @@ use App\Models\GensenForm\GensenFormLink;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class GensenFormController extends Controller
 {
@@ -48,6 +49,9 @@ class GensenFormController extends Controller
         }
 
         $token = $request->id;
+        if (! Str::isUuid($token)) {
+            abort(404);
+        }
         $form = GensenFormLinkRepository::findBy([
             ['token', $token],
         ]);

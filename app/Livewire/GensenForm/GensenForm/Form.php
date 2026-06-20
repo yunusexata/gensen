@@ -202,6 +202,9 @@ class Form extends Component
             if (!$token) {
                 abort(404, 'Form Tidak Tersedia');
             }
+            if (!Str::isUuid($token)) {
+                abort(404);
+            }
             $form = GensenFormLinkRepository::findBy([
                 ['token', $token],
             ]);
@@ -465,7 +468,9 @@ class Form extends Component
             $this->zairyou_card_back_old = $attachments[GensenAttachmentType::ZAIRYOU_CARD_BACK->value] ?? [];
             $this->rekening_indonesia_old = $attachments[GensenAttachmentType::REKENING_INDONESIA->value] ?? [];
         } else {
-
+            if (!Str::isUuid($this->objId)) {
+                abort(404);
+            }
             $form = GensenFormLinkRepository::findBy([
                 ['token', $this->objId],
             ]);
