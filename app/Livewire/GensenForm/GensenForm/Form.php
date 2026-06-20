@@ -472,7 +472,7 @@ class Form extends Component
             ]);
             if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_SUCCESS) {
                 // abort(403, "Form {$form['name']} sudah Maksimal");
-                dd('here');
+
                 return redirect()
                     ->route('form.max-usage')
                     ->with('error', "Form {$form['name']} sudah maksimal");
@@ -660,24 +660,24 @@ class Form extends Component
                 // Form Candidate
                 $validateData = [
                     // Form J-Expert
-                    'nama_lengkap' => $this->nama_lengkap,
-                    'tanggal_lahir' => $this->tanggal_lahir,
-                    'tanggal_kepulangan' => $this->tanggal_kepulangan,
-                    'nama_instagram' => $this->nama_instagram,
-                    'nama_tiktok' => $this->nama_tiktok,
-                    'nomor_whatsapp' => $this->nomor_whatsapp,
-                    'nomor_whatsapp_darurat' => $this->nomor_whatsapp_darurat,
-                    'email' => $this->email,
-                    'alamat_jepang' => $this->alamat_jepang,
-                    // 'kode_pos_jepang' => $this->kode_pos_jepang,
-                    'kode_pos_jepang' => str_replace('-', '', $this->kode_pos_jepang),
-                    'nama_lpk' => $this->nama_lpk,
+                    'nama_lengkap' => trim($this->nama_lengkap),
+                    'tanggal_lahir' => trim($this->tanggal_lahir),
+                    'tanggal_kepulangan' => trim($this->tanggal_kepulangan),
+                    'nama_instagram' => trim($this->nama_instagram),
+                    'nama_tiktok' => trim($this->nama_tiktok),
+                    'nomor_whatsapp' => trim($this->nomor_whatsapp),
+                    'nomor_whatsapp_darurat' => trim($this->nomor_whatsapp_darurat),
+                    'email' => trim($this->email),
+                    'alamat_jepang' => trim($this->alamat_jepang),
+                    // 'kode_pos_jepang' => trim($this->kode_pos_jepang),
+                    'kode_pos_jepang' => trim(str_replace('-', '', $this->kode_pos_jepang)),
+                    'nama_lpk' => trim($this->nama_lpk),
 
                     // REK PENERIMA
-                    'no_rekening_penerima' => $this->no_rekening_penerima,
-                    'nama_bank_penerima' => $this->nama_bank_penerima,
-                    'nama_penerima' => $this->nama_penerima,
-                    'hubungan_penerima' => $this->hubungan_penerima,
+                    'no_rekening_penerima' => trim($this->no_rekening_penerima),
+                    'nama_bank_penerima' => trim($this->nama_bank_penerima),
+                    'nama_penerima' => trim($this->nama_penerima),
+                    'hubungan_penerima' => trim($this->hubungan_penerima),
 
                     'is_previously_processed' => $this->is_previously_processed === 'sudah',
 
