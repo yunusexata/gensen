@@ -49,5 +49,9 @@ Route::get('/health', function () {
 // Route::get('/phpinfo', fn() => phpinfo());
 
 Route::get('/403', function () {
-    abort(403, session('error', 'Form ini sudah tidak dapat digunakan.'));
+    // abort(403, session('error', 'Form ini sudah tidak dapat digunakan.'));
+    return response()
+        ->view('errors.403', [
+            'message' => session('error', 'Form ini sudah tidak dapat digunakan.')
+        ], 403);
 })->name('form.max-usage');
