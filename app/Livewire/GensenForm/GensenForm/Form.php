@@ -405,9 +405,9 @@ class Form extends Component
                 'tanggal_lahir' => 'required',
             ]);
             $gensenForm = GensenForm::where([
-                'nama_lengkap' => Str::upper($this->nama_lengkap),
-                'email' => Str::upper($this->email),
-                'tanggal_lahir' => $this->tanggal_lahir,
+                'nama_lengkap' => trim(Str::upper($this->nama_lengkap)),
+                'email' => trim(Str::upper($this->email)),
+                'tanggal_lahir' => trim($this->tanggal_lahir),
             ])
                 ->where('status', '!=', GensenForm::STATUS_GENSEN_CAIR)
                 ->first();
