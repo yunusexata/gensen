@@ -412,6 +412,7 @@ class Form extends Component
             ]);
         }
         consoleLog($this, ['gensen_form firstcheck', $gensenForm]);
+        dd($gensenForm);
         if ($gensenForm) {
 
             if ($gensenForm->status !== GensenForm::STATUS_BELUM_LENGKAP) {
