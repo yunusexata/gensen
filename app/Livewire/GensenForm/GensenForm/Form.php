@@ -413,14 +413,7 @@ class Form extends Component
         }
         consoleLog($this, ['gensen_form firstcheck', $gensenForm]);
         if ($gensenForm) {
-            if ($gensenForm->is_submitted) {
-                // if ($this->isAdmin) {
-                //     return redirect()->route('gensen_data.index');
-                // }
-                // if (!$this->isUploadAttachment) {
-                //     return redirect()->route('gensen_form.success', $this->objId);
-                // }
-            }
+
             if ($gensenForm->status !== GensenForm::STATUS_BELUM_LENGKAP) {
                 return redirect()->route(
                     'gensen_form.success_default',
@@ -477,6 +470,7 @@ class Form extends Component
             ]);
             if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_SUCCESS) {
                 // abort(403, "Form {$form['name']} sudah Maksimal");
+                dd('here');
                 return redirect()
                     ->route('form.max-usage')
                     ->with('error', "Form {$form['name']} sudah maksimal");
