@@ -404,18 +404,13 @@ class Form extends Component
                 'email' => 'required|email',
                 'tanggal_lahir' => 'required',
             ]);
-            dd([
-                ['nama_lengkap', Str::upper($this->nama_lengkap)],
-                ['email', Str::upper($this->email)],
-                ['tanggal_lahir', $this->tanggal_lahir],
-                ['status', '!=', GensenForm::STATUS_GENSEN_CAIR],
-            ]);
-            $gensenForm = GensenFormRepository::findBy([
-                ['nama_lengkap', Str::upper($this->nama_lengkap)],
-                ['email', Str::upper($this->email)],
-                ['tanggal_lahir', $this->tanggal_lahir],
-                ['status', '!=', GensenForm::STATUS_GENSEN_CAIR],
-            ]);
+            $gensenForm = GensenForm::where([
+                'nama_lengkap' => Str::upper($this->nama_lengkap),
+                'email' => Str::upper($this->email),
+                'tanggal_lahir' => $this->tanggal_lahir,
+            ])
+                ->where('status', '!=', GensenForm::STATUS_GENSEN_CAIR)
+                ->first();
         }
         consoleLog($this, ['gensen_form firstcheck', $gensenForm]);
         dd($gensenForm);
