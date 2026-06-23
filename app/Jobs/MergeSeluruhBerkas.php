@@ -459,6 +459,7 @@ class MergeSeluruhBerkas implements ShouldQueue
 
         return $normalized;
     }
+
     private function ensurePortraitPdf(string $input): string
     {
         try {
@@ -473,31 +474,31 @@ class MergeSeluruhBerkas implements ShouldQueue
                 return $input;
             }
 
-            // Generate base path tanpa ekstensi .pdf
-            $uuid = Str::uuid();
-            $basePath = storage_path('app/tmp/merge/' . $uuid);
-            $finalFile = $basePath . '.pdf'; // Ini yang dicari oleh sistem Anda
+            $rotated = storage_path('app/tmp/merge/' . Str::uuid() . '.pdf');
 
-            if (!file_exists(dirname($finalFile))) {
-                mkdir(dirname($finalFile), 0777, true);
+            if (!file_exists(dirname($rotated))) {
+                mkdir(dirname($rotated), 0777, true);
             }
 
-            // pdftocairo akan membuat file: $basePath . '.pdf'
-            // Kita gunakan -paper A4 dan orientasi -portrait secara eksplisit
+            /* * KUNCI: 
+         * -sDEVICE=pdfwrite (Standard)
+         * -dNoOutputFonts (Jangan otak-atik font, biar tidak error)
+         * -c "<</Orientation 3>> setpagedevice" (Rotasi 90 derajat searah jarum jam)
+         * -dFIXEDMEDIA (Paksa ukuran kertas tetap)
+         */
             $command = sprintf(
-                'pdftocairo -pdf -paper A4 -portrait %s %s 2>&1',
-                escapeshellarg($input),
-                escapeshellarg($basePath)
+                'gs -sDEVICE=pdfwrite -dNoOutputFonts -dFIXEDMEDIA -o %s -c "<</Orientation 3>> setpagedevice" -f %s 2>&1',
+                escapeshellarg($rotated),
+                escapeshellarg($input)
             );
 
             exec($command, $output, $result);
 
-            // Debug jika pdftocairo gagal (meskipun result 0, output mungkin berisi error)
-            if ($result === 0 && file_exists($finalFile)) {
-                return $finalFile;
+            if ($result === 0 && file_exists($rotated)) {
+                return $rotated;
             }
 
-            logger("pdftocairo gagal atau file tidak ditemukan Update", ['result' => $result, 'output' => $output, 'expected' => $finalFile]);
+            logger("Ghostscript gagal merotasi PDF", ['result' => $result, 'output' => $output]);
         } catch (\Exception $e) {
             logger("Error FPDI: " . $e->getMessage());
         }
