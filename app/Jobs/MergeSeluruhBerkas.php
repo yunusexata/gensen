@@ -234,53 +234,155 @@ class MergeSeluruhBerkas implements ShouldQueue
                 if ($disk === 'supabase') {
 
                     $tmpDir = storage_path('app/tmp/merge');
+
                     if (!is_dir($tmpDir)) {
                         mkdir($tmpDir, 0755, true);
                     }
 
-                    $tmpPath = $tmpDir . '/' . Str::random(40) . '.pdf';
+                    $tmpFileName = Str::random(40);
 
+                    $extension = pathinfo($file->path, PATHINFO_EXTENSION) ?: 'pdf';
+
+                    $tmpPath = $tmpDir . '/' . $tmpFileName . '.' . $extension;
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Download file dari Supabase
+                    |--------------------------------------------------------------------------
+                    */
                     $stream = Storage::disk('supabase')->readStream($file->path);
 
-                    if ($stream === false) {
-                        throw new \Exception("Cannot read Supabase file: {$file->path}");
+                    if (!$stream) {
+                        throw new \Exception(
+                            "Cannot read Supabase file: {$file->path}"
+                        );
                     }
 
-                    $target = fopen($tmpPath, 'w');
+                    try {
 
-                    stream_copy_to_stream($stream, $target);
-                    // ... (code download Anda)
-                    fclose($stream);
-                    fclose($target);
+                        $target = fopen($tmpPath, 'wb');
 
-                    // ⭐ TAMBAHKAN VALIDASI DI SINI
+                        if (!$target) {
+                            throw new \Exception(
+                                "Cannot create local temp file: {$tmpPath}"
+                            );
+                        }
+
+                        stream_copy_to_stream($stream, $target);
+                    } finally {
+
+                        if (is_resource($stream)) {
+                            fclose($stream);
+                        }
+
+                        if (isset($target) && is_resource($target)) {
+                            fclose($target);
+                        }
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Validasi hasil download
+                    |--------------------------------------------------------------------------
+                    */
+                    if (!file_exists($tmpPath)) {
+                        throw new \Exception(
+                            "Temp file not found after download: {$tmpPath}"
+                        );
+                    }
+
+                    if (filesize($tmpPath) <= 0) {
+                        throw new \Exception(
+                            "Downloaded file is empty: {$tmpPath}"
+                        );
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Debug ukuran file
+                    |--------------------------------------------------------------------------
+                    */
+                    logger([
+                        'supabase_file' => $file->path,
+                        'supabase_size' => Storage::disk('supabase')->size($file->path),
+                        'local_size'    => filesize($tmpPath),
+                        'local_path'    => $tmpPath,
+                    ]);
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Deteksi MIME
+                    |--------------------------------------------------------------------------
+                    */
                     $finfo = new \finfo(FILEINFO_MIME_TYPE);
+
                     $realMimeType = $finfo->file($tmpPath);
 
-                    if ($realMimeType !== 'application/pdf') {
-                        // Jika ternyata file adalah gambar (image/jpeg, dll)
-                        if (str_contains($realMimeType, 'image')) {
-                            // OPSIONAL: Convert ke PDF agar bisa di-merge
-                            // Anda butuh 'imagick' di server untuk ini
-                            $pdfPath = $tmpPath . '_converted.pdf';
-                            $img = new \Imagick($tmpPath);
-                            $img->setImageFormat('pdf');
-                            $img->writeImage($pdfPath);
+                    logger([
+                        'mime_type' => $realMimeType,
+                        'file' => $tmpPath,
+                    ]);
 
-                            $fullPath = $pdfPath; // Gunakan file hasil konversi
-                            $tempFiles[] = $pdfPath; // Masukkan ke cleanup list
-                        } else {
-                            // Jika file bukan PDF dan bukan gambar, lempar error atau skip
-                            throw new \Exception("File dari Supabase bukan PDF valid (Tipe: $realMimeType)");
+                    /*
+                        |--------------------------------------------------------------------------
+                        | Jika PDF -> repair pakai qpdf
+                        |--------------------------------------------------------------------------
+                        */
+                    if ($realMimeType === 'application/pdf') {
+
+                        $repairDir = storage_path('app/tmp/repair');
+
+                        if (!is_dir($repairDir)) {
+                            mkdir($repairDir, 0755, true);
                         }
-                    } else {
-                        $fullPath = $tmpPath;
+
+                        $repairedPath = $repairDir . '/' . Str::uuid() . '.pdf';
+
+                        exec(
+                            sprintf(
+                                'qpdf %s %s 2>&1',
+                                escapeshellarg($tmpPath),
+                                escapeshellarg($repairedPath)
+                            ),
+                            $output,
+                            $result
+                        );
+
+                        logger([
+                            'qpdf_result' => $result,
+                            'qpdf_output' => $output,
+                            'repaired_exists' => file_exists($repairedPath),
+                        ]);
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | qpdf berhasil membuat file
+                        |--------------------------------------------------------------------------
+                        */
+                        if (file_exists($repairedPath) && filesize($repairedPath) > 0) {
+
+                            $fullPath = $repairedPath;
+
+                            $tempFiles[] = $repairedPath;
+
+                            logger([
+                                'using_repaired_pdf' => $repairedPath,
+                            ]);
+                        } else {
+
+                            $fullPath = $tmpPath;
+
+                            logger([
+                                'using_original_pdf' => $tmpPath,
+                            ]);
+                        }
                     }
 
-                    // $fullPath = $tmpPath;
-
-                    $tempFiles[] = $tmpPath; // ⭐ mark for cleanup
-
+                    /*
+                    |--------------------------------------------------------------------------
+                    | File bukan PDF dan bukan image
+                    |--------------------------------------------------------------------------
+                    */
                 } else {
 
                     /**
