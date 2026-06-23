@@ -460,7 +460,6 @@ class MergeSeluruhBerkas implements ShouldQueue
 
         return $normalized;
     }
-
     private function ensurePortraitPdf(string $input): string
     {
         try {
