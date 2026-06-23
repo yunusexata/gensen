@@ -27,6 +27,7 @@
     <table class="table-border" style="width: 100%">
         <thead>
             <tr>
+                <th class="text-center">TANGGAL INPUT</th>
                 <th class="text-center">ID CUSTOMER</th>
                 <th class="text-center">TANGGAL LENGKAP</th>
                 <th class="text-center">TANGGAL VERIFIED</th>
@@ -67,6 +68,7 @@
             @if ($collection)
                 @foreach ($collection as $index => $data)
                     <tr>
+                        <td>{{ $data['created_at'] ? Carbon\Carbon::parse($data['created_at'])->format('d-m-Y') : '' }}</td>
                         <td>{{ $data['id_customer'] }}</td>
                         <td>{{ $data['tanggal_lengkap'] ? Carbon\Carbon::parse($data['tanggal_lengkap'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['tanggal_verified'] ? Carbon\Carbon::parse($data['tanggal_verified'])->format('Ymd') : '' }}</td>
