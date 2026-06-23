@@ -462,10 +462,12 @@ class MergeSeluruhBerkas implements ShouldQueue
     {
         // 1. Cek ukuran halaman menggunakan pdfinfo
         $infoCommand = "pdfinfo " . escapeshellarg($input) . " | grep -i 'Page size'";
+        logger($infoCommand);
         $infoOutput = [];
         exec($infoCommand, $infoOutput, $infoResult);
 
         $pageSizeStr = $infoOutput[0] ?? '';
+        logger($pageSizeStr);
 
         // Gunakan regex untuk mengambil angka width dan height
         // Contoh output pdfinfo: "Page size: 842 x 595 pts (A4)"
