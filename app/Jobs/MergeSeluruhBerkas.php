@@ -69,7 +69,7 @@ class MergeSeluruhBerkas implements ShouldQueue
             $files = $this->loadAttachments();
             logger([
                 "MERGE SELURUH BERKAS FILES",
-                $files
+                $files->toArray()
             ]);
 
             if ($files->isEmpty()) {
