@@ -471,6 +471,10 @@ class MergeSeluruhBerkas implements ShouldQueue
             // Jika Landscape, kita rotasi
             $isLandscape = ($size['orientation'] === 'L') || ($size['width'] > $size['height']);
 
+            logger([
+                'ensure portrait',
+                $size
+            ]);
             if (!$isLandscape) {
                 return $input;
             }
