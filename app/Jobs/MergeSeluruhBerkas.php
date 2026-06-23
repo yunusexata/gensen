@@ -280,7 +280,13 @@ class MergeSeluruhBerkas implements ShouldQueue
                  * STEP 3: Normalize PDF
                  * -----------------------------------------------------------------
                  */
-                $normalizedPath = $this->normalizePdf($preparedPdf);
+                if ($file->type !== GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
+                    logger('bukan remitance');
+                    $normalizedPath = $this->normalizePdf($preparedPdf);
+                } else {
+                    logger('remitance');
+                    $normalizedPath = $preparedPdf;
+                }
 
                 /**
                  * -----------------------------------------------------------------
