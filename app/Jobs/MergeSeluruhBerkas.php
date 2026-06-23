@@ -468,6 +468,7 @@ class MergeSeluruhBerkas implements ShouldQueue
             $templateId = $fpdi->importPage(1);
             $size = $fpdi->getTemplateSize($templateId);
 
+            // Jika Landscape, kita rotasi
             $isLandscape = ($size['orientation'] === 'L') || ($size['width'] > $size['height']);
 
             if (!$isLandscape) {
@@ -480,16 +481,16 @@ class MergeSeluruhBerkas implements ShouldQueue
                 mkdir(dirname($rotated), 0777, true);
             }
 
-            /* * KUNCI: 
-         * -sDEVICE=pdfwrite (Standard)
-         * -dNoOutputFonts (Jangan otak-atik font, biar tidak error)
-         * -c "<</Orientation 3>> setpagedevice" (Rotasi 90 derajat searah jarum jam)
-         * -dFIXEDMEDIA (Paksa ukuran kertas tetap)
-         */
+            /**
+             * QPDF --rotate=90
+             * Ini akan memutar seluruh halaman termasuk kontennya.
+             * Karena ini bukan 'rendering', maka tidak mungkin terjadi crop.
+             * Semua objek, teks, dan gambar akan ikut berputar 90 derajat.
+             */
             $command = sprintf(
-                'gs -sDEVICE=pdfwrite -dNoOutputFonts -dFIXEDMEDIA -o %s -c "<</Orientation 3>> setpagedevice" -f %s 2>&1',
-                escapeshellarg($rotated),
-                escapeshellarg($input)
+                'qpdf --rotate=90 %s %s 2>&1',
+                escapeshellarg($input),
+                escapeshellarg($rotated)
             );
 
             exec($command, $output, $result);
@@ -498,7 +499,7 @@ class MergeSeluruhBerkas implements ShouldQueue
                 return $rotated;
             }
 
-            logger("Ghostscript gagal merotasi PDF", ['result' => $result, 'output' => $output]);
+            logger("qpdf gagal merotasi PDF", ['result' => $result, 'output' => $output]);
         } catch (\Exception $e) {
             logger("Error FPDI: " . $e->getMessage());
         }
