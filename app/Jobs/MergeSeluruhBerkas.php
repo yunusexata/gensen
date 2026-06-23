@@ -466,6 +466,7 @@ class MergeSeluruhBerkas implements ShouldQueue
         );
 
         exec($command, $output, $result);
+        logger($command);
 
         if ($result !== 0 || !file_exists($normalized)) {
             throw new Exception("PDF normalization failed");
