@@ -472,43 +472,40 @@ class MergeSeluruhBerkas implements ShouldQueue
             $isLandscape = ($size['orientation'] === 'L') || ($size['width'] > $size['height']);
 
             if (!$isLandscape) {
-                logger('PDF sudah Portrait, skip.');
                 return $input;
             }
 
-            // 2. Rotasi menggunakan Ghostscript yang sudah Anda instal
-            // -dAutoRotatePages=/Left atau /Right akan memaksa halaman berputar
-            // -sDEVICE=pdfwrite mempertahankan kualitas dokumen asli
-            logger('PDF Landscape dideteksi. Merotasi via Ghostscript...');
-
+            // 2. Rotasi menggunakan pdftocairo
+            // Ini adalah cara paling "bersih" untuk merotasi PDF tanpa error .putdeviceprops
             $rotated = storage_path('app/tmp/merge/' . Str::uuid() . '.pdf');
 
             if (!file_exists(dirname($rotated))) {
                 mkdir(dirname($rotated), 0777, true);
             }
 
+            // -paper A4 akan mengunci ukuran, -r 72 (resolusi rendah/cepat), -pdf membuat output PDF
+            // pdftocairo menangani rotasi secara otomatis saat output ke A4
             $command = sprintf(
-                'gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dQUIET ' .
-                    '-dAutoRotatePages=/Left ' . // Memutar halaman landscape ke portrait
-                    '-sOutputFile=%s %s',
-                escapeshellarg($rotated),
-                escapeshellarg($input)
+                'pdftocairo -pdf -paper A4 %s %s',
+                escapeshellarg($input),
+                escapeshellarg(str_replace('.pdf', '', $rotated)) // pdftocairo otomatis menambah .pdf
             );
 
             exec($command, $output, $result);
 
-            if ($result === 0 && file_exists($rotated)) {
-                return $rotated;
+            // pdftocairo menambahkan ekstensi .pdf secara otomatis, jadi kita cek file hasil akhirnya
+            $finalFile = $rotated;
+            if ($result === 0 && file_exists($finalFile)) {
+                return $finalFile;
             }
 
-            logger("Ghostscript gagal merotasi PDF", ['result' => $result, 'output' => $output]);
+            logger("pdftocairo gagal merotasi PDF", ['result' => $result, 'output' => $output]);
         } catch (\Exception $e) {
             logger("Error FPDI: " . $e->getMessage());
         }
 
         return $input;
     }
-
     /*
     |--------------------------------------------------------------------------
     | IMPORT SINGLE PDF
