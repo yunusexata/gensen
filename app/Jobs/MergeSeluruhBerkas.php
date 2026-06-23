@@ -505,19 +505,15 @@ class MergeSeluruhBerkas implements ShouldQueue
 
         // 3. BARU PROSES FPDI jika sudah lolos pengecekan
         try {
-            $fpdi = new Fpdi();
-            $repaired = storage_path('app/tmp/repair/' . Str::uuid() . '.pdf');
+            $repairDir = storage_path('app/tmp/repair');
 
-            exec(
-                sprintf(
-                    'qpdf %s %s 2>&1',
-                    escapeshellarg($input),
-                    escapeshellarg($repaired)
-                ),
-                $output,
-                $result
-            );
+            if (!file_exists($repairDir)) {
+                mkdir($repairDir, 0775, true);
+            }
+
+            $repaired = $repairDir . '/' . Str::uuid() . '.pdf';
             $input = $repaired;
+            $fpdi = new Fpdi();
             // Coba setSourceFile
             $pageCount = $fpdi->setSourceFile($input);
 
