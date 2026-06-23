@@ -482,8 +482,14 @@ class MergeSeluruhBerkas implements ShouldQueue
                 }
 
                 // 2. Gunakan cpdf untuk merotasi halaman (Sangat aman untuk font remittance Anda)
+                // $command = sprintf(
+                //     'cpdf -rotate 90 %s -o %s',
+                //     escapeshellarg($input),
+                //     escapeshellarg($rotated)
+                // );
+                // Tambahkan 2>&1 di akhir perintah untuk menangkap pesan error OS
                 $command = sprintf(
-                    'cpdf -rotate 90 %s -o %s',
+                    'cpdf -rotate 90 %s -o %s 2>&1',
                     escapeshellarg($input),
                     escapeshellarg($rotated)
                 );
@@ -493,7 +499,12 @@ class MergeSeluruhBerkas implements ShouldQueue
                 if ($result === 0 && file_exists($rotated)) {
                     return $rotated;
                 } else {
-                    \Log::error("Gagal melakukan rotasi PDF dengan cpdf");
+                    // LOG DETAIL ERROR UNTUK DEBUGGING
+                    \Log::error("Gagal melakukan rotasi PDF dengan cpdf", [
+                        'exit_code' => $result,
+                        'command'   => $command,
+                        'os_output' => $output // Ini akan menunjukkan pesan error teks dari Ubuntu
+                    ]);
                 }
             } else {
                 logger(['PDF sudah PORTRAIT via FPDI-TCPDF, skip rotasi.', $input]);
