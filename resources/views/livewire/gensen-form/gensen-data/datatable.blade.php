@@ -41,15 +41,17 @@
                 @endforeach
             </select>
         </div>
-        <div class="col-auto mb-0">
-            <label>PIC</label><br>
-            <select wire:model.live="filter_pic" class="form-select">
-                <option value="">-- SEMUA --</option>
-                @foreach (App\Models\GensenForm\GensenForm::PIC_CHOICE as $key => $name)
-                    <option value="{{$name}}">{{$name}}</option>
-                @endforeach
-            </select>
-        </div>
+        @if(auth()->user()->hasRole(\App\Models\User::ROLE_SUPER_ADMIN))
+            <div class="col-auto mb-0">
+                <label>PIC</label><br>
+                <select wire:model.live="filter_pic" class="form-select">
+                    <option value="">-- SEMUA --</option>
+                    @foreach (App\Models\GensenForm\GensenForm::PIC_CHOICE as $key => $name)
+                        <option value="{{$name}}">{{$name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
         <div class="col-auto mb-0 row">
             <div class="col-auto mb-0"  style="scale: 1;">
                 <label class="form-label mb-0">Tanggal Input Dari</label>
