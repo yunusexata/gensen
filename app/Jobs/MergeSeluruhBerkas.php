@@ -285,7 +285,8 @@ class MergeSeluruhBerkas implements ShouldQueue
                     $normalizedPath = $this->normalizePdf($preparedPdf);
                 } else {
                     logger('remitance');
-                    $normalizedPath = $preparedPdf;
+                    // $normalizedPath = $preparedPdf;
+                    $normalizedPath = $this->ensurePortraitPdf($preparedPdf);
                 }
 
                 /**
@@ -414,31 +415,6 @@ class MergeSeluruhBerkas implements ShouldQueue
 
         return $tempPdf;
     }
-    private function mergePdfFilesOld($files, string $outputPath): void
-    {
-        $pdf = new Fpdi();
-
-        $pdf->SetMargins(0, 0, 0);
-        $pdf->SetAutoPageBreak(false);
-        $pdf->setPrintHeader(false);
-        $pdf->setPrintFooter(false);
-        // logger('files all');
-        // logger($files);
-        foreach ($files as $file) {
-
-            $fullPath = Storage::disk($file->disk)
-                ->path($file->path);
-
-            if (!file_exists($fullPath)) {
-                logger("Missing file: {$fullPath}");
-                continue;
-            }
-
-            $this->importPdf($pdf, $fullPath);
-        }
-
-        $pdf->Output($outputPath, 'F');
-    }
     private function normalizePdf(string $input): string
     {
         $normalized = storage_path(
@@ -481,6 +457,54 @@ class MergeSeluruhBerkas implements ShouldQueue
         logger(['normalized', $normalized]);
 
         return $normalized;
+    }
+    private function ensurePortraitPdf(string $input): string
+    {
+        // 1. Cek ukuran halaman menggunakan pdfinfo
+        $infoCommand = "pdfinfo " . escapeshellarg($input) . " | grep -i 'Page size'";
+        $infoOutput = [];
+        exec($infoCommand, $infoOutput, $infoResult);
+
+        $pageSizeStr = $infoOutput[0] ?? '';
+
+        // Gunakan regex untuk mengambil angka width dan height
+        // Contoh output pdfinfo: "Page size: 842 x 595 pts (A4)"
+        if (preg_match('/Page size:\s+([0-9.]+)\s+x\s+([0-9.]+)/i', $pageSizeStr, $matches)) {
+            $width = (float) $matches[1];
+            $height = (float) $matches[2];
+
+            // Jika Width > Height, berarti file ini LANDSCAPE. Kita harus rotasi ke Portrait.
+            if ($width > $height) {
+                logger(['PDF is landscape, rotating to portrait...', $input]);
+
+                $rotated = storage_path(
+                    'app/temp/' . \Str::uuid() . '.pdf'
+                );
+
+                if (!file_exists(dirname($rotated))) {
+                    mkdir(dirname($rotated), 0777, true);
+                }
+
+                // 2. Gunakan cpdf untuk merotasi halaman 90 derajat secara visual
+                // Ini hanya mengubah metadata rotasi (seperti iframe rotation), font dijamin aman 100%
+                $command = sprintf(
+                    'cpdf -rotate 90 %s -o %s',
+                    escapeshellarg($input),
+                    escapeshellarg($rotated)
+                );
+
+                exec($command, $output, $result);
+
+                if ($result === 0 && file_exists($rotated)) {
+                    return $rotated;
+                } else {
+                    \Log::error("Gagal melakukan rotasi PDF dengan cpdf");
+                }
+            }
+        }
+
+        // Jika sudah portrait atau gagal mendeteksi, kembalikan file asli tanpa perubahan
+        return $input;
     }
 
     /*
@@ -611,5 +635,31 @@ class MergeSeluruhBerkas implements ShouldQueue
         );
 
         $pdf->Output($output, 'F');
+    }
+
+    private function mergePdfFilesOld($files, string $outputPath): void
+    {
+        $pdf = new Fpdi();
+
+        $pdf->SetMargins(0, 0, 0);
+        $pdf->SetAutoPageBreak(false);
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+        // logger('files all');
+        // logger($files);
+        foreach ($files as $file) {
+
+            $fullPath = Storage::disk($file->disk)
+                ->path($file->path);
+
+            if (!file_exists($fullPath)) {
+                logger("Missing file: {$fullPath}");
+                continue;
+            }
+
+            $this->importPdf($pdf, $fullPath);
+        }
+
+        $pdf->Output($outputPath, 'F');
     }
 }
