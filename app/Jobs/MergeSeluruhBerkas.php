@@ -25,6 +25,7 @@ use setasign\Fpdi\Tcpdf\Fpdi;
 use Throwable;
 
 
+
 class MergeSeluruhBerkas implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -458,37 +459,29 @@ class MergeSeluruhBerkas implements ShouldQueue
 
         return $normalized;
     }
+
     private function ensurePortraitPdf(string $input): string
     {
-        // 1. Cek ukuran halaman menggunakan pdfinfo
-        $infoCommand = "pdfinfo " . escapeshellarg($input) . " | grep -i 'Page size'";
-        logger($infoCommand);
-        $infoOutput = [];
-        exec($infoCommand, $infoOutput, $infoResult);
+        try {
+            // 1. Inisialisasi FPDI versi TCPDF yang sudah Anda miliki
+            $fpdi = new Fpdi();
+            $fpdi->setSourceFile($input);
+            $templateId = $fpdi->importPage(1);
+            $size = $fpdi->getTemplateSize($templateId);
 
-        $pageSizeStr = $infoOutput[0] ?? '';
-        logger($pageSizeStr);
+            // Cek apakah orientasinya 'L' (Landscape) atau Width lebih besar dari Height
+            $isLandscape = ($size['orientation'] === 'L') || ($size['width'] > $size['height']);
 
-        // Gunakan regex untuk mengambil angka width dan height
-        // Contoh output pdfinfo: "Page size: 842 x 595 pts (A4)"
-        if (preg_match('/Page size:\s+([0-9.]+)\s+x\s+([0-9.]+)/i', $pageSizeStr, $matches)) {
-            $width = (float) $matches[1];
-            $height = (float) $matches[2];
+            if ($isLandscape) {
+                logger(['PDF dideteksi LANDSCAPE via FPDI-TCPDF. Merotasi...', $input]);
 
-            // Jika Width > Height, berarti file ini LANDSCAPE. Kita harus rotasi ke Portrait.
-            if ($width > $height) {
-                logger(['PDF is landscape, rotating to portrait...', $input]);
-
-                $rotated = storage_path(
-                    'app/temp/' . \Str::uuid() . '.pdf'
-                );
+                $rotated = storage_path('app/temp/' . Str::uuid() . '.pdf');
 
                 if (!file_exists(dirname($rotated))) {
                     mkdir(dirname($rotated), 0777, true);
                 }
 
-                // 2. Gunakan cpdf untuk merotasi halaman 90 derajat secara visual
-                // Ini hanya mengubah metadata rotasi (seperti iframe rotation), font dijamin aman 100%
+                // 2. Gunakan cpdf untuk merotasi halaman (Sangat aman untuk font remittance Anda)
                 $command = sprintf(
                     'cpdf -rotate 90 %s -o %s',
                     escapeshellarg($input),
@@ -502,10 +495,15 @@ class MergeSeluruhBerkas implements ShouldQueue
                 } else {
                     \Log::error("Gagal melakukan rotasi PDF dengan cpdf");
                 }
+            } else {
+                logger(['PDF sudah PORTRAIT via FPDI-TCPDF, skip rotasi.', $input]);
             }
+        } catch (\Exception $e) {
+            // Jika file corrupt atau tidak bisa dibaca FPDI, log error agar bisa di-trace
+            \Log::error("FPDI-TCPDF Error saat cek orientasi: " . $e->getMessage());
         }
 
-        // Jika sudah portrait atau gagal mendeteksi, kembalikan file asli tanpa perubahan
+        // Jika dari awal sudah portrait atau terjadi error, kembalikan file asli tanpa perubahan
         return $input;
     }
 
