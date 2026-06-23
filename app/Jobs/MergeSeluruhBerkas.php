@@ -463,58 +463,49 @@ class MergeSeluruhBerkas implements ShouldQueue
     private function ensurePortraitPdf(string $input): string
     {
         try {
-            // 1. Inisialisasi FPDI versi TCPDF yang sudah Anda miliki
+            // 1. Deteksi Orientasi menggunakan FPDI
             $fpdi = new Fpdi();
             $fpdi->setSourceFile($input);
             $templateId = $fpdi->importPage(1);
             $size = $fpdi->getTemplateSize($templateId);
 
-            // Cek apakah orientasinya 'L' (Landscape) atau Width lebih besar dari Height
             $isLandscape = ($size['orientation'] === 'L') || ($size['width'] > $size['height']);
 
-            if ($isLandscape) {
-                logger(['PDF dideteksi LANDSCAPE via FPDI-TCPDF. Merotasi...', $input]);
-
-                $rotated = storage_path('app/temp/' . Str::uuid() . '.pdf');
-
-                if (!file_exists(dirname($rotated))) {
-                    mkdir(dirname($rotated), 0777, true);
-                }
-
-                // 2. Gunakan cpdf untuk merotasi halaman (Sangat aman untuk font remittance Anda)
-                // $command = sprintf(
-                //     'cpdf -rotate 90 %s -o %s',
-                //     escapeshellarg($input),
-                //     escapeshellarg($rotated)
-                // );
-                // Tambahkan 2>&1 di akhir perintah untuk menangkap pesan error OS
-                $command = sprintf(
-                    'cpdf -rotate 90 %s -o %s 2>&1',
-                    escapeshellarg($input),
-                    escapeshellarg($rotated)
-                );
-
-                exec($command, $output, $result);
-
-                if ($result === 0 && file_exists($rotated)) {
-                    return $rotated;
-                } else {
-                    // LOG DETAIL ERROR UNTUK DEBUGGING
-                    \Log::error("Gagal melakukan rotasi PDF dengan cpdf", [
-                        'exit_code' => $result,
-                        'command'   => $command,
-                        'os_output' => $output // Ini akan menunjukkan pesan error teks dari Ubuntu
-                    ]);
-                }
-            } else {
-                logger(['PDF sudah PORTRAIT via FPDI-TCPDF, skip rotasi.', $input]);
+            if (!$isLandscape) {
+                logger('PDF sudah Portrait, skip.');
+                return $input;
             }
+
+            // 2. Rotasi menggunakan Ghostscript yang sudah Anda instal
+            // -dAutoRotatePages=/Left atau /Right akan memaksa halaman berputar
+            // -sDEVICE=pdfwrite mempertahankan kualitas dokumen asli
+            logger('PDF Landscape dideteksi. Merotasi via Ghostscript...');
+
+            $rotated = storage_path('app/tmp/merge/' . Str::uuid() . '.pdf');
+
+            if (!file_exists(dirname($rotated))) {
+                mkdir(dirname($rotated), 0777, true);
+            }
+
+            $command = sprintf(
+                'gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dQUIET ' .
+                    '-dAutoRotatePages=/Left ' . // Memutar halaman landscape ke portrait
+                    '-sOutputFile=%s %s',
+                escapeshellarg($rotated),
+                escapeshellarg($input)
+            );
+
+            exec($command, $output, $result);
+
+            if ($result === 0 && file_exists($rotated)) {
+                return $rotated;
+            }
+
+            logger("Ghostscript gagal merotasi PDF", ['result' => $result, 'output' => $output]);
         } catch (\Exception $e) {
-            // Jika file corrupt atau tidak bisa dibaca FPDI, log error agar bisa di-trace
-            \Log::error("FPDI-TCPDF Error saat cek orientasi: " . $e->getMessage());
+            logger("Error FPDI: " . $e->getMessage());
         }
 
-        // Jika dari awal sudah portrait atau terjadi error, kembalikan file asli tanpa perubahan
         return $input;
     }
 
