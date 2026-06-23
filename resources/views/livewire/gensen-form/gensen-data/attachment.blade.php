@@ -336,7 +336,7 @@
                                                     x-ref="input"
                                                     wire:model="rekap_pengiriman_uang.{{$rekap_index}}.file"
                                                     {{-- @change="handleFiles" --}}
-                                                    accept="application/pdf"
+                                                    accept="application/pdf, image/jpeg, image/png"
                                                     class="position-absolute invisible" />
                                                 <select class="form-select w-75 m-auto text-center" wire:model.live="rekap_pengiriman_uang.{{$rekap_index}}.remittance_type">
                                                     @foreach (App\Enums\Gensen\GensenAttachmentRemittanceType::options() as $value => $label)
@@ -354,10 +354,10 @@
                                                         @php
                                                             $ext = $item->getClientOriginalExtension();
                                                             if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                                            $url = $item->temporaryUrl();
+                                                                $url = $item->temporaryUrl();
                                                             
-                                                        // $url = route('preview.temp.image', $item->getFileName());
-                                                        $filename = $item->getClientOriginalName();
+                                                                // $url = route('preview.temp.image', $item->getFileName());
+                                                                $filename = $item->getClientOriginalName();
                                                             }elseif(in_array($ext, ['pdf'])){
                                                             $url = route('preview.temp.pdf', $item->getFileName());
                                                             $filename = $item->getClientOriginalName();
@@ -366,7 +366,11 @@
                                                             }
                                                             $ext = strtolower($ext);
                                                         @endphp
-                                                        @if(in_array($ext, ['pdf']))
+                                                        @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
+                                                            {{-- IMAGE --}}
+                                                            <img wire:key="rekap_pengiriman_new_{{ $file_index }}" class="w-full h-full object-cover" data-alt="Professional scan of a tax document on a clean desk background with soft office lighting" 
+                                                            src="{{$url}}"/>
+                                                        @elseif(in_array($ext, ['pdf']))
                                                             <a wire:key="rekap_pengiriman_new_{{ $filename }}"
                                                                 class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb"
                                                             >
