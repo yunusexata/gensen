@@ -512,25 +512,70 @@ class MergeSeluruhBerkas implements ShouldQueue
     | IMPORT SINGLE PDF
     |--------------------------------------------------------------------------
     */
+    // private function importPdf(Fpdi $pdf, string $path): void
+    // {
+    //     $pageCount = $pdf->setSourceFile(
+    //         StreamReader::createByFile($path)
+    //     );
+
+    //     for ($page = 1; $page <= $pageCount; $page++) {
+
+    //         $tpl = $pdf->importPage($page);
+
+    //         $size = $pdf->getTemplateSize($tpl);
+
+    //         // ⭐ keep original size
+    //         $pdf->AddPage(
+    //             $size['orientation'],
+    //             [$size['width'], $size['height']]
+    //         );
+
+    //         $pdf->useTemplate($tpl);
+    //     }
+    // }
     private function importPdf(Fpdi $pdf, string $path): void
     {
-        $pageCount = $pdf->setSourceFile(
-            StreamReader::createByFile($path)
-        );
+        // 1. Validasi File (Mencegah Error "xref table")
+        if (!file_exists($path) || mime_content_type($path) !== 'application/pdf') {
+            throw new \Exception("File tidak valid atau bukan PDF: " . $path);
+        }
+
+        try {
+            $pageCount = $pdf->setSourceFile(StreamReader::createByFile($path));
+        } catch (\Exception $e) {
+            throw new \Exception("Gagal membaca file PDF: " . $e->getMessage());
+        }
 
         for ($page = 1; $page <= $pageCount; $page++) {
-
             $tpl = $pdf->importPage($page);
-
             $size = $pdf->getTemplateSize($tpl);
 
-            // ⭐ keep original size
-            $pdf->AddPage(
-                $size['orientation'],
-                [$size['width'], $size['height']]
-            );
+            // 2. Logika Pemaksaan Portrait
+            // Kita selalu menggunakan 'P' (Portrait) dan menukar dimensi jika perlu
+            $width = $size['width'];
+            $height = $size['height'];
 
-            $pdf->useTemplate($tpl);
+            // Jika aslinya Landscape, tukar ukuran agar menjadi Portrait
+            if ($size['width'] > $size['height']) {
+                $w = $height;
+                $h = $width;
+            } else {
+                $w = $width;
+                $h = $height;
+            }
+
+            // 3. Tambahkan halaman dengan ukuran Portrait yang konsisten
+            $pdf->AddPage('P', [$w, $h]);
+
+            // 4. Jika asli Landscape, putar kontennya agar tidak rebahan
+            if ($size['width'] > $size['height']) {
+                // Pindahkan titik rotasi dan putar 90 derajat
+                $pdf->Rotate(90, 0, 0);
+                $pdf->useTemplate($tpl, 0, -$w, $w);
+                $pdf->Rotate(0); // Reset rotasi
+            } else {
+                $pdf->useTemplate($tpl, 0, 0, $w, $h);
+            }
         }
     }
     private function importPdfOld(Fpdi $pdf, string $path): void
