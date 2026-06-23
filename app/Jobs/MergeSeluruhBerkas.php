@@ -324,11 +324,37 @@ class MergeSeluruhBerkas implements ShouldQueue
                     ]);
 
                     /*
-                        |--------------------------------------------------------------------------
-                        | Jika PDF -> repair pakai qpdf
-                        |--------------------------------------------------------------------------
-                        */
-                    if ($realMimeType === 'application/pdf') {
+                    |--------------------------------------------------------------------------
+                    | Jika image -> convert ke PDF
+                    |--------------------------------------------------------------------------
+                    */
+                    if (str_contains($realMimeType, 'image')) {
+
+                        $pdfPath = $tmpDir . '/' . Str::uuid() . '.pdf';
+
+                        $img = new \Imagick($tmpPath);
+
+                        $img->setImageFormat('pdf');
+
+                        $img->writeImage($pdfPath);
+
+                        $img->clear();
+                        $img->destroy();
+
+                        $fullPath = $pdfPath;
+
+                        $tempFiles[] = $pdfPath;
+
+                        logger([
+                            'converted_image_to_pdf' => $pdfPath,
+                        ]);
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Jika PDF -> repair pakai qpdf
+                    |--------------------------------------------------------------------------
+                    */ elseif ($realMimeType === 'application/pdf') {
 
                         $repairDir = storage_path('app/tmp/repair');
 
@@ -382,9 +408,14 @@ class MergeSeluruhBerkas implements ShouldQueue
                     |--------------------------------------------------------------------------
                     | File bukan PDF dan bukan image
                     |--------------------------------------------------------------------------
-                    */
-                } else {
+                    */ else {
 
+                        /**
+                         * Local disk (fast path)
+                         */
+                        $fullPath = Storage::disk($disk)->path($file->path);
+                    }
+                } else {
                     /**
                      * Local disk (fast path)
                      */
