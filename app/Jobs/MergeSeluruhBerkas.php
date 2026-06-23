@@ -451,6 +451,10 @@ class MergeSeluruhBerkas implements ShouldQueue
         $command = sprintf(
             'gs -sDEVICE=pdfwrite ' .
                 '-dCompatibilityLevel=1.4 ' .
+                '-dPDFSETTINGS=/prepress ' . // ADDED: High quality preset that forces font embedding
+                '-dEmbedAllFonts=true ' .    // ADDED: Embed all fonts
+                '-dSubsetFonts=true ' .      // ADDED: Keep file size reasonable by subsetting
+                '-dPreserveCopyPage=true ' . // ADDED: Prevents dropping certain page contents
                 '-dNOPAUSE -dQUIET -dBATCH ' .
                 '-dPDFFitPage ' .
                 '-dFIXEDMEDIA ' .
