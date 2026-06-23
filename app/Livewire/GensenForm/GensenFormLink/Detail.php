@@ -49,9 +49,9 @@ class Detail extends Component
     public function onDialogConfirm()
     {
         if ($this->objId) {
-            $this->redirectRoute('gensen_form_link.edit', $this->objId);
+            $this->redirectRoute('gensen_form_link.index');
         } else {
-            $this->redirectRoute('gensen_form_link.create');
+            $this->redirectRoute('gensen_form_link.index');
         }
     }
 
