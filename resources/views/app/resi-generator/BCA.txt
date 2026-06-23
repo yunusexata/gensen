@@ -1,0 +1,2892 @@
+[2026-06-22 08:25:42] local.DEBUG: array (
+  'message' => 'Berhasil mengambil 26 data email.',
+  'data' => 
+  array (
+    0 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 697-5705033
+ No. Referensi     : 000019112411134006
+ Nominal           : Rp 10.853.808
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 697-5705033
+ Reference No.     : 000019112411134006
+ Amount            : Rp 10.853.808
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 697-5705033
+ No. Referensi     : 000019112411134006
+ Nominal           : Rp 10.853.808
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 697-5705033
+ Reference No.     : 000019112411134006
+ Amount            : Rp 10.853.808
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 10.853.808',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '697-5705033',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    1 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 535-7065181
+ No. Referensi     : 000019112411134016
+ Nominal           : Rp 1.177.917
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 535-7065181
+ Reference No.     : 000019112411134016
+ Amount            : Rp 1.177.917
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 535-7065181
+ No. Referensi     : 000019112411134016
+ Nominal           : Rp 1.177.917
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 535-7065181
+ Reference No.     : 000019112411134016
+ Amount            : Rp 1.177.917
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 1.177.917',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '535-7065181',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    2 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 137-0796391
+ No. Referensi     : 000019112411134007
+ Nominal           : Rp 17.108.548
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 137-0796391
+ Reference No.     : 000019112411134007
+ Amount            : Rp 17.108.548
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 137-0796391
+ No. Referensi     : 000019112411134007
+ Nominal           : Rp 17.108.548
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 137-0796391
+ Reference No.     : 000019112411134007
+ Amount            : Rp 17.108.548
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 17.108.548',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '137-0796391',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    3 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 047-1093580
+ No. Referensi     : 000019112411134014
+ Nominal           : Rp 8.650.637
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 047-1093580
+ Reference No.     : 000019112411134014
+ Amount            : Rp 8.650.637
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 047-1093580
+ No. Referensi     : 000019112411134014
+ Nominal           : Rp 8.650.637
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 047-1093580
+ Reference No.     : 000019112411134014
+ Amount            : Rp 8.650.637
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 8.650.637',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '047-1093580',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    4 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 445-1864054
+ No. Referensi     : 000019112411134005
+ Nominal           : Rp 8.482.160
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 445-1864054
+ Reference No.     : 000019112411134005
+ Amount            : Rp 8.482.160
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 445-1864054
+ No. Referensi     : 000019112411134005
+ Nominal           : Rp 8.482.160
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 445-1864054
+ Reference No.     : 000019112411134005
+ Amount            : Rp 8.482.160
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 8.482.160',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '445-1864054',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    5 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 426-0673071
+ No. Referensi     : 000019112411134025
+ Nominal           : Rp 3.254.202
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 426-0673071
+ Reference No.     : 000019112411134025
+ Amount            : Rp 3.254.202
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 426-0673071
+ No. Referensi     : 000019112411134025
+ Nominal           : Rp 3.254.202
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 426-0673071
+ Reference No.     : 000019112411134025
+ Amount            : Rp 3.254.202
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:40',
+        'amount_raw' => 'Rp 3.254.202',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '426-0673071',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    6 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 791-5600182
+ No. Referensi     : 000019112411134013
+ Nominal           : Rp 8.713.473
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 791-5600182
+ Reference No.     : 000019112411134013
+ Amount            : Rp 8.713.473
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 791-5600182
+ No. Referensi     : 000019112411134013
+ Nominal           : Rp 8.713.473
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 791-5600182
+ Reference No.     : 000019112411134013
+ Amount            : Rp 8.713.473
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 8.713.473',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '791-5600182',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    7 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 182-0655385
+ No. Referensi     : 000019112411134022
+ Nominal           : Rp 9.570.830
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 182-0655385
+ Reference No.     : 000019112411134022
+ Amount            : Rp 9.570.830
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 182-0655385
+ No. Referensi     : 000019112411134022
+ Nominal           : Rp 9.570.830
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 182-0655385
+ Reference No.     : 000019112411134022
+ Amount            : Rp 9.570.830
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:40',
+        'amount_raw' => 'Rp 9.570.830',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '182-0655385',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    8 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 790-1756701
+ No. Referensi     : 000019112411134009
+ Nominal           : Rp 9.427.972
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 790-1756701
+ Reference No.     : 000019112411134009
+ Amount            : Rp 9.427.972
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 790-1756701
+ No. Referensi     : 000019112411134009
+ Nominal           : Rp 9.427.972
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 790-1756701
+ Reference No.     : 000019112411134009
+ Amount            : Rp 9.427.972
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 9.427.972',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '790-1756701',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    9 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 583-5085861
+ No. Referensi     : 000019112411134015
+ Nominal           : Rp 8.693.863
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 583-5085861
+ Reference No.     : 000019112411134015
+ Amount            : Rp 8.693.863
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 583-5085861
+ No. Referensi     : 000019112411134015
+ Nominal           : Rp 8.693.863
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 583-5085861
+ Reference No.     : 000019112411134015
+ Amount            : Rp 8.693.863
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 8.693.863',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '583-5085861',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    10 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 648-5669322
+ No. Referensi     : 000019112411134008
+ Nominal           : Rp 1.304.591
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 648-5669322
+ Reference No.     : 000019112411134008
+ Amount            : Rp 1.304.591
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 648-5669322
+ No. Referensi     : 000019112411134008
+ Nominal           : Rp 1.304.591
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 648-5669322
+ Reference No.     : 000019112411134008
+ Amount            : Rp 1.304.591
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 1.304.591',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '648-5669322',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    11 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 234-0554143
+ No. Referensi     : 000019112411134002
+ Nominal           : Rp 9.343.207
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 234-0554143
+ Reference No.     : 000019112411134002
+ Amount            : Rp 9.343.207
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 234-0554143
+ No. Referensi     : 000019112411134002
+ Nominal           : Rp 9.343.207
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 234-0554143
+ Reference No.     : 000019112411134002
+ Amount            : Rp 9.343.207
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 9.343.207',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '234-0554143',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    12 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 690-0952455
+ No. Referensi     : 000019112411134011
+ Nominal           : Rp 10.257.706
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 690-0952455
+ Reference No.     : 000019112411134011
+ Amount            : Rp 10.257.706
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 690-0952455
+ No. Referensi     : 000019112411134011
+ Nominal           : Rp 10.257.706
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 690-0952455
+ Reference No.     : 000019112411134011
+ Amount            : Rp 10.257.706
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 10.257.706',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '690-0952455',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    13 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 803-4008300
+ No. Referensi     : 000019112411134024
+ Nominal           : Rp 9.570.830
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 803-4008300
+ Reference No.     : 000019112411134024
+ Amount            : Rp 9.570.830
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 803-4008300
+ No. Referensi     : 000019112411134024
+ Nominal           : Rp 9.570.830
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 803-4008300
+ Reference No.     : 000019112411134024
+ Amount            : Rp 9.570.830
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:40',
+        'amount_raw' => 'Rp 9.570.830',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '803-4008300',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    14 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 015-3872594
+ No. Referensi     : 000019112411134004
+ Nominal           : Rp 4.864.646
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 015-3872594
+ Reference No.     : 000019112411134004
+ Amount            : Rp 4.864.646
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 015-3872594
+ No. Referensi     : 000019112411134004
+ Nominal           : Rp 4.864.646
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 015-3872594
+ Reference No.     : 000019112411134004
+ Amount            : Rp 4.864.646
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 4.864.646',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '015-3872594',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    15 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 098-0963250
+ No. Referensi     : 000019112411134010
+ Nominal           : Rp 7.762.178
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 098-0963250
+ Reference No.     : 000019112411134010
+ Amount            : Rp 7.762.178
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 098-0963250
+ No. Referensi     : 000019112411134010
+ Nominal           : Rp 7.762.178
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 098-0963250
+ Reference No.     : 000019112411134010
+ Amount            : Rp 7.762.178
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 7.762.178',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '098-0963250',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    16 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 139-4429395
+ No. Referensi     : 000019112411134012
+ Nominal           : Rp 8.386.113
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 139-4429395
+ Reference No.     : 000019112411134012
+ Amount            : Rp 8.386.113
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 139-4429395
+ No. Referensi     : 000019112411134012
+ Nominal           : Rp 8.386.113
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 139-4429395
+ Reference No.     : 000019112411134012
+ Amount            : Rp 8.386.113
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 8.386.113',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '139-4429395',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    17 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 422-0658088
+ No. Referensi     : 000019112411134003
+ Nominal           : Rp 25.176.262
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 422-0658088
+ Reference No.     : 000019112411134003
+ Amount            : Rp 25.176.262
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 422-0658088
+ No. Referensi     : 000019112411134003
+ Nominal           : Rp 25.176.262
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 422-0658088
+ Reference No.     : 000019112411134003
+ Amount            : Rp 25.176.262
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 25.176.262',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '422-0658088',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    18 => 
+    array (
+      'date' => '2026-04-14T11:23:41.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 898-0640559
+ No. Referensi     : 000019112411134017
+ Nominal           : Rp 10.006.783
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 898-0640559
+ Reference No.     : 000019112411134017
+ Amount            : Rp 10.006.783
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 898-0640559
+ No. Referensi     : 000019112411134017
+ Nominal           : Rp 10.006.783
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 898-0640559
+ Reference No.     : 000019112411134017
+ Amount            : Rp 10.006.783
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 10.006.783',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '898-0640559',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    19 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 302-1271495
+ No. Referensi     : 000019112411134023
+ Nominal           : Rp 10.543.211
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 302-1271495
+ Reference No.     : 000019112411134023
+ Amount            : Rp 10.543.211
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 302-1271495
+ No. Referensi     : 000019112411134023
+ Nominal           : Rp 10.543.211
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 302-1271495
+ Reference No.     : 000019112411134023
+ Amount            : Rp 10.543.211
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:40',
+        'amount_raw' => 'Rp 10.543.211',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '302-1271495',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    20 => 
+    array (
+      'date' => '2026-04-14T11:23:41.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 252-1410185
+ No. Referensi     : 000019112411134018
+ Nominal           : Rp 10.802.780
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 252-1410185
+ Reference No.     : 000019112411134018
+ Amount            : Rp 10.802.780
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 252-1410185
+ No. Referensi     : 000019112411134018
+ Nominal           : Rp 10.802.780
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 252-1410185
+ Reference No.     : 000019112411134018
+ Amount            : Rp 10.802.780
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:40',
+        'amount_raw' => 'Rp 10.802.780',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '252-1410185',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    21 => 
+    array (
+      'date' => '2026-04-14T11:23:40.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 113-2055101
+ No. Referensi     : 000019112411134001
+ Nominal           : Rp 4.501.966
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 113-2055101
+ Reference No.     : 000019112411134001
+ Amount            : Rp 4.501.966
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 113-2055101
+ No. Referensi     : 000019112411134001
+ Nominal           : Rp 4.501.966
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 113-2055101
+ Reference No.     : 000019112411134001
+ Amount            : Rp 4.501.966
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 4.501.966',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '113-2055101',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    22 => 
+    array (
+      'date' => '2026-04-14T11:23:41.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 354-0511518
+ No. Referensi     : 000019112411134021
+ Nominal           : Rp 8.918.324
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 354-0511518
+ Reference No.     : 000019112411134021
+ Amount            : Rp 8.918.324
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:39
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 354-0511518
+ No. Referensi     : 000019112411134021
+ Nominal           : Rp 8.918.324
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:39
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 354-0511518
+ Reference No.     : 000019112411134021
+ Amount            : Rp 8.918.324
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:39',
+        'amount_raw' => 'Rp 8.918.324',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '354-0511518',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    23 => 
+    array (
+      'date' => '2026-04-14T11:23:41.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 155-0371681
+ No. Referensi     : 000019112411134019
+ Nominal           : Rp 8.693.863
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 155-0371681
+ Reference No.     : 000019112411134019
+ Amount            : Rp 8.693.863
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 155-0371681
+ No. Referensi     : 000019112411134019
+ Nominal           : Rp 8.693.863
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 155-0371681
+ Reference No.     : 000019112411134019
+ Amount            : Rp 8.693.863
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:40',
+        'amount_raw' => 'Rp 8.693.863',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '155-0371681',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    24 => 
+    array (
+      'date' => '2026-04-14T11:23:41.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 320-0814222
+ No. Referensi     : 000019112411134026
+ Nominal           : Rp 3.254.202
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 320-0814222
+ Reference No.     : 000019112411134026
+ Amount            : Rp 3.254.202
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 320-0814222
+ No. Referensi     : 000019112411134026
+ Nominal           : Rp 3.254.202
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 320-0814222
+ Reference No.     : 000019112411134026
+ Amount            : Rp 3.254.202
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:40',
+        'amount_raw' => 'Rp 3.254.202',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '320-0814222',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+    25 => 
+    array (
+      'date' => '2026-04-14T11:23:41.000Z',
+      'subjek' => 'Notification',
+      'dari' => 'klikbcabisnis@klikbca.com',
+      'body' => ' EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 669-0908920
+ No. Referensi     : 000019112411134020
+ Nominal           : Rp 22.319.215
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 669-0908920
+ Reference No.     : 000019112411134020
+ Amount            : Rp 22.319.215
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+',
+      'html_body' => '<pre> EXATA SOLUSI KREATIF PT telah melakukan transfer dana dengan informasi sebagai berikut:
+ Tanggal           : 14/04/2026
+ Jam               : 18:23:40
+ Pengirim          : EXATA SOLUSI KREATIF PT
+ Rekening Tujuan   : 669-0908920
+ No. Referensi     : 000019112411134020
+ Nominal           : Rp 22.319.215
+ Berita            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Catatan:
+ Biaya Termasuk PPN (Bila ada)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ Semoga informasi ini bermanfaat bagi Anda.
+ Terima kasih.
+
+ Hormat Kami,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+ EXATA SOLUSI KREATIF PT has done fund transfer with the following information:
+ Date              : 14/04/2026
+ Time              : 18:23:40
+ Sender            : EXATA SOLUSI KREATIF PT
+ To Account        : 669-0908920
+ Reference No.     : 000019112411134020
+ Amount            : Rp 22.319.215
+ Remark            : NENKIN 20 PERSEN
+                     3-3 C14042026
+
+ Notes:
+ Charges VAT Inclusive (If any)
+ PT. BANK CENTRAL ASIA TBK.
+ MENARA BCA - JAKARTA PUSAT
+ NPWP  001.308.449.6-091.000 
+
+ We hope this information is useful for you.
+ Thank you.
+
+ Best regards,
+
+ PT. Bank Central Asia,Tbk
+ ------------------------------------------------------------------------------
+</pre> ',
+      'is_unread' => false,
+      'parsed' => 
+      array (
+        'reference_number_bca' => NULL,
+        'transaction_date' => '14/04/2026 18:23:40',
+        'amount_raw' => 'Rp 22.319.215',
+        'sender' => 'EXATA SOLUSI KREATIF PT',
+        'recipient_account' => '669-0908920',
+        'remark' => 'NENKIN 20 PERSEN',
+        'status' => 'Berhasil',
+      ),
+    ),
+  ),
+)  

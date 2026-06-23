@@ -66,6 +66,10 @@ class MergeSeluruhBerkas implements ShouldQueue
             */
 
             $files = $this->loadAttachments();
+            logger([
+                "MERGE SELURUH BERKAS FILES",
+                $files
+            ]);
 
             if ($files->isEmpty()) {
                 throw new Exception('No PDF files to merge.');

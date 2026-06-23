@@ -1,0 +1,80 @@
+<!-- /receipts/mandiri_v2.html — Beneficiary Transaction Notification -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Mandiri Beneficiary Transaction Notification</title>
+    <style>
+        body { margin: 0; padding: 30px; font-family: Arial, Helvetica, sans-serif; background-color: #ffffff; color: #000000; }
+        .container { max-width: 950px; margin: 0 auto; }
+        .header-table { width: 100%; border-bottom: 2px solid #ccc; padding-bottom: 15px; margin-bottom: 20px; }
+        .gmail-logo { height: 32px; vertical-align: middle; }
+        .group-name { font-size: 15px; font-weight: bold; text-align: right; }
+        .subject { font-size: 20px; font-weight: bold; margin: 20px 0; border-bottom: 1px solid #ccc; padding-bottom: 20px; }
+        .meta-table { width: 100%; font-size: 13px; margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 20px; }
+        .content { font-size: 14px; line-height: 1.5; }
+        .greeting { margin-bottom: 20px; }
+        .intro-text { margin-bottom: 25px; }
+        
+        .data-table { width: 100%; margin-bottom: 25px; font-size: 14px; }
+        .data-table td { padding: 3px 0; vertical-align: top; }
+        .data-table .label { width: 200px; }
+        .data-table .colon { width: 15px; text-align: center; }
+
+        .note { font-size: 13px; margin-bottom: 20px; }
+        .footer-block { margin-top: 25px; font-size: 14px; line-height: 1.6; }
+        a { color: #1a0dab; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Gmail Header -->
+        <table class="header-table" cellpadding="0" cellspacing="0">
+            <tr>
+                <td width="50%"><img src="/gmail_logo.svg" alt="M Gmail" class="gmail-logo"></td>
+                <td width="50%" class="group-name">Transaksi Exata Group &lt;transaksi.exatagroup@gmail.com&gt;</td>
+            </tr>
+        </table>
+
+        <!-- Subject -->
+        <div class="subject">Inhouse Transfer - Beneficiary Transaction Notification Multiple Transfer by File Upload</div>
+
+        <!-- Meta Info -->
+        <table class="meta-table" cellpadding="0" cellspacing="0">
+            <tr>
+                <td>
+                    <strong>mcm@bankmandiri.co.id</strong> &lt;mcm@bankmandiri.co.id&gt;<br>
+                    Kepada: transaksi.exatagroup@gmail.com
+                </td>
+                <td align="right" valign="top">{{tanggal_email}} pukul {{jam_email}}</td>
+            </tr>
+        </table>
+
+        <!-- Body Content -->
+        <div class="content">
+            <div class="greeting">Bapak/ Ibu Nasabah yang Terhormat,</div>
+            
+            <div class="intro-text">Kami ingin menginformasikan kepada Anda bahwa transaksi Anda untuk Inhouse Transfer - Mandiri Cash Management telah berhasil.</div>
+
+            <table class="data-table" cellpadding="0" cellspacing="0">
+                <tr><td class="label">Tanggal / Jam</td><td class="colon">:</td><td>{{tanggal_jam}}</td></tr>
+                <tr><td class="label">Nama Pengirim</td><td class="colon">:</td><td>{{nama_pengirim}}</td></tr>
+                <tr><td class="label">Beneficiary Bank Name</td><td class="colon">:</td><td>{{beneficiary_bank}}</td></tr>
+                <tr><td class="label">Beneficiary Account No</td><td class="colon">:</td><td>{{beneficiary_account}}</td></tr>
+                <tr><td class="label">Jumlah</td><td class="colon">:</td><td>{{jumlah}}</td></tr>
+                <tr><td class="label">Berita</td><td class="colon">:</td><td>{{berita}}</td></tr>
+                <tr><td class="label">Berita Tambahan</td><td class="colon">:</td><td>{{berita_tambahan}}</td></tr>
+            </table>
+
+            <div class="note">*berita tambahan = extended payment detail</div>
+
+            <div class="footer-block">
+                Jika Anda memiliki pertanyaan mengenai transaksi di atas, silahkan hubungi kami lewat email di <a href="mailto:mcm.operation@bankmandiri.co.id">mcm.operation@bankmandiri.co.id</a> atau melalui call center di 14000.<br><br>
+                Terima kasih telah menggunakan Mandiri Cash Management.<br><br>
+                Hormat kami,<br><br>
+                Bank Mandiri
+            </div>
+        </div>
+    </div>
+</body>
+</html>

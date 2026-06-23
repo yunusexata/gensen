@@ -1,4 +1,60 @@
+<!-- /receipts/bri.html -->
 <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>BRI Transaction Notification</title>
+    <style>
+        body { margin: 0; padding: 30px; font-family: Arial, Helvetica, sans-serif; background-color: #ffffff; color: #000000; }
+        .container { max-width: 950px; margin: 0 auto; }
+        .header-table { width: 100%; border-bottom: 2px solid #ccc; padding-bottom: 15px; margin-bottom: 20px; }
+        .gmail-logo { height: 32px; vertical-align: middle; }
+        .group-name { font-size: 15px; font-weight: bold; text-align: right; }
+        .subject { font-size: 22px; font-weight: bold; margin: 20px 0; border-bottom: 1px solid #ccc; padding-bottom: 20px; }
+        .meta-table { width: 100%; font-size: 14px; margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 20px; }
+        
+        .bri-card { border: 1px solid #e0e0e0; border-radius: 12px; padding: 50px 40px; max-width: 700px; margin: 30px auto; box-sizing: border-box; }
+        .card-title { text-align: center; font-size: 16px; font-weight: bold; color: #999; margin-bottom: 50px; }
+        .greeting { font-weight: bold; font-size: 15px; margin-bottom: 20px; }
+        .intro-text { font-size: 14px; line-height: 1.6; margin-bottom: 30px; }
+        
+        .data-table { width: 100%; font-size: 14px; margin-bottom: 30px; border-bottom: 1px solid #ccc; padding-bottom: 30px; }
+        .data-table td { padding: 6px 0; vertical-align: top; }
+        .data-table .label { width: 130px; }
+        .data-table .colon { width: 15px; }
+
+        .footer-note { font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+        .footer-note a { color: #1a0dab; text-decoration: none; }
+        .auto-note { font-size: 14px; margin-bottom: 60px; }
+        .closing { font-size: 14px; color: #999; line-height: 1.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Gmail Header -->
+        <table class="header-table" cellpadding="0" cellspacing="0">
+            <tr>
+                <td width="50%"><img src="../gmail_logo.svg" alt="M Gmail" class="gmail-logo"></td>
+                <td width="50%" class="group-name">Transaksi Exata Group &lt;transaksi.exatagroup@gmail.com&gt;</td>
+            </tr>
+        </table>
+
+        <!-- Subject -->
+        <div class="subject">Bukti Transaksi Transfer Massal</div>
+
+        <!-- Meta Info -->
+        <table class="meta-table" cellpadding="0" cellspacing="0">
+            <tr>
+                <td>
+                    <strong>BankBRI@bri.co.id</strong> &lt;BankBRI@bri.co.id&gt;<br>
+                    Kepada: transaksi.exatagroup@gmail.com
+                </td>
+                <td align="right" valign="top">{{tanggal_email}} pukul {{jam_email}}</td>
+            </tr>
+        </table>
+
+        <!-- Box Container -->
+        <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -124,4 +180,7 @@
 </div>
 </body>
 
+</html>
+    </div>
+</body>
 </html>

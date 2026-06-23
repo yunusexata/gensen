@@ -11,39 +11,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Muhammadyunus1072\TrackHistory\HasTrackHistory;
 
-class ResiGeneratorDetail extends Model
+class ResiGeneratorEmail extends Model
 {
     // php artisan reverb:start
     use HasFactory, SoftDeletes, HasTrackHistory;
 
     protected $fillable = [
-
         'resi_generator_id',
+        'email_received_at',
+        'email_subject',
+        'email_sender',
+        'email_body_raw',
+        'email_html',
+        'email_parsed',
 
-        'nama',
-        'nominal',
-        'rekening',
-        'bank',
-
-        'is_matched',
-        'resi_generator_email_id',
-        'generated_image_disk',
-        'generated_image_path',
-        'confidence_score',
-
-        'error_message',
-
-        'started_at',
-        'finished_at',
-
-        // lifecycle state
-        'status',
+        'formatted_nominal',
+        'formatted_rekening_tujuan',
+        'formatted_penerima',
     ];
 
     protected $guarded = ['id'];
 
     protected $casts = [
-        'status' => JobStatus::class,
+        'email_parsed' => 'array',
     ];
 
     protected static function onBoot()
@@ -57,11 +47,6 @@ class ResiGeneratorDetail extends Model
     public function resi()
     {
         return $this->belongsTo(resiGenerator::class, 'resi_generator_id', 'id');
-    }
-
-    public function email()
-    {
-        return $this->belongsTo(ResiGeneratorEmail::class, 'resi_generator_email_id', 'id');
     }
 
     public function creator()

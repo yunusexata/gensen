@@ -34,14 +34,21 @@ return new class extends Migration
             $table->bigInteger('obj_id')->unsigned();
         } else {
             $table->index('resi_generator_id', 'resi_gd_resi_generator_id_idx');
+            $table->index('resi_generator_email_id', 'resi_gd_resi_generator_email_id_idx');
         }
 
         $table->unsignedBigInteger('resi_generator_id');
-        $table->dateTime('email_received_at')->nullable();
-        $table->string('email_subject')->nullable();
-        $table->text('email_body_raw')->nullable();
-        $table->json('email_parsed')->nullable();
+
+        $table->string('nama');
+        $table->integer('nominal');
+        $table->string('rekening');
+        $table->string('bank');
+
+        $table->boolean('is_matched')->default(false);
+        $table->unsignedBigInteger('resi_generator_email_id')->nullable();
+        $table->string('generated_image_disk')->nullable();
         $table->string('generated_image_path')->nullable();
+        $table->integer('confidence_score')->nullable();
 
         $table->text('error_message')->nullable();
 

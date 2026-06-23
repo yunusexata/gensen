@@ -174,6 +174,20 @@ class Datatable extends Component
                 'key' => 'bank',
                 'name' => 'Nama Bank'
             ],
+            [
+                'sortable' => false,
+                'searchable' => false,
+                'name' => 'Progress',
+                'render' => function ($item) {
+                    $total = $item->details->count();
+
+                    $matched = $item->details
+                        ->where('is_matched', true)
+                        ->count();
+
+                    return "{$matched}/{$total}";
+                }
+            ],
         ];
     }
 

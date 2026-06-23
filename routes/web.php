@@ -1,8 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Models\Gensen\GensenExportImportHistory;
+use App\Repositories\ResiGenerator\ResiGeneratorDetailRepository;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Browsershot\Browsershot;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +51,53 @@ Route::get('/health', function () {
 });
 // Route::get('/phpinfo', fn() => phpinfo());
 
+Route::get('/test-shot', function () {
+    ini_set('memory_limit', '1024M');
+    set_time_limit(300); // 5 minutes
+
+    $resiDetail = ResiGeneratorDetailRepository::find(720);
+    $htmlContent = view('app.resi-generator.template.version1', ['data' => $resiDetail])->render();
+
+    $cleanExcelRekening = preg_replace('/\D/', '', $resiDetail->rekening);
+    $fileName =
+        str_pad($resiDetail->id, 4, "0", STR_PAD_LEFT)
+        . '_' .
+        strtoupper($resiDetail->resi->bank)
+        . '_' .
+        strtoupper($resiDetail->nama)
+        . '_' .
+        $cleanExcelRekening . '.jpg';
+
+    $relativePath = 'resi-generated/' .
+        $resiDetail->resi->label .
+        '/' .
+        $fileName;
+
+    $storageDisk = 'private';
+    $disk = Storage::disk($storageDisk);
+
+    // pastikan folder ada
+    $disk->makeDirectory(
+        'resi-generated/' . $resiDetail->resi->label
+    );
+
+    // absolute path untuk Browsershot
+    $absolutePath = $disk->path($relativePath);
+
+    Browsershot::html($htmlContent)
+        ->noSandbox()
+        ->addChromiumArguments([
+            '--disable-dev-shm-usage',
+            '--disable-setuid-sandbox',
+            '--no-first-run',
+            '--headless',
+        ])
+        ->setScreenshotType('jpeg', 90)
+        ->windowSize(600, 800)
+        ->fullPage()
+        ->save($absolutePath);
+    return 'OK';
+});
 Route::get('/403', function () {
     // abort(403, session('error', 'Form ini sudah tidak dapat digunakan.'));
     return response()

@@ -5,6 +5,7 @@ namespace App\Jobs\ResiGenerator;
 use App\Enums\Gensen\JobStatus;
 use App\Models\ResiGenerator\ResiGenerator;
 use App\Services\ResiGenerator\ResiGeneratorService;
+use App\Services\ResiGenerator\ResiMatcherService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -12,14 +13,13 @@ use Illuminate\Queue\SerializesModels;
 use Spatie\Browsershot\Browsershot;
 use Throwable;
 
-class GetEmailJob implements ShouldQueue
+class ResiMatchingJob implements ShouldQueue
 {
     use Dispatchable, Queueable, SerializesModels;
 
     /**
      * Tentukan agar Job ini otomatis membaca ulang model dari DB saat dieksekusi
      */
-
     public function __construct(
         public ResiGenerator $resi
     ) {}
@@ -28,23 +28,22 @@ class GetEmailJob implements ShouldQueue
     {
         try {
             $this->resi->update([
-                'get_email_status' => JobStatus::PROCESSING,
-                'get_email_started_at' => now(),
+                'matching_status' => JobStatus::PROCESSING,
+                'matching_started_at' => now(),
             ]);
-            $total = app(ResiGeneratorService::class)
-                ->getEmail($this->resi);
+            app(ResiMatcherService::class)
+                ->matchByConfidenceScore($this->resi);
 
             $this->resi->update([
-                'amount' => $total,
-                'get_email_status' => JobStatus::DONE,
-                'get_email_finished_at' => now(),
+                'matching_status' => JobStatus::DONE,
+                'matching_finished_at' => now(),
             ]);
         } catch (\Throwable $e) {
 
             $this->resi->update([
-                'get_email_status' => JobStatus::FAILED,
-                'get_email_finished_at' => now(),
-                'get_email_error_message' => $e->getMessage(),
+                'matching_status' => JobStatus::FAILED,
+                'matching_finished_at' => now(),
+                'matching_error_message' => $e->getMessage(),
             ]);
 
             throw $e;
@@ -54,9 +53,9 @@ class GetEmailJob implements ShouldQueue
     public function failed(?Throwable $e): void
     {
         $this->resi->update([
-            'get_email_status' => JobStatus::FAILED,
-            'get_email_finished_at' => now(),
-            'get_email_error_message' => $e->getMessage(),
+            'matching_status' => JobStatus::FAILED,
+            'matching_finished_at' => now(),
+            'matching_error_message' => $e->getMessage(),
         ]);
     }
 }

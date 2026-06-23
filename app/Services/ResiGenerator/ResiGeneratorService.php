@@ -2,7 +2,10 @@
 
 namespace App\Services\ResiGenerator;
 
+use App\Enums\Gensen\JobStatus;
 use App\Models\ResiGenerator\ResiGenerator;
+use App\Repositories\ResiGenerator\ResiGeneratorDetailRepository;
+use App\Repositories\ResiGenerator\ResiGeneratorEmailRepository;
 use Illuminate\Support\Facades\Http;
 
 class ResiGeneratorService
@@ -53,43 +56,76 @@ class ResiGeneratorService
                             break;
                     }
                 }
+                $logoPath = 'data:image/png;base64,' .
+                    base64_encode(
+                        file_get_contents(
+                            public_path('images/resi-generator/logo_bni.png')
+                        )
+                    );
+                foreach ($allEmails as $email) {
+                    if ($model->bank == ResiGenerator::BANK_BNI) {
+                        $updatedHtmlBody = str_ireplace(
+                            'src="CID:bnilogo.png"',
+                            'src="' . $logoPath . '"',
+                            $email['html_body']
+                        );
+                    } else {
+                        $updatedHtmlBody = $email['html_body'];
+                    }
+                    $validateData = [
+                        'resi_generator_id' => $model->id,
+                        'email_received_at' => $email['date'],
+                        'email_subject' => $email['subjek'],
+                        'email_sender' => $email['dari'],
+                        'email_body_raw' => $email['body'],
+                        'email_html' => $updatedHtmlBody,
+                        'email_parsed' => $email['parsed'],
+
+                        'formatted_nominal' => $email['parsed']['formatted_nominal'],
+                        'formatted_rekening_tujuan' => $email['parsed']['formatted_rekening_tujuan'],
+                        'formatted_penerima' => $email['parsed']['formatted_penerima'],
+                    ];
+
+                    ResiGeneratorEmailRepository::create($validateData);
+                }
 
                 logger(
                     [
                         'message' => 'Berhasil mengambil ' . $result['total'] . ' data email.',
-                        'data' => $allEmails,
                     ]
                 );
-
-                // return response()->json([
-                //     'message' => 'Berhasil mengambil ' . $result['total'] . ' data email.',
-                //     'parsed' => $parsed,
-                //     'data' => $allEmails,
-                // ]);
+                return  $result['total'];
             }
-
-            // return response()->json(['error' => $result['message']], 400);
+        } else {
+            return 0;
         }
-
-        // return response()->json(['error' => 'Gagal terhubung ke Google Apps Script'], 500);
     }
 
     public function BCAparse(string $body): array
     {
-        // Ekstrak Tanggal dan Jam secara terpisah karena format BCA memisahkannya
-        $tanggal = $this->matchPattern('/Tanggal\s*:\s*([^\n\r]+)/i', $body);
-        $jam     = $this->matchPattern('/Jam\s*:\s*([^\n\r]+)/i', $body);
 
         $data = [
-            'reference_number_bca'  => $this->matchPattern('/No Referensi\s*:\s*(\d+)/i', $body),
-            // Gabungkan Tanggal dan Jam agar format standar seperti BNI
-            'transaction_date'      => trim($tanggal . ' ' . $jam),
-            'amount_raw'            => $this->matchPattern('/Nominal\s*:\s*([^\n\r]+)/i', $body),
-            'sender'                => $this->matchPattern('/Pengirim\s*:\s*([^\n\r]+)/i', $body),
-            'recipient_account'     => $this->matchPattern('/Rekening Tujuan\s*:\s*([^\n\r]+)/i', $body),
-            'remark'                => $this->matchPattern('/Berita\s*:\s*([^\n\r]+)/i', $body),
-            // BCA tidak memiliki baris "Status", tapi template email ini menandakan transfer sukses
-            'status'                => 'Berhasil',
+            'no_referensi'  => $this->matchPattern('/No Referensi\s*:\s*(\d+)/i', $body),
+            // Ekstrak Tanggal dan Jam secara terpisah karena format BCA memisahkannya
+            'tanggal' => $this->matchPattern('/Tanggal\s*:\s*([^\n\r]+)/i', $body),
+            'jam'     => $this->matchPattern('/Jam\s*:\s*([^\n\r]+)/i', $body),
+            'nominal' => $this->matchPattern('/Nominal\s*:\s*([^\n\r]+)/i', $body) ?? '',
+            'pengirim'       => $this->matchPattern('/Pengirim\s*:\s*([^\n\r]+)/i', $body),
+            'rekening_tujuan' => $this->matchPattern('/Rekening Tujuan\s*:\s*([^\n\r]+)/i', $body) ?? '',
+            'berita'          => $this->matchPattern('/Berita\s*:\s*([\s\S]+?)(?=\n\s*Catatan\s*:|$)/i', $body),
+
+            // FORMATTED DATA
+            'formatted_nominal' => (int) str_replace(
+                ['Rp', '.', ' '],
+                '',
+                $this->matchPattern('/Nominal\s*:\s*([^\n\r]+)/i', $body) ?? ''
+            ),
+            'formatted_rekening_tujuan' => preg_replace(
+                '/\D/',
+                '',
+                $this->matchPattern('/Rekening Tujuan\s*:\s*([^\n\r]+)/i', $body) ?? ''
+            ),
+            'formatted_penerima' => '',
         ];
 
         // Bersihkan whitespace berlebih (trim) untuk setiap data yang didapat
@@ -104,45 +140,59 @@ class ResiGeneratorService
     public function BNIparse(string $body): array
     {
         $data = [
-            'reference_number_bni' => $this->matchPattern('/No\. Referensi BNI\s*:\s*(\d+)/i', $body),
-            'reference_number_customer' => $this->matchPattern('/No\. Referensi Customer\s*:\s*(\d+)/i', $body),
-            'transaction_date' => $this->matchPattern('/Tanggal\/Jam\s*:\s*([^\n]+)/i', $body),
-            'amount_raw' => $this->matchPattern('/Nominal\s*:\s*([^\n]+)/i', $body),
-            'sender' => $this->matchPattern('/Pengirim\s*:\s*([^\n]+)/i', $body),
-            'recipient_raw' => $this->matchPattern('/Penerima\s*:\s*([^\n]+)/i', $body),
-            'remark' => $this->matchPattern('/Keterangan Pembayaran\s*:\s*([^\n]+)/i', $body),
+            'no_referensi_bni' => $this->matchPattern('/No\. Referensi BNI\s*:\s*(\d+)/i', $body),
+            'no_referensi_customer' => $this->matchPattern('/No\. Referensi Customer\s*:\s*(\d+)/i', $body),
+            'tanggal_jam' => $this->matchPattern('/Tanggal\/Jam\s*:\s*([^\n]+)/i', $body),
+            'nominal' => $this->matchPattern('/Nominal\s*:\s*([^\n]+)/i', $body),
+            'pengirim' => $this->matchPattern('/Pengirim\s*:\s*([^\n]+)/i', $body),
+            'penerima' => $this->matchPattern('/Penerima\s*:\s*([^\n]+)/i', $body),
+            'keterangan_pembayaran' => $this->matchPattern('/Keterangan Pembayaran\s*:\s*([^\n]+)/i', $body),
             'status' => $this->matchPattern('/Status\s*:\s*([^\n]+)/i', $body),
-        ];
 
-        // Clean up the Recipient Name if it contains masks (e.g., *******446 - NAME)
-        if (!empty($data['recipient_raw'])) {
-            $parts = explode('-', $data['recipient_raw'], 2);
-            $data['recipient_name'] = trim(end($parts));
-        } else {
-            $data['recipient_name'] = null;
-        }
+            // FORMATTED DATA
+            'formatted_nominal' => (int) str_replace(
+                ['IDR', ',', '.00', ' '],
+                '',
+                $this->matchPattern('/Nominal\s*:\s*([^\n\r]+)/i', $body)
+            ),
+            'formatted_rekening_tujuan' => trim(explode('-', $this->matchPattern('/Penerima\s*:\s*([^\n]+)/i', $body), 2)[0] ?? ''),
+            'formatted_penerima' => trim(
+                str_replace(
+                    ['Bpk', 'Sdr', 'Sdri'],
+                    '',
+                    explode('-', $this->matchPattern('/Penerima\s*:\s*([^\n]+)/i', $body), 2)[1]
+                )
+                    ?? ''
+            ),
+        ];
 
         return $data;
     }
     public function BRIparse(string $body): array
     {
         $data = [
-            'reference_number_bni' => $this->matchPattern('/No\. Referensi BNI\s*:\s*(\d+)/i', $body),
-            'reference_number_customer' => $this->matchPattern('/No\. Referensi Customer\s*:\s*(\d+)/i', $body),
-            'transaction_date' => $this->matchPattern('/Tanggal\/Jam\s*:\s*([^\n]+)/i', $body),
-            'amount_raw' => $this->matchPattern('/Nominal\s*:\s*([^\n]+)/i', $body),
-            'sender' => $this->matchPattern('/Pengirim\s*:\s*([^\n]+)/i', $body),
-            'recipient_raw' => $this->matchPattern('/Penerima\s*:\s*([^\n]+)/i', $body),
-            'remark' => $this->matchPattern('/Keterangan Pembayaran\s*:\s*([^\n]+)/i', $body),
-            'status' => $this->matchPattern('/Status\s*:\s*([^\n]+)/i', $body),
+            'rekening_debit'  => $this->matchPattern('/Rekening Debit\s*:\s*([^\n\r]+)/i', $body),
+            'rekening_kredit' => $this->matchPattern('/Rekening Kredit\s*:\s*([^\n\r]+)/i', $body),
+            'nominal'         => $this->matchPattern('/Nominal\s*:\s*([^\n\r]+)/i', $body),
+            'catatan'         => $this->matchPattern('/Catatan\s*:\s*([^\n\r]+)/i', $body),
+            // Mengambil status yang berada di baris baru
+            'status'          => $this->matchPattern('/Status\s*:\s*[\r\n]+([a-zA-Z]+)/i', $body),
+
+            // FORMATTED DATA
+            'formatted_nominal' => (int) str_replace(
+                ['IDR', '.', ',00', ' '],
+                '',
+                $this->matchPattern('/Nominal\s*:\s*([^\n\r]+)/i', $body)
+            ),
+            'formatted_rekening_tujuan' => trim(explode('-', $this->matchPattern('/Rekening Kredit\s*:\s*([^\n\r]+)/i', $body), 2)[0] ?? ''),
+            'formatted_penerima' => trim(explode('-', $this->matchPattern('/Rekening Kredit\s*:\s*([^\n\r]+)/i', $body), 2)[1] ?? ''),
         ];
 
-        // Clean up the Recipient Name if it contains masks (e.g., *******446 - NAME)
-        if (!empty($data['recipient_raw'])) {
-            $parts = explode('-', $data['recipient_raw'], 2);
-            $data['recipient_name'] = trim(end($parts));
-        } else {
-            $data['recipient_name'] = null;
+        // Membersihkan spasi di awal/akhir teks hasil ekstraksi
+        foreach ($data as $key => $value) {
+            if (is_string($value)) {
+                $data[$key] = trim($value);
+            }
         }
 
         return $data;
@@ -150,27 +200,38 @@ class ResiGeneratorService
     public function MANDIRIparse(string $body): array
     {
         $data = [
-            'reference_number_bni' => $this->matchPattern('/No\. Referensi BNI\s*:\s*(\d+)/i', $body),
-            'reference_number_customer' => $this->matchPattern('/No\. Referensi Customer\s*:\s*(\d+)/i', $body),
-            'transaction_date' => $this->matchPattern('/Tanggal\/Jam\s*:\s*([^\n]+)/i', $body),
-            'amount_raw' => $this->matchPattern('/Nominal\s*:\s*([^\n]+)/i', $body),
-            'sender' => $this->matchPattern('/Pengirim\s*:\s*([^\n]+)/i', $body),
-            'recipient_raw' => $this->matchPattern('/Penerima\s*:\s*([^\n]+)/i', $body),
-            'remark' => $this->matchPattern('/Keterangan Pembayaran\s*:\s*([^\n]+)/i', $body),
-            'status' => $this->matchPattern('/Status\s*:\s*([^\n]+)/i', $body),
+            'date_time'               => $this->matchPattern('/Date\/Time\s*:\s*([^\n\r]+)/i', $body),
+            'corporate_name'          => $this->matchPattern('/Corporate Name\s*:\s*([^\n\r]+)/i', $body),
+            'transaction_type'        => $this->matchPattern('/Transaction Type\s*:\s*([^\n\r]+)/i', $body),
+            'from_account'            => $this->matchPattern('/From Account\s*:\s*([^\n\r]+)/i', $body),
+            'to_account'              => $this->matchPattern('/To Account\s*:\s*([^\n\r]+)/i', $body),
+            'beneficiary_bank'        => $this->matchPattern('/Beneficiary Bank\s*:\s*([^\n\r]+)/i', $body),
+            'amount'                  => $this->matchPattern('/Amount\s*:\s*([^\n\r]+)/i', $body),
+            'charge'                  => $this->matchPattern('/Charge\s*:\s*([^\n\r]+)/i', $body),
+            'reference_no'            => $this->matchPattern('/Reference No\s*:\s*([^\n\r]+)/i', $body),
+            'remark'                  => $this->matchPattern('/Remark\s*:\s*([^\n\r]+)/i', $body),
+            'extended_payment_detail' => $this->matchPattern('/Extended Payment Detail\s*:\s*([^\n\r]+)/i', $body),
+
+            // FORMATTED DATA
+            'formatted_nominal'       => (int) str_replace(
+                ['IDR', ',', '.00', ' '],
+                '',
+                $this->matchPattern('/Amount\s*:\s*([^\n\r]+)/i', $body)
+            ),
+
+            'formatted_rekening_tujuan' => trim(explode('- IDR -', $this->matchPattern('/To Account\s*:\s*([^\n\r]+)/i', $body), 2)[0] ?? ''),
+            'formatted_penerima' => trim(explode('- IDR -', $this->matchPattern('/To Account\s*:\s*([^\n\r]+)/i', $body), 2)[1] ?? ''),
         ];
 
-        // Clean up the Recipient Name if it contains masks (e.g., *******446 - NAME)
-        if (!empty($data['recipient_raw'])) {
-            $parts = explode('-', $data['recipient_raw'], 2);
-            $data['recipient_name'] = trim(end($parts));
-        } else {
-            $data['recipient_name'] = null;
+        // Membersihkan spasi berlebih di awal atau akhir teks hasil ekstraksi
+        foreach ($data as $key => $value) {
+            if (is_string($value)) {
+                $data[$key] = trim($value);
+            }
         }
 
         return $data;
     }
-
     private function matchPattern(string $pattern, string $text): ?string
     {
         if (preg_match($pattern, $text, $matches)) {

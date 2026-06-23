@@ -5,21 +5,29 @@ namespace App\Livewire\ResiGenerator;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
 use App\Helpers\ExportHelper;
+use App\Imports\ExcelImportBulkStatusGensen;
+use App\Jobs\ResiGenerator\GetEmailJob;
 use App\Models\GensenForm\GensenForm;
 use App\Models\Ichijikin\IchijikinExtraction;
 use App\Models\ResiGenerator\ResiGenerator;
+use App\Repositories\ResiGenerator\ResiGeneratorDetailRepository;
 use App\Repositories\ResiGenerator\ResiGeneratorRepository;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Detail extends Component
 {
+
+    use WithFileUploads;
 
     public $objId;
 
@@ -27,6 +35,18 @@ class Detail extends Component
     public $label;
     #[Validate('required', message: 'Nama Bank Harus Diisi', onUpdate: false)]
     public $bank;
+    #[Validate([
+        'required',
+        'file',
+        'mimes:xlsx,xls',
+        'max:10240', // 10 MB
+    ], message: [
+        'required' => 'File Excel harus dipilih.',
+        'file' => 'File tidak valid.',
+        'mimes' => 'File harus berformat Excel (.xlsx atau .xls).',
+        'max' => 'Ukuran file maksimal 10 MB.',
+    ])]
+    public $file_excel;
 
     public function mount()
     {
@@ -58,25 +78,50 @@ class Detail extends Component
     {
         $this->validate();
         try {
-            DB::transaction(function () {
+            DB::beginTransaction();
+            $disk = 'private';
 
-                // Vehicle
-                $validateData = [
+            $storedName = $this->label . '_' . Str::uuid() . '.' . $this->file_excel->extension();
+            $filePath =   "resi_generator/excel_resource";
 
-                    'label' => $this->label,
-                    'bank' => $this->bank,
-                    'status' => JobStatus::PENDING
+            $path = Storage::disk($disk)->putFileAs(
+                $filePath,
+                $this->file_excel,
+                $storedName,
+                [
+                    'visibility' => 'private',
+                ]
+            );
+
+            $resi = ResiGeneratorRepository::create([
+                'label' => $this->label,
+                'bank' => $this->bank,
+
+                'source_file_name' => $storedName,
+                'source_file_disk' => $disk,
+                'source_file_path' => $path,
+                'get_email_status' => JobStatus::PENDING,
+                'matching_status' => JobStatus::PENDING,
+                'zip_status' => JobStatus::PENDING,
+            ]);
+
+            $import = new ExcelImportBulkStatusGensen();
+            Excel::import($import, $this->file_excel);
+
+            foreach ($import->rows as $index => $row) {
+                $validatedData = [
+                    'resi_generator_id' => $resi->id,
+                    'nama' => $row['nama'],
+                    'nominal' => $row['nominal'],
+                    'rekening' => $row['rekening'],
+                    'bank' => $row['bank'],
+                    'is_matched' => false,
+                    'status' => JobStatus::PENDING,
                 ];
+                ResiGeneratorDetailRepository::create($validatedData);
+            }
 
-                if ($this->objId) {
-                    $resi_id = Crypt::decrypt($this->objId);
-                    ResiGenerator::update($resi_id, $validateData);
-                } else {
-                    $resi = ResiGenerator::create($validateData);
-                }
-            });
-
-
+            GetEmailJob::dispatch($resi)->onQueue('extract');
             DB::commit();
             Alert::confirmation(
                 $this,

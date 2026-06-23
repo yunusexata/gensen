@@ -5,6 +5,7 @@ namespace App\Models\ResiGenerator;
 use App\Enums\Gensen\JobStatus;
 use App\Jobs\IchijikinExtraction\SplitIchijikinJob;
 use App\Jobs\ResiGenerator\GetEmailJob;
+use App\Jobs\ResiGenerator\ResiMatchingJob;
 use App\Models\Ichijikin\IchijikinExtractionFile;
 use App\Models\Ichijikin\IchijikinExtractionResult;
 use App\Models\User;
@@ -24,13 +25,25 @@ class ResiGenerator extends Model
         'bank',
         'amount',
 
-        'error_message',
+        'source_file_name',
+        'source_file_disk',
+        'source_file_path',
 
-        'started_at',
-        'finished_at',
+        'get_email_error_message',
+
+        'get_email_started_at',
+        'get_email_finished_at',
 
         // lifecycle state
-        'status',
+        'get_email_status',
+
+        'matching_error_message',
+
+        'matching_started_at',
+        'matching_finished_at',
+
+        // lifecycle state
+        'matching_status',
 
         'zip_path',
         'zip_generated_at',
@@ -43,7 +56,8 @@ class ResiGenerator extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
-        'status' => JobStatus::class,
+        'get_email_status' => JobStatus::class,
+        'matching_status' => JobStatus::class,
         'zip_status' => JobStatus::class,
     ];
 
@@ -61,14 +75,33 @@ class ResiGenerator extends Model
 
     protected static function onBoot()
     {
-        self::created(function ($model) {
-            GetEmailJob::dispatch($model)->onQueue('extract');
+        self::updated(function ($model) {
+            logger([
+                'Updated Resi Generator Models',
+                'Detail Count = ' . $model->details->count(),
+                'Model Amount = ' . $model->amount
+            ]);
+            if (
+                $model->wasChanged('get_email_status')
+                && $model->getOriginal('get_email_status') !== JobStatus::DONE
+                && $model->get_email_status === JobStatus::DONE
+            ) {
+                logger('DONE & Match Count');
+
+                ResiMatchingJob::dispatch($model)
+                    ->onQueue('pdf');
+            }
         });
     }
 
     public function details()
     {
         return $this->hasMany(ResiGeneratorDetail::class, 'resi_generator_id', 'id');
+    }
+
+    public function emails()
+    {
+        return $this->hasMany(ResiGeneratorEmail::class, 'resi_generator_id', 'id');
     }
 
     public function creator()

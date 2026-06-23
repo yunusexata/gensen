@@ -42,13 +42,25 @@ return new class extends Migration
         $table->string('bank');
         $table->integer('amount')->nullable();
 
-        $table->text('error_message')->nullable();
+        $table->string('source_file_name');
+        $table->string('source_file_disk');               // local / s3
+        $table->text('source_file_path');              // storage path
 
-        $table->timestamp('started_at')->nullable();
-        $table->timestamp('finished_at')->nullable();
+        $table->text('get_email_error_message')->nullable();
+
+        $table->timestamp('get_email_started_at')->nullable();
+        $table->timestamp('get_email_finished_at')->nullable();
 
         // lifecycle state
-        $table->string('status');
+        $table->string('get_email_status');
+
+        $table->text('matching_error_message')->nullable();
+
+        $table->timestamp('matching_started_at')->nullable();
+        $table->timestamp('matching_finished_at')->nullable();
+
+        // lifecycle state
+        $table->string('matching_status');
 
         $table->string('zip_path')->nullable();
         $table->timestamp('zip_generated_at')->nullable();

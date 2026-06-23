@@ -2,12 +2,16 @@
 
 namespace App\Jobs\ResiGenerator;
 
+use App\Enums\Gensen\JobStatus;
+use App\Models\ResiGenerator\ResiGeneratorDetail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Browsershot\Browsershot;
+use Throwable;
 
 class GenerateReceiptImageJob implements ShouldQueue
 {
@@ -16,53 +20,92 @@ class GenerateReceiptImageJob implements ShouldQueue
     /**
      * Tentukan agar Job ini otomatis membaca ulang model dari DB saat dieksekusi
      */
-    public $transaction;
 
-    public function __construct($transaction)
-    {
-        $this->transaction = $transaction;
-    }
+    public function __construct(
+        public ResiGeneratorDetail $resiDetail
+    ) {}
 
     public function handle(): void
     {
-        // 1. Ambil data JSON hasil parsing dari database
-        $parsedData = $this->transaction->email_parsed;
+        try {
+            $this->resiDetail->update([
+                'status' => JobStatus::PROCESSING,
+                'started_at' => now(),
+            ]);
+            $gmailLogo = 'data:image/svg+xml;base64,' .
+                base64_encode(
+                    file_get_contents(
+                        public_path('images/resi-generator/gmail_logo.svg')
+                    )
+                );
+            $htmlContent = view('app.resi-generator.template.version1', [
+                'data' => $this->resiDetail,
+                'gmail_logo' => $gmailLogo
+            ])->render();
 
-        // Jika data json kosong atau gagal parsing sebelumnya, batalkan job
-        if (empty($parsedData)) {
-            return;
+            $cleanExcelRekening = preg_replace('/\D/', '', $this->resiDetail->rekening);
+            $fileName =
+                str_pad($this->resiDetail->id, 4, "0", STR_PAD_LEFT)
+                . '_' .
+                strtoupper($this->resiDetail->resi->bank)
+                . '_' .
+                strtoupper($this->resiDetail->nama)
+                . '_' .
+                $cleanExcelRekening . '.jpg';
+
+            $relativePath = 'resi_generator/result/' .
+                $this->resiDetail->resi->label .
+                '/' .
+                $fileName;
+
+            $storageDisk = 'private';
+            $disk = Storage::disk($storageDisk);
+
+            // pastikan folder ada
+            $disk->makeDirectory(
+                'resi_generator/result/' . $this->resiDetail->resi->label
+            );
+
+            // absolute path untuk Browsershot
+            $absolutePath = $disk->path($relativePath);
+
+            Browsershot::html($htmlContent)
+                ->noSandbox()
+                ->addChromiumArguments([
+                    '--disable-dev-shm-usage',
+                    '--disable-setuid-sandbox',
+                    '--no-first-run',
+                    '--headless',
+                ])
+                ->setScreenshotType('jpeg', 90)
+                ->windowSize(600, 800)
+                ->fullPage()
+                ->save($absolutePath);
+
+            $this->resiDetail->update([
+                'generated_image_disk' => $storageDisk,
+                'generated_image_path' => $relativePath,
+                'status' => JobStatus::DONE,
+                'finished_at' => now(),
+            ]);
+        } catch (\Throwable $e) {
+
+            $this->resiDetail->update([
+                'status' => JobStatus::FAILED,
+                'finished_at' => now(),
+                'error_message' => $e->getMessage(),
+            ]);
+
+            throw $e;
         }
+    }
 
-        // 2. Compile HTML template Blade dengan parameter data parsed
-        // File template diletakkan di: resources/views/templates/receipt.blade.php
-        $htmlContent = view('templates.receipt', ['data' => $parsedData])->render();
-
-        // 3. Tentukan nama file unik dan path penyimpanan (Local & VPS Safe)
-        $filename = 'receipt_' . $this->transaction->id . '_' . time() . '.jpg';
-        $storagePath = storage_path('app/public/receipts/' . $filename);
-
-        // Pastikan folder 'receipts' sudah terbuat di storage
-        if (!file_exists(dirname($storagePath))) {
-            mkdir(dirname($storagePath), 0755, true);
-        }
-
-        // 4. Jalankan perintah render HTML menjadi Image menggunakan Browsershot
-        Browsershot::html($htmlContent)
-            ->noSandbox() // Mencegah crash hak akses di Ubuntu VPS
-            ->addChromiumArguments([
-                '--disable-dev-shm-usage', // Menghemat shared memory VPS agar tidak crash
-                '--disable-setuid-sandbox',
-                '--no-first-run',
-                '--headless'
-            ])
-            ->setScreenshotType('jpeg', 90)
-            ->windowSize(540, 600) // Atur resolusi kotak struk bank Anda
-            ->deviceScaleFactor(2) // Membuat teks struk tetap tajam (High DPI)
-            ->save($storagePath);
-
-        // 5. Update baris database dengan path gambar yang baru saja disimpan
-        $this->transaction->update([
-            'generated_image_path' => 'receipts/' . $filename
+    public function failed(?Throwable $e): void
+    {
+        $this->resiDetail->update([
+            'status' => JobStatus::FAILED,
+            'finished_at' => now(),
+            'error_message' => $e->getMessage(),
         ]);
     }
 }

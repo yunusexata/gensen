@@ -61,6 +61,7 @@
     "picomatch": "^2.3.2",
     "postcss-value-parser": "^4.2.0",
     "proxy-from-env": "^2.1.0",
+    "puppeteer": "^25.1.0",
     "rollup": "^4.60.1",
     "source-map-js": "^1.2.1",
     "tailwindcss": "^3.4.17",
