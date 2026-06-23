@@ -1547,7 +1547,12 @@
                                         <div class="flex items-start gap-md p-sm hover:bg-surface-container-lowest rounded-lg border border-transparent hover:border-outline-variant transition-colors group">
                                             <input wire:model.live="remittance_extraction_groups.{{ $index_remittance_extraction }}.is_validate" class="mt-1 h-4 w-4 rounded border-outline text-primary focus:ring-primary-container bg-surface cursor-pointer" type="checkbox"/>
                                             <div class="flex-1">
-                                                <label class="text-label-sm font-label-sm text-on-surface-variant block mb-1">{{$remittance['receiver_name']}} - {{$remittance['transaction_year']}}</label>
+                                                <label class="text-label-sm font-label-sm text-on-surface-variant block mb-1">
+                                                    <input
+                                                        class="form-control"
+                                                        wire:model.defer="remittance_extraction_groups.{{ $index_remittance_extraction }}.receiver_name"
+                                                        type="text"
+                                                    />- {{$remittance['transaction_year']}}</label>
                                                 <div class="row">
                                                     <input
                                                         class="form-control"

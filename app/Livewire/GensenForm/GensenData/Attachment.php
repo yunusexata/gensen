@@ -160,6 +160,7 @@ class Attachment extends Component
                     RemittanceExtractionGroupRepository::update($remittance['id'], [
                         'is_validate' => $remittance['is_validate'],
                         'receiver_relationship' => $remittance['receiver_relationship'],
+                        'receiver_name' => $remittance['receiver_name'],
                     ]);
                 }
                 foreach ($this->tahun_gensen_details as $tahun_gensen) {
