@@ -459,11 +459,9 @@ class MergeSeluruhBerkas implements ShouldQueue
 
         return $normalized;
     }
-
     private function ensurePortraitPdf(string $input): string
     {
         try {
-            // 1. Deteksi Orientasi menggunakan FPDI
             $fpdi = new Fpdi();
             $fpdi->setSourceFile($input);
             $templateId = $fpdi->importPage(1);
@@ -475,31 +473,31 @@ class MergeSeluruhBerkas implements ShouldQueue
                 return $input;
             }
 
-            // 2. Rotasi menggunakan pdftocairo
-            // Ini adalah cara paling "bersih" untuk merotasi PDF tanpa error .putdeviceprops
-            $rotated = storage_path('app/tmp/merge/' . Str::uuid() . '.pdf');
+            // Generate base path tanpa ekstensi .pdf
+            $uuid = Str::uuid();
+            $basePath = storage_path('app/tmp/merge/' . $uuid);
+            $finalFile = $basePath . '.pdf'; // Ini yang dicari oleh sistem Anda
 
-            if (!file_exists(dirname($rotated))) {
-                mkdir(dirname($rotated), 0777, true);
+            if (!file_exists(dirname($finalFile))) {
+                mkdir(dirname($finalFile), 0777, true);
             }
 
-            // -paper A4 akan mengunci ukuran, -r 72 (resolusi rendah/cepat), -pdf membuat output PDF
-            // pdftocairo menangani rotasi secara otomatis saat output ke A4
+            // pdftocairo akan membuat file: $basePath . '.pdf'
+            // Kita gunakan -paper A4 dan orientasi -portrait secara eksplisit
             $command = sprintf(
-                'pdftocairo -pdf -paper A4 %s %s',
+                'pdftocairo -pdf -paper A4 -portrait %s %s 2>&1',
                 escapeshellarg($input),
-                escapeshellarg(str_replace('.pdf', '', $rotated)) // pdftocairo otomatis menambah .pdf
+                escapeshellarg($basePath)
             );
 
             exec($command, $output, $result);
 
-            // pdftocairo menambahkan ekstensi .pdf secara otomatis, jadi kita cek file hasil akhirnya
-            $finalFile = $rotated;
+            // Debug jika pdftocairo gagal (meskipun result 0, output mungkin berisi error)
             if ($result === 0 && file_exists($finalFile)) {
                 return $finalFile;
             }
 
-            logger("pdftocairo gagal merotasi PDF", ['result' => $result, 'output' => $output]);
+            logger("pdftocairo gagal atau file tidak ditemukan Update", ['result' => $result, 'output' => $output, 'expected' => $finalFile]);
         } catch (\Exception $e) {
             logger("Error FPDI: " . $e->getMessage());
         }
