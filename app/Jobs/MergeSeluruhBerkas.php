@@ -249,9 +249,33 @@ class MergeSeluruhBerkas implements ShouldQueue
                     $target = fopen($tmpPath, 'w');
 
                     stream_copy_to_stream($stream, $target);
-
+                    // ... (code download Anda)
                     fclose($stream);
                     fclose($target);
+
+                    // ⭐ TAMBAHKAN VALIDASI DI SINI
+                    $finfo = new \finfo(FILEINFO_MIME_TYPE);
+                    $realMimeType = $finfo->file($tmpPath);
+
+                    if ($realMimeType !== 'application/pdf') {
+                        // Jika ternyata file adalah gambar (image/jpeg, dll)
+                        if (str_contains($realMimeType, 'image')) {
+                            // OPSIONAL: Convert ke PDF agar bisa di-merge
+                            // Anda butuh 'imagick' di server untuk ini
+                            $pdfPath = $tmpPath . '_converted.pdf';
+                            $img = new \Imagick($tmpPath);
+                            $img->setImageFormat('pdf');
+                            $img->writeImage($pdfPath);
+
+                            $fullPath = $pdfPath; // Gunakan file hasil konversi
+                            $tempFiles[] = $pdfPath; // Masukkan ke cleanup list
+                        } else {
+                            // Jika file bukan PDF dan bukan gambar, lempar error atau skip
+                            throw new \Exception("File dari Supabase bukan PDF valid (Tipe: $realMimeType)");
+                        }
+                    } else {
+                        $fullPath = $tmpPath;
+                    }
 
                     $fullPath = $tmpPath;
 
