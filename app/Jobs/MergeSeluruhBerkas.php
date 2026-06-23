@@ -487,24 +487,25 @@ class MergeSeluruhBerkas implements ShouldQueue
     }
     private function ensurePortraitPdf(string $input): string
     {
-        // 1. CEK FISIK: Apakah file ada?
         if (!file_exists($input)) {
             logger("File tidak ditemukan: " . $input);
             return $input;
         }
 
-        // 2. CEK MIME-TYPE: Apakah ini benar-benar PDF?
-        // Ini adalah baris terpenting untuk mencegah error "xref table"
         $finfo = new \finfo(FILEINFO_MIME_TYPE);
         $mime = $finfo->file($input);
 
         if ($mime !== 'application/pdf') {
-            logger("File diabaikan, bukan PDF (Terdeteksi sebagai: $mime) di: " . $input);
+            logger("File diabaikan, bukan PDF ($mime): " . $input);
             return $input;
         }
 
-        // 3. BARU PROSES FPDI jika sudah lolos pengecekan
         try {
+
+            // ==========================
+            // REPAIR PDF DENGAN QPDF
+            // ==========================
+
             $repairDir = storage_path('app/tmp/repair');
 
             if (!file_exists($repairDir)) {
@@ -512,50 +513,89 @@ class MergeSeluruhBerkas implements ShouldQueue
             }
 
             $repaired = $repairDir . '/' . Str::uuid() . '.pdf';
-            $input = $repaired;
+
+            exec(
+                sprintf(
+                    'qpdf %s %s 2>&1',
+                    escapeshellarg($input),
+                    escapeshellarg($repaired)
+                ),
+                $repairOutput,
+                $repairResult
+            );
+            logger([
+                'qpdf_result' => $repairResult,
+                'qpdf_output' => $repairOutput,
+                'repaired_exists' => file_exists($repaired),
+            ]);
+
+            if ($repairResult === 0 && file_exists($repaired)) {
+                $input = $repaired;
+            }
+
+            // ==========================
+            // CEK ORIENTASI
+            // ==========================
+
             $fpdi = new Fpdi();
-            // Coba setSourceFile
+
             $pageCount = $fpdi->setSourceFile($input);
 
             if ($pageCount === 0) {
-                logger("File PDF kosong atau rusak: " . $input);
+                logger("PDF kosong: " . $input);
                 return $input;
             }
 
             $templateId = $fpdi->importPage(1);
+
             $size = $fpdi->getTemplateSize($templateId);
 
-            // Debugging yang pasti muncul jika file berhasil dibaca
             logger(['ensure portrait', $size]);
 
-            $isLandscape = ($size['orientation'] === 'L') || ($size['width'] > $size['height']);
+            $isLandscape =
+                ($size['orientation'] === 'L')
+                || ($size['width'] > $size['height']);
 
             if (!$isLandscape) {
                 return $input;
             }
 
-            // --- (Sisanya adalah logika rotasi qpdf Anda) ---
-            $rotated = storage_path('app/tmp/merge/' . Str::uuid() . '.pdf');
-            if (!file_exists(dirname($rotated))) {
-                mkdir(dirname($rotated), 0777, true);
+            // ==========================
+            // ROTATE
+            // ==========================
+
+            $mergeDir = storage_path('app/tmp/merge');
+
+            if (!file_exists($mergeDir)) {
+                mkdir($mergeDir, 0775, true);
             }
 
-            $command = sprintf(
-                'qpdf --rotate=90 %s %s 2>&1',
-                escapeshellarg($input),
-                escapeshellarg($rotated)
-            );
+            $rotated = $mergeDir . '/' . Str::uuid() . '.pdf';
 
-            exec($command, $output, $result);
+            exec(
+                sprintf(
+                    'qpdf %s --rotate=+90:1-z %s 2>&1',
+                    escapeshellarg($input),
+                    escapeshellarg($rotated)
+                ),
+                $output,
+                $result
+            );
 
             if ($result === 0 && file_exists($rotated)) {
                 return $rotated;
             }
 
-            logger("qpdf gagal merotasi PDF", ['result' => $result, 'output' => $output]);
-        } catch (\Exception $e) {
-            // Jika sampai sini, berarti PDF benar-benar korup
-            logger("Error kritis saat memproses PDF: " . $e->getMessage());
+            logger('qpdf rotate gagal', [
+                'result' => $result,
+                'output' => $output,
+            ]);
+        } catch (\Throwable $e) {
+
+            logger('Error kritis PDF', [
+                'file' => $input,
+                'message' => $e->getMessage(),
+            ]);
         }
 
         return $input;
