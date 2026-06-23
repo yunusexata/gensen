@@ -283,7 +283,7 @@ class MergeSeluruhBerkas implements ShouldQueue
                  */
                 if ($file->type !== GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
                     logger('bukan remitance');
-                    $normalizedPath = $this->normalizePdf($preparedPdf);
+                    $portraitPath = $this->normalizePdf($preparedPdf);
                     // $portraitPath = $this->ensurePortraitPdf($normalizedPath);
                 } else {
                     $portraitPath = $this->ensurePortraitPdf($preparedPdf);
