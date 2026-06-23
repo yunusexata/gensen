@@ -444,17 +444,18 @@ class MergeSeluruhBerkas implements ShouldQueue
         }
 
         /*
-    |--------------------------------------------------------------------------
-    | FORCE ALL PAGES → A4
-    |--------------------------------------------------------------------------
-    */
+        |--------------------------------------------------------------------------
+        | FORCE ALL PAGES → A4
+        |--------------------------------------------------------------------------
+        */
         $command = sprintf(
             'gs -sDEVICE=pdfwrite ' .
                 '-dCompatibilityLevel=1.4 ' .
-                '-dPDFSETTINGS=/prepress ' . // ADDED: High quality preset that forces font embedding
-                '-dEmbedAllFonts=true ' .    // ADDED: Embed all fonts
-                '-dSubsetFonts=true ' .      // ADDED: Keep file size reasonable by subsetting
-                '-dPreserveCopyPage=true ' . // ADDED: Prevents dropping certain page contents
+                '-dPDFSETTINGS=/default ' .      // Menggunakan mode default agar tidak terlalu agresif menekan font
+                '-dEmbedAllFonts=true ' .        // Wajib: Embed semua font asli
+                '-dSubsetFonts=false ' .         // CRITICAL CRASH FIX: Jangan potong font (subsetting sering merusak indeks karakter)
+                '-dKeepToUnicode=true ' .        // CRITICAL CRASH FIX: Paksa Ghostscript mempertahankan tabel ToUnicode asli teks
+                '-dColorConversionStrategy=/LeaveColorUnchanged ' . // Jangan ubah profil warna teks agar objek tidak di-render ulang
                 '-dNOPAUSE -dQUIET -dBATCH ' .
                 '-dPDFFitPage ' .
                 '-dFIXEDMEDIA ' .
