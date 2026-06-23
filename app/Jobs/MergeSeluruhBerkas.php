@@ -463,35 +463,52 @@ class MergeSeluruhBerkas implements ShouldQueue
     }
     private function ensurePortraitPdf(string $input): string
     {
+        // 1. CEK FISIK: Apakah file ada?
+        if (!file_exists($input)) {
+            logger("File tidak ditemukan: " . $input);
+            return $input;
+        }
+
+        // 2. CEK MIME-TYPE: Apakah ini benar-benar PDF?
+        // Ini adalah baris terpenting untuk mencegah error "xref table"
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($input);
+
+        if ($mime !== 'application/pdf') {
+            logger("File diabaikan, bukan PDF (Terdeteksi sebagai: $mime) di: " . $input);
+            return $input;
+        }
+
+        // 3. BARU PROSES FPDI jika sudah lolos pengecekan
         try {
             $fpdi = new Fpdi();
-            $fpdi->setSourceFile($input);
+
+            // Coba setSourceFile
+            $pageCount = $fpdi->setSourceFile($input);
+
+            if ($pageCount === 0) {
+                logger("File PDF kosong atau rusak: " . $input);
+                return $input;
+            }
+
             $templateId = $fpdi->importPage(1);
             $size = $fpdi->getTemplateSize($templateId);
 
-            // Jika Landscape, kita rotasi
+            // Debugging yang pasti muncul jika file berhasil dibaca
+            logger(['ensure portrait', $size]);
+
             $isLandscape = ($size['orientation'] === 'L') || ($size['width'] > $size['height']);
 
-            logger([
-                'ensure portrait',
-                $size
-            ]);
             if (!$isLandscape) {
                 return $input;
             }
 
+            // --- (Sisanya adalah logika rotasi qpdf Anda) ---
             $rotated = storage_path('app/tmp/merge/' . Str::uuid() . '.pdf');
-
             if (!file_exists(dirname($rotated))) {
                 mkdir(dirname($rotated), 0777, true);
             }
 
-            /**
-             * QPDF --rotate=90
-             * Ini akan memutar seluruh halaman termasuk kontennya.
-             * Karena ini bukan 'rendering', maka tidak mungkin terjadi crop.
-             * Semua objek, teks, dan gambar akan ikut berputar 90 derajat.
-             */
             $command = sprintf(
                 'qpdf --rotate=90 %s %s 2>&1',
                 escapeshellarg($input),
@@ -506,11 +523,62 @@ class MergeSeluruhBerkas implements ShouldQueue
 
             logger("qpdf gagal merotasi PDF", ['result' => $result, 'output' => $output]);
         } catch (\Exception $e) {
-            logger("Error FPDI: " . $e->getMessage());
+            // Jika sampai sini, berarti PDF benar-benar korup
+            logger("Error kritis saat memproses PDF: " . $e->getMessage());
         }
 
         return $input;
     }
+    // private function ensurePortraitPdf(string $input): string
+    // {
+    //     try {
+    //         $fpdi = new Fpdi();
+    //         $fpdi->setSourceFile($input);
+    //         $templateId = $fpdi->importPage(1);
+    //         $size = $fpdi->getTemplateSize($templateId);
+
+    //         // Jika Landscape, kita rotasi
+    //         $isLandscape = ($size['orientation'] === 'L') || ($size['width'] > $size['height']);
+
+    //         logger([
+    //             'ensure portrait',
+    //             $size
+    //         ]);
+    //         if (!$isLandscape) {
+    //             return $input;
+    //         }
+
+    //         $rotated = storage_path('app/tmp/merge/' . Str::uuid() . '.pdf');
+
+    //         if (!file_exists(dirname($rotated))) {
+    //             mkdir(dirname($rotated), 0777, true);
+    //         }
+
+    //         /**
+    //          * QPDF --rotate=90
+    //          * Ini akan memutar seluruh halaman termasuk kontennya.
+    //          * Karena ini bukan 'rendering', maka tidak mungkin terjadi crop.
+    //          * Semua objek, teks, dan gambar akan ikut berputar 90 derajat.
+    //          */
+    //         $command = sprintf(
+    //             'qpdf --rotate=90 %s %s 2>&1',
+    //             escapeshellarg($input),
+    //             escapeshellarg($rotated)
+    //         );
+
+    //         exec($command, $output, $result);
+
+    //         if ($result === 0 && file_exists($rotated)) {
+    //             return $rotated;
+    //         }
+
+    //         logger("qpdf gagal merotasi PDF", ['result' => $result, 'output' => $output]);
+    //     } catch (\Exception $e) {
+    //         logger("Error FPDI: " . $e->getMessage());
+    //     }
+
+    //     return $input;
+    // }
     /*
     |--------------------------------------------------------------------------
     | IMPORT SINGLE PDF
