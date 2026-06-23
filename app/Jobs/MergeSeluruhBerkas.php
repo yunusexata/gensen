@@ -277,7 +277,7 @@ class MergeSeluruhBerkas implements ShouldQueue
                         $fullPath = $tmpPath;
                     }
 
-                    $fullPath = $tmpPath;
+                    // $fullPath = $tmpPath;
 
                     $tempFiles[] = $tmpPath; // ⭐ mark for cleanup
 
