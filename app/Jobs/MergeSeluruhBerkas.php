@@ -284,10 +284,11 @@ class MergeSeluruhBerkas implements ShouldQueue
                 if ($file->type !== GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
                     logger('bukan remitance');
                     $normalizedPath = $this->normalizePdf($preparedPdf);
+                    $portraitPath = $this->ensurePortraitPdf($normalizedPath);
                 } else {
+                    $portraitPath = $this->ensurePortraitPdf($preparedPdf);
                     logger('remitance');
-                    // $normalizedPath = $preparedPdf;
-                    $normalizedPath = $this->ensurePortraitPdf($preparedPdf);
+                    // $portraitPath = $preparedPdf;
                 }
 
                 /**
@@ -295,7 +296,7 @@ class MergeSeluruhBerkas implements ShouldQueue
                  * STEP 4: Import into FPDI
                  * -----------------------------------------------------------------
                  */
-                $this->importPdf($pdf, $normalizedPath);
+                $this->importPdf($pdf, $portraitPath);
             } catch (\Throwable $e) {
 
                 logger()->error('PDF MERGE FAILED', [
