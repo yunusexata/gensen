@@ -222,6 +222,7 @@ class MergeSeluruhBerkas implements ShouldQueue
         foreach ($files as $file) {
 
             $disk = $file->disk ?? 'private';
+            logger($file);
 
             try {
 
