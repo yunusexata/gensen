@@ -90,8 +90,8 @@
                         <td>{{ $data['tahun_gensen_detail'] }}</td>
                         <td>{{ $data['has_my_number'] ? 'O' : 'X' }}</td>
                         <td>{{ $data['has_kartu_keluarga'] ? 'O' : 'X' }}</td>
-                        <td style='mso-number-format:"\@";'>
-    {{ number_format((float) $data['nominal_gensen_detail'], 3, ',', '.') }}
+     <td style='mso-number-format:"\@";'>
+    {{ number_format((float) $data['nominal_gensen_detail'], 0, ',', '.') }}
 </td>
                         @php
                             $total_amounts = explode(';', $data['remittance_total_amounts']);
