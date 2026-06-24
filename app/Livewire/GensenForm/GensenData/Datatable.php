@@ -309,7 +309,7 @@ class Datatable extends Component
             [
                 'key' => 'status',
                 'name' => 'Status',
-                'class' => 'text-center',
+                'class' => 'text-center text-nowrap',
                 'render' => function ($item) {
                     return "<p class='btn btn-sm py-1 mb-0 text-nowrap' style='background-color:" . $item->statusColor() . "'>" . $item->status . "</p>";
                 }
@@ -326,6 +326,7 @@ class Datatable extends Component
             ],
             [
                 'key' => 'nama_lengkap',
+                'class' => 'text-nowrap',
                 'name' => 'Nama Lengkap',
             ],
             [
@@ -345,6 +346,7 @@ class Datatable extends Component
 
             [
                 'key' => 'no_rekening_penerima',
+                'class' => 'text-nowrap',
                 'name' => 'Rek Penerima',
             ],
             [
@@ -354,6 +356,7 @@ class Datatable extends Component
             ],
             [
                 'key' => 'nama_penerima',
+                'class' => 'text-nowrap',
                 'name' => 'Nama Penerima',
             ],
             [
@@ -448,20 +451,23 @@ class Datatable extends Component
             ],
             [
                 'key' => 'keterangan',
+                'class' => 'text-nowrap',
                 'name' => 'Keterangan',
             ],
             [
                 'key' => 'alamat_jepang',
+                'class' => 'text-nowrap',
                 'name' => 'Alamat Jepang',
             ],
             [
                 'key' => 'kode_pos_jepang',
                 'name' => 'Kode POS Jepang',
-                'class' => 'text-center',
+                'class' => 'text-center text-nowrap',
             ],
 
             [
                 'key' => 'nama_lpk',
+                'class' => 'text-nowrap',
                 'name' => 'Nama LPK/SO/PT',
             ],
 
