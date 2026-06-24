@@ -209,12 +209,13 @@ class Datatable extends Component
                 'render' => function ($item, $index) {
                     $id = Crypt::encrypt($item->id);
 
+                    // @click=\"open = !open; if(open){ \$wire.editRow('" . simple_encrypt($item['id']) . "') }\"
                     $editHtml = "
                         <div class='col-auto m-0 p-0 d-flex d-inline flex-nowrap justify-content-center align-items-end' x-data=\"{ open: false }\"
                             wire:key='datatable_row_main_{$item['id']}'>
 
                             <button type='button'
-                                @click=\"open = !open; if(open){ \$wire.editRow('" . simple_encrypt($item['id']) . "') }\"
+                                @click=\"\$wire.editRow('" . simple_encrypt($item['id']) . "')\"
                                 class='p-0 hover:bg-success/10 text-success rounded transition-colors'
                                 data-bs-toggle='collapse'
                                 data-bs-target='#collapse-" . $item['id'] . "'
@@ -770,8 +771,12 @@ class Datatable extends Component
     }
     public function editRow($id)
     {
-        $row = GensenForm::findOrFail(simple_decrypt($id));
+        if ($this->editingRowId == simple_decrypt($id)) {
+            $this->editingRowId = null;
+            return;
+        }
 
+        $row = GensenForm::findOrFail(simple_decrypt($id));
         $this->editingRowId = simple_decrypt($id);
 
         $this->editingData = [
