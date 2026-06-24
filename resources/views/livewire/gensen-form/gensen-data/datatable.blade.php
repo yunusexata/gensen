@@ -285,6 +285,21 @@
                                                                 </div>
                                                             </td>
                                                             <td>
+                                                                <label for="">Tanggal Kepulangan</label>
+                                                                <div class="d-flex align-items-center">
+                                                                   <input
+                                                                        type="date"
+                                                                        class="form-control"
+                                                                        @if ($this->isCanUpdate)
+                                                                        wire:model.defer="editingData.tanggal_kepulangan"
+                                                                        @else
+                                                                        value="{{ $editingData['tanggal_kepulangan'] }}"
+                                                                        readonly
+                                                                        @endif
+                                                                    > 
+                                                                </div>
+                                                            </td>
+                                                            <td>
                                                                 <label for="">Instagram</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
@@ -354,6 +369,7 @@
                                                                     />
                                                                 </div>
                                                             </td>
+                                                            
                                                         </tr>
                                                         {{-- Second Row --}}
                                                         <tr>

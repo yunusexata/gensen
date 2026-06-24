@@ -606,7 +606,7 @@ class Datatable extends Component
                     // 'nominal_cair' => imaskToValue($this->editingData['nominal_cair']),
                     // 'nominal_gensen' => imaskToValue($this->editingData['nominal_gensen']),
                     // 'jumlah_kirim_uang' => imaskToValue($this->editingData['jumlah_kirim_uang']),
-                    // 'tanggal_kepulangan' => $this->editingData['tanggal_kepulangan'] ? $this->editingData['tanggal_kepulangan'] : null,
+                    'tanggal_kepulangan' => $this->editingData['tanggal_kepulangan'] ? $this->editingData['tanggal_kepulangan'] : null,
                     // REK PENERIMA
                     // 'status' => $this->editingData['status'],
                     // 'tahun_gensen' => $this->editingData['tahun_gensen'],
