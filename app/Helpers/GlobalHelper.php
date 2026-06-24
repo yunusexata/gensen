@@ -140,6 +140,9 @@ if (!function_exists('numberFormat')) {
             ? $decimalPoin
             : 0;
 
+        logger([
+            'result' => number_format($number, $decimalPoin, ',', '.'),
+        ]);
         return number_format($number, $decimalPoin, ',', '.');
     }
 }
