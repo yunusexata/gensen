@@ -78,7 +78,7 @@
                         <td>{{ $data['label_detail'] }}</td>
                         <td>{{ $data['tanggal_cair'] ? Carbon\Carbon::parse($data['tanggal_cair'])->format('Ymd') : '' }}</td>
                         <td style='mso-number-format:"Text";'>
-                            {{ numberFormat($data['nominal_cair']) }}
+                            {{ $data['nominal_cair'] }}
                         </td>
                         <td>{{ $data['status']}}</td>
                         <td>{{ $data['keterangan']}}</td>
@@ -91,7 +91,7 @@
                         <td>{{ $data['has_my_number'] ? 'O' : 'X' }}</td>
                         <td>{{ $data['has_kartu_keluarga'] ? 'O' : 'X' }}</td>
                         <td style='mso-number-format:"Text";'>
-                            {{ numberFormat($data['nominal_gensen_detail']) }}
+                            {{ $data['nominal_gensen_detail'] }}
                         </td>
                         @php
                             $total_amounts = explode(';', $data['remittance_total_amounts']);
