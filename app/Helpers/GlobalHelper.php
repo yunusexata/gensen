@@ -125,8 +125,17 @@ if (!function_exists('valueToImask')) {
 if (!function_exists('numberFormat')) {
     function numberFormat($number, $decimalPoin = 2)
     {
-        $decimalPoin = fmod($number, 1) !== 0.00 ? $decimalPoin : 0;
-        return number_format($number, $decimalPoin, ",", ".");
+        if ($number === null || $number === '') {
+            return '0';
+        }
+
+        $number = (float) $number;
+
+        $decimalPoin = fmod($number, 1.0) != 0.0
+            ? $decimalPoin
+            : 0;
+
+        return number_format($number, $decimalPoin, ',', '.');
     }
 }
 
