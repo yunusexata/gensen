@@ -180,7 +180,7 @@
                             </tr>
 
                             <tr wire:key="data-collapse-{{$item['id']}}"
-                            class="hover:bg-surface-container-low transition-colors group">
+                            class="hover:bg-surface-container-low transition-colors group {{ ($editingRowId && $editingRowId == $item['id']) ? '' : 'd-none' }}">
                                 <td colspan="10" class="p-0 border-0">
 
                                     <div id="collapse-{{ $item['id'] }}" class="collapse" wire:ignore.self>
