@@ -125,7 +125,7 @@
                         <td>{{ $data['has_my_number'] ? 'O' : 'X' }}</td>
                         <td>{{ $data['has_kartu_keluarga'] ? 'O' : 'X' }}</td>
 
-                        <td style='mso-number-format:"\#\.\#\#0";'>
+                        <td>
                             {{ $data['nominal_gensen_detail'] }}
                         </td>
                         @php
@@ -141,7 +141,7 @@
                             {{ $name }},
                         @endforeach</td>
                         <td>{{ $data['tanggal_cair'] ? Carbon\Carbon::parse($data['tanggal_cair'])->format('Ymd') : '' }}</td>
-                        <td style='mso-number-format:"\#\.\#\#0";'>
+                        <td>
                             {{ $data['nominal_cair'] }}
                         </td>
                         <td>{{ $data['tanggal_tarik_data_detail'] }}</td>
