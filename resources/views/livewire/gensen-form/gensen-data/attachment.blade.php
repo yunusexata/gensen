@@ -66,6 +66,7 @@
                 </a>
             </li>
         </ul>
+        @if ($isCanDelete)
         <!-- Sticky Global Action Area -->
          <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-outline-variant py-md">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-md">
@@ -76,14 +77,14 @@
                   </div>
                </div>
                
-                @if ($isCanDelete)
                <div class="flex items-center gap-md">
+                   
                   <button type="button" wire:click="submitChange" class="bg-primary-container hover:bg-primary-fixed-dim text-on-primary-fixed-variant px-xl py-sm rounded-xl font-semibold shadow-sm transition-all active:scale-95 flex items-center gap-sm">
                   <span class="material-symbols-outlined text-[20px]">save</span>
                   Save And Merge Documents
                   </button>
+                  
                </div>
-               @endif
                {{-- <div class="flex items-center gap-md">
                   <button type="button" wire:click="submitMergeJob" class="bg-success-container hover:bg-success-fixed-dim text-on-success-fixed-variant px-xl py-sm rounded-xl font-semibold shadow-sm transition-all active:scale-95 flex items-center gap-sm">
                   <span class="material-symbols-outlined text-[20px]">photo_auto_merge</span>
@@ -92,6 +93,7 @@
                </div> --}}
             </div>
          </header>
+         @endif
         <div class="tab-content" id="myTabContent">
             
             <div class="tab-pane fade active show" id="kt_vtab_pane_2" role="tabpanel" wire:ignore.self>
