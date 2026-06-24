@@ -96,7 +96,7 @@
          @endif
         <div class="tab-content" id="myTabContent">
             
-            <div class="tab-pane fade active show" id="kt_vtab_pane_2" role="tabpanel" wire:ignore.self>
+            <div class="tab-pane fade active show border border-danger" id="kt_vtab_pane_2" role="tabpanel" wire:ignore.self>
                 <!-- Main Workspace Container -->
                 <main class="min-h-screen pb-xl rounded-lg">
                     
