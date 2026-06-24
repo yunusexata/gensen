@@ -110,7 +110,7 @@
                                     <h2 class="font-h2 text-body-lg text-on-surface">Kertas Gensen</h2>
                                 </div>
                             </div>
-                            {{-- @if ($isCanDelete) --}}
+                            @if ($isCanDelete)
                                 <!-- Upload Zone -->
                                 <div
                                     x-data="{
@@ -154,7 +154,7 @@
                                         accept="application/pdf, image/jpeg, image/png"
                                         class="position-absolute invisible" />
                                 </div>
-                            {{-- @endif --}}
+                            @endif
                             <!-- File Previews -->
                             <div class="grid grid-cols-2 gap-sm">
                                 @if ($kertas_gensen)
@@ -268,9 +268,6 @@
                                                             <span class="material-symbols-outlined text-xl">wand_stars</span>
                                                         </button>
                                                     @endif
-                                                @endif
-                                                
-                                                @if ($isCanDelete)
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
                                                         type="button"
@@ -480,8 +477,8 @@
                                                             >
                                                                 <span class="material-symbols-outlined text-xl">delete</span>
                                                             </button>
+                                                            @endif
                                                         </div>
-                                                    @endif
                                                         {{-- Iframe Full Preview --}}
                                                         <div style="position:absolute; left:-9999px; top:-9999px;">
                                                             <iframe
