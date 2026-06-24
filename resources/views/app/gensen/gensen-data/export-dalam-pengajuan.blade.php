@@ -125,19 +125,25 @@
                         <td>{{ $data['has_my_number'] ? 'O' : 'X' }}</td>
                         <td>{{ $data['has_kartu_keluarga'] ? 'O' : 'X' }}</td>
 
-                        <td>'{{ numberFormat($data['nominal_gensen_detail']) }}</td>
+                        <td style='mso-number-format:"Text";'>
+                            {{ numberFormat($data['nominal_gensen_detail']) }}
+                        </td>
                         @php
                             $total_amounts = explode(';', $data['remittance_total_amounts']);
                             $receiver_names = explode(';', $data['remittance_receiver_names']);
                         @endphp
-                        <td>@foreach ($total_amounts as $total)
-                            {{ numberFormat($total) }}/
-                        @endforeach</td>
+                        <td style='mso-number-format:"Text";'>
+                            @foreach ($total_amounts as $total)
+                                {{ numberFormat($total) }}/
+                            @endforeach
+                        </td>
                         <td>@foreach ($receiver_names as $name)
                             {{ $name }},
                         @endforeach</td>
                         <td>{{ $data['tanggal_cair'] ? Carbon\Carbon::parse($data['tanggal_cair'])->format('Ymd') : '' }}</td>
-                        <td>'{{ numberFormat($data['nominal_cair']) }}</td>
+                        <td style='mso-number-format:"Text";'>
+                            {{ numberFormat($data['nominal_cair']) }}
+                        </td>
                         <td>{{ $data['tanggal_tarik_data_detail'] }}</td>
                         <td>{{ $data['label_detail'] }}</td>
                     </tr>
