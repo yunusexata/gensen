@@ -108,7 +108,7 @@
                                     <h2 class="font-h2 text-body-lg text-on-surface">Kertas Gensen</h2>
                                 </div>
                             </div>
-                            @if ($isCanDelete)
+                            {{-- @if ($isCanDelete) --}}
                                 <!-- Upload Zone -->
                                 <div
                                     x-data="{
@@ -152,7 +152,7 @@
                                         accept="application/pdf, image/jpeg, image/png"
                                         class="position-absolute invisible" />
                                 </div>
-                            @endif
+                            {{-- @endif --}}
                             <!-- File Previews -->
                             <div class="grid grid-cols-2 gap-sm">
                                 @if ($kertas_gensen)
