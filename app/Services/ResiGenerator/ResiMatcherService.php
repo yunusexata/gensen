@@ -9,7 +9,10 @@ class ResiMatcherService
 {
     public function matchByConfidenceScore($resiGenerator)
     {
-        $unmatchedDetails = $resiGenerator->details()->get();
+        $unmatchedDetails = $resiGenerator->details()
+            ->where('is_matched', false)
+            ->whereNull('resi_generator_email_id')
+            ->get();
 
         $availableEmails = $resiGenerator->emails()->get();
 

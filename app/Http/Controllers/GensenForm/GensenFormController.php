@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Gensen\GensenExportImportHistory;
 use App\Models\GensenForm\GensenFormAttachment;
 use App\Models\GensenForm\GensenFormLink;
+use App\Models\User;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -118,7 +119,11 @@ class GensenFormController extends Controller
         ])->get($url);
 
         if ($attachment->type === GensenAttachmentType::SELURUH_BERKAS) {
-            $filename = "G " . $attachment->gensenForm->nama_lengkap . " " . Carbon::parse($attachment->gensenForm->tanggal_lahir)->format('Ymd') . "." . $attachment->extension;
+            if (auth()->user()->hasRole(User::ROLE_ADMIN_JAPAN)) {
+                $filename = $attachment->gensenForm->no_input_jepang . " " . $attachment->gensenForm->nama_lengkap . "." . $attachment->extension;
+            } else {
+                $filename = "G " . $attachment->gensenForm->nama_lengkap . " " . Carbon::parse($attachment->gensenForm->tanggal_lahir)->format('Ymd') . "." . $attachment->extension;
+            }
         } else {
             $filename = $attachment->original_name;
         }

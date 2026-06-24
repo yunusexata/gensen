@@ -56,19 +56,57 @@ class ResiGeneratorService
                             break;
                     }
                 }
-                $logoPath = 'data:image/png;base64,' .
+                $logoPathBNI = 'data:image/png;base64,' .
                     base64_encode(
                         file_get_contents(
                             public_path('images/resi-generator/logo_bni.png')
+                        )
+                    );
+                $headerPathBRI = 'data:image/png;base64,' .
+                    base64_encode(
+                        file_get_contents(
+                            public_path('images/resi-generator/bri_header.png')
+                        )
+                    );
+                $header2PathBRI = 'data:image/png;base64,' .
+                    base64_encode(
+                        file_get_contents(
+                            public_path('images/resi-generator/bri_header2.png')
+                        )
+                    );
+                $footerPathBRI = 'data:image/png;base64,' .
+                    base64_encode(
+                        file_get_contents(
+                            public_path('images/resi-generator/bri_footer.png')
                         )
                     );
                 foreach ($allEmails as $email) {
                     if ($model->bank == ResiGenerator::BANK_BNI) {
                         $updatedHtmlBody = str_ireplace(
                             'src="CID:bnilogo.png"',
-                            'src="' . $logoPath . '"',
+                            'src="' . $logoPathBNI . '"',
                             $email['html_body']
                         );
+                    } elseif ($model->bank == ResiGenerator::BANK_BRI) {
+                        $s3HeaderUrl = "https://s3.brimo.bri.co.id/ibbiz-asset/assets/email/email-header-master.png";
+                        $s3Header2Url = "https://s3.brimo.bri.co.id/ibbiz-asset/assets/email/email-header-2.png";
+                        $s3FooterUrl = "https://s3.brimo.bri.co.id/ibbiz-asset/assets/email/email-footer.png";
+                        // 1. Buat array pencarian (search)
+                        $search = [
+                            "url('$s3HeaderUrl')",
+                            "url('$s3Header2Url')",
+                            "url('$s3FooterUrl')"
+                        ];
+
+                        // 2. Buat array pengganti (replace)
+                        $replace = [
+                            "url('$headerPathBRI')",
+                            "url('$header2PathBRI')",
+                            "url('$footerPathBRI')"
+                        ];
+
+                        // 3. Lakukan replace sekaligus
+                        $updatedHtmlBody = str_replace($search, $replace, $email['html_body']);
                     } else {
                         $updatedHtmlBody = $email['html_body'];
                     }

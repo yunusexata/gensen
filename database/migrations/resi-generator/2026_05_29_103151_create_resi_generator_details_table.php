@@ -39,9 +39,9 @@ return new class extends Migration
 
         $table->unsignedBigInteger('resi_generator_id');
 
-        $table->string('nama');
-        $table->integer('nominal');
-        $table->string('rekening');
+        $table->string('nama')->nullable();
+        $table->integer('nominal')->nullable();
+        $table->string('rekening')->nullable();
         $table->string('bank');
 
         $table->boolean('is_matched')->default(false);

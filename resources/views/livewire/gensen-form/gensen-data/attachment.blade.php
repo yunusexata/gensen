@@ -35,6 +35,7 @@
                 </a>
             </li>
 
+            @if ($isCanDelete)
             <li class="nav-item mx-auto mb-md-2 md:w-[22%]" role="presentation">
                 <a class="nav-link m-0 btn btn-flex btn-warning text-dark btn-active-light-warning w-full" data-bs-toggle="tab" href="#kt_vtab_pane_1" aria-selected="true" role="tab">
                     <div class="d-flex w-full flex-column align-items-center">
@@ -43,8 +44,10 @@
                     </div>
                 </a>
             </li>
+            @endif
             
             
+            @if ($isCanDelete)  
             <li class="nav-item mx-auto mb-md-2 md:w-[22%]" role="presentation">
                 <a class="nav-link m-0 btn btn-flex btn-success text-dark btn-active-light-success w-full" data-bs-toggle="tab" href="#kt_vtab_pane_3" aria-selected="false" role="tab">
                     <div class="d-flex w-full flex-column align-items-center">
@@ -53,6 +56,7 @@
                     </div>
                 </a>
             </li>
+            @endif
             <li class="nav-item mx-auto mb-md-2 md:w-[22%]" role="presentation">
                 <a class="nav-link m-0 btn btn-flex btn-primary text-dark btn-active-light-primary w-full active:text-black" data-bs-toggle="tab" href="#kt_vtab_pane_4" aria-selected="false" role="tab">
                     <div class="d-flex w-full flex-column align-items-center">
@@ -71,12 +75,15 @@
                      <span class="bg-primary-container text-on-primary-container px-sm py-xs rounded text-label-caps uppercase tracking-wider">Workspace</span>
                   </div>
                </div>
+               
+                @if ($isCanDelete)
                <div class="flex items-center gap-md">
                   <button type="button" wire:click="submitChange" class="bg-primary-container hover:bg-primary-fixed-dim text-on-primary-fixed-variant px-xl py-sm rounded-xl font-semibold shadow-sm transition-all active:scale-95 flex items-center gap-sm">
                   <span class="material-symbols-outlined text-[20px]">save</span>
                   Save And Merge Documents
                   </button>
                </div>
+               @endif
                {{-- <div class="flex items-center gap-md">
                   <button type="button" wire:click="submitMergeJob" class="bg-success-container hover:bg-success-fixed-dim text-on-success-fixed-variant px-xl py-sm rounded-xl font-semibold shadow-sm transition-all active:scale-95 flex items-center gap-sm">
                   <span class="material-symbols-outlined text-[20px]">photo_auto_merge</span>
@@ -101,49 +108,51 @@
                                     <h2 class="font-h2 text-body-lg text-on-surface">Kertas Gensen</h2>
                                 </div>
                             </div>
-                            <!-- Upload Zone -->
-                            <div
-                                x-data="{
-                                    isDragging: false,
-                                    handleDrop(event) {
-                                    {{-- Multi --}}
-                                    const files = event.dataTransfer.files;
-                                    if (files.length) {
-                                    const dataTransfer = new DataTransfer();
-                                    [...files].forEach(file => {
-                                    dataTransfer.items.add(file);
-                                    });
-                                    $refs.input.files = dataTransfer.files;
-                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                    }
-                                    this.isDragging = false;
-                                    },
-                                    handleFiles(event) {
-                                    const file = event.target.files[0];
-                                    return;
-                                    // Optional: you can limit or validate here
-                                    }
-                                }"
-                                @dragover.prevent="isDragging = true"
-                                @dragleave.prevent="isDragging = false"
-                                @drop.prevent="handleDrop($event)"
-                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                class="form-group">
-                                    <label for="kertas_gensen" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                        <span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
-                                        <div class="text-body-sm">
-                                            <span class="text-primary font-semibold">Click to upload</span> or drag and drop
-                                        </div>
-                                    </label>
-                                    <input class="hidden validate-upload-file" id="kertas_gensen" name="kertas_gensen"
-                                    type="file"
-                                    multiple
-                                    x-ref="input"
-                                    wire:model="kertas_gensen"
-                                    {{-- @change="handleFiles" --}}
-                                    accept="application/pdf, image/jpeg, image/png"
-                                    class="position-absolute invisible" />
-                            </div>
+                            @if ($isCanDelete)
+                                <!-- Upload Zone -->
+                                <div
+                                    x-data="{
+                                        isDragging: false,
+                                        handleDrop(event) {
+                                        {{-- Multi --}}
+                                        const files = event.dataTransfer.files;
+                                        if (files.length) {
+                                        const dataTransfer = new DataTransfer();
+                                        [...files].forEach(file => {
+                                        dataTransfer.items.add(file);
+                                        });
+                                        $refs.input.files = dataTransfer.files;
+                                        $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                        }
+                                        this.isDragging = false;
+                                        },
+                                        handleFiles(event) {
+                                        const file = event.target.files[0];
+                                        return;
+                                        // Optional: you can limit or validate here
+                                        }
+                                    }"
+                                    @dragover.prevent="isDragging = true"
+                                    @dragleave.prevent="isDragging = false"
+                                    @drop.prevent="handleDrop($event)"
+                                    :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                    class="form-group">
+                                        <label for="kertas_gensen" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                            <span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
+                                            <div class="text-body-sm">
+                                                <span class="text-primary font-semibold">Click to upload</span> or drag and drop
+                                            </div>
+                                        </label>
+                                        <input class="hidden validate-upload-file" id="kertas_gensen" name="kertas_gensen"
+                                        type="file"
+                                        multiple
+                                        x-ref="input"
+                                        wire:model="kertas_gensen"
+                                        {{-- @change="handleFiles" --}}
+                                        accept="application/pdf, image/jpeg, image/png"
+                                        class="position-absolute invisible" />
+                                </div>
+                            @endif
                             <!-- File Previews -->
                             <div class="grid grid-cols-2 gap-sm">
                                 @if ($kertas_gensen)
@@ -214,6 +223,7 @@
                                                     <!-- Tag A (Download) -->
                                                   
 
+                                                @if ($isCanDelete)
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
                                                         type="button"
@@ -222,6 +232,7 @@
                                                     >
                                                         <span class="material-symbols-outlined text-xl">delete</span>
                                                     </button>
+                                                @endif
                                                     
                                                     <button 
                                                         type="button"
@@ -243,6 +254,8 @@
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
                                                     <!-- Tag A (Convert To Image) -->
+                                                    
+                                                @if ($isCanDelete)
                                                     @if (!$item['convert_image'])
                                                         
                                                         <button 
@@ -253,7 +266,9 @@
                                                             <span class="material-symbols-outlined text-xl">wand_stars</span>
                                                         </button>
                                                     @endif
+                                                @endif
                                                 
+                                                @if ($isCanDelete)
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
                                                         type="button"
@@ -262,7 +277,7 @@
                                                     >
                                                         <span class="material-symbols-outlined text-xl">delete</span>
                                                     </button>
-                                                    
+                                                @endif 
                                                     <button 
                                                         type="button"
                                                         class="inline-flex items-center justify-center p-1 bg-white hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
@@ -390,10 +405,13 @@
                                         </div>
                                     @endforeach
                                 @endif
-                                <button type="button" wire:click="addRekapPengirimanUang" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                    <span class="material-symbols-outlined text-primary text-3xl">add_circle</span>
-                                    <div class="text-body-sm">Add files</div>
-                                </button>
+                                
+                                @if ($isCanDelete)
+                                    <button type="button" wire:click="addRekapPengirimanUang" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                        <span class="material-symbols-outlined text-primary text-3xl">add_circle</span>
+                                        <div class="text-body-sm">Add files</div>
+                                    </button>
+                                @endif
                                 @if ($rekap_pengiriman_uang_old)
                                     <div class="grid grid-cols-2 gap-sm">
                                         @foreach ($rekap_pengiriman_uang_old['groups'] as $group_index => $group)
@@ -419,6 +437,7 @@
                                                             <!-- Tag A (Download) -->
                                                         
 
+                                                        @if ($isCanDelete)
                                                             <!-- Tag Button (Delete) -->
                                                             <button 
                                                                 type="button"
@@ -427,6 +446,7 @@
                                                             >
                                                                 <span class="material-symbols-outlined text-xl">delete</span>
                                                             </button>
+                                                        @endif
                                                             <button 
                                                                 type="button"
                                                                 class="inline-flex items-center justify-center p-1 bg-white hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
@@ -447,7 +467,9 @@
                                                         <!-- Actions -->
                                                         <div class="absolute top-1 right-1 z-10">
                                                             <!-- Tag A (Download) -->
-                                                         
+                                                        
+                                                            
+                                                        @if ($isCanDelete)
                                                             <!-- Tag Button (Delete) -->
                                                             <button 
                                                                 type="button"
@@ -457,6 +479,7 @@
                                                                 <span class="material-symbols-outlined text-xl">delete</span>
                                                             </button>
                                                         </div>
+                                                    @endif
                                                         {{-- Iframe Full Preview --}}
                                                         <div style="position:absolute; left:-9999px; top:-9999px;">
                                                             <iframe
@@ -494,6 +517,8 @@
                                     <h2 class="font-h2 text-body-lg text-on-surface">Kartu Keluarga</h2>
                                 </div>
                             </div>
+                            
+                            @if ($isCanDelete)
                             <!-- Upload Zone -->
                             <div
                                 x-data="{
@@ -537,6 +562,7 @@
                                     accept="application/pdf, image/jpeg, image/png"
                                     class="position-absolute invisible" />
                             </div>
+                            @endif
                             <!-- File Previews -->
                             <div class="grid grid-cols-2 gap-sm">
                                 @if ($kartu_keluarga)
@@ -618,6 +644,7 @@
                                                     <!-- Tag A (Download) -->
                                                    
 
+                                                @if ($isCanDelete)
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
                                                         type="button"
@@ -626,6 +653,7 @@
                                                     >
                                                         <span class="material-symbols-outlined text-xl">delete</span>
                                                     </button>
+                                                @endif
                                                     <button 
                                                         type="button"
                                                         class="inline-flex items-center justify-center p-1 bg-white hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
@@ -645,6 +673,8 @@
                                                 </a>       
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
+                                                    
+                                                @if ($isCanDelete)
                                                    <!-- Tag A (Convert To Image) -->
                                                    @if (!$item['convert_image'])
                                                         <button 
@@ -664,6 +694,7 @@
                                                     >
                                                         <span class="material-symbols-outlined text-xl">delete</span>
                                                     </button>
+                                                @endif
                                                     
                                                     <button 
                                                         type="button"
@@ -713,7 +744,8 @@
                                                 <div class="absolute top-1 right-1 z-10">
                                                    <!-- Tag A (Download) -->
                                                   
-
+                                                
+                                                @if ($isCanDelete)
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
                                                         type="button"
@@ -722,6 +754,7 @@
                                                     >
                                                         <span class="material-symbols-outlined text-xl">delete</span>
                                                     </button>
+                                                @endif
                                                 </div>
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$zairyou_card_front_old['url']}}"/>
                                             </div>
@@ -748,44 +781,47 @@
                                             </div>
                                         @endif
                                     @else
-                                        <div
-                                            x-data="{
-                                                isDragging: false,
-                                                handleDrop(event) {
-                                                const file = event.dataTransfer.files[0]; // Only take the first file
-                                                if (file) {
-                                                const dataTransfer = new DataTransfer();
-                                                dataTransfer.items.add(file);
-                                                $refs.input.files = dataTransfer.files;
-                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-                                                this.isDragging = false;
-                                                },
-                                                handleFiles(event) {
-                                                const file = event.target.files[0];
-                                                // Optional: you can limit or validate here
-                                                }
-                                            }"
-                                            @dragover.prevent="isDragging = true"
-                                            @dragleave.prevent="isDragging = false"
-                                            @drop.prevent="handleDrop($event)"
-                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                            class="form-group">
-                                                <label for="zairyou_card_front" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
-                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
-                                                </label>
-                                                {{-- <label for="zairyou_card_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                    
+                                        @if ($isCanDelete)
+                                            <div
+                                                x-data="{
+                                                    isDragging: false,
+                                                    handleDrop(event) {
+                                                    const file = event.dataTransfer.files[0]; // Only take the first file
+                                                    if (file) {
+                                                    const dataTransfer = new DataTransfer();
+                                                    dataTransfer.items.add(file);
+                                                    $refs.input.files = dataTransfer.files;
+                                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                    }
+                                                    this.isDragging = false;
+                                                    },
+                                                    handleFiles(event) {
+                                                    const file = event.target.files[0];
+                                                    // Optional: you can limit or validate here
+                                                    }
+                                                }"
+                                                @dragover.prevent="isDragging = true"
+                                                @dragleave.prevent="isDragging = false"
+                                                @drop.prevent="handleDrop($event)"
+                                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                                class="form-group">
+                                                    <label for="zairyou_card_front" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+                                                        <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
+                                                    </label>
+                                                    {{-- <label for="zairyou_card_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                                        
+                                                    </label> --}}
+                                                <input class="hidden validate-upload-file" id="zairyou_card_front" name="zairyou_card_front"
+                                                    type="file"
+                                                    x-ref="input"
+                                                    {{-- wire:model="zairyou_card_front" --}}
+                                                    {{-- @change="handleFiles" --}}
+                                                    accept="application/pdf, image/jpeg, image/png"
+                                                    class="position-absolute invisible" />
                                                     
-                                                </label> --}}
-                                            <input class="hidden validate-upload-file" id="zairyou_card_front" name="zairyou_card_front"
-                                                type="file"
-                                                x-ref="input"
-                                                {{-- wire:model="zairyou_card_front" --}}
-                                                {{-- @change="handleFiles" --}}
-                                                accept="application/pdf, image/jpeg, image/png"
-                                                class="position-absolute invisible" />
-                                                
-                                        </div>
+                                            </div>
+                                        @endif
                                     @endif
                                 </div>
                                 <div class="flex flex-col gap-xs">
@@ -798,6 +834,7 @@
                                                     <!-- Tag A (Download) -->
                                                  
 
+                                                @if ($isCanDelete)
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
                                                         type="button"
@@ -806,6 +843,8 @@
                                                     >
                                                         <span class="material-symbols-outlined text-xl">delete</span>
                                                     </button>
+                                                    
+                                                @endif
                                                 </div>
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$zairyou_card_back_old['url']}}"/>
                                             </div>
@@ -832,43 +871,46 @@
                                             </div>
                                         @endif
                                     @else
-                                        <div
-                                            x-data="{
-                                                isDragging: false,
-                                                handleDrop(event) {
-                                                const file = event.dataTransfer.files[0]; // Only take the first file
-                                                if (file) {
-                                                const dataTransfer = new DataTransfer();
-                                                dataTransfer.items.add(file);
-                                                $refs.input.files = dataTransfer.files;
-                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-                                                this.isDragging = false;
-                                                },
-                                                handleFiles(event) {
-                                                const file = event.target.files[0];
-                                                // Optional: you can limit or validate here
-                                                }
-                                            }"
-                                            @dragover.prevent="isDragging = true"
-                                            @dragleave.prevent="isDragging = false"
-                                            @drop.prevent="handleDrop($event)"
-                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                            class="form-group">
-                                                <label for="zairyou_card_back" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
-                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
-                                                </label>
-                                                {{-- <label for="zairyou_card_back" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                                    
-                                                </label> --}}
-                                            <input class="hidden validate-upload-file" id="zairyou_card_back" name="zairyou_card_back"
-                                                type="file"
-                                                x-ref="input"
-                                                {{-- wire:model="zairyou_card_back" --}}
-                                                {{-- @change="handleFiles" --}}
-                                                accept="application/pdf, image/jpeg, image/png"
-                                                class="position-absolute invisible" />
-                                        </div>
+                                    
+                                        @if ($isCanDelete)
+                                            <div
+                                                x-data="{
+                                                    isDragging: false,
+                                                    handleDrop(event) {
+                                                    const file = event.dataTransfer.files[0]; // Only take the first file
+                                                    if (file) {
+                                                    const dataTransfer = new DataTransfer();
+                                                    dataTransfer.items.add(file);
+                                                    $refs.input.files = dataTransfer.files;
+                                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                    }
+                                                    this.isDragging = false;
+                                                    },
+                                                    handleFiles(event) {
+                                                    const file = event.target.files[0];
+                                                    // Optional: you can limit or validate here
+                                                    }
+                                                }"
+                                                @dragover.prevent="isDragging = true"
+                                                @dragleave.prevent="isDragging = false"
+                                                @drop.prevent="handleDrop($event)"
+                                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                                class="form-group">
+                                                    <label for="zairyou_card_back" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+                                                        <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
+                                                    </label>
+                                                    {{-- <label for="zairyou_card_back" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                                        
+                                                    </label> --}}
+                                                <input class="hidden validate-upload-file" id="zairyou_card_back" name="zairyou_card_back"
+                                                    type="file"
+                                                    x-ref="input"
+                                                    {{-- wire:model="zairyou_card_back" --}}
+                                                    {{-- @change="handleFiles" --}}
+                                                    accept="application/pdf, image/jpeg, image/png"
+                                                    class="position-absolute invisible" />
+                                            </div>
+                                        @endif
                                     @endif
                                 </div>
                             </div>
@@ -891,6 +933,7 @@
                                                     <!-- Tag A (Download) -->
                                                   
 
+                                                @if ($isCanDelete)
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
                                                         type="button"
@@ -899,6 +942,7 @@
                                                     >
                                                         <span class="material-symbols-outlined text-xl">delete</span>
                                                     </button>
+                                                @endif
                                                 </div>
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$my_number_front_old['url']}}"/>
                                             </div>
@@ -929,43 +973,46 @@
                                             </div>
                                         @endif
                                     @else
-                                        <div
-                                            x-data="{
-                                                isDragging: false,
-                                                handleDrop(event) {
-                                                const file = event.dataTransfer.files[0]; // Only take the first file
-                                                if (file) {
-                                                const dataTransfer = new DataTransfer();
-                                                dataTransfer.items.add(file);
-                                                $refs.input.files = dataTransfer.files;
-                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-                                                this.isDragging = false;
-                                                },
-                                                handleFiles(event) {
-                                                const file = event.target.files[0];
-                                                // Optional: you can limit or validate here
-                                                }
-                                            }"
-                                            @dragover.prevent="isDragging = true"
-                                            @dragleave.prevent="isDragging = false"
-                                            @drop.prevent="handleDrop($event)"
-                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                            class="form-group">
-                                                <label for="my_number_front" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
-                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
-                                                </label>
-                                                {{-- <label for="my_number_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                                    
-                                                </label> --}}
-                                            <input class="hidden validate-upload-file" id="my_number_front" name="my_number_front"
-                                                type="file"
-                                                x-ref="input"
-                                                {{-- wire:model="my_number_front" --}}
-                                                {{-- @change="handleFiles" --}}
-                                                accept="application/pdf, image/jpeg, image/png"
-                                                class="position-absolute invisible" />
-                                        </div>
+                                    
+                                        @if ($isCanDelete)
+                                            <div
+                                                x-data="{
+                                                    isDragging: false,
+                                                    handleDrop(event) {
+                                                    const file = event.dataTransfer.files[0]; // Only take the first file
+                                                    if (file) {
+                                                    const dataTransfer = new DataTransfer();
+                                                    dataTransfer.items.add(file);
+                                                    $refs.input.files = dataTransfer.files;
+                                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                    }
+                                                    this.isDragging = false;
+                                                    },
+                                                    handleFiles(event) {
+                                                    const file = event.target.files[0];
+                                                    // Optional: you can limit or validate here
+                                                    }
+                                                }"
+                                                @dragover.prevent="isDragging = true"
+                                                @dragleave.prevent="isDragging = false"
+                                                @drop.prevent="handleDrop($event)"
+                                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                                class="form-group">
+                                                    <label for="my_number_front" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+                                                        <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
+                                                    </label>
+                                                    {{-- <label for="my_number_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                                        
+                                                    </label> --}}
+                                                <input class="hidden validate-upload-file" id="my_number_front" name="my_number_front"
+                                                    type="file"
+                                                    x-ref="input"
+                                                    {{-- wire:model="my_number_front" --}}
+                                                    {{-- @change="handleFiles" --}}
+                                                    accept="application/pdf, image/jpeg, image/png"
+                                                    class="position-absolute invisible" />
+                                            </div>
+                                        @endif
                                     @endif
                                 </div>
                                 <div class="flex flex-col gap-xs">
@@ -978,14 +1025,16 @@
                                                     <!-- Tag A (Download) -->
                                                  
 
-                                                    <!-- Tag Button (Delete) -->
-                                                    <button 
-                                                        type="button"
-                                                        wire:click.stop="showDialogDeleteFile('{{ $my_number_back_old['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::MY_NUMBER_BACK }}')"
-                                                        class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
-                                                    >
-                                                        <span class="material-symbols-outlined text-xl">delete</span>
-                                                    </button>
+                                                    @if ($isCanDelete)
+                                                        <!-- Tag Button (Delete) -->
+                                                        <button 
+                                                            type="button"
+                                                            wire:click.stop="showDialogDeleteFile('{{ $my_number_back_old['id'] }}', '{{ App\Enums\Gensen\GensenAttachmentType::MY_NUMBER_BACK }}')"
+                                                            class="inline-flex items-center justify-center p-1 bg-white/80 hover:bg-error/10 text-error rounded h-8 w-8 transition-colors"
+                                                        >
+                                                            <span class="material-symbols-outlined text-xl">delete</span>
+                                                        </button>
+                                                    @endif
                                                 </div>
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$my_number_back_old['url']}}"/>
                                             </div>
@@ -1012,43 +1061,46 @@
                                             </div>
                                         @endif
                                     @else
-                                        <div
-                                            x-data="{
-                                                isDragging: false,
-                                                handleDrop(event) {
-                                                const file = event.dataTransfer.files[0]; // Only take the first file
-                                                if (file) {
-                                                const dataTransfer = new DataTransfer();
-                                                dataTransfer.items.add(file);
-                                                $refs.input.files = dataTransfer.files;
-                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-                                                this.isDragging = false;
-                                                },
-                                                handleFiles(event) {
-                                                const file = event.target.files[0];
-                                                // Optional: you can limit or validate here
-                                                }
-                                            }"
-                                            @dragover.prevent="isDragging = true"
-                                            @dragleave.prevent="isDragging = false"
-                                            @drop.prevent="handleDrop($event)"
-                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                            class="form-group">
-                                                <label for="my_number_back" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
-                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
-                                                </label>
-                                                {{-- <label for="my_number_back" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                                    
-                                                </label> --}}
-                                            <input class="hidden validate-upload-file" id="my_number_back" name="my_number_back"
-                                                type="file"
-                                                x-ref="input"
-                                                {{-- wire:model="my_number_back" --}}
-                                                {{-- @change="handleFiles" --}}
-                                                accept="application/pdf, image/jpeg, image/png"
-                                                class="position-absolute invisible" />
-                                        </div>
+                                    
+                                        @if ($isCanDelete)
+                                            <div
+                                                x-data="{
+                                                    isDragging: false,
+                                                    handleDrop(event) {
+                                                    const file = event.dataTransfer.files[0]; // Only take the first file
+                                                    if (file) {
+                                                    const dataTransfer = new DataTransfer();
+                                                    dataTransfer.items.add(file);
+                                                    $refs.input.files = dataTransfer.files;
+                                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                    }
+                                                    this.isDragging = false;
+                                                    },
+                                                    handleFiles(event) {
+                                                    const file = event.target.files[0];
+                                                    // Optional: you can limit or validate here
+                                                    }
+                                                }"
+                                                @dragover.prevent="isDragging = true"
+                                                @dragleave.prevent="isDragging = false"
+                                                @drop.prevent="handleDrop($event)"
+                                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                                class="form-group">
+                                                    <label for="my_number_back" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+                                                        <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
+                                                    </label>
+                                                    {{-- <label for="my_number_back" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                                        
+                                                    </label> --}}
+                                                <input class="hidden validate-upload-file" id="my_number_back" name="my_number_back"
+                                                    type="file"
+                                                    x-ref="input"
+                                                    {{-- wire:model="my_number_back" --}}
+                                                    {{-- @change="handleFiles" --}}
+                                                    accept="application/pdf, image/jpeg, image/png"
+                                                    class="position-absolute invisible" />
+                                            </div>
+                                        @endif
                                     @endif
                                 </div>
                             </div>
@@ -1068,6 +1120,7 @@
                                                 <div class="absolute top-1 right-1 z-10">
                                                     <!-- Tag A (Download) -->
                                                    
+                                                @if ($isCanDelete)
                                                     <!-- Tag Button (Delete) -->
                                                     <button 
                                                         type="button"
@@ -1076,6 +1129,7 @@
                                                     >
                                                         <span class="material-symbols-outlined text-xl">delete</span>
                                                     </button>
+                                                @endif
                                                 </div>
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$rekening_indonesia_old['url']}}"/>
                                             </div>
@@ -1108,43 +1162,46 @@
                                         </div>
                                         @endif
                                     @else
-                                    <div
-                                            x-data="{
-                                                isDragging: false,
-                                                handleDrop(event) {
-                                                const file = event.dataTransfer.files[0]; // Only take the first file
-                                                if (file) {
-                                                const dataTransfer = new DataTransfer();
-                                                dataTransfer.items.add(file);
-                                                $refs.input.files = dataTransfer.files;
-                                                $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-                                                this.isDragging = false;
-                                                },
-                                                handleFiles(event) {
-                                                const file = event.target.files[0];
-                                                // Optional: you can limit or validate here
-                                                }
-                                            }"
-                                            @dragover.prevent="isDragging = true"
-                                            @dragleave.prevent="isDragging = false"
-                                            @drop.prevent="handleDrop($event)"
-                                            :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
-                                            class="form-group">
-                                                <label for="rekening_indonesia" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
-                                                    <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
-                                                </label>
-                                                {{-- <label for="rekening_indonesia" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
-                                                    
-                                                </label> --}}
-                                            <input class="hidden validate-upload-file" id="rekening_indonesia" name="rekening_indonesia"
-                                                type="file"
-                                                x-ref="input"
-                                                {{-- wire:model="rekening_indonesia" --}}
-                                                {{-- @change="handleFiles" --}}
-                                                accept="image/jpeg, image/png"
-                                                class="position-absolute invisible" />
-                                        </div>
+                                    
+                                        @if ($isCanDelete)
+                                            <div
+                                                x-data="{
+                                                    isDragging: false,
+                                                    handleDrop(event) {
+                                                    const file = event.dataTransfer.files[0]; // Only take the first file
+                                                    if (file) {
+                                                    const dataTransfer = new DataTransfer();
+                                                    dataTransfer.items.add(file);
+                                                    $refs.input.files = dataTransfer.files;
+                                                    $refs.input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                    }
+                                                    this.isDragging = false;
+                                                    },
+                                                    handleFiles(event) {
+                                                    const file = event.target.files[0];
+                                                    // Optional: you can limit or validate here
+                                                    }
+                                                }"
+                                                @dragover.prevent="isDragging = true"
+                                                @dragleave.prevent="isDragging = false"
+                                                @drop.prevent="handleDrop($event)"
+                                                :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
+                                                class="form-group">
+                                                    <label for="rekening_indonesia" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+                                                        <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
+                                                    </label>
+                                                    {{-- <label for="rekening_indonesia" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
+                                                        
+                                                    </label> --}}
+                                                <input class="hidden validate-upload-file" id="rekening_indonesia" name="rekening_indonesia"
+                                                    type="file"
+                                                    x-ref="input"
+                                                    {{-- wire:model="rekening_indonesia" --}}
+                                                    {{-- @change="handleFiles" --}}
+                                                    accept="image/jpeg, image/png"
+                                                    class="position-absolute invisible" />
+                                            </div>
+                                        @endif
                                         {{-- <div class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb d-flex border-2 border-blue-300 md:w-1/2 h-full mx-auto">
                                             <div
                                                 x-data="{
@@ -1196,538 +1253,544 @@
                 </main>
                 
             </div>
-            <div class="tab-pane fade" id="kt_vtab_pane_1" role="tabpanel" wire:ignore.self>
-                
-                <main class="flex-1 flex flex-col md:flex-row bg-background overflow-hidden">
-                    <!-- Center: Image Previewer -->
-                    <section class="flex-1 p-6 md:p-12 flex flex-col h-full md:w-200">
-                        <!-- Main Preview Stage -->
-                        <div class="flex-1 bg-surface-container-lowest rounded-xl ambient-shadow p-8 flex flex-col relative overflow-hidden group">
-                            <div class="flex justify-between items-center mb-6">
-                                <div>
-                                <h2 class="text-2xl font-extrabold tracking-tight text-on-surface" id="preview_type">{{$editedData['type']}}</h2>
+            
+            @if ($isCanDelete)
+                <div class="tab-pane fade" id="kt_vtab_pane_1" role="tabpanel" wire:ignore.self>
+                    
+                    <main class="flex-1 flex flex-col md:flex-row bg-background overflow-hidden">
+                        <!-- Center: Image Previewer -->
+                        <section class="flex-1 p-6 md:p-12 flex flex-col h-full md:w-200">
+                            <!-- Main Preview Stage -->
+                            <div class="flex-1 bg-surface-container-lowest rounded-xl ambient-shadow p-8 flex flex-col relative overflow-hidden group">
+                                <div class="flex justify-between items-center mb-6">
+                                    <div>
+                                    <h2 class="text-2xl font-extrabold tracking-tight text-on-surface" id="preview_type">{{$editedData['type']}}</h2>
+                                    </div>
+                                    <button class="primary-gradient text-on-primary px-6 py-2.5 rounded-md text-sm font-bold flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+                                    <span class="material-symbols-outlined text-[18px]">download</span>
+                                    Export Image
+                                    </button>
                                 </div>
-                                <button class="primary-gradient text-on-primary px-6 py-2.5 rounded-md text-sm font-bold flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
-                                <span class="material-symbols-outlined text-[18px]">download</span>
-                                Export Image
-                                </button>
-                            </div>
-                            <div wire:ignore
-                                class="flex-1 relative rounded-xl bg-surface-container flex items-center justify-center">
+                                <div wire:ignore
+                                    class="flex-1 relative rounded-xl bg-surface-container flex items-center justify-center">
 
-                                <img
-                                    id="preview"
-                                    class="w-full object-cover"
-                                    src="{{ asset(config('template.logo_panel'))  }}"
-                                />
+                                    <img
+                                        id="preview"
+                                        class="w-full object-cover"
+                                        src="{{ asset(config('template.logo_panel'))  }}"
+                                    />
+                                </div>
+                                <!-- Bottom Controls -->
+                                <div class="mt-8 flex justify-center md:gap-12">
+                                    <button class="flex flex-col items-center gap-2 group/btn" id="rotateLeft90">
+                                        <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
+                                            <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">rotate_left</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-on-surface-variant">Rotate Left 90</span>
+                                    </button>
+                                    <button class="flex flex-col items-center gap-2 group/btn" id="rotateRight90">
+                                        <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
+                                            <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">rotate_right</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-on-surface-variant">Rotate Right 90</span>
+                                    </button>
+                                    <button class="flex flex-col items-center gap-2 group/btn" id="rotateLeft">
+                                        <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
+                                            <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">rotate_left</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-on-surface-variant">Rotate Left</span>
+                                    </button>
+                                    <button class="flex flex-col items-center gap-2 group/btn" id="rotateRight">
+                                        <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
+                                            <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">rotate_right</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-on-surface-variant">Rotate Right</span>
+                                    </button>
+                                    <button class="flex flex-col items-center gap-2 group/btn" id="cropBtn">
+                                        <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
+                                            <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">save</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-on-surface-variant">Save</span>
+                                    </button>
+                                </div>
                             </div>
-                            <!-- Bottom Controls -->
-                            <div class="mt-8 flex justify-center md:gap-12">
-                                <button class="flex flex-col items-center gap-2 group/btn" id="rotateLeft90">
-                                    <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
-                                        <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">rotate_left</span>
-                                    </div>
-                                    <span class="text-xs font-bold text-on-surface-variant">Rotate Left 90</span>
-                                </button>
-                                <button class="flex flex-col items-center gap-2 group/btn" id="rotateRight90">
-                                    <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
-                                        <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">rotate_right</span>
-                                    </div>
-                                    <span class="text-xs font-bold text-on-surface-variant">Rotate Right 90</span>
-                                </button>
-                                <button class="flex flex-col items-center gap-2 group/btn" id="rotateLeft">
-                                    <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
-                                        <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">rotate_left</span>
-                                    </div>
-                                    <span class="text-xs font-bold text-on-surface-variant">Rotate Left</span>
-                                </button>
-                                <button class="flex flex-col items-center gap-2 group/btn" id="rotateRight">
-                                    <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
-                                        <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">rotate_right</span>
-                                    </div>
-                                    <span class="text-xs font-bold text-on-surface-variant">Rotate Right</span>
-                                </button>
-                                <button class="flex flex-col items-center gap-2 group/btn" id="cropBtn">
-                                    <div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center group-hover/btn:bg-primary/10 transition-colors">
-                                        <span class="material-symbols-outlined text-on-surface-variant group-hover/btn:text-primary">save</span>
-                                    </div>
-                                    <span class="text-xs font-bold text-on-surface-variant">Save</span>
-                                </button>
+                        </section>
+                        <!-- Right: Select Image List -->
+                        <aside class="md:w-[400px] p-6 md:py-12 md:pr-12 flex flex-col h-full bg-background md:bg-transparent">
+                            <div class="mb-6">
+                                <h3 class="text-lg font-extrabold tracking-tight">Select Image</h3> 
                             </div>
-                        </div>
-                    </section>
-                    <!-- Right: Select Image List -->
-                    <aside class="md:w-[400px] p-6 md:py-12 md:pr-12 flex flex-col h-full bg-background md:bg-transparent">
-                        <div class="mb-6">
-                            <h3 class="text-lg font-extrabold tracking-tight">Select Image</h3> 
-                        </div>
-                        <div class="flex-1 overflow-y-auto max-h-[50vh] space-y-4 pr-2 custom-scrollbar row d-flex justify-content-between">
-                            
-                            {{-- Kertas Gensen --}}
-                            <div class="row">
-                                <h3 class="fw-bold text-center">Kertas Gensen</h3>
+                            <div class="flex-1 overflow-y-auto max-h-[50vh] space-y-4 pr-2 custom-scrollbar row d-flex justify-content-between">
                                 
-                                @if (!empty($kertas_gensen_old && $kertas_gensen_old['groups']))
-                                    @foreach ($kertas_gensen_old['groups'][0]['files'] as $index => $item)
-                                        {{-- {!! $kertas_gensen_old_note[$index] !!} --}}
-                                        @if($item['isImage'] ?? 0)
-                                            <div class="col-md-6 mt-5">
-                                                <!-- Thumbnail Item 2 -->
-                                                <div class="relative group cursor-pointer active:scale-95 transition-all">
-                                                    <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
-                                                            <div class="col-auto"> 
-                                                            {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$zairyou_card_front_old['filename']}}</span> --}}
-                                                            {!!$item['printStatus']!!}
+                                {{-- Kertas Gensen --}}
+                                <div class="row">
+                                    <h3 class="fw-bold text-center">Kertas Gensen</h3>
+                                    
+                                    @if (!empty($kertas_gensen_old && $kertas_gensen_old['groups']))
+                                        @foreach ($kertas_gensen_old['groups'][0]['files'] as $index => $item)
+                                            {{-- {!! $kertas_gensen_old_note[$index] !!} --}}
+                                            @if($item['isImage'] ?? 0)
+                                                <div class="col-md-6 mt-5">
+                                                    <!-- Thumbnail Item 2 -->
+                                                    <div class="relative group cursor-pointer active:scale-95 transition-all">
+                                                        <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
+                                                                <div class="col-auto"> 
+                                                                {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$zairyou_card_front_old['filename']}}</span> --}}
+                                                                {!!$item['printStatus']!!}
+                                                            </div>
+                                                            <div class="col-auto d-flex align-items-center">
+                                                                <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
+                                                                    wire:click="showDialogDeleteFile('{{$item['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')">
+                                                                    <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
+                                                                </button>
+                                                                
+                                                            </div>
                                                         </div>
-                                                        <div class="col-auto d-flex align-items-center">
-                                                            <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
-                                                                wire:click="showDialogDeleteFile('{{$item['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')">
-                                                                <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
-                                                            </button>
-                                                            
+                                                        <div class="{{ ($item['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
+                                                            <img class="w-full object-cover"  
+                                                            wire:click="clickFile('{{$item['id']}}', '{{$item['disk']}}', '{{$item['path']}}', '{{$item['type']?->label()}}')"
+                                                            src="{{ $item['url'] }}"/>
                                                         </div>
                                                     </div>
-                                                    <div class="{{ ($item['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
-                                                        <img class="w-full object-cover"  
-                                                        wire:click="clickFile('{{$item['id']}}', '{{$item['disk']}}', '{{$item['path']}}', '{{$item['type']?->label()}}')"
-                                                        src="{{ $item['url'] }}"/>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                    
+                                </div>
+                                {{-- Kartu Keluarga --}}
+                                <div class="row">
+                                    <h3 class="fw-bold text-center">Kartu Keluarga</h3>
+                                    
+                                    @if (!empty($kartu_keluarga_old && $kartu_keluarga_old['groups']))
+                                        @foreach ($kartu_keluarga_old['groups'][0]['files'] as $index => $item)
+                                            {{-- {!! $kartu_keluarga_old_note[$index] !!} --}}
+                                            @if($item['isImage'] ?? 0)
+                                                <div class="col-md-6 mt-5">
+                                                    <!-- Thumbnail Item 2 -->
+                                                    <div class="relative group cursor-pointer active:scale-95 transition-all">
+                                                        <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
+                                                                <div class="col-auto"> 
+                                                                {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$zairyou_card_front_old['filename']}}</span> --}}
+                                                                {!!$item['printStatus']!!}
+                                                            </div>
+                                                            <div class="col-auto d-flex align-items-center">
+                                                                <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
+                                                                    wire:click="showDialogDeleteFile('{{$item['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')">
+                                                                    <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
+                                                                </button>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class="{{ ($item['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
+                                                            <img class="w-full object-cover"  
+                                                            wire:click="clickFile('{{$item['id']}}', '{{$item['disk']}}', '{{$item['path']}}', '{{$item['type']?->label()}}')"
+                                                            src="{{ $item['url'] }}"/>
+                                                        </div>
                                                     </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                    
+                                </div>
+                            
+                                {{-- Zaryoy Card Depan --}}
+                                <div class="col-md-6 mt-5">
+                                    <h3 class="fw-bold">Zaryou Card Depan</h3>
+                                    
+                                    @if ($zairyou_card_front_old['url'])
+                                        @if (!$zairyou_card_front_old['isPdf'] && $zairyou_card_front_old['isImage'])
+                                            <!-- Thumbnail Item 2 -->
+                                            <div class="relative group cursor-pointer active:scale-95 transition-all">
+                                                <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
+                                                        <div class="col-auto"> 
+                                                        {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$zairyou_card_front_old['filename']}}</span> --}}
+                                                        {!!$zairyou_card_front_old['printStatus']!!}
+                                                    </div>
+                                                    <div class="col-auto d-flex align-items-center">
+                                                        <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
+                                                            wire:click="showDialogDeleteFile('{{$zairyou_card_front_old['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::ZAIRYOU_CARD_FRONT }}')">
+                                                            <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
+                                                        </button>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="{{ ($zairyou_card_front_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
+                                                    <img class="w-full object-cover"  
+                                                    wire:click="clickFile('{{$zairyou_card_front_old['id']}}', '{{$zairyou_card_front_old['disk']}}','{{$zairyou_card_front_old['path']}}', '{{$zairyou_card_front_old['type']?->label()}}')"
+                                                    src="{{ $zairyou_card_front_old['url'] }}"/>
                                                 </div>
                                             </div>
                                         @endif
-                                    @endforeach
-                                @endif
-                                
-                            </div>
-                            {{-- Kartu Keluarga --}}
-                            <div class="row">
-                                <h3 class="fw-bold text-center">Kartu Keluarga</h3>
-                                
-                                @if (!empty($kartu_keluarga_old && $kartu_keluarga_old['groups']))
-                                    @foreach ($kartu_keluarga_old['groups'][0]['files'] as $index => $item)
-                                        {{-- {!! $kartu_keluarga_old_note[$index] !!} --}}
-                                        @if($item['isImage'] ?? 0)
-                                            <div class="col-md-6 mt-5">
-                                                <!-- Thumbnail Item 2 -->
-                                                <div class="relative group cursor-pointer active:scale-95 transition-all">
-                                                    <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
-                                                            <div class="col-auto"> 
-                                                            {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$zairyou_card_front_old['filename']}}</span> --}}
-                                                            {!!$item['printStatus']!!}
-                                                        </div>
-                                                        <div class="col-auto d-flex align-items-center">
-                                                            <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
-                                                                wire:click="showDialogDeleteFile('{{$item['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::KERTAS_GENSEN }}')">
-                                                                <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
-                                                            </button>
-                                                            
-                                                        </div>
+                                    
+                                    @endif
+                                </div>
+                                {{-- Zairyou Card Belakang --}}
+                                <div class="col-md-6">
+                                    <h3 class="fw-bold">Zairyou Card Belakang</h3>
+                                    @if ($zairyou_card_back_old['url'])
+                                        @if (!$zairyou_card_back_old['isPdf'] && $zairyou_card_back_old['isImage'])
+                                            <!-- Thumbnail Item 2 -->
+                                            <div class="relative group cursor-pointer active:scale-95 transition-all">
+                                                <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
+                                                        <div class="col-auto"> 
+                                                        {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$zairyou_card_back_old['filename']}}</span> --}}
+                                                        {!!$zairyou_card_back_old['printStatus']!!}
                                                     </div>
-                                                    <div class="{{ ($item['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
-                                                        <img class="w-full object-cover"  
-                                                        wire:click="clickFile('{{$item['id']}}', '{{$item['disk']}}', '{{$item['path']}}', '{{$item['type']?->label()}}')"
-                                                        src="{{ $item['url'] }}"/>
+                                                    <div class="col-auto d-flex align-items-center">
+                                                        <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
+                                                            wire:click="showDialogDeleteFile('{{$zairyou_card_back_old['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::ZAIRYOU_CARD_BACK }}')">
+                                                            <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
+                                                        </button>
+                                                        
                                                     </div>
+                                                </div>
+                                                <div class="{{ ($zairyou_card_back_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
+                                                    <img class="w-full object-cover"  
+                                                    wire:click="clickFile('{{$zairyou_card_back_old['id']}}', '{{$zairyou_card_back_old['disk']}}', '{{$zairyou_card_back_old['path']}}', '{{$zairyou_card_back_old['type']?->label()}}')"
+                                                    src="{{ $zairyou_card_back_old['url'] }}"/>
                                                 </div>
                                             </div>
                                         @endif
-                                    @endforeach
-                                @endif
                                 
-                            </div>
-                           
-                            {{-- Zaryoy Card Depan --}}
-                            <div class="col-md-6 mt-5">
-                                <h3 class="fw-bold">Zaryou Card Depan</h3>
-                                
-                                @if ($zairyou_card_front_old['url'])
-                                    @if (!$zairyou_card_front_old['isPdf'] && $zairyou_card_front_old['isImage'])
-                                        <!-- Thumbnail Item 2 -->
-                                        <div class="relative group cursor-pointer active:scale-95 transition-all">
-                                            <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
-                                                    <div class="col-auto"> 
-                                                    {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$zairyou_card_front_old['filename']}}</span> --}}
-                                                    {!!$zairyou_card_front_old['printStatus']!!}
-                                                </div>
-                                                <div class="col-auto d-flex align-items-center">
-                                                    <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
-                                                        wire:click="showDialogDeleteFile('{{$zairyou_card_front_old['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::ZAIRYOU_CARD_FRONT }}')">
-                                                        <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
-                                                    </button>
-                                                    
-                                                </div>
-                                            </div>
-                                            <div class="{{ ($zairyou_card_front_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
-                                                <img class="w-full object-cover"  
-                                                wire:click="clickFile('{{$zairyou_card_front_old['id']}}', '{{$zairyou_card_front_old['disk']}}','{{$zairyou_card_front_old['path']}}', '{{$zairyou_card_front_old['type']?->label()}}')"
-                                                src="{{ $zairyou_card_front_old['url'] }}"/>
-                                            </div>
-                                        </div>
                                     @endif
-                                
-                                @endif
-                            </div>
-                            {{-- Zairyou Card Belakang --}}
-                            <div class="col-md-6">
-                                <h3 class="fw-bold">Zairyou Card Belakang</h3>
-                                @if ($zairyou_card_back_old['url'])
-                                    @if (!$zairyou_card_back_old['isPdf'] && $zairyou_card_back_old['isImage'])
-                                        <!-- Thumbnail Item 2 -->
-                                        <div class="relative group cursor-pointer active:scale-95 transition-all">
-                                            <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
-                                                    <div class="col-auto"> 
-                                                    {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$zairyou_card_back_old['filename']}}</span> --}}
-                                                    {!!$zairyou_card_back_old['printStatus']!!}
-                                                </div>
-                                                <div class="col-auto d-flex align-items-center">
-                                                    <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
-                                                        wire:click="showDialogDeleteFile('{{$zairyou_card_back_old['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::ZAIRYOU_CARD_BACK }}')">
-                                                        <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
-                                                    </button>
-                                                    
-                                                </div>
-                                            </div>
-                                            <div class="{{ ($zairyou_card_back_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
-                                                <img class="w-full object-cover"  
-                                                wire:click="clickFile('{{$zairyou_card_back_old['id']}}', '{{$zairyou_card_back_old['disk']}}', '{{$zairyou_card_back_old['path']}}', '{{$zairyou_card_back_old['type']?->label()}}')"
-                                                src="{{ $zairyou_card_back_old['url'] }}"/>
-                                            </div>
-                                        </div>
-                                    @endif
-                            
-                                @endif
-                            </div>
-                            {{-- My Number Depan --}}
-                            <div class="col-md-6">
-                                <h3 class="fw-bold">My Number Depan</h3>
-                                @if ($my_number_front_old['url'])
-                                    @if (!$my_number_front_old['isPdf'] && $my_number_front_old['isImage'])
-                                        <!-- Thumbnail Item 2 -->
-                                        <div class="relative group cursor-pointer active:scale-95 transition-all">
-                                            <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
-                                                    <div class="col-auto"> 
-                                                    {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$my_number_front_old['filename']}}</span> --}}
-                                                    {!!$my_number_front_old['printStatus']!!}
-                                                </div>
-                                                <div class="col-auto d-flex align-items-center">
-                                                    <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
-                                                        wire:click="showDialogDeleteFile('{{$my_number_front_old['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::MY_NUMBER_FRONT }}')">
-                                                        <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
-                                                    </button>
-                                                    
-                                                </div>
-                                            </div>
-                                            <div class="{{ ($my_number_front_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
-                                                <img class="w-full object-cover"  
-                                                wire:click="clickFile('{{$my_number_front_old['id']}}', '{{$my_number_front_old['disk']}}', '{{$my_number_front_old['path']}}', '{{$my_number_front_old['type']?->label()}}')"
-                                                src="{{ $my_number_front_old['url'] }}"/>
-                                            </div>
-                                        </div>
-                                    @endif
-                                
-                                @endif
-                            </div>
-                            {{-- My Number Back --}}
-                            <div class="col-md-6">
-                                <h3 class="fw-bold">My Number Belakang</h3>
-                                @if ($my_number_back_old['url'])
-                                    @if (!$my_number_back_old['isPdf'] && $my_number_back_old['isImage'])
-                                        <!-- Thumbnail Item 2 -->
-                                        <div class="relative group cursor-pointer active:scale-95 transition-all">
-                                            <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
-                                                    <div class="col-auto"> 
-                                                    {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$my_number_back_old['filename']}}</span> --}}
-                                                    {!!$my_number_back_old['printStatus']!!}
-                                                </div>
-                                                <div class="col-auto d-flex align-items-center">
-                                                    <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
-                                                        wire:click="showDialogDeleteFile('{{$my_number_back_old['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::MY_NUMBER_BACK }}')">
-                                                        <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
-                                                    </button>
-                                                    
-                                                </div>
-                                            </div>
-                                            <div class="{{ ($my_number_back_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
-                                                <img class="w-full object-cover"  
-                                                wire:click="clickFile('{{$my_number_back_old['id']}}', '{{$my_number_back_old['disk']}}', '{{$my_number_back_old['path']}}', '{{$my_number_back_old['type']?->label()}}')"
-                                                src="{{ $my_number_back_old['url'] }}"/>
-                                            </div>
-                                        </div>
-                                    @endif
-                                
-                                @endif
-                            </div>
-                            {{-- Rekening Indonesia --}}
-                            <h3 class="fw-bold">Rekening Indonesia</h3>
-                            @if ($rekening_indonesia_old['url'])
-                                @if (!$rekening_indonesia_old['isPdf'] && $rekening_indonesia_old['isImage'])
-                                    <!-- Thumbnail Item 2 -->
-                                    <div class="relative group cursor-pointer active:scale-95 transition-all">
-                                        <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
-                                                <div class="col-auto"> 
-                                                {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$rekening_indonesia_old['filename']}}</span> --}}
-                                                {!!$rekening_indonesia_old['printStatus']!!}
-                                            </div>
-                                            <div class="col-auto d-flex align-items-center">
-                                                <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
-                                                    wire:click="showDialogDeleteFile('{{$rekening_indonesia_old['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::REKENING_INDONESIA }}')">
-                                                    <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
-                                                </button>
-                                                
-                                            </div>
-                                        </div>
-                                        <div class="{{ ($rekening_indonesia_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
-                                            <img class="w-full object-cover"  
-                                            wire:click="clickFile('{{$rekening_indonesia_old['id']}}', '{{$rekening_indonesia_old['disk']}}', '{{$rekening_indonesia_old['path']}}', '{{$rekening_indonesia_old['type']?->label()}}')"
-                                            src="{{ $rekening_indonesia_old['url'] }}"/>
-                                        </div>
-                                    </div>
-                                @endif
-                            
-                            @endif
-
-                        </div>
-                        {{-- <button type="button" class="mt-6 p-4 rounded-xl bg-primary-fixed-dim rounded hover:opacity-90 transition-transform duration-300 hover:scale-105" wire:click="submitChange">
-                            <div class="flex items-center gap-3 justify-center">
-                                <span class="material-symbols-outlined text-white">save</span>
-                                <span class="text-[25px] font-bold text-on-tertiary">Submit Change</span>
-                            </div>
-                        </button> --}}
-                    </aside>
-                </main>
-            </div>
-            <div class="tab-pane fade" id="kt_vtab_pane_3" role="tabpanel" wire:ignore.self>
-                <!-- Main Content Area: Split Pane Layout -->
-                @if ($onload)
-                    <main class="w-full max-w-container-max mx-auto flex flex-row border overflow-hidden p-0">
-                        <!-- Left Column: Validation Form (approx 40% based on guidance, though prompt asked for 30%. Defaulting to system guidance of 40% for right pane but prompt asked left. I will use 35/65 split to balance) -->
-                        <section class="w-[35%] p-5 flex flex-col h-full bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
-                            <div class="row">
-                                <button type="button" class="btn btn-primary w-full" wire:click="addGensenFormDetail">Tambah Gensen</button>
-                            </div>
-                            <div class="row my-3 d-flex">
-                                @foreach ($tahun_gensen_details as $index_tahun_gensen => $tahun_gensen_detail)
-                                    <div class="my-2 d-flex justify-content-between w-full" wire:key="tahun_gensen_details_{{ $tahun_gensen_detail['id'] ? $tahun_gensen_detail['id'] : $tahun_gensen_detail['key'] }}">
-                                        <div class="col-md-4">
-                                            <select wire:model="tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen"
-                                                name="tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen"
-                                                class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus w-full @error('tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen') is-invalid border border-red-500 @enderror">
-                                                <option value="">-- ISI --</option>
-                                                @foreach ($tahun_gensen_choice as $choice)
-                                                    <option value="{{ $choice['value'] }}">{{ $choice['label'] }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-
-                                            @error('tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input
-                                                    class="form-control"
-                                                    wire:model="tahun_gensen_details.{{ $index_tahun_gensen }}.nominal_gensen"
-                                                    type="text"
-                                                    placeholder="Nominal Gensen"
-                                                />
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="bg-surface-container px-lg py-md border-b border-outline-variant flex justify-between items-center">
-                            <h2 class="text-headline-md font-headline-md text-on-surface">Data Extraction Results</h2>
-                            <span class="bg-secondary-container text-on-primary-fixed-variant fw-bold px-2 py-1 rounded-full text-label-sm font-label-sm">CONFIDENCE {{ $remittance_extraction_confidence }}</span>
-                            </div>
-                            <div class="flex-1 overflow-y-auto p-lg flex flex-col gap-lg">
-                            
-                            <!-- Group 2: Financials -->
-                            <div class="space-y-4">
-                                <h3 class="text-label-bold font-label-bold text-on-surface-variant uppercase border-b border-outline-variant pb-2 mt-4">Remittance Details</h3>
-                                
-                                @if ($remittance_extraction_groups && !$gensen_has_pending_ai_jobs)
-                                    @foreach ($remittance_extraction_groups as $index_remittance_extraction => $remittance)
-                                        <div class="flex items-start gap-md p-sm hover:bg-surface-container-lowest rounded-lg border border-transparent hover:border-outline-variant transition-colors group">
-                                            <input wire:model.live="remittance_extraction_groups.{{ $index_remittance_extraction }}.is_validate" class="mt-1 h-4 w-4 rounded border-outline text-primary focus:ring-primary-container bg-surface cursor-pointer" type="checkbox"/>
-                                            <div class="flex-1">
-                                                <label class="text-label-sm font-label-sm text-on-surface-variant block mb-1">
-                                                    <input
-                                                        class="form-control"
-                                                        wire:model.defer="remittance_extraction_groups.{{ $index_remittance_extraction }}.receiver_name"
-                                                        type="text"
-                                                    />- {{$remittance['transaction_year']}}</label>
-                                                <div class="row">
-                                                    <input
-                                                        class="form-control"
-                                                        wire:model.defer="remittance_extraction_groups.{{ $index_remittance_extraction }}.receiver_relationship"
-                                                        type="text"
-                                                        placeholder="Hubungan"
-                                                    />
-                                                </div>
-                                                <div class="row">
-                                                    <button type="button" data-bs-toggle="collapse" href="#collapse_remittance_groups_{{ $remittance['id'] }}" role="button" aria-expanded="false" aria-controls="#collapse_remittance_groups_{{ $remittance['id'] }}" 
-                                                        class="w-full text-body-md font-body-md text-on-surface bg-surface p-2 border border-outline-variant rounded flex justify-between items-center opacity-70 m-0">
-                                                        <span class="font-data-mono text-data-mono">@currency($remittance['total_amount']) - {{$remittance['currency']}}</span>
-                                                        @if ($remittance['total_amount'] >= 380000)
-                                                            <span class="material-symbols-outlined text-outline text-[16px]">check_circle</span>
-                                                        @endif
-                                                    </button >
-                                                </div>
-                                                <div id="collapse_remittance_groups_{{ $remittance['id'] }}" class="collapse" aria-labelledby="headingOne" wire:ignore>
-                                                    <div class="card-body py-0">
-                                                        <ul class="list-group list-group-flush">
-                                                            @foreach ($remittance['amount_details'] as $index_detail => $item)
-                                                                <li wire:key="remittance_detail_{{ $remittance['id'] }}_{{ $index_detail }}" class="list-group-item text-dark">@currency($item)</li>
-                                                            @endforeach
-                                                        </ul>
+                                </div>
+                                {{-- My Number Depan --}}
+                                <div class="col-md-6">
+                                    <h3 class="fw-bold">My Number Depan</h3>
+                                    @if ($my_number_front_old['url'])
+                                        @if (!$my_number_front_old['isPdf'] && $my_number_front_old['isImage'])
+                                            <!-- Thumbnail Item 2 -->
+                                            <div class="relative group cursor-pointer active:scale-95 transition-all">
+                                                <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
+                                                        <div class="col-auto"> 
+                                                        {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$my_number_front_old['filename']}}</span> --}}
+                                                        {!!$my_number_front_old['printStatus']!!}
+                                                    </div>
+                                                    <div class="col-auto d-flex align-items-center">
+                                                        <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
+                                                            wire:click="showDialogDeleteFile('{{$my_number_front_old['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::MY_NUMBER_FRONT }}')">
+                                                            <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
+                                                        </button>
+                                                        
                                                     </div>
                                                 </div>
+                                                <div class="{{ ($my_number_front_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
+                                                    <img class="w-full object-cover"  
+                                                    wire:click="clickFile('{{$my_number_front_old['id']}}', '{{$my_number_front_old['disk']}}', '{{$my_number_front_old['path']}}', '{{$my_number_front_old['type']?->label()}}')"
+                                                    src="{{ $my_number_front_old['url'] }}"/>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    
+                                    @endif
+                                </div>
+                                {{-- My Number Back --}}
+                                <div class="col-md-6">
+                                    <h3 class="fw-bold">My Number Belakang</h3>
+                                    @if ($my_number_back_old['url'])
+                                        @if (!$my_number_back_old['isPdf'] && $my_number_back_old['isImage'])
+                                            <!-- Thumbnail Item 2 -->
+                                            <div class="relative group cursor-pointer active:scale-95 transition-all">
+                                                <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
+                                                        <div class="col-auto"> 
+                                                        {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$my_number_back_old['filename']}}</span> --}}
+                                                        {!!$my_number_back_old['printStatus']!!}
+                                                    </div>
+                                                    <div class="col-auto d-flex align-items-center">
+                                                        <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
+                                                            wire:click="showDialogDeleteFile('{{$my_number_back_old['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::MY_NUMBER_BACK }}')">
+                                                            <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
+                                                        </button>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="{{ ($my_number_back_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
+                                                    <img class="w-full object-cover"  
+                                                    wire:click="clickFile('{{$my_number_back_old['id']}}', '{{$my_number_back_old['disk']}}', '{{$my_number_back_old['path']}}', '{{$my_number_back_old['type']?->label()}}')"
+                                                    src="{{ $my_number_back_old['url'] }}"/>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    
+                                    @endif
+                                </div>
+                                {{-- Rekening Indonesia --}}
+                                <h3 class="fw-bold">Rekening Indonesia</h3>
+                                @if ($rekening_indonesia_old['url'])
+                                    @if (!$rekening_indonesia_old['isPdf'] && $rekening_indonesia_old['isImage'])
+                                        <!-- Thumbnail Item 2 -->
+                                        <div class="relative group cursor-pointer active:scale-95 transition-all">
+                                            <div class="row d-flex justify-content-between flex-nowrap w-100 pr-5">
+                                                    <div class="col-auto"> 
+                                                    {{-- <span class="py-0 my-0 text-[10px] font-bold text-on-surface-variant">{{$rekening_indonesia_old['filename']}}</span> --}}
+                                                    {!!$rekening_indonesia_old['printStatus']!!}
+                                                </div>
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' 
+                                                        wire:click="showDialogDeleteFile('{{$rekening_indonesia_old['id']}}', '{{ App\Enums\Gensen\GensenAttachmentType::REKENING_INDONESIA }}')">
+                                                        <span class='material-symbols-outlined text-xl' data-icon='delete'>delete</span>
+                                                    </button>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="{{ ($rekening_indonesia_old['id'] == $editedData['id']) ? 'border-2 border-primary ring-4 ring-primary/10' : ''}} mt-2 w-full rounded-xl bg-surface-container-low hover:grayscale-0 transition-all" >
+                                                <img class="w-full object-cover"  
+                                                wire:click="clickFile('{{$rekening_indonesia_old['id']}}', '{{$rekening_indonesia_old['disk']}}', '{{$rekening_indonesia_old['path']}}', '{{$rekening_indonesia_old['type']?->label()}}')"
+                                                src="{{ $rekening_indonesia_old['url'] }}"/>
                                             </div>
                                         </div>
-                                    @endforeach
-                                @elseif($gensen_has_pending_ai_jobs)
-                                    <div class="">
-                                        <div class="btn text-white w-100" style="background-color: #5d2fc2; "> 
-                                            <span>
-                                            Sedang Memproses <i class="fa-solid fa-wand-magic-sparkles text-white animate-wand"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="">
-                                        <div class="btn text-white w-100" style="background-color: #e5a54b; "> 
-                                            <span>
-                                            Data belum diproses
-                                            </span>
-                                        </div>
-                                    </div>
-                                @endif
-                                <h1 class="text-label-bold font-label-bold text-on-surface-variant text-[20pt] uppercase border-b border-outline-variant pb-2 mt-4 text-right">Total : @currency($remittance_validate_total)</h1>
-                            </div>
-                            </div>
-                            <!-- Action Bar -->
-                            <div class="p-md border-t border-outline-variant bg-surface-container-lowest flex justify-end gap-sm row d-flex flex-nowrap justify-content-evenly">
-                                @if (!empty($rekap_pengiriman_uang_old['groups']))
-                                    <div class="col-4">
-                                        <button wire:click="submitRemittanceExtractionJob" type="button" class="px-6 py-2 bg-primary text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
-                                        AI extract
-                                        </button>
-                                    </div>
-                                @endif
-                            <div class="col-4">
-                                <button wire:click="getRemittanceExtraction" type="button" class="px-6 py-2 bg-warning text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
-                                Refresh Data
-                                </button>
-                            </div>
-                            <div class="col-4">
-                                <button wire:click="confirmRemittanceValidation" type="button" class="px-6 py-2 bg-success text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
-                                Confirm Data
-                                </button>
-                            </div>
-                            </div>
-                        </section>
-                        <!-- Right Column: Document Preview (approx 65%) -->
-                        <section class="w-[65%] flex flex-col h-full bg-[#1E293B] rounded-xl overflow-hidden shadow-inner relative group m-0">
-                            <!-- Overlay Header -->
-                            <div class="absolute top-0 left-0 w-full p-md bg-gradient-to-b from-black/60 to-transparent z-10 flex justify-between items-start pointer-events-none">
-                                <h2 class="text-headline-md text-white drop-shadow-md">Document Preview: Kartu Keluarga</h2>
-                            
-                            </div>
-                            <!-- Document Canvas -->
-                            <div
-                                class="h-[500px] overflow-scroll p-xl mt-3 relative flex flex-col gap-4"
-                            >
-
-                            @if(!empty($kertas_gensen_old['groups'][0]['files'] ?? []))
-
-                            {{-- @for ($i = 0; $i < 2; $i++) --}}
+                                    @endif
                                 
-                            @foreach ($kertas_gensen_old['groups'][0]['files'] as $item)
-
-                                @if ($item['isImage'])
-                                    <img
-                                        wire:ignore
-                                        src="{{ $item['url'] }}"
-                                        x-data="{
-                                            rotate: false,
-                                            init() {
-                                                const img = new Image();
-
-                                                img.onload = () => {
-                                                    this.rotate = img.height > img.width;
-                                                };
-
-                                                img.src = this.$el.src;
-                                            }
-                                        }"
-                                        x-init="init()"
-                                        class="shadow-2xl bg-white border border-white rounded transition-all duration-300"
-                                    />
-                                @else
-                                    <embed
-                                        src="{{ $item['url'] }}"
-                                        type="application/pdf"
-                                        class="w-full"
-                                        style="min-height: 450px;"
-                                    >
-
                                 @endif
-
-                            @endforeach
-                            {{-- @endfor --}}
-
-                            @endif
-                            @if(!empty($kartu_keluarga_old['groups'][0]['files'] ?? []))
-
-                            {{-- @for ($i = 0; $i < 2; $i++) --}}
-                                
-                            @foreach ($kartu_keluarga_old['groups'][0]['files'] as $item)
-
-                                @if ($item['isImage'])
-                                    <img
-                                        wire:ignore
-                                        src="{{ $item['url'] }}"
-                                        x-data="{
-                                            rotate: false,
-                                            init() {
-                                                const img = new Image();
-
-                                                img.onload = () => {
-                                                    this.rotate = img.height > img.width;
-                                                };
-
-                                                img.src = this.$el.src;
-                                            }
-                                        }"
-                                        x-init="init()"
-                                        :class="rotate
-                                            ? '-rotate-90 max-h-[42vw] mx-auto object-contain'
-                                            : 'w-full object-contain'
-                                        "
-                                        class="shadow-2xl bg-white border border-white rounded transition-all duration-300"
-                                    />
-                                @else
-                                    <embed
-                                        src="{{ $item['url'] }}"
-                                        type="application/pdf"
-                                        class="w-full"
-                                        style="min-height: 450px;"
-                                    >
-
-                                @endif
-
-                            @endforeach
-                            {{-- @endfor --}}
-
-                            @endif
 
                             </div>
-                        </section>
+                            {{-- <button type="button" class="mt-6 p-4 rounded-xl bg-primary-fixed-dim rounded hover:opacity-90 transition-transform duration-300 hover:scale-105" wire:click="submitChange">
+                                <div class="flex items-center gap-3 justify-center">
+                                    <span class="material-symbols-outlined text-white">save</span>
+                                    <span class="text-[25px] font-bold text-on-tertiary">Submit Change</span>
+                                </div>
+                            </button> --}}
+                        </aside>
                     </main>
-                @endif
-             
-            </div>
+                </div>
+            @endif
+            
+            @if ($isCanDelete)
+                <div class="tab-pane fade" id="kt_vtab_pane_3" role="tabpanel" wire:ignore.self>
+                    <!-- Main Content Area: Split Pane Layout -->
+                    @if ($onload)
+                        <main class="w-full max-w-container-max mx-auto flex flex-row border overflow-hidden p-0">
+                            <!-- Left Column: Validation Form (approx 40% based on guidance, though prompt asked for 30%. Defaulting to system guidance of 40% for right pane but prompt asked left. I will use 35/65 split to balance) -->
+                            <section class="w-[35%] p-5 flex flex-col h-full bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
+                                <div class="row">
+                                    <button type="button" class="btn btn-primary w-full" wire:click="addGensenFormDetail">Tambah Gensen</button>
+                                </div>
+                                <div class="row my-3 d-flex">
+                                    @foreach ($tahun_gensen_details as $index_tahun_gensen => $tahun_gensen_detail)
+                                        <div class="my-2 d-flex justify-content-between w-full" wire:key="tahun_gensen_details_{{ $tahun_gensen_detail['id'] ? $tahun_gensen_detail['id'] : $tahun_gensen_detail['key'] }}">
+                                            <div class="col-md-4">
+                                                <select wire:model="tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen"
+                                                    name="tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen"
+                                                    class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus w-full @error('tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen') is-invalid border border-red-500 @enderror">
+                                                    <option value="">-- ISI --</option>
+                                                    @foreach ($tahun_gensen_choice as $choice)
+                                                        <option value="{{ $choice['value'] }}">{{ $choice['label'] }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+
+                                                @error('tahun_gensen_details.{{$index_tahun_gensen}}.tahun_gensen')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                            <div class="col">
+                                                <input
+                                                        class="form-control"
+                                                        wire:model="tahun_gensen_details.{{ $index_tahun_gensen }}.nominal_gensen"
+                                                        type="text"
+                                                        placeholder="Nominal Gensen"
+                                                    />
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="bg-surface-container px-lg py-md border-b border-outline-variant flex justify-between items-center">
+                                <h2 class="text-headline-md font-headline-md text-on-surface">Data Extraction Results</h2>
+                                <span class="bg-secondary-container text-on-primary-fixed-variant fw-bold px-2 py-1 rounded-full text-label-sm font-label-sm">CONFIDENCE {{ $remittance_extraction_confidence }}</span>
+                                </div>
+                                <div class="flex-1 overflow-y-auto p-lg flex flex-col gap-lg">
+                                
+                                <!-- Group 2: Financials -->
+                                <div class="space-y-4">
+                                    <h3 class="text-label-bold font-label-bold text-on-surface-variant uppercase border-b border-outline-variant pb-2 mt-4">Remittance Details</h3>
+                                    
+                                    @if ($remittance_extraction_groups && !$gensen_has_pending_ai_jobs)
+                                        @foreach ($remittance_extraction_groups as $index_remittance_extraction => $remittance)
+                                            <div class="flex items-start gap-md p-sm hover:bg-surface-container-lowest rounded-lg border border-transparent hover:border-outline-variant transition-colors group">
+                                                <input wire:model.live="remittance_extraction_groups.{{ $index_remittance_extraction }}.is_validate" class="mt-1 h-4 w-4 rounded border-outline text-primary focus:ring-primary-container bg-surface cursor-pointer" type="checkbox"/>
+                                                <div class="flex-1">
+                                                    <label class="text-label-sm font-label-sm text-on-surface-variant block mb-1">
+                                                        <input
+                                                            class="form-control"
+                                                            wire:model.defer="remittance_extraction_groups.{{ $index_remittance_extraction }}.receiver_name"
+                                                            type="text"
+                                                        />- {{$remittance['transaction_year']}}</label>
+                                                    <div class="row">
+                                                        <input
+                                                            class="form-control"
+                                                            wire:model.defer="remittance_extraction_groups.{{ $index_remittance_extraction }}.receiver_relationship"
+                                                            type="text"
+                                                            placeholder="Hubungan"
+                                                        />
+                                                    </div>
+                                                    <div class="row">
+                                                        <button type="button" data-bs-toggle="collapse" href="#collapse_remittance_groups_{{ $remittance['id'] }}" role="button" aria-expanded="false" aria-controls="#collapse_remittance_groups_{{ $remittance['id'] }}" 
+                                                            class="w-full text-body-md font-body-md text-on-surface bg-surface p-2 border border-outline-variant rounded flex justify-between items-center opacity-70 m-0">
+                                                            <span class="font-data-mono text-data-mono">@currency($remittance['total_amount']) - {{$remittance['currency']}}</span>
+                                                            @if ($remittance['total_amount'] >= 380000)
+                                                                <span class="material-symbols-outlined text-outline text-[16px]">check_circle</span>
+                                                            @endif
+                                                        </button >
+                                                    </div>
+                                                    <div id="collapse_remittance_groups_{{ $remittance['id'] }}" class="collapse" aria-labelledby="headingOne" wire:ignore>
+                                                        <div class="card-body py-0">
+                                                            <ul class="list-group list-group-flush">
+                                                                @foreach ($remittance['amount_details'] as $index_detail => $item)
+                                                                    <li wire:key="remittance_detail_{{ $remittance['id'] }}_{{ $index_detail }}" class="list-group-item text-dark">@currency($item)</li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @elseif($gensen_has_pending_ai_jobs)
+                                        <div class="">
+                                            <div class="btn text-white w-100" style="background-color: #5d2fc2; "> 
+                                                <span>
+                                                Sedang Memproses <i class="fa-solid fa-wand-magic-sparkles text-white animate-wand"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="">
+                                            <div class="btn text-white w-100" style="background-color: #e5a54b; "> 
+                                                <span>
+                                                Data belum diproses
+                                                </span>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <h1 class="text-label-bold font-label-bold text-on-surface-variant text-[20pt] uppercase border-b border-outline-variant pb-2 mt-4 text-right">Total : @currency($remittance_validate_total)</h1>
+                                </div>
+                                </div>
+                                <!-- Action Bar -->
+                                <div class="p-md border-t border-outline-variant bg-surface-container-lowest flex justify-end gap-sm row d-flex flex-nowrap justify-content-evenly">
+                                    @if (!empty($rekap_pengiriman_uang_old['groups']))
+                                        <div class="col-4">
+                                            <button wire:click="submitRemittanceExtractionJob" type="button" class="px-6 py-2 bg-primary text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
+                                            AI extract
+                                            </button>
+                                        </div>
+                                    @endif
+                                <div class="col-4">
+                                    <button wire:click="getRemittanceExtraction" type="button" class="px-6 py-2 bg-warning text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
+                                    Refresh Data
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button wire:click="confirmRemittanceValidation" type="button" class="px-6 py-2 bg-success text-on-dark rounded-lg text-body-md font-body-md font-semibold hover:bg-on-secondary-container transition-colors shadow-sm">
+                                    Confirm Data
+                                    </button>
+                                </div>
+                                </div>
+                            </section>
+                            <!-- Right Column: Document Preview (approx 65%) -->
+                            <section class="w-[65%] flex flex-col h-full bg-[#1E293B] rounded-xl overflow-hidden shadow-inner relative group m-0">
+                                <!-- Overlay Header -->
+                                <div class="absolute top-0 left-0 w-full p-md bg-gradient-to-b from-black/60 to-transparent z-10 flex justify-between items-start pointer-events-none">
+                                    <h2 class="text-headline-md text-white drop-shadow-md">Document Preview: Kartu Keluarga</h2>
+                                
+                                </div>
+                                <!-- Document Canvas -->
+                                <div
+                                    class="h-[500px] overflow-scroll p-xl mt-3 relative flex flex-col gap-4"
+                                >
+
+                                @if(!empty($kertas_gensen_old['groups'][0]['files'] ?? []))
+
+                                {{-- @for ($i = 0; $i < 2; $i++) --}}
+                                    
+                                @foreach ($kertas_gensen_old['groups'][0]['files'] as $item)
+
+                                    @if ($item['isImage'])
+                                        <img
+                                            wire:ignore
+                                            src="{{ $item['url'] }}"
+                                            x-data="{
+                                                rotate: false,
+                                                init() {
+                                                    const img = new Image();
+
+                                                    img.onload = () => {
+                                                        this.rotate = img.height > img.width;
+                                                    };
+
+                                                    img.src = this.$el.src;
+                                                }
+                                            }"
+                                            x-init="init()"
+                                            class="shadow-2xl bg-white border border-white rounded transition-all duration-300"
+                                        />
+                                    @else
+                                        <embed
+                                            src="{{ $item['url'] }}"
+                                            type="application/pdf"
+                                            class="w-full"
+                                            style="min-height: 450px;"
+                                        >
+
+                                    @endif
+
+                                @endforeach
+                                {{-- @endfor --}}
+
+                                @endif
+                                @if(!empty($kartu_keluarga_old['groups'][0]['files'] ?? []))
+
+                                {{-- @for ($i = 0; $i < 2; $i++) --}}
+                                    
+                                @foreach ($kartu_keluarga_old['groups'][0]['files'] as $item)
+
+                                    @if ($item['isImage'])
+                                        <img
+                                            wire:ignore
+                                            src="{{ $item['url'] }}"
+                                            x-data="{
+                                                rotate: false,
+                                                init() {
+                                                    const img = new Image();
+
+                                                    img.onload = () => {
+                                                        this.rotate = img.height > img.width;
+                                                    };
+
+                                                    img.src = this.$el.src;
+                                                }
+                                            }"
+                                            x-init="init()"
+                                            :class="rotate
+                                                ? '-rotate-90 max-h-[42vw] mx-auto object-contain'
+                                                : 'w-full object-contain'
+                                            "
+                                            class="shadow-2xl bg-white border border-white rounded transition-all duration-300"
+                                        />
+                                    @else
+                                        <embed
+                                            src="{{ $item['url'] }}"
+                                            type="application/pdf"
+                                            class="w-full"
+                                            style="min-height: 450px;"
+                                        >
+
+                                    @endif
+
+                                @endforeach
+                                {{-- @endfor --}}
+
+                                @endif
+
+                                </div>
+                            </section>
+                        </main>
+                    @endif
+                
+                </div>
+            @endif
             <div class="tab-pane fade" id="kt_vtab_pane_4" role="tabpanel" wire:ignore.self>
                 <!-- Main Content Area -->
                 @if ($onload)
