@@ -91,7 +91,7 @@
                         <td>{{ $data['has_my_number'] ? 'O' : 'X' }}</td>
                         <td>{{ $data['has_kartu_keluarga'] ? 'O' : 'X' }}</td>
                         <td>
-                            '{{ $data['nominal_gensen_detail'] }}
+                            '{{ numberFormat($data['nominal_gensen_detail']) }}
                         </td>
                         @php
                             $total_amounts = explode(';', $data['remittance_total_amounts']);
