@@ -50,7 +50,20 @@ Route::get('/health', function () {
     ]);
 });
 // Route::get('/phpinfo', fn() => phpinfo());
+Route::get('/test-browsershot', function () {
+    try {
+        $path = storage_path('app/browsershot-test.pdf');
 
+        // Uji dengan HTML sederhana
+        Browsershot::html('<h1>Browsershot Bekerja di Linux!</h1><p>Waktu: ' . now() . '</p>')
+            ->noSandbox()
+            ->save($path);
+
+        return "Berhasil! PDF telah dibuat di: " . $path;
+    } catch (\Exception $e) {
+        return "Gagal! Error: " . $e->getMessage();
+    }
+});
 Route::get('/test-shot', function () {
     ini_set('memory_limit', '1024M');
     set_time_limit(300); // 5 minutes
