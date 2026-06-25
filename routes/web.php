@@ -32,14 +32,14 @@ Route::middleware(['auth', 'access_permission'])->group(function () {
         Route::get('/', 'index')->name('index');
     });
 });
-Route::get('/php-check', function () {
-    dd([
-        'upload_max_filesize' => ini_get('upload_max_filesize'),
-        'post_max_size' => ini_get('post_max_size'),
-        'memory_limit' => ini_get('memory_limit'),
-        'loaded_ini' => php_ini_loaded_file(),
-    ]);
-});
+// Route::get('/php-check', function () {
+//     dd([
+//         'upload_max_filesize' => ini_get('upload_max_filesize'),
+//         'post_max_size' => ini_get('post_max_size'),
+//         'memory_limit' => ini_get('memory_limit'),
+//         'loaded_ini' => php_ini_loaded_file(),
+//     ]);
+// });
 // Route::get('/sentry-test', function () {
 //     throw new Exception('Sentry Test');
 // });
@@ -50,67 +50,67 @@ Route::get('/health', function () {
     ]);
 });
 // Route::get('/phpinfo', fn() => phpinfo());
-Route::get('/test-browsershot', function () {
-    try {
-        $path = storage_path('app/browsershot-test.pdf');
+// Route::get('/test-browsershot', function () {
+//     try {
+//         $path = storage_path('app/browsershot-test.pdf');
 
-        // Uji dengan HTML sederhana
-        Browsershot::html('<h1>Browsershot Bekerja di Linux!</h1><p>Waktu: ' . now() . '</p>')
-            ->noSandbox()
-            ->save($path);
+//         // Uji dengan HTML sederhana
+//         Browsershot::html('<h1>Browsershot Bekerja di Linux!</h1><p>Waktu: ' . now() . '</p>')
+//             ->noSandbox()
+//             ->save($path);
 
-        return "Berhasil! PDF telah dibuat di: " . $path;
-    } catch (\Exception $e) {
-        return "Gagal! Error: " . $e->getMessage();
-    }
-});
-Route::get('/test-shot', function () {
-    ini_set('memory_limit', '1024M');
-    set_time_limit(300); // 5 minutes
+//         return "Berhasil! PDF telah dibuat di: " . $path;
+//     } catch (\Exception $e) {
+//         return "Gagal! Error: " . $e->getMessage();
+//     }
+// });
+// Route::get('/test-shot', function () {
+//     ini_set('memory_limit', '1024M');
+//     set_time_limit(300); // 5 minutes
 
-    $resiDetail = ResiGeneratorDetailRepository::find(720);
-    $htmlContent = view('app.resi-generator.template.version1', ['data' => $resiDetail])->render();
+//     $resiDetail = ResiGeneratorDetailRepository::find(720);
+//     $htmlContent = view('app.resi-generator.template.version1', ['data' => $resiDetail])->render();
 
-    $cleanExcelRekening = preg_replace('/\D/', '', $resiDetail->rekening);
-    $fileName =
-        str_pad($resiDetail->id, 4, "0", STR_PAD_LEFT)
-        . '_' .
-        strtoupper($resiDetail->resi->bank)
-        . '_' .
-        strtoupper($resiDetail->nama)
-        . '_' .
-        $cleanExcelRekening . '.jpg';
+//     $cleanExcelRekening = preg_replace('/\D/', '', $resiDetail->rekening);
+//     $fileName =
+//         str_pad($resiDetail->id, 4, "0", STR_PAD_LEFT)
+//         . '_' .
+//         strtoupper($resiDetail->resi->bank)
+//         . '_' .
+//         strtoupper($resiDetail->nama)
+//         . '_' .
+//         $cleanExcelRekening . '.jpg';
 
-    $relativePath = 'resi-generated/' .
-        $resiDetail->resi->label .
-        '/' .
-        $fileName;
+//     $relativePath = 'resi-generated/' .
+//         $resiDetail->resi->label .
+//         '/' .
+//         $fileName;
 
-    $storageDisk = 'private';
-    $disk = Storage::disk($storageDisk);
+//     $storageDisk = 'private';
+//     $disk = Storage::disk($storageDisk);
 
-    // pastikan folder ada
-    $disk->makeDirectory(
-        'resi-generated/' . $resiDetail->resi->label
-    );
+//     // pastikan folder ada
+//     $disk->makeDirectory(
+//         'resi-generated/' . $resiDetail->resi->label
+//     );
 
-    // absolute path untuk Browsershot
-    $absolutePath = $disk->path($relativePath);
+//     // absolute path untuk Browsershot
+//     $absolutePath = $disk->path($relativePath);
 
-    Browsershot::html($htmlContent)
-        ->noSandbox()
-        ->addChromiumArguments([
-            '--disable-dev-shm-usage',
-            '--disable-setuid-sandbox',
-            '--no-first-run',
-            '--headless',
-        ])
-        ->setScreenshotType('jpeg', 90)
-        ->windowSize(600, 800)
-        ->fullPage()
-        ->save($absolutePath);
-    return 'OK';
-});
+//     Browsershot::html($htmlContent)
+//         ->noSandbox()
+//         ->addChromiumArguments([
+//             '--disable-dev-shm-usage',
+//             '--disable-setuid-sandbox',
+//             '--no-first-run',
+//             '--headless',
+//         ])
+//         ->setScreenshotType('jpeg', 90)
+//         ->windowSize(600, 800)
+//         ->fullPage()
+//         ->save($absolutePath);
+//     return 'OK';
+// });
 Route::get('/403', function () {
     // abort(403, session('error', 'Form ini sudah tidak dapat digunakan.'));
     return response()
