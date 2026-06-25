@@ -115,18 +115,17 @@ class Datatable extends Component
                         </div>";
                     }
                     $downloadHtml = '';
-                    if ($item->ichijikinExtractionResults->count() >= $item->ichijikinExtractionFiles->count()) {
-                        if (
-                            $item->zip_status === JobStatus::DONE && $item->zip_path &&
-                            file_exists(storage_path('app/public/' . $item->zip_path))
-                        ) {
+                    if (
+                        $item->zip_status === JobStatus::DONE && $item->zip_path &&
+                        file_exists(storage_path('app/public/' . $item->zip_path))
+                    ) {
 
-                            $downloadUrl = route(
-                                'resi_generator.download',
-                                $id
-                            );
+                        $downloadUrl = route(
+                            'resi_generator.download',
+                            $id
+                        );
 
-                            $downloadHtml = "
+                        $downloadHtml = "
                         <div class='col-auto'>
                             <a
                                 href='{$downloadUrl}'
@@ -137,15 +136,15 @@ class Datatable extends Component
                                 </span>
                             </a>
                         </div>";
-                        } elseif ($item->zip_status === JobStatus::PROCESSING) {
-                            // If processing, show a disabled loading spinner/icon
-                            $downloadHtml = "<div class='col-auto'>
+                    } elseif ($item->zip_status === JobStatus::PROCESSING) {
+                        // If processing, show a disabled loading spinner/icon
+                        $downloadHtml = "<div class='col-auto'>
                                     <span class='material-symbols-outlined text-lg text-warning animate-spin' title='Compiling ZIP...'>sync</span>
                                 </div>";
-                        } else {
-                            // If not started yet (or failed), show the trigger button to start the job
+                    } else {
+                        // If not started yet (or failed), show the trigger button to start the job
 
-                            $downloadHtml = "
+                        $downloadHtml = "
                                 <div class='col-auto'>
                                     <button
                                         type='button'
@@ -157,11 +156,11 @@ class Datatable extends Component
                                         </span>
                                     </button>
                                 </div>";
-                        }
                     }
 
+
                     $html = "<div class='row p-0 m-0 d-flex justify-content-start flex-nowrap'>
-                        $editHtml $destroyHtml 
+                        $editHtml $destroyHtml $downloadHtml
                     </div>";
 
                     return $html;
