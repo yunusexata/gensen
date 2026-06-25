@@ -37,7 +37,7 @@
                     Kepada: transaksi.exatagroup@gmail.com
                 </td>
                 <td align="right" valign="top">    
-                    {{ \Carbon\Carbon::parse($data->email->email_received_at)->translatedFormat('d M Y, H.i') }}
+                    {{ \Carbon\Carbon::parse($data->email->email_received_at)->locale('id')->translatedFormat('D, d M, H.i') }}
                 </td>
             </tr>
         </table>
