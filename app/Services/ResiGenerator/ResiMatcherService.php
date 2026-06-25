@@ -16,15 +16,6 @@ class ResiMatcherService
 
         $availableEmails = $resiGenerator->emails()->get();
 
-        logger([
-            'DETAIL',
-            $unmatchedDetails->toArray(),
-        ]);
-        logger([
-            'EMAIL',
-            $availableEmails->toArray(),
-        ]);
-
         foreach ($unmatchedDetails as $detail) {
             $bestMatch = null;
             $highestScore = 0;
