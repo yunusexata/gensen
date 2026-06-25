@@ -6,6 +6,7 @@ use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
 use App\Helpers\PermissionHelper;
 use App\Jobs\IchijikinExtraction\GenerateIchijikinZipJob;
+use App\Jobs\ResiGenerator\GenerateResiZipJob;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\IchijikinExtraction\IchijikinExtractionRepository;
 use App\Repositories\ResiGenerator\ResiGeneratorRepository;
@@ -75,7 +76,7 @@ class Datatable extends Component
 
     public function generateZip($id)
     {
-        GenerateIchijikinZipJob::dispatch(IchijikinExtractionRepository::find(Crypt::decrypt($id)))->onQueue('pdf');
+        GenerateResiZipJob::dispatch(ResiGeneratorRepository::find(Crypt::decrypt($id)))->onQueue('pdf');
 
         Alert::success(
             $this,
@@ -113,51 +114,51 @@ class Datatable extends Component
                             </button>
                         </div>";
                     }
-                    // $downloadHtml = '';
-                    // if ($item->ichijikinExtractionResults->count() >= $item->ichijikinExtractionFiles->count()) {
-                    //     if (
-                    //         $item->zip_status === JobStatus::DONE && $item->zip_path &&
-                    //         file_exists(storage_path('app/public/' . $item->zip_path))
-                    //     ) {
+                    $downloadHtml = '';
+                    if ($item->ichijikinExtractionResults->count() >= $item->ichijikinExtractionFiles->count()) {
+                        if (
+                            $item->zip_status === JobStatus::DONE && $item->zip_path &&
+                            file_exists(storage_path('app/public/' . $item->zip_path))
+                        ) {
 
-                    //         $downloadUrl = route(
-                    //             'ichijikin.download',
-                    //             $id
-                    //         );
+                            $downloadUrl = route(
+                                'resi_generator.download',
+                                $id
+                            );
 
-                    //         $downloadHtml = "
-                    //     <div class='col-auto'>
-                    //         <a
-                    //             href='{$downloadUrl}'
-                    //             class='p-0 hover:bg-success/10 text-success rounded transition-colors'
-                    //         >
-                    //             <span class='material-symbols-outlined text-lg'>
-                    //                 download
-                    //             </span>
-                    //         </a>
-                    //     </div>";
-                    //     } elseif ($item->zip_status === JobStatus::PROCESSING) {
-                    //         // If processing, show a disabled loading spinner/icon
-                    //         $downloadHtml = "<div class='col-auto'>
-                    //                 <span class='material-symbols-outlined text-lg text-warning animate-spin' title='Compiling ZIP...'>sync</span>
-                    //             </div>";
-                    //     } else {
-                    //         // If not started yet (or failed), show the trigger button to start the job
+                            $downloadHtml = "
+                        <div class='col-auto'>
+                            <a
+                                href='{$downloadUrl}'
+                                class='p-0 hover:bg-success/10 text-success rounded transition-colors'
+                            >
+                                <span class='material-symbols-outlined text-lg'>
+                                    download
+                                </span>
+                            </a>
+                        </div>";
+                        } elseif ($item->zip_status === JobStatus::PROCESSING) {
+                            // If processing, show a disabled loading spinner/icon
+                            $downloadHtml = "<div class='col-auto'>
+                                    <span class='material-symbols-outlined text-lg text-warning animate-spin' title='Compiling ZIP...'>sync</span>
+                                </div>";
+                        } else {
+                            // If not started yet (or failed), show the trigger button to start the job
 
-                    //         $downloadHtml = "
-                    //             <div class='col-auto'>
-                    //                 <button
-                    //                     type='button'
-                    //                     wire:click=\"generateZip('{$id}')\"
-                    //                     class='p-0 hover:bg-warning/10 text-warning rounded transition-colors'
-                    //                 >
-                    //                     <span class='material-symbols-outlined text-lg'>
-                    //                         folder_zip
-                    //                     </span>
-                    //                 </button>
-                    //             </div>";
-                    //     }
-                    // }
+                            $downloadHtml = "
+                                <div class='col-auto'>
+                                    <button
+                                        type='button'
+                                        wire:click=\"generateZip('{$id}')\"
+                                        class='p-0 hover:bg-warning/10 text-warning rounded transition-colors'
+                                    >
+                                        <span class='material-symbols-outlined text-lg'>
+                                            folder_zip
+                                        </span>
+                                    </button>
+                                </div>";
+                        }
+                    }
 
                     $html = "<div class='row p-0 m-0 d-flex justify-content-start flex-nowrap'>
                         $editHtml $destroyHtml 

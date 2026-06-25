@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ResiGenerator;
 use App\Http\Controllers\Controller;
 use App\Models\Ichijikin\IchijikinExtraction;
 use App\Repositories\IchijikinExtraction\IchijikinExtractionRepository;
+use App\Repositories\ResiGenerator\ResiGeneratorRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -30,15 +31,15 @@ class ResiGeneratorController extends Controller
     }
     public function download($id)
     {
-        // $item = IchijikinExtractionRepository::find(Crypt::decrypt($id));
+        $item = ResiGeneratorRepository::find(Crypt::decrypt($id));
 
-        // abort_if(
-        //     blank($item->zip_path),
-        //     404
-        // );
+        abort_if(
+            blank($item->zip_path),
+            404
+        );
 
-        // return response()->download(
-        //     storage_path('app/public/' . $item->zip_path)
-        // );
+        return response()->download(
+            storage_path('app/public/' . $item->zip_path)
+        );
     }
 }
