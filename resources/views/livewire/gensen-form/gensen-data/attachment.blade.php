@@ -166,7 +166,7 @@
                                             
                                                 // $url = route('preview.temp.image', $item->getFileName());
                                                 $filename = $item->getClientOriginalName();
-                                            }elseif(in_array($mimeType, ['pdf'])){
+                                            }elseif(in_array($mimeType, ['application/pdf'])){
                                                 $url = route('preview.temp.pdf', $item->getFileName());
                                                 $filename = $item->getClientOriginalName();
                                             }else{
@@ -372,7 +372,7 @@
                                                             
                                                                 // $url = route('preview.temp.image', $item->getFileName());
                                                                 $filename = $item->getClientOriginalName();
-                                                            }elseif(in_array($mimeType, ['pdf'])){
+                                                            }elseif(in_array($mimeType, ['application/pdf'])){
                                                                 $url = route('preview.temp.pdf', $item->getFileName());
                                                                 $filename = $item->getClientOriginalName();
                                                             }else{
@@ -573,7 +573,7 @@
                                             
                                                 // $url = route('preview.temp.image', $item->getFileName());
                                                 $filename = $item->getClientOriginalName();
-                                            }elseif(in_array($mimeType, ['pdf'])){
+                                            }elseif(in_array($mimeType, ['application/pdf'])){
                                                 $url = route('preview.temp.pdf', $item->getFileName());
                                                 $filename = $item->getClientOriginalName();
                                             }else{
