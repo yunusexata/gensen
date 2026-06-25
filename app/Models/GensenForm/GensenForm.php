@@ -576,8 +576,8 @@ class GensenForm extends Model
     }
     public function attachmentsConvertedRekapanPengirimanUang()
     {
-        return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')->where('type', GensenAttachmentType::REKAP_PENGIRIMAN_UANG)
-            ->where('mime_type', '!=', 'application/pdf');
+        return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')->where('type', GensenAttachmentType::REKAP_PENGIRIMAN_UANG);
+        // ->where('mime_type', '!=', 'application/pdf');
         // ->where('status', GensenAttachmenStatus::STATUS_CONVERTED);
     }
     public function attachmentsCopy()

@@ -36,38 +36,68 @@ class GeminiService
 
         // logger(['attachments', $attachments]);
 
-        $blobs = collect($attachments)->map(function ($file) {
+        // $blobs = collect($attachments)->map(function ($file) {
 
+        //     $storage = Storage::disk($file['disk']);
+
+        //     if (!$storage->exists($file['path'])) {
+        //         logger("File missing: {$file['path']}");
+        //     }
+
+        //     // $stream = $storage->path($file['path']);
+
+        //     // if ($stream === false) {
+        //     //     logger("Cannot read file stream");
+        //     // }
+
+        //     $stream = $storage->readStream($file['path']);
+
+        //     logger(['data attachment to blob', $file['path']]);
+        //     if (!is_resource($stream)) {
+        //         logger("Unable to open stream: {$file['path']}");
+        //     }
+
+        //     $data = stream_get_contents($stream);
+
+        //     fclose($stream);
+        //     // $data = file_get_contents($stream);
+        //     // logger(['data stream', $stream]);
+
+        //     return new Blob(
+        //         mimeType: $this->getMimeType($file['extension']),
+        //         data: base64_encode($data)
+        //     );
+        // })->toArray();
+        $blobs = collect($attachments)->map(function ($file) {
             $storage = Storage::disk($file['disk']);
 
+            // 1. Cek eksistensi file
             if (!$storage->exists($file['path'])) {
-                logger("File missing: {$file['path']}");
+                logger()->error("File missing on disk [{$file['disk']}]: {$file['path']}");
+                return null; // Kembalikan null agar bisa difilter nanti
             }
 
-            // $stream = $storage->path($file['path']);
+            // 2. Ambil MIME Type langsung dari Storage (Lebih Aman & Akurat)
+            // Ini menyelesaikan masalah keamanan yang kita bahas sebelumnya
+            $mimeType = $storage->mimeType($file['path']);
 
-            // if ($stream === false) {
-            //     logger("Cannot read file stream");
-            // }
+            // 3. Baca isi file
+            // Method get() bekerja universal untuk S3, Supabase, dan Local.
+            // Karena kita butuh base64_encode seluruh file, menggunakan get() lebih praktis 
+            // daripada mengelola stream secara manual.
+            $data = $storage->get($file['path']);
 
-            $stream = $storage->readStream($file['path']);
-
-            logger(['data attachment to blob', $file['path']]);
-            if (!is_resource($stream)) {
-                logger("Unable to open stream: {$file['path']}");
+            if ($data === null) {
+                logger()->error("Unable to read file content: {$file['path']}");
+                return null;
             }
 
-            $data = stream_get_contents($stream);
-
-            fclose($stream);
-            // $data = file_get_contents($stream);
-            // logger(['data stream', $stream]);
-
+            // 4. Return Blob untuk Gemini
             return new Blob(
-                mimeType: $this->getMimeType($file['extension']),
+                mimeType: $this->getMimeType($file['mime_type']),
                 data: base64_encode($data)
             );
-        })->toArray();
+        })->filter()->toArray(); // filter() akan membuang array bernilai 'null' jika ada file yang error
 
 
         // High-precision configuration for tax data
@@ -334,11 +364,13 @@ class GeminiService
 ';
     }
 
-    private function getMimeType(string $ext): MimeType
+    private function getMimeType(string $mimeType): MimeType
     {
-        return match ($ext) {
-            'pdf' => MimeType::APPLICATION_PDF,
-            'png' => MimeType::IMAGE_PNG,
+        return match ($mimeType) {
+            'application/pdf' => MimeType::APPLICATION_PDF,
+            'image/png' => MimeType::IMAGE_PNG,
+            'image/jpeg' => MimeType::IMAGE_JPEG,
+            'image/webp' => MimeType::IMAGE_WEBP,
             default => MimeType::IMAGE_JPEG,
         };
     }
