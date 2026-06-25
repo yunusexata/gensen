@@ -5,6 +5,7 @@ namespace App\Models\ResiGenerator;
 use App\Enums\Gensen\JobStatus;
 use App\Jobs\ResiGenerator\GenerateReceiptImageJob;
 use App\Models\Ai\AiJob;
+use App\Models\ResiGenerator\ResiGenerator;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -56,7 +57,7 @@ class ResiGeneratorDetail extends Model
 
     public function resi()
     {
-        return $this->belongsTo(resiGenerator::class, 'resi_generator_id', 'id');
+        return $this->belongsTo(ResiGenerator::class, 'resi_generator_id', 'id');
     }
 
     public function email()
