@@ -116,41 +116,47 @@ class DatatableDetail extends Component
             [
                 'key' => 'nama',
                 'name' => 'Nama (Excel)',
+                'class' => 'bg-white',
                 'render' => function ($item) {
                     return $item->nama;
                 }
             ],
             [
-                'key' => 'nominal',
-                'name' => 'Nominal (Excel)',
-                'render' => function ($item) {
-                    return NumberFormatter::format($item->nominal);
-                }
-            ],
-            [
-                'key' => 'rekening',
-                'name' => 'Rekening (Excel)',
-                'render' => function ($item) {
-                    return $item->rekening;
-                }
-            ],
-            [
                 'key' => 'formatted_penerima',
                 'name' => 'Nama (Email)',
+                'class' => 'bg-light',
                 'render' => function ($item) {
                     return $item->formatted_penerima;
                 }
             ],
             [
+                'key' => 'nominal',
+                'name' => 'Nominal (Excel)',
+                'class' => 'text-right bg-white',
+                'render' => function ($item) {
+                    return NumberFormatter::format($item->nominal);
+                }
+            ],
+            [
                 'key' => 'formatted_nominal',
                 'name' => 'Nominal (Email)',
+                'class' => 'text-right bg-light',
                 'render' => function ($item) {
                     return NumberFormatter::format($item->formatted_nominal);
                 }
             ],
             [
+                'key' => 'rekening',
+                'name' => 'Rekening (Excel)',
+                'class' => 'text-center bg-white',
+                'render' => function ($item) {
+                    return $item->rekening;
+                }
+            ],
+            [
                 'key' => 'formatted_rekening_tujuan',
                 'name' => 'Rekening (Email)',
+                'class' => 'text-center bg-light',
                 'render' => function ($item) {
                     return $item->formatted_rekening_tujuan;
                 }
@@ -172,6 +178,6 @@ class DatatableDetail extends Component
 
     public function getView(): string
     {
-        return 'livewire.ichijikin-extraction.datatable-batch-detail';
+        return 'livewire.resi-generator.datatable-detail';
     }
 }

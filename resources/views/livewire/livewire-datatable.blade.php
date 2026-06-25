@@ -67,7 +67,7 @@
                                         $cell_style = is_callable($col['style'])
                                             ? call_user_func($col['style'], $item, $index)
                                             : $col['style'];
-                                        $cell_style = "style='{$cell_class}'";
+                                        $cell_style = "{$cell_class}";
                                     }
 
                                     $cell_class = '';
@@ -75,7 +75,7 @@
                                         $cell_class = is_callable($col['class'])
                                             ? call_user_func($col['class'], $item, $index)
                                             : $col['class'];
-                                        $cell_class = "class='{$cell_class}'";
+                                        $cell_class = "{$cell_class}";
                                     }
                                 @endphp
 
