@@ -160,26 +160,26 @@
                                 @if ($kertas_gensen)
                                     @foreach ($kertas_gensen as $index => $item)
                                         @php
-                                            $ext = $item->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                            $mimeType = $item->getMimeType();
+                                            if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])){
                                                 $url = $item->temporaryUrl();
-                                                
+                                            
                                                 // $url = route('preview.temp.image', $item->getFileName());
                                                 $filename = $item->getClientOriginalName();
-                                            }elseif(in_array($ext, ['pdf'])){
+                                            }elseif(in_array($mimeType, ['pdf'])){
                                                 $url = route('preview.temp.pdf', $item->getFileName());
                                                 $filename = $item->getClientOriginalName();
                                             }else{
                                                 $filename = $item->getClientOriginalName();
                                             }
-                                            $ext = strtolower($ext);
+                                            $mimeType = strtolower($mimeType);
                                         @endphp
                                         {{-- {!! $kertas_gensen_note[$index] !!} --}}
-                                        @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
+                                        @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
                                             {{-- IMAGE --}}
                                             <img wire:key="kertas_gensen_new_{{ $index }}" class="w-full h-full object-cover" data-alt="Professional scan of a tax document on a clean desk background with soft office lighting" 
                                             src="{{$url}}"/>
-                                        @elseif(in_array($ext, ['pdf']))
+                                        @elseif(in_array($mimeType, ['application/pdf']))
                                             {{-- IFRAME PDF --}}
                                             <a wire:key="kertas_gensen_new_{{ $index }}"
                                                 class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb"
