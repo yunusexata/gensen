@@ -30,7 +30,7 @@ class GenerateResiZipJob implements ShouldQueue
             ]);
 
             $folder = storage_path(
-                "app/private/resi/{$this->resi->label}/result"
+                "app/private/resi_generator/result/{$this->resi->label}"
             );
 
             if (!is_dir($folder)) {
