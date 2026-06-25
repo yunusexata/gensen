@@ -45,7 +45,7 @@ class GenerateReceiptImageJob implements ShouldQueue
 
             $cleanExcelRekening = preg_replace('/\D/', '', $this->resiDetail->rekening);
             $fileName =
-                str_pad($this->resiDetail->id, 4, "0", STR_PAD_LEFT)
+                str_pad($this->resiDetail->jenis_pencairan . $this->resiDetail->no, 4, "0", STR_PAD_LEFT)
                 . '_' .
                 strtoupper($this->resiDetail->resi->bank)
                 . '_' .

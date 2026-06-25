@@ -111,6 +111,8 @@ class Detail extends Component
             foreach ($import->rows as $index => $row) {
                 $validatedData = [
                     'resi_generator_id' => $resi->id,
+                    'no' => $row['no'],
+                    'jenis_pencairan' => $row['jenis_pencairan'],
                     'nama' => $row['nama'],
                     'nominal' => $row['nominal'],
                     'rekening' => $row['rekening'],

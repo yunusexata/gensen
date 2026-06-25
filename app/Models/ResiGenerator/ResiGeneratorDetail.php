@@ -21,6 +21,8 @@ class ResiGeneratorDetail extends Model
 
         'resi_generator_id',
 
+        'no',
+        'jenis_pencairan',
         'nama',
         'nominal',
         'rekening',
