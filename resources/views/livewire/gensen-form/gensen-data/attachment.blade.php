@@ -366,25 +366,25 @@
                                                 <div class="grid grid-cols-2 gap-sm">
                                                     @foreach ($rekap['file'] as $file_index => $item)
                                                         @php
-                                                            $ext = $item->getClientOriginalExtension();
-                                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                                            $mimeType = $item->getMimeType();
+                                                            if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])){
                                                                 $url = $item->temporaryUrl();
                                                             
                                                                 // $url = route('preview.temp.image', $item->getFileName());
                                                                 $filename = $item->getClientOriginalName();
-                                                            }elseif(in_array($ext, ['pdf'])){
-                                                            $url = route('preview.temp.pdf', $item->getFileName());
-                                                            $filename = $item->getClientOriginalName();
+                                                            }elseif(in_array($mimeType, ['pdf'])){
+                                                                $url = route('preview.temp.pdf', $item->getFileName());
+                                                                $filename = $item->getClientOriginalName();
                                                             }else{
-                                                            $filename = $item->getClientOriginalName();
+                                                                $filename = $item->getClientOriginalName();
                                                             }
-                                                            $ext = strtolower($ext);
+                                                            $mimeType = strtolower($mimeType);
                                                         @endphp
-                                                        @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
+                                                        @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
                                                             {{-- IMAGE --}}
                                                             <img wire:key="rekap_pengiriman_new_{{ $file_index }}" class="w-full h-full object-cover" data-alt="Professional scan of a tax document on a clean desk background with soft office lighting" 
                                                             src="{{$url}}"/>
-                                                        @elseif(in_array($ext, ['pdf']))
+                                                        @elseif(in_array($mimeType, ['application/pdf']))
                                                             <a wire:key="rekap_pengiriman_new_{{ $filename }}"
                                                                 class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb"
                                                             >
@@ -567,22 +567,22 @@
                                 @if ($kartu_keluarga)
                                     @foreach ($kartu_keluarga as $index => $item)
                                         @php
-                                            $ext = $item->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
+                                            $mimeType = $item->getMimeType();
+                                            if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])){
                                                 $url = $item->temporaryUrl();
-                                                
-                                                        // $url = route('preview.temp.image', $item->getFileName());
+                                            
+                                                // $url = route('preview.temp.image', $item->getFileName());
                                                 $filename = $item->getClientOriginalName();
-                                            }elseif(in_array($ext, ['pdf'])){
+                                            }elseif(in_array($mimeType, ['pdf'])){
                                                 $url = route('preview.temp.pdf', $item->getFileName());
                                                 $filename = $item->getClientOriginalName();
                                             }else{
                                                 $filename = $item->getClientOriginalName();
                                             }
-                                            $ext = strtolower($ext);
+                                            $mimeType = strtolower($mimeType);
                                         @endphp
                                         {{-- {!! $kartu_keluarga_note[$index] !!} --}}
-                                        @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
+                                        @if(in_array($mimeType,['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
                                             {{-- IMAGE --}}
                                             <!-- Preview -->
                                             <div class="relative group/thumb" wire:key="kartu_keluarga_new_{{ $filename }}">
@@ -597,7 +597,7 @@
                                                     >
                                                 </a>
                                             </div>
-                                        @elseif(in_array($ext, ['pdf']))
+                                        @elseif(in_array($mimeType, ['application/pdf']))
                                             {{-- IFRAME PDF --}}
                                             <a  wire:key="kartu_keluarga_new_{{ $filename }}"
                                                 class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb"
@@ -760,21 +760,21 @@
                                         @endif
                                     @elseif ($zairyou_card_front)
                                         @php
-                                            $ext = $zairyou_card_front->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                            $filename = $zairyou_card_front->getClientOriginalName();
-                                            $url = $zairyou_card_front->temporaryUrl();
+                                            $mimeType = $zairyou_card_front->getMimeType();
+                                            if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])){
+                                                $url = $zairyou_card_front->temporaryUrl();
                                             
-                                                        // $url = route('preview.temp.image', $zairyou_card_front->getFileName());
-                                            }elseif(in_array($ext, ['pdf'])){
-                                            $url = route('preview.temp.pdf', $zairyou_card_front->getFileName());
-                                            $filename = $zairyou_card_front->getClientOriginalName();
+                                                // $url = route('preview.temp.image', $zairyou_card_front->getFileName());
+                                                $filename = $zairyou_card_front->getClientOriginalName();
+                                            }elseif(in_array($mimeType, ['pdf'])){
+                                                $url = route('preview.temp.pdf', $zairyou_card_front->getFileName());
+                                                $filename = $zairyou_card_front->getClientOriginalName();
                                             }else{
-                                            $filename = $zairyou_card_front->getClientOriginalName();
+                                                $filename = $zairyou_card_front->getClientOriginalName();
                                             }
-                                            $ext = strtolower($ext);
+                                            $mimeType = strtolower($mimeType);
                                         @endphp
-                                        @if(in_array($ext, ['jpg','jpeg','png']))
+                                        @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
                                             <div wire:key="zairyou_card_front_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
                                             </div>
@@ -806,7 +806,7 @@
                                                 :class="isDragging ? 'border-primary bg-light border-3' : 'border-secondary'"
                                                 class="form-group">
                                                     <label for="zairyou_card_front" class="aspect-video cursor-pointer bg-surface-container-low rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
-                                                        <span class="material-symbols-outlined text-secondary">add_photo_alternate</span>
+                                                        <span class="material-symbols-outlined mimeType-secondary">add_photo_alternate</span>
                                                     </label>
                                                     {{-- <label for="zairyou_card_front" class="border-2 border-dashed border-outline-variant hover:border-primary hover:bg-primary-fixed/10 transition-all cursor-pointer rounded-lg p-md flex flex-col items-center justify-center gap-sm text-center">
                                                         
@@ -850,21 +850,21 @@
                                         @endif
                                     @elseif ($zairyou_card_back)
                                         @php
-                                            $ext = $zairyou_card_back->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                            $filename = $zairyou_card_back->getClientOriginalName();
-                                            $url = $zairyou_card_back->temporaryUrl();
+                                            $mimeType = $zairyou_card_back->getMimeType();
+                                            if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])){
+                                                $url = $zairyou_card_back->temporaryUrl();
                                             
-                                                        // $url = route('preview.temp.image', $zairyou_card_back->getFileName());
-                                            }elseif(in_array($ext, ['pdf'])){
-                                            $url = route('preview.temp.pdf', $zairyou_card_back->getFileName());
-                                            $filename = $zairyou_card_back->getClientOriginalName();
+                                                // $url = route('preview.temp.image', $zairyou_card_back->getFileName());
+                                                $filename = $zairyou_card_back->getClientOriginalName();
+                                            }elseif(in_array($mimeType, ['pdf'])){
+                                                $url = route('preview.temp.pdf', $zairyou_card_back->getFileName());
+                                                $filename = $zairyou_card_back->getClientOriginalName();
                                             }else{
-                                            $filename = $zairyou_card_back->getClientOriginalName();
+                                                $filename = $zairyou_card_back->getClientOriginalName();
                                             }
-                                            $ext = strtolower($ext);
+                                            $mimeType = strtolower($mimeType);
                                         @endphp
-                                        @if(in_array($ext, ['jpg','jpeg','png']))
+                                        @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
                                             <div wire:key="zairyou_card_back_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
                                             </div>
@@ -948,25 +948,21 @@
                                         @endif
                                     @elseif ($my_number_front)
                                         @php
-                                            $ext = $my_number_front->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                            $filename = $my_number_front->getClientOriginalName();
-                                            $url = $my_number_front->temporaryUrl();
+                                            $mimeType = $my_number_front->getMimeType();
+                                            if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])){
+                                                $url = $my_number_front->temporaryUrl();
                                             
-                                                        // $url = route('preview.temp.image', $my_number_front->getFileName());
-                                                // $fullPath = $my_number_front->getRealPath();
-                                            // $relativePath = Str::after($fullPath, 'livewire-tmp/');
-
-                                            // $url = route('preview.temp.file', $relativePath);
-                                            }elseif(in_array($ext, ['pdf'])){
-                                            $url = route('preview.temp.pdf', $my_number_front->getFileName());
-                                            $filename = $my_number_front->getClientOriginalName();
+                                                // $url = route('preview.temp.image', $my_number_front->getFileName());
+                                                $filename = $my_number_front->getClientOriginalName();
+                                            }elseif(in_array($mimeType, ['pdf'])){
+                                                $url = route('preview.temp.pdf', $my_number_front->getFileName());
+                                                $filename = $my_number_front->getClientOriginalName();
                                             }else{
-                                            $filename = $my_number_front->getClientOriginalName();
+                                                $filename = $my_number_front->getClientOriginalName();
                                             }
-                                            $ext = strtolower($ext);
+                                            $mimeType = strtolower($mimeType);
                                         @endphp
-                                        @if(in_array($ext, ['jpg','jpeg','png']))
+                                        @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
                                             <div wire:key="my_number_front_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
                                             </div>
@@ -1040,21 +1036,22 @@
                                         @endif
                                     @elseif ($my_number_back)
                                         @php
-                                            $ext = $my_number_back->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                            $filename = $my_number_back->getClientOriginalName();
-                                            $url = $my_number_back->temporaryUrl();
+                                        
+                                            $mimeType = $my_number_back->getMimeType();
+                                            if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])){
+                                                $url = $my_number_back->temporaryUrl();
                                             
-                                                        // $url = route('preview.temp.image', $my_number_back->getFileName());
-                                            }elseif(in_array($ext, ['pdf'])){
-                                            $url = route('preview.temp.pdf', $my_number_back->getFileName());
-                                            $filename = $my_number_back->getClientOriginalName();
+                                                // $url = route('preview.temp.image', $my_number_back->getFileName());
+                                                $filename = $my_number_back->getClientOriginalName();
+                                            }elseif(in_array($mimeType, ['pdf'])){
+                                                $url = route('preview.temp.pdf', $my_number_back->getFileName());
+                                                $filename = $my_number_back->getClientOriginalName();
                                             }else{
-                                            $filename = $my_number_back->getClientOriginalName();
+                                                $filename = $my_number_back->getClientOriginalName();
                                             }
-                                            $ext = strtolower($ext);
+                                            $mimeType = strtolower($mimeType);
                                         @endphp
-                                        @if(in_array($ext, ['jpg','jpeg','png']))
+                                        @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
                                             <div wire:key="my_number_back_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
                                             </div>
@@ -1135,21 +1132,21 @@
                                         @endif
                                     @elseif ($rekening_indonesia)
                                         @php
-                                            $ext = $rekening_indonesia->getClientOriginalExtension();
-                                            if(in_array($ext, ['jpg','jpeg','png','gif','webp'])){
-                                            $filename = $rekening_indonesia->getClientOriginalName();
-                                            $url = $rekening_indonesia->temporaryUrl();
+                                            $mimeType = $rekening_indonesia->getMimeType();
+                                            if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])){
+                                                $url = $rekening_indonesia->temporaryUrl();
                                             
-                                                        // $url = route('preview.temp.image', $rekening_indonesia->getFileName());
-                                            }elseif(in_array($ext, ['pdf'])){
-                                            $url = route('preview.temp.pdf', $rekening_indonesia->getFileName());
-                                            $filename = $rekening_indonesia->getClientOriginalName();
+                                                // $url = route('preview.temp.image', $rekening_indonesia->getFileName());
+                                                $filename = $rekening_indonesia->getClientOriginalName();
+                                            }elseif(in_array($mimeType, ['pdf'])){
+                                                $url = route('preview.temp.pdf', $rekening_indonesia->getFileName());
+                                                $filename = $rekening_indonesia->getClientOriginalName();
                                             }else{
-                                            $filename = $rekening_indonesia->getClientOriginalName();
+                                                $filename = $rekening_indonesia->getClientOriginalName();
                                             }
-                                            $ext = strtolower($ext);
+                                            $mimeType = strtolower($mimeType);
                                         @endphp
-                                        @if(in_array($ext, ['jpg','jpeg','png']))
+                                        @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
                                         {{-- <div class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb max-w-[160px] mx-auto">
                                             <div class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
