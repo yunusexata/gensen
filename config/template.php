@@ -56,11 +56,11 @@ return [
                     'route' => 'ichijikin_extraction.index',
                     'icon_color' => 'success',
                 ],
-                // [
-                //     'text' => 'Resi Generator',
-                //     'route' => 'resi_generator.index',
-                //     'icon_color' => 'success',
-                // ],
+                [
+                    'text' => 'Resi Generator',
+                    'route' => 'resi_generator.index',
+                    'icon_color' => 'success',
+                ],
             ],
         ],
         [
