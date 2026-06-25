@@ -126,9 +126,6 @@ class ExportService
             ])
             ->when(isset($filters['pic_code']) && $filters['pic_code'], function ($q) use ($filters) {
                 $q->where('gensen_forms.pic_code', $filters['pic_code']);
-            })
-            ->when(isset($filters['tanggal_input']) && $filters['tanggal_input'], function ($query) use ($filters) {
-                $query->whereBetween('gensen_forms.created_at', $filters['tanggal_input']);
             });
     }
     private function queryGetTarikDataDalamPengajuan($filters)
@@ -275,6 +272,9 @@ class ExportService
     private function exportListDataBelumLengkap($filters)
     {
         return $this->query($filters)
+            ->when(isset($filters['tanggal_input']) && $filters['tanggal_input'], function ($query) use ($filters) {
+                $query->whereBetween('gensen_forms.created_at', $filters['tanggal_input']);
+            })
             ->where('gensen_forms.status', GensenForm::STATUS_BELUM_LENGKAP)
             ->whereNull('gensen_forms.tanggal_lengkap');
     }
@@ -282,6 +282,9 @@ class ExportService
     private function exportListDataSiapVerifikasi($filters)
     {
         return $this->query($filters)
+            ->when(isset($filters['tanggal_input']) && $filters['tanggal_input'], function ($query) use ($filters) {
+                $query->whereBetween('gensen_forms.tanggal_lengkap', $filters['tanggal_input']);
+            })
             ->where('gensen_forms.status', GensenForm::STATUS_LENGKAP)
             ->whereNotNull('gensen_forms.tanggal_lengkap')
             ->whereNull('gensen_forms.tanggal_verified');
@@ -290,6 +293,9 @@ class ExportService
     private function exportListDataVerified($filters)
     {
         return $this->query($filters)
+            ->when(isset($filters['tanggal_input']) && $filters['tanggal_input'], function ($query) use ($filters) {
+                $query->whereBetween('gensen_forms.created_at', $filters['tanggal_input']);
+            })
             ->where('gensen_forms.status', GensenForm::STATUS_VERIFIED)
             ->whereNotNull('gensen_forms.tanggal_lengkap')
             ->whereNotNull('gensen_forms.tanggal_verified');
@@ -305,6 +311,9 @@ class ExportService
             //     GensenForm::STATUS_HONNIN,
             //     GensenForm::STATUS_MONDAI,
             // ])
+            ->when(isset($filters['tanggal_input']) && $filters['tanggal_input'], function ($query) use ($filters) {
+                $query->whereBetween('gensen_forms.created_at', $filters['tanggal_input']);
+            })
             ->whereNotNull('gensen_forms.tanggal_lengkap')
             ->whereNotNull('gensen_forms.tanggal_verified')
             ->whereNotNull('gensen_forms.no_input_jepang')
@@ -319,6 +328,9 @@ class ExportService
     private function exportListDataTarikDataAcc($filters)
     {
         return $this->query($filters)
+            ->when(isset($filters['tanggal_input']) && $filters['tanggal_input'], function ($query) use ($filters) {
+                $query->whereBetween('gensen_forms.created_at', $filters['tanggal_input']);
+            })
             ->where('gensen_forms.status', GensenForm::STATUS_TARIK_DATA)
             ->whereNotNull('gensen_forms.tanggal_lengkap')
             ->whereNotNull('gensen_forms.tanggal_verified')

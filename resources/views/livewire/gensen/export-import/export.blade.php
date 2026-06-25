@@ -10,11 +10,11 @@
                 <form wire:submit.prevent="submitExport">
                     <div class="modal-body">
                         <div class="row mb-3">
-                            <label class="form-label">Tanggal Input Dari</label>
+                            <label class="form-label">Tanggal Dari</label>
                             <input type="date" class="form-control" wire:model="filter_tanggal_input_dari"  />
                         </div>
                         <div class="row mb-3">
-                            <label class="form-label">Tanggal Input Sampai</label>
+                            <label class="form-label">Tanggal Sampai</label>
                             <input type="date" class="form-control" wire:model="filter_tanggal_input_sampai"  />
                         </div>
                         <div class="row mb-3">
