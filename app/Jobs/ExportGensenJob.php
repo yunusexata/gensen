@@ -69,7 +69,7 @@ class ExportGensenJob implements ShouldQueue
             $filePath = 'exports/gensen/' . $fileName;
 
             // simpan file (pakai Laravel Excel atau manual)
-            $disk = 'private';
+            $disk = 'supabase';
             Excel::store(new CollectionExport(
                 [
                     'title' => 'Data Gensen ',

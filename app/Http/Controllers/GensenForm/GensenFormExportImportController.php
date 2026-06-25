@@ -31,24 +31,38 @@ class GensenFormExportImportController extends Controller
     {
         $history = GensenExportImportHistory::findOrFail(Crypt::decrypt($id));
 
+        // 'supabase' atau 's3' atau 'private' - semuanya bisa menggunakan method ini
         $disk = Storage::disk($history->disk);
 
-        if ($history->disk === 'private') {
-            $path = storage_path('app/private/' . $history->file_path);
-
-            return response()->download($path);
+        if (!$disk->exists($history->file_path)) {
+            abort(404, 'File tidak ditemukan.');
         }
 
-        $tmpPath = storage_path('app/tmp/' . basename($history->file_path));
-
-        $stream = $disk->readStream($history->file_path);
-        $target = fopen($tmpPath, 'w');
-
-        stream_copy_to_stream($stream, $target);
-
-        fclose($stream);
-        fclose($target);
-
-        return response()->download($tmpPath)->deleteFileAfterSend(true);
+        // Ini akan men-trigger download langsung dari Supabase ke browser user
+        return $disk->download($history->file_path, basename($history->file_path));
     }
+    // public function download($id)
+    // {
+    //     $history = GensenExportImportHistory::findOrFail(Crypt::decrypt($id));
+
+    //     $disk = Storage::disk($history->disk);
+
+    //     if ($history->disk === 'private') {
+    //         $path = storage_path('app/private/' . $history->file_path);
+
+    //         return response()->download($path);
+    //     }
+
+    //     $tmpPath = storage_path('app/tmp/' . basename($history->file_path));
+
+    //     $stream = $disk->readStream($history->file_path);
+    //     $target = fopen($tmpPath, 'w');
+
+    //     stream_copy_to_stream($stream, $target);
+
+    //     fclose($stream);
+    //     fclose($target);
+
+    //     return response()->download($tmpPath)->deleteFileAfterSend(true);
+    // }
 }
