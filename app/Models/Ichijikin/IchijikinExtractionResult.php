@@ -69,6 +69,10 @@ class IchijikinExtractionResult extends Model
     {
         return $this->belongsTo(IchijikinExtractionFile::class, 'ichijikin_extraction_file_id', 'id');
     }
+    public function ichijikinExtractionDetail()
+    {
+        return $this->belongsTo(IchijikinExtractionDetail::class, 'ichijikin_extraction_detail_id', 'id');
+    }
 
     public function creator()
     {

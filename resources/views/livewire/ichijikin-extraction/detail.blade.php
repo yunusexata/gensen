@@ -92,13 +92,14 @@
                                     <p class=" my-0 text-xs text-outline font-medium">Format: PDF</p>
                                 </label>
                             @else
-
-                                <div class="border rounded p-4 text-center bg-light">
-                                    <i class="bi bi-file-earmark fs-1"></i>
-                                    <div class="mt-2">
-                                        {{$file_ichijikin->getClientOriginalName();}}
+                                @foreach ($file_ichijikin as $item)
+                                    <div class="border rounded p-4 text-center bg-light">
+                                        <i class="bi bi-file-earmark fs-1"></i>
+                                        <div class="mt-2">
+                                            {{$item->getClientOriginalName();}}
+                                        </div>
                                     </div>
-                                </div>
+                                @endforeach
                             @endif
                         </div>
                     </div>

@@ -124,7 +124,7 @@ class DatatableBatchDetail extends Component
                 'name' => 'Nama Lengkap',
                 'render' => function ($item) {
 
-                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/nama_lengkap.png');
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/' . $item->ichijikinExtractionDetail->stored_name . '/crop/' . $item->file_stored_name . '/nama_lengkap.png');
                     return "$item->nama_lengkap<br><img src='" . $url . "' style='width: 400px; max-width: 400px; height: auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
@@ -133,7 +133,7 @@ class DatatableBatchDetail extends Component
                 'name' => 'No Nenkin',
                 'render' => function ($item) {
 
-                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/no_nenkin.png');
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/' . $item->ichijikinExtractionDetail->stored_name . '/crop/' . $item->file_stored_name . '/no_nenkin.png');
                     return "$item->no_nenkin<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
@@ -142,7 +142,7 @@ class DatatableBatchDetail extends Component
                 'name' => 'Lama Kerja',
                 'render' => function ($item) {
 
-                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/lama_kerja.png');
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/' . $item->ichijikinExtractionDetail->stored_name . '/crop/' . $item->file_stored_name . '/lama_kerja.png');
                     return "$item->lama_kerja<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
@@ -151,7 +151,7 @@ class DatatableBatchDetail extends Component
                 'name' => 'Kokumin',
                 'render' => function ($item) {
 
-                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/kokumin.png');
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/' . $item->ichijikinExtractionDetail->stored_name . '/crop/' . $item->file_stored_name . '/kokumin.png');
                     return "$item->kokumin<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
@@ -160,7 +160,7 @@ class DatatableBatchDetail extends Component
                 'name' => 'Nenkin 100',
                 'render' => function ($item) {
 
-                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/nenkin_100.png');
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/' . $item->ichijikinExtractionDetail->stored_name . '/crop/' . $item->file_stored_name . '/nenkin_100.png');
                     return "$item->nenkin_100<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
@@ -169,7 +169,7 @@ class DatatableBatchDetail extends Component
                 'name' => 'Nenkin 80',
                 'render' => function ($item) {
 
-                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/nenkin_80.png');
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/' . $item->ichijikinExtractionDetail->stored_name . '/crop/' . $item->file_stored_name . '/nenkin_80.png');
                     return "$item->nenkin_80<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
@@ -178,7 +178,7 @@ class DatatableBatchDetail extends Component
                 'name' => 'Nenkin 20',
                 'render' => function ($item) {
 
-                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/nenkin_20.png');
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/' . $item->ichijikinExtractionDetail->stored_name . '/crop/' . $item->file_stored_name . '/nenkin_20.png');
                     return "$item->nenkin_20<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
@@ -187,7 +187,7 @@ class DatatableBatchDetail extends Component
                 'name' => 'Alamat',
                 'render' => function ($item) {
 
-                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/crop/' . $item->file_stored_name . '/alamat.png');
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/' . $item->ichijikinExtractionDetail->stored_name . '/crop/' . $item->file_stored_name . '/alamat.png');
                     return "$item->alamat<br><img src='" . $url . "' style='width:500px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],

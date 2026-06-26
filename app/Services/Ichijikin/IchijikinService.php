@@ -3,6 +3,7 @@
 namespace App\Services\Ichijikin;
 
 use App\Jobs\IchijikinExtraction\ExtractionIchijikinJob;
+use App\Models\Ai\AiJob;
 use App\Repositories\ConvertDataIchijikin\ConvertDataIchijikinRepository;
 use Carbon\Carbon;
 use Exception;
@@ -135,9 +136,11 @@ class IchijikinService
             // ==============================
             // 6️⃣ SAVE RESULT
             // ==============================
+
             $destFolder = storage_path('app/public/' . $des);
             $destPath   = $destFolder . "/$name.png";
 
+            logger($destFolder);
             // logger([
             //     'DEST CROP',
             //     $destPath
@@ -147,6 +150,7 @@ class IchijikinService
                 mkdir($destFolder, 0755, true);
             }
 
+            logger($destFolder);
             imagepng($dst, $destPath);
             imagedestroy($src);
             imagedestroy($dst);
@@ -161,13 +165,15 @@ class IchijikinService
         }
     }
 
-    public function handleCropDocument($model)
+    public function handleCropDocument(AiJob $model)
     {
         $file = $model->subject;
         $epath = explode('/', $file->path);
+
         $path = $file->path;
         // $folder = $epath[0] . '/' . $epath[1];
-        $folder = "ichijikin/{$file->ichijikinExtraction->batch_name}/crop/$file->file_stored_name";
+        $folder = "ichijikin/{$file->ichijikinExtraction->batch_name}/{$file->ichijikinExtractionDetail->stored_name}/crop/$file->file_stored_name";
+
         // $storedName = pathinfo($file->stored_name, PATHINFO_FILENAME);
 
         // // Crop Date

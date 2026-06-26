@@ -94,7 +94,7 @@ class IchijikinExtractionService
             'alamat' => 'alamat.png'
         ];
         foreach ($files as $key => $fileName) {
-            $filePath = storage_path("app/public/ichijikin/{$ichijikin->ichijikinExtraction->batch_name}/crop/$ichijikin->file_stored_name/{$fileName}");
+            $filePath = storage_path("app/public/ichijikin/{$ichijikin->ichijikinExtraction->batch_name}/{$ichijikin->ichijikinExtractionDetail->stored_name}/crop/$ichijikin->file_stored_name/{$fileName}");
 
             // logger([
             //     'param att path',
@@ -154,8 +154,6 @@ class IchijikinExtractionService
                 )
             )
             ->generateContent($promptParts);
-
-        // logger(['result', $result]);
 
         $response = [];
         $thoughts = null;

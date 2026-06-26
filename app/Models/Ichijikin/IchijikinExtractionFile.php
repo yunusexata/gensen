@@ -81,6 +81,11 @@ class IchijikinExtractionFile extends Model
         return $this->belongsTo(IchijikinExtraction::class, 'ichijikin_extraction_id', 'id');
     }
 
+    public function ichijikinExtractionDetail()
+    {
+        return $this->belongsTo(IchijikinExtractionDetail::class, 'ichijikin_extraction_detail_id', 'id');
+    }
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by', 'id');

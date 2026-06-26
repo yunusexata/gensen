@@ -28,7 +28,7 @@ class CropIchijikinJob implements ShouldQueue
     use Dispatchable, Queueable, SerializesModels;
 
     public function __construct(
-        public $model = null,
+        public AiJob $model,
 
     ) {}
 
@@ -36,14 +36,11 @@ class CropIchijikinJob implements ShouldQueue
     {
         try {
 
-            logger(['Split Ichijikin Job']);
+            logger(['Crop Ichijikin Job']);
 
             $attachment = $this->model->subject;
-            $tmpPdfPath = basename($attachment->path);
-            $local_path = $tmpPdfPath;
-            $extension = strtolower(pathinfo($local_path, PATHINFO_EXTENSION));
 
-            if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
+            if (!in_array($attachment->mime_type, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])) {
                 return;
             }
             logger('HANDLE CROP DOCUMENT');

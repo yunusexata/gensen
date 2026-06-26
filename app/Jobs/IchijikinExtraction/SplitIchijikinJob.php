@@ -8,6 +8,7 @@ use App\Events\ConvertPdfToIMageFinished;
 use App\Jobs\GensenExtractJob\ExtractionDocumentJob;
 use App\Models\Ai\AiJob;
 use App\Models\GensenForm\GensenForm;
+use App\Models\Ichijikin\IchijikinExtractionDetail;
 use App\Models\Ichijikin\IchijikinExtractionFile;
 use App\Repositories\GensenForm\GensenFormAttachmentRepository;
 use App\Repositories\IchijikinExtraction\IchijikinExtractionFileRepository;
@@ -27,7 +28,7 @@ class SplitIchijikinJob implements ShouldQueue
     use Dispatchable, Queueable, SerializesModels;
 
     public function __construct(
-        public $model = null,
+        public IchijikinExtractionDetail $model,
 
     ) {}
 
@@ -140,6 +141,7 @@ class SplitIchijikinJob implements ShouldQueue
             // =====================================================
 
             IchijikinExtractionFileRepository::create([
+                'ichijikin_extraction_id' => $attachment->ichijikin_extraction_id,
                 'ichijikin_extraction_detail_id' => $attachment->id,
                 'file_stored_name' => $storedName,
 

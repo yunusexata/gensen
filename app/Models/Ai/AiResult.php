@@ -80,6 +80,7 @@ class AiResult extends Model
                 $validatedData = [
                     'ai_job_id' => $model->aiJob->id,
                     'ichijikin_extraction_id' => $model->aiJob->subject->ichijikin_extraction_id,
+                    'ichijikin_extraction_detail_id' => $model->aiJob->subject->ichijikin_extraction_detail_id,
                     'ichijikin_extraction_file_id' => $model->aiJob->subject_id,
 
                     'nama_lengkap' => $result['nama_lengkap'],

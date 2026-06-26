@@ -9,6 +9,7 @@ use App\Jobs\GensenExtractJob\ExtractionDocumentJob;
 use App\Models\Ai\AiJob;
 use App\Models\GensenForm\GensenForm;
 use App\Models\Ichijikin\IchijikinExtractionFile;
+use App\Models\Ichijikin\IchijikinExtractionResult;
 use App\Repositories\GensenForm\GensenFormAttachmentRepository;
 use App\Repositories\IchijikinExtraction\IchijikinExtractionFileRepository;
 use App\Services\Ichijikin\IchijikinService;
@@ -28,7 +29,7 @@ class DrawLabelIchijikinJob implements ShouldQueue
     use Dispatchable, Queueable, SerializesModels;
 
     public function __construct(
-        public $model = null,
+        public IchijikinExtractionResult $model,
 
     ) {}
 
