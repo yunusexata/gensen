@@ -820,7 +820,19 @@ class Form extends Component
 
     protected function storeAttachments(GensenForm $gensenForm, $batchId = null): void
     {
-        $this->validate();
+        try {
+            $this->validate();
+        } catch (ValidationException $e) {
+
+            Alert::fail(
+                $this,
+                'Gagal',
+                $e->validator->errors()->first()
+            );
+
+            return;
+        }
+
         DB::transaction(function () use ($gensenForm, $batchId) {
             consoleLog($this, $gensenForm);
 
