@@ -393,18 +393,6 @@ class Form extends Component
         $this->validateStepAttachment();
         $this->validateStepReview();
 
-        try {
-            $this->validate();
-        } catch (ValidationException $e) {
-
-            Alert::fail(
-                $this,
-                'Gagal',
-                $e->validator->errors()->first()
-            );
-
-            return;
-        }
         $this->saveData(true, true);
         Alert::confirmation(
             $this,
