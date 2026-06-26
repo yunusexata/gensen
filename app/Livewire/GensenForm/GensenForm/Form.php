@@ -820,6 +820,7 @@ class Form extends Component
 
     protected function storeAttachments(GensenForm $gensenForm, $batchId = null): void
     {
+        $this->validate();
         DB::transaction(function () use ($gensenForm, $batchId) {
             consoleLog($this, $gensenForm);
 
