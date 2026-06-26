@@ -140,7 +140,6 @@ class IchijikinService
             $destFolder = storage_path('app/public/' . $des);
             $destPath   = $destFolder . "/$name.png";
 
-            logger($destFolder);
             // logger([
             //     'DEST CROP',
             //     $destPath
@@ -150,7 +149,6 @@ class IchijikinService
                 mkdir($destFolder, 0755, true);
             }
 
-            logger($destFolder);
             imagepng($dst, $destPath);
             imagedestroy($src);
             imagedestroy($dst);
