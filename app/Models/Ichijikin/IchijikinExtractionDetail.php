@@ -16,45 +16,38 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\URL;
 use Muhammadyunus1072\TrackHistory\HasTrackHistory;
 
-class IchijikinExtraction extends Model
+class IchijikinExtractionDetail extends Model
 {
     // php artisan reverb:start
     use HasFactory, SoftDeletes, HasTrackHistory;
 
     protected $fillable = [
+        'ichijikin_extraction_id',
 
-        'batch_name',
-        'description',
+        'stored_name',
+        'disk',
+        'path',
+        'note',
 
-        'zip_path',
-        'zip_generated_at',
-        'zip_status',
-        'zip_error_message',
-        'zip_started_at',
-        'zip_finished_at',
+        'extension',
+        'mime_type',
+        'file_size',
+
+        'checksum',
     ];
 
     protected $guarded = ['id'];
 
-    protected $casts = [
-        'zip_status' => JobStatus::class,
-    ];
-
-    protected static function onBoot() {}
-
-    public function ichijikinExtractionFiles()
+    protected static function onBoot()
     {
-        return $this->hasMany(IchijikinExtractionFile::class, 'ichijikin_extraction_id', 'id');
+        self::created(function ($model) {
+            SplitIchijikinJob::dispatch($model)->onQueue('pdf');
+        });
     }
 
-    public function ichijikinExtractionResults()
+    public function ichijikin()
     {
-        return $this->hasMany(IchijikinExtractionResult::class, 'ichijikin_extraction_id', 'id');
-    }
-
-    public function ichijikinExtractionDetails()
-    {
-        return $this->hasMany(IchijikinExtractionDetail::class, 'ichijikin_extraction_id', 'id');
+        return $this->belongsTo(IchijikinExtraction::class, 'ichijikin_extraction_id', 'id');
     }
 
     public function creator()

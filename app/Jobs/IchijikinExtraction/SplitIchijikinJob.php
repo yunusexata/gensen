@@ -36,12 +36,8 @@ class SplitIchijikinJob implements ShouldQueue
         // logger(['Split Ichijikin Job']);
 
         $attachment = $this->model;
-        $tmpDir = "ichijikin/{$attachment->batch_name}";
-        $tmpPdfPath = $tmpDir . '/' . basename($attachment->path);
-        $local_path = $tmpPdfPath;
-        $extension = strtolower(pathinfo($local_path, PATHINFO_EXTENSION));
 
-        if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
+        if (in_array($attachment->mime_type, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])) {
             return;
         }
         $this->convertToImage($attachment);
@@ -59,73 +55,7 @@ class SplitIchijikinJob implements ShouldQueue
             throw new Exception("File missing: {$attachment->path}");
         }
 
-
-        // $tmpDir = "ichijikin/{$attachment->batch_name}/resource";
-        // logger([
-        //     'tmp dir 63',
-        //     $tmpDir
-        // ]);
-
-        // if (!Storage::disk($store_disk)->exists($tmpDir)) {
-        //     Storage::disk($store_disk)->makeDirectory($tmpDir);
-        // }
-
-
-        // logger([
-        //     'tmp pdf path 75',
-        //     $tmpPdfPath
-        // ]);
-        /*
-                |--------------------------------------------------------------------------
-                | STREAM DOWNLOAD (Supabase → Local)
-                |--------------------------------------------------------------------------
-                */
-        // $readStream = $storage->readStream($attachment->path);
-        // logger([
-        //     'content stream att',
-        //     stream_get_contents($readStream)
-        // ]);
-
-        // if ($readStream === false) {
-        //     throw new Exception("Failed to read remote file");
-        // }
-        // $localPdfPath = storage_path(
-        //     'app/' . $store_disk . '/' . $tmpPdfPath
-        // );
-
-        // $localDir = dirname($localPdfPath);
-
-        // if (!is_dir($localDir)) {
-
-        //     mkdir(
-        //         $localDir,
-        //         0755,
-        //         true
-        //     );
-        // }
-        // $writeStream = fopen($localPdfPath, 'w');
-
-        // stream_copy_to_stream($readStream, $writeStream);
-
-        // fclose($readStream);
-        // fclose($writeStream);
-        // $local_path = $tmpPdfPath;
-
-        // $extension = strtolower(pathinfo($local_path, PATHINFO_EXTENSION));
-
-        /*
-                |--------------------------------------------------------------------------
-                | STEP 4 — Ghostscript Convert
-                |--------------------------------------------------------------------------
-                */
-
-        $dir = "ichijikin/{$attachment->batch_name}/converted";
-
-
-        // logger([
-        //     'dir convert',
-        //     $dir
-        // ]);
+        $dir = "ichijikin/{$attachment->ichijikin->batch_name}/{$attachment->stored_name}/converted";
 
         if (!Storage::disk($store_disk)->exists($dir)) {
             Storage::disk($store_disk)->makeDirectory($dir);
@@ -134,26 +64,8 @@ class SplitIchijikinJob implements ShouldQueue
         $outputDir = storage_path("app/{$store_disk}/{$dir}");
 
         // $storedName = pathinfo($attachment->stored_name, PATHINFO_FILENAME);
-        $outputPattern = storage_path("app/{$store_disk}/{$dir}/{$attachment->batch_name}_{$attachment->id}_%04d.jpg");
-        // logger([
-        //     'stored output dir 97',
-        //     $outputPattern
-        // ]);
+        $outputPattern = storage_path("app/{$store_disk}/{$dir}/{$attachment->stored_name}_%04d.jpg");
 
-        // $process = new Process([
-        //     // '/usr/local/bin/gs',
-        //     'gs',
-        //     '-sDEVICE=jpeg',
-        //     '-r150',                // 200 DPI is the "Golden Ratio" for OCR/LLM vision
-        //     '-dNOPAUSE',
-        //     '-dBATCH',
-        //     '-dSAFER',
-        //     '-dINTERPOLATE',        // Smoother scaling
-        //     '-dJPEGQ=80',           // Q=100 is wasteful; 85 is indistinguishable for AI
-        //     '-sColorConversionStrategy=Gray', // Strategy: Grayscale (Reduces tokens/noise)
-        //     "-sOutputFile={$outputPattern}",
-        //     storage_path('app/' . $store_disk . '/' . $tmpPdfPath),
-        // ]);
         $tmpPdfPath = $attachment->path;
         $process = new Process([
             'gs',
@@ -172,14 +84,6 @@ class SplitIchijikinJob implements ShouldQueue
         // '-dFirstPage=1',        // Secure: Process only what you need
 
         $process->run();
-        // logger([
-        //     'successful' => $process->isSuccessful(),
-        //     'exit_code' => $process->getExitCode(),
-        //     'output' => $process->getOutput(),
-        //     'error_output' => $process->getErrorOutput(),
-        // ]);
-
-        // logger($process->getCommandLine());
 
         if (!$process->isSuccessful()) {
             throw new \Exception(
@@ -188,19 +92,14 @@ class SplitIchijikinJob implements ShouldQueue
         }
 
         /*
-                |--------------------------------------------------------------------------
-                | STEP 5 — Collect Generated Images
-                |--------------------------------------------------------------------------
-                */
+        |--------------------------------------------------------------------------
+        | STEP 5 — Collect Generated Images
+        |--------------------------------------------------------------------------
+        */
 
         $generatedFiles = glob(
-            "{$outputDir}/{$attachment->batch_name}_{$attachment->id}_*.jpg"
+            "{$outputDir}/{$attachment->stored_name}_*.jpg"
         );
-
-        // logger([
-        //     'get generated file',
-        //     $generatedFiles
-        // ]);
 
         /*
                 |--------------------------------------------------------------------------
@@ -209,12 +108,6 @@ class SplitIchijikinJob implements ShouldQueue
                 */
 
         sort($generatedFiles);
-
-        // $optimizerChain = OptimizerChainFactory::create()
-        //     ->setTimeout(60);
-
-
-        // DB::beginTransaction();
 
         foreach ($generatedFiles as $index => $file) {
 
@@ -227,68 +120,14 @@ class SplitIchijikinJob implements ShouldQueue
             // safer filename
             $storedName =
                 $info['filename'] . '.jpg';
-
-            // logger([
-            //     'stored_name',
-            //     $storedName,
-            // ]);
-
-            // $targetPath = storage_path("app/{$store_disk}/{$dir}/{$storedName}");
             $targetPath = "{$dir}/{$storedName}";
 
-            // =====================================================
-            // IMAGE OPTIMIZATION
-            // =====================================================
-            // logger([
-            //     'exists_before_save' => file_exists($file),
-            //     'filesize_before_save' => file_exists($file)
-            //         ? filesize($file)
-            //         : null,
-            // ]);
-            // try {
-            // Image::load($file)
-
-            //     // huge filesize reduction here
-            //     // ->width(1240)
-
-            //     // sweet spot for OCR
-            //     ->quality(80)
-
-            //     ->optimize()
-
-            //     ->save($file);
-            //     if (!file_exists($file)) {
-
-            //         throw new Exception(
-            //             "Optimized image missing: {$file}"
-            //         );
-            //     }
-            // } catch (\Throwable $e) {
-
-            //     logger([
-            //         'image_optimize_error' => $e->getMessage(),
-            //         'file' => $file,
-            //     ]);
-
-            //     throw $e;
-            // }
-            // logger([
-            //     'exists_after_save' => file_exists($file),
-            //     'filesize_after_save' => file_exists($file)
-            //         ? filesize($file)
-            //         : null,
-            // ]);
             // =====================================================
             // STREAM UPLOAD
             // Best for memory usage
             // =====================================================
 
             $stream = fopen($file, 'rb');
-
-            // logger([
-            //     'final store',
-            //     'stream_valid' => is_resource($stream),
-            // ]);
 
             // =====================================================
             // FILESIZE AFTER OPTIMIZATION
@@ -301,7 +140,7 @@ class SplitIchijikinJob implements ShouldQueue
             // =====================================================
 
             IchijikinExtractionFileRepository::create([
-                'ichijikin_extraction_id' => $attachment->id,
+                'ichijikin_extraction_detail_id' => $attachment->id,
                 'file_stored_name' => $storedName,
 
                 'disk' => $store_disk,
@@ -310,25 +149,7 @@ class SplitIchijikinJob implements ShouldQueue
                 'mime_type' => 'image/jpeg',
                 'file_size' => $fileSize,
             ]);
-            // IchijikinExtractionFile::firstOrCreate([
-            //     'ichijikin_extraction_id' => $attachment->id,
-            // ], [
-            //     'ichijikin_extraction_id' => $attachment->id,
-            //     'file_stored_name' => $storedName,
 
-            //     'disk' => $store_disk,
-            //     'path' => $targetPath,
-            //     'extension' => 'jpg',
-            //     'mime_type' => 'image/jpeg',
-            //     'file_size' => $fileSize,
-            // ]);
-
-            // logger([
-            //     'exists_last_save' => file_exists($file),
-            //     'filesize_last_save' => file_exists($file)
-            //         ? filesize($file)
-            //         : null,
-            // ]);
             if (is_resource($stream)) {
                 fclose($stream);
             }

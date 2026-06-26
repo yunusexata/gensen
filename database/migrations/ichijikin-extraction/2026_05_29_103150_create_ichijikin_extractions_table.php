@@ -35,22 +35,10 @@ return new class extends Migration
             $table->bigInteger('obj_id')->unsigned();
         } else {
             $table->index('batch_name', 'ichijikin_extractions_batch_name_idx');
-            $table->index('stored_name', 'ichijikin_extractions_stored_name_idx');
         }
 
         $table->string('batch_name')->nullable();       // KK_andi.jpg
-        $table->text('stored_name')->nullable();         // uuid filename
         $table->text('description')->nullable()->default(null);
-
-        $table->string('disk')->nullable();                // local / s3
-        $table->text('path')->nullable();                // storage path
-        $table->text('note')->nullable();                // Attachment Note
-
-        $table->string('extension')->nullable();           // jpg
-        $table->string('mime_type')->nullable();           // image/jpeg
-        $table->string('file_size')->nullable();           // bytes
-
-        $table->text('checksum')->nullable();            // sha256 hash (anti duplicate)
 
         $table->bigInteger("created_by")->unsigned()->nullable();
         $table->bigInteger("updated_by")->unsigned()->nullable();

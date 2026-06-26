@@ -76,6 +76,7 @@
                                     name="file_ichijikin" type="file"
                                     x-ref="input"
                                     wire:model="file_ichijikin"
+                                    multiple
                                     @change="handleFiles" accept="application/pdf"
                                     class="position-absolute invisible" />
 

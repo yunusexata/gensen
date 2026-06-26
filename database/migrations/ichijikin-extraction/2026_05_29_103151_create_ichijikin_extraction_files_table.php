@@ -34,6 +34,7 @@ return new class extends Migration
             $table->bigInteger('obj_id')->unsigned();
         } else {
             $table->index('ichijikin_extraction_id', 'ichijikin_ef_ichijikin_extraction_id_idx');
+            $table->index('ichijikin_extraction_detail_id', 'ichijikin_ef_ichijikin_extraction_detail_id_idx');
             $table->index('disk', 'ichijikin_ef_disk_idx');
             $table->index('path', 'ichijikin_ef_path_idx');
             $table->index('merge_disk', 'ichijikin_ef_merge_disk_idx');
@@ -41,6 +42,7 @@ return new class extends Migration
         }
 
         $table->unsignedBigInteger('ichijikin_extraction_id');
+        $table->unsignedBigInteger('ichijikin_extraction_detail_id');
         $table->text('file_stored_name')->nullable();
 
         $table->string('disk')->nullable();                // local / s3

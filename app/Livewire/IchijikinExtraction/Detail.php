@@ -8,6 +8,7 @@ use App\Models\Exata\ExataFormCandidate;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\GensenFormLink;
 use App\Models\Ichijikin\IchijikinExtraction;
+use App\Models\Ichijikin\IchijikinExtractionDetail;
 use App\Repositories\Exata\ExataFormCandidateRepository;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
 use App\Repositories\IchijikinExtraction\IchijikinExtractionFileRepository;
@@ -83,35 +84,10 @@ class Detail extends Component
         try {
             DB::transaction(function () {
                 $disk = 'public';
-
-                $extension = $this->file_ichijikin
-                    ->extension();
-
-                $fileName =  'ICHIJIKIN EXTRACTION - ' . $this->batch_name . ' - ' . now()->format('Ymd')  . '.' . $extension;
-                $filePath = Storage::disk($disk)->putFileAs(
-                    'ichijikin/' . $this->batch_name . '/resource',
-                    $this->file_ichijikin,
-                    $fileName,
-                    [
-                        'visibility' => 'private',
-                    ]
-                );
                 // Vehicle
                 $validateData = [
-
                     'batch_name' => $this->batch_name,
-                    'stored_name' => $fileName,
                     'description' => null,
-
-                    'disk' => $disk,
-                    'path' => $filePath,
-                    'note' => null,
-
-                    'extension' => $this->file_ichijikin->extension(),
-                    'mime_type' => $this->file_ichijikin->getMimeType(),
-                    'file_size' => $this->file_ichijikin->getSize(),
-
-                    'checksum' => hash_file('sha256', $this->file_ichijikin->getRealPath()),
                 ];
 
                 if ($this->objId) {
@@ -119,6 +95,40 @@ class Detail extends Component
                     IchijikinExtraction::update($ichijin_id, $validateData);
                 } else {
                     $ichijikin = IchijikinExtraction::create($validateData);
+                }
+                foreach ($this->file_ichijikin as $file) {
+
+                    $fileName = $file->getClientOriginalName();
+                    $fileBaseName = \Illuminate\Support\Str::slug(
+                        pathinfo(
+                            $file->getClientOriginalName(),
+                            PATHINFO_FILENAME
+                        )
+                    );
+                    $filePath = $file->storeAs(
+                        'ichijikin/' . $this->batch_name . '/' . $fileBaseName . '/resource',
+                        $fileName,
+                        $disk
+                    );
+
+                    IchijikinExtractionDetail::create([
+                        'ichijikin_extraction_id' => $ichijikin->id,
+
+                        'stored_name' => $fileBaseName,
+
+                        'disk' => $disk,
+                        'path' => $filePath,
+                        'note' => null,
+
+                        'extension' => $file->extension(),
+                        'mime_type' => $file->getMimeType(),
+                        'file_size' => $file->getSize(),
+
+                        'checksum' => hash_file(
+                            'sha256',
+                            $file->getRealPath()
+                        ),
+                    ]);
                 }
             });
 

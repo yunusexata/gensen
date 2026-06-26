@@ -23,6 +23,7 @@ class IchijikinExtractionFile extends Model
     protected $fillable = [
 
         'ichijikin_extraction_id',
+        'ichijikin_extraction_detail_id',
         'file_stored_name',
 
         'disk',
