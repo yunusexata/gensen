@@ -44,6 +44,7 @@ class HeaderStats extends Component
             CASE
                 WHEN status = '" . GensenFormLink::STATUS_ACTIVE . "'
                  AND expired_at > CURRENT_TIMESTAMP
+                THEN GREATEST(max_usage - used_count, 0)
                 ELSE 0
             END
         ), 0) AS active,
