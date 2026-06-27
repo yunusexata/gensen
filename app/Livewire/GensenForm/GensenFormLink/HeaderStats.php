@@ -39,15 +39,15 @@ class HeaderStats extends Component
         COALESCE(SUM(max_usage), 0) AS total,
 
         COALESCE(SUM(used_count), 0) AS submit,
-
-        COALESCE(SUM(
-            CASE
-                WHEN status = '" . GensenFormLink::STATUS_ACTIVE . "'
-                 AND expired_at > CURRENT_TIMESTAMP
-                THEN GREATEST(max_usage - used_count, 0)
-                ELSE 0
-            END
-        ), 0) AS active,
+        
+        COALESCE(COUNT(
+                CASE
+                    WHEN status = '" . GensenFormLink::STATUS_ACTIVE . "'
+                    AND expired_at > CURRENT_TIMESTAMP
+                    THEN 1
+                    ELSE NULL
+                END
+            ), 0) AS active,
 
         COALESCE(SUM(
             CASE
