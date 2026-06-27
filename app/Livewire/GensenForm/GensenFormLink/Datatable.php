@@ -163,7 +163,10 @@ class Datatable extends Component
             ],
             [
                 'key' => 'used_count',
-                'name' => 'Jumlah Terpakai'
+                'name' => 'Jumlah Terpakai',
+                'render' => function ($item) {
+                    return $item->used_count;
+                }
             ],
             [
                 'sortable' => false,

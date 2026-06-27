@@ -832,7 +832,6 @@ class Form extends Component
                 'Validasi Gagal',
                 $e->validator->errors()->first()
             );
-
             return;
         }
         DB::transaction(function () use ($gensenForm, $batchId) {
