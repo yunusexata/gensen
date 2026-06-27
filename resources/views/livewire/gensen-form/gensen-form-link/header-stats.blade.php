@@ -32,7 +32,7 @@
     <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm flex items-center justify-between col-md-3">
         <div>
             <p class="text-sm font-semibold text-gray-400 dark:text-gray-400">Submit</p>
-            <h4 class="text-2xl font-bold text-green-500 mt-1">{{ $total['submit'] }}</h4>
+            <h4 class="text-2xl font-bold text-green-500 mt-1">{{ $total['success'] }}</h4>
         </div>
         <div class="w-12 h-12 bg-green-50 dark:bg-green-900/20 text-green-500 rounded-xl flex items-center justify-center">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

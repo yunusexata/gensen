@@ -36,30 +36,25 @@ class HeaderStats extends Component
                 $q->where('pic_code', $this->pic_code);
             })
             ->selectRaw("
-        COALESCE(SUM(max_usage), 0) AS total,
+        COUNT(id) AS total,
 
-        COALESCE(SUM(used_count), 0) AS submit,
-        
-        COALESCE(COUNT(
-                CASE
-                    WHEN status = '" . GensenFormLink::STATUS_ACTIVE . "'
-                    AND expired_at > CURRENT_TIMESTAMP
-                    THEN 1
-                    ELSE NULL
-                END
-            ), 0) AS active,
+        COUNT(id) FILTER (
+            WHERE status = '" . GensenFormLink::STATUS_ACTIVE . "'
+              AND expired_at > CURRENT_TIMESTAMP
+        ) AS active,
 
-        COALESCE(SUM(
-            CASE
-                WHEN expired_at <= CURRENT_TIMESTAMP
-                THEN GREATEST(max_usage - used_count, 0)
-                ELSE 0
-            END
-        ), 0) AS expired
+        COUNT(id) FILTER (
+            WHERE status = '" . GensenFormLink::STATUS_SUCCESS . "'
+              AND expired_at > CURRENT_TIMESTAMP
+        ) AS success,
+
+        COUNT(id) FILTER (
+            WHERE status = '" . GensenFormLink::STATUS_EXPIRED . "'
+               OR expired_at <= CURRENT_TIMESTAMP
+        ) AS expired
     ")
             ->first()
             ->toArray();
-        // dd($this->total);
     }
     public function render()
     {
