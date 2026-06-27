@@ -50,6 +50,9 @@ class GensenFormObserver
      */
     public function updated(GensenForm $gensenForm): void
     {
+        if (! $gensenForm->wasChanged('status')) {
+            return;
+        }
         logger([
             'email katerogi',
             $gensenForm->status
