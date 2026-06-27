@@ -45,7 +45,6 @@ class HeaderStats extends Component
 
         COUNT(id) FILTER (
             WHERE status = '" . GensenFormLink::STATUS_SUCCESS . "'
-              AND expired_at > CURRENT_TIMESTAMP
         ) AS success,
 
         COUNT(id) FILTER (
