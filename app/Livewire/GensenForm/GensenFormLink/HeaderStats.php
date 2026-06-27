@@ -23,8 +23,6 @@ class HeaderStats extends Component
 
     public function mount()
     {
-        $this->status_choice = GensenFormLink::STATUS_CHOICE;
-
         $this->pic_code = Auth::user()->pic_code ?? null;
         $this->getDashboardStats();
     }
