@@ -805,8 +805,36 @@ class Form extends Component
         }
     }
 
+    protected function attachmentRules(): array
+    {
+        return [
+            // Multiple Upload
+            'kertas_gensen.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:10240',
+            'kartu_keluarga.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:10240',
+            'rekap_pengiriman_uang.*' => 'nullable|file|mimes:pdf|max:10240',
+
+            // Single Upload
+            'my_number_front' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
+            'my_number_back' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
+            'zairyou_card_front' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
+            'zairyou_card_back' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
+            'rekening_indonesia' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
+        ];
+    }
+
     protected function storeAttachments(GensenForm $gensenForm, $batchId = null): void
     {
+        try {
+            $this->validate($this->attachmentRules());
+        } catch (ValidationException $e) {
+            Alert::fail(
+                $this,
+                'Validasi Gagal',
+                $e->validator->errors()->first()
+            );
+
+            return;
+        }
         DB::transaction(function () use ($gensenForm, $batchId) {
             consoleLog($this, $gensenForm);
 
