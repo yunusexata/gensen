@@ -1614,7 +1614,13 @@
                                                             class="form-control"
                                                             wire:model.defer="remittance_extraction_groups.{{ $index_remittance_extraction }}.receiver_name"
                                                             type="text"
-                                                        />- {{$remittance['transaction_year']}}</label>
+                                                        />
+                                                    </label>
+                                                    <div class="row">
+                                                        <p  class="form-control">
+                                                            {{ $remittance['transaction_year'] }}
+                                                        </p>
+                                                    </div>
                                                     <div class="row">
                                                         <input
                                                             class="form-control"
