@@ -94,29 +94,15 @@ class Form extends Component
     public $is_submitted = false;
 
     // Multiple Upload
-    #[Validate(['kertas_gensen.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:10240'])]
     public $kertas_gensen = [];
-
-    #[Validate(['kartu_keluarga.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:10240'])]
     public $kartu_keluarga = [];
-
-    #[Validate(['rekap_pengiriman_uang.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:10240'])]
     public $rekap_pengiriman_uang = [];
 
     // Single Upload
-    #[Validate('nullable|file|mimes:jpg,jpeg,png|max:10240')]
     public $my_number_front;
-
-    #[Validate('nullable|file|mimes:jpg,jpeg,png|max:10240')]
     public $my_number_back;
-
-    #[Validate('nullable|file|mimes:jpg,jpeg,png|max:10240')]
     public $zairyou_card_front;
-
-    #[Validate('nullable|file|mimes:jpg,jpeg,png|max:10240')]
     public $zairyou_card_back;
-
-    #[Validate('nullable|file|mimes:jpg,jpeg,png|max:10240')]
     public $rekening_indonesia;
 
     public $kertas_gensen_note = [];
