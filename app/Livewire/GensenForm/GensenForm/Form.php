@@ -375,10 +375,6 @@ class Form extends Component
     public function submitForm()
     {
         consoleLog($this, 'submit dong');
-        $this->validateStepPersonal();
-        $this->validateStepAttachment();
-        $this->validateStepReview();
-
         $this->saveData(true, true);
         Alert::confirmation(
             $this,
@@ -471,25 +467,35 @@ class Form extends Component
             $this->zairyou_card_back_old = $attachments[GensenAttachmentType::ZAIRYOU_CARD_BACK->value] ?? [];
             $this->rekening_indonesia_old = $attachments[GensenAttachmentType::REKENING_INDONESIA->value] ?? [];
         } else {
-            if (!Str::isUuid($this->objId)) {
-                abort(404);
-            }
-            $form = GensenFormLinkRepository::findBy([
-                ['token', $this->objId],
-            ]);
-            if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_SUCCESS) {
-                // abort(403, "Form {$form['name']} sudah Maksimal");
-
-                return redirect()
-                    ->route('form.max-usage')
-                    ->with('error', "Form {$form['name']} sudah maksimal");
-            } else {
+            if ($this->isAdmin) {
                 consoleLog($this, 'buat baru');
                 $this->saveData(false);
                 if (!$this->is_should_filled) {
                     throw \Illuminate\Validation\ValidationException::withMessages([
                         'input_filled' => 'Data belum lengkap'
                     ]);
+                }
+            } else {
+                if (!Str::isUuid($this->objId)) {
+                    abort(404);
+                }
+                $form = GensenFormLinkRepository::findBy([
+                    ['token', $this->objId],
+                ]);
+                if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_SUCCESS) {
+                    // abort(403, "Form {$form['name']} sudah Maksimal");
+
+                    return redirect()
+                        ->route('form.max-usage')
+                        ->with('error', "Form {$form['name']} sudah maksimal");
+                } else {
+                    consoleLog($this, 'buat baru');
+                    $this->saveData(false);
+                    if (!$this->is_should_filled) {
+                        throw \Illuminate\Validation\ValidationException::withMessages([
+                            'input_filled' => 'Data belum lengkap'
+                        ]);
+                    }
                 }
             }
         }
@@ -748,6 +754,7 @@ class Form extends Component
                 $this->pic_phone = $gensenForm->getPicAttribute()->no_whatsapp;
 
                 consoleLog($this, ['gensenForm nih', $gensenForm]);
+
                 if ($withAttachment) {
 
                     $batchId = Str::uuid();
