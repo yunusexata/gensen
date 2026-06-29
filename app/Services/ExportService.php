@@ -276,7 +276,8 @@ class ExportService
                 $query->whereBetween('gensen_forms.created_at', $filters['tanggal_input']);
             })
             ->where('gensen_forms.status', GensenForm::STATUS_BELUM_LENGKAP)
-            ->whereNull('gensen_forms.tanggal_lengkap');
+            ->whereNull('gensen_forms.tanggal_lengkap')
+            ->orderBy('gensen_forms.created_at', 'asc');
     }
 
     private function exportListDataSiapVerifikasi($filters)
@@ -287,7 +288,8 @@ class ExportService
             })
             ->where('gensen_forms.status', GensenForm::STATUS_LENGKAP)
             ->whereNotNull('gensen_forms.tanggal_lengkap')
-            ->whereNull('gensen_forms.tanggal_verified');
+            ->whereNull('gensen_forms.tanggal_verified')
+            ->orderBy('gensen_forms.created_at', 'asc');
     }
 
     private function exportListDataVerified($filters)
@@ -298,7 +300,8 @@ class ExportService
             })
             ->where('gensen_forms.status', GensenForm::STATUS_VERIFIED)
             ->whereNotNull('gensen_forms.tanggal_lengkap')
-            ->whereNotNull('gensen_forms.tanggal_verified');
+            ->whereNotNull('gensen_forms.tanggal_verified')
+            ->orderBy('gensen_forms.created_at', 'asc');
         // ->whereNull('gensen_forms.no_input_jepang');
     }
 
@@ -317,12 +320,14 @@ class ExportService
             ->whereNotNull('gensen_forms.tanggal_lengkap')
             ->whereNotNull('gensen_forms.tanggal_verified')
             ->whereNotNull('gensen_forms.no_input_jepang')
-            ->whereNull('gensen_forms.tanggal_pengajuan');
+            ->whereNull('gensen_forms.tanggal_pengajuan')
+            ->orderBy('gensen_forms.created_at', 'asc');
     }
 
     private function exportListDataDalamPengajuan($filters)
     {
-        return $this->queryGetTarikDataDalamPengajuan($filters);
+        return $this->queryGetTarikDataDalamPengajuan($filters)
+            ->orderBy('gensen_forms.created_at', 'asc');
     }
 
     private function exportListDataTarikDataAcc($filters)
@@ -340,6 +345,7 @@ class ExportService
                 $q->whereNull('gfd.nominal_cair')
                     ->orWhere('gfd.nominal_cair', 0);
             })
-            ->whereNull('gfd.tanggal_cair');
+            ->whereNull('gfd.tanggal_cair')
+            ->orderBy('gensen_forms.created_at', 'asc');
     }
 }
