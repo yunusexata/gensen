@@ -50,7 +50,8 @@ class Export extends Component
             'job_key' => $this->export_job_key,
             'created_by' => auth()->id(),
             'type' => 'export',
-            'filters' => json_encode($filters, true)
+            'filters' => json_encode($filters, true),
+            'export_template' => $this->export_job_key == ExportImportJobKey::EXPORT_LIST_DATA_BELUM_LENGKAP ? 'app.gensen.gensen-data.export-belum-lengkap' : null,
         ]);
 
         $this->dispatch('datatable-refresh');
