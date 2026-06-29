@@ -125,11 +125,6 @@ if (!function_exists('valueToImask')) {
 if (!function_exists('numberFormat')) {
     function numberFormat($number, $decimalPoin = 2)
     {
-        logger([
-            'value' => $number,
-            'type' => gettype($number),
-        ]);
-
         if ($number === null || $number === '') {
             return '0';
         }
