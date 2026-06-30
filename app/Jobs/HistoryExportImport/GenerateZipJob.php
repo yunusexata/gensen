@@ -115,10 +115,13 @@ class GenerateZipJob implements ShouldQueue
 
             // 4. Move to Supabase (Stream Upload)
             $s3Disk = Storage::disk($zip_disk);
-            $s3Path = 'exports/seluruh_berkas_zips/' . basename($batchName);
-
-            $zipStream = fopen($localZipPath, 'r');
-            $s3Disk->writeStream($s3Path, $zipStream);
+            $s3Path = 'exports/seluruh_berkas_zips/' . basename($localZipPath);
+            $zipStream = fopen($localZipPath, 'rb');
+            $result = $s3Disk->writeStream($s3Path, $zipStream);
+            logger([
+                'write_result' => $result,
+                'path' => $s3Path,
+            ]);
             logger([
                 'uploaded' => $s3Disk->exists($s3Path),
                 'path' => $s3Path,
