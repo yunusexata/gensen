@@ -102,6 +102,12 @@ class GenerateZipJob implements ShouldQueue
             // 3. Zip using 7z
             $command = sprintf('7z a -tzip -mx=3 "%s" "%s/*"', $localZipPath, $tempLocalFolder);
             exec($command . ' 2>&1', $output, $result);
+            logger([
+                '7z_result' => $result,
+                '7z_output' => $output,
+                'zip_exists' => file_exists($localZipPath),
+                'zip_size' => file_exists($localZipPath) ? filesize($localZipPath) : 0,
+            ]);
 
             if ($result !== 0) {
                 throw new \Exception("7z failed: " . implode("\n", $output));
@@ -113,6 +119,10 @@ class GenerateZipJob implements ShouldQueue
 
             $zipStream = fopen($localZipPath, 'r');
             $s3Disk->writeStream($s3Path, $zipStream);
+            logger([
+                'uploaded' => $s3Disk->exists($s3Path),
+                'path' => $s3Path,
+            ]);
             if (is_resource($zipStream)) fclose($zipStream);
 
             // 5. Update DB
