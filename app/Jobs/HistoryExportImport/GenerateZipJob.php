@@ -71,19 +71,32 @@ class GenerateZipJob implements ShouldQueue
                 ->get();
             // 2. Download files to VPS (Streaming)
             foreach ($attachments as $attachment) {
-                $disk = Storage::disk($attachment->disk);
-                logger($attachment);
-                if ($disk->exists($attachment->path)) {
-                    logger('exists');
-                    // Construct safe filename
-                    $safeName = preg_replace('/[\/\\\:\*\?\"\<\>\|]/', '_', $attachment->no_input_jepang . "_" . $attachment->nama_lengkap);
-                    $ext = ltrim($attachment->extension, '.');
-                    $localFilePath = $tempLocalFolder . '/' . $safeName . '.' . $ext;
 
-                    $stream = $disk->readStream($attachment->path);
-                    file_put_contents($localFilePath, $stream);
-                    if (is_resource($stream)) fclose($stream);
+                $disk = Storage::disk($attachment->disk);
+
+                if (! $disk->exists($attachment->path)) {
+                    continue;
                 }
+
+                $ext = pathinfo($attachment->path, PATHINFO_EXTENSION);
+
+                $safeName = preg_replace(
+                    '/[\/\\\\:*?"<>|]/',
+                    '_',
+                    "{$attachment->id_customer}_{$attachment->no_input_jepang}_{$attachment->nama_lengkap}"
+                );
+
+                $localFilePath = $tempLocalFolder . DIRECTORY_SEPARATOR .
+                    $safeName . '.' . $ext;
+
+                $read = $disk->readStream($attachment->path);
+
+                $write = fopen($localFilePath, 'wb');
+
+                stream_copy_to_stream($read, $write);
+
+                fclose($read);
+                fclose($write);
             }
 
             // 3. Zip using 7z
