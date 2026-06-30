@@ -56,7 +56,7 @@ class GensenFormExportImportController extends Controller
         // Ini akan men-trigger download langsung dari Supabase ke browser user
         return $disk->download(
             $zipJob->zip_path,
-            basename($zipJob->zip_path) . '.zip'
+            basename($zipJob->zip_path)
         );
     }
     // public function download($id)
