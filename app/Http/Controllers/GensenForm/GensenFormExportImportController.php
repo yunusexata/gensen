@@ -6,6 +6,7 @@ use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Gensen\GensenExportImportHistory;
+use App\Models\Gensen\GensenSeluruhBerkasZipJob;
 use App\Models\GensenForm\GensenForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -40,6 +41,23 @@ class GensenFormExportImportController extends Controller
 
         // Ini akan men-trigger download langsung dari Supabase ke browser user
         return $disk->download($history->file_path, basename($history->file_path));
+    }
+    public function downloadSeluruhBerkas($id)
+    {
+        $zipJob = GensenSeluruhBerkasZipJob::findOrFail(Crypt::decrypt($id));
+
+        // 'supabase' atau 's3' atau 'private' - semuanya bisa menggunakan method ini
+        $disk = Storage::disk($zipJob->zip_disk);
+
+        if (!$disk->exists($zipJob->zip_path)) {
+            abort(404, 'File tidak ditemukan.');
+        }
+
+        // Ini akan men-trigger download langsung dari Supabase ke browser user
+        return $disk->download(
+            $zipJob->zip_path,
+            basename($zipJob->zip_path) . '.zip'
+        );
     }
     // public function download($id)
     // {

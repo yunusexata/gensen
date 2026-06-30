@@ -113,8 +113,8 @@ class GeminiService
                         properties: [
                             'receiver_name' => new Schema(
                                 type: DataType::STRING,
-                                // PERUBAHAN: Memaksa pembacaan karakter-demi-karakter tanpa auto-correct
-                                description: "The full name of the recipient. Read the text CHARACTER-BY-CHARACTER exactly as visually printed on the document with zero tolerance for typos, omissions, or assumptions. Capture the raw string as-is. Do not attempt to fix typos, do not normalize spelling variations, and do not merge similar-looking names. If two names differ by even one letter, they must remain distinct."
+                                // PERUBAHAN: Mengizinkan simbol baca (apostrof, strip), tapi memblokir mutlak huruf Jepang
+                                description: "The full name of the recipient. Extract the Latin alphabet (A-Z), spaces, and any related punctuation/symbols (such as apostrophes in 'ma'arif' or hyphens). STRICTLY IGNORE and remove all Japanese characters (Kanji, Hiragana, Katakana, e.g., '様' or 'さま'). After dropping the Japanese characters, read the remaining text CHARACTER-BY-CHARACTER exactly as visually printed with zero tolerance for typos, omissions, or assumptions. Capture the raw string as-is without rearranging the word order. Do not attempt to fix typos or normalize spelling."
                             ),
                             'transaction_year' => new Schema(
                                 type: DataType::INTEGER,

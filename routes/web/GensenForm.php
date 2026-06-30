@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Storage;
 Route::group(["controller" => GensenFormExportImportController::class, "prefix" => "gensen_form_export_import", "as" => "gensen_form_export_import."], function () {
     Route::get('download/{id}', 'download')->name('download');
 });
+Route::group(["controller" => GensenFormExportImportController::class, "prefix" => "gensen_form_export_import", "as" => "gensen_form_export_import."], function () {
+    Route::get('downloadSeluruhBerkas/{id}', 'downloadSeluruhBerkas')->name('download-seluruh-berkas');
+});
 Route::group(["controller" => GensenFormController::class, "prefix" => "gensen_form", "as" => "gensen_form."], function () {
     Route::get('{id}/form', 'form')->name('form');
     Route::get('{id}/upload_attachment', 'upload_attachment')->name('upload_attachment');

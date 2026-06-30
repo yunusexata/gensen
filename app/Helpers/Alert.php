@@ -10,6 +10,7 @@ class Alert
     const EVENT_CONFIRMATION = 'SwalConfirm';
     const EVENT_INFORMATION = 'SwalInformation';
     const EVENT_CONSOLE_LOG = 'ConsoleLog';
+    const EVENT_LOADING = 'SwalLoading';
 
     const ICON_QUESTION = "question";
     const ICON_ERROR = "error";
@@ -42,8 +43,15 @@ class Alert
     public static function information(
         Component $component,
         $title,
+        $timer = 1500,
     ) {
-        $component->dispatch(self::EVENT_INFORMATION, self::ICON_SUCCESS, $title);
+        $component->dispatch(self::EVENT_INFORMATION, self::ICON_SUCCESS, $title, $timer);
+    }
+    public static function loading(
+        Component $component,
+        $title,
+    ) {
+        $component->dispatch(self::EVENT_LOADING, $title);
     }
     public static function consoleLog(
         Component $component,

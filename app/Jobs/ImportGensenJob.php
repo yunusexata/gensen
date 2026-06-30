@@ -87,6 +87,7 @@ class ImportGensenJob implements ShouldQueue
                 'status' => JobStatus::DONE,
                 'amount' => $data['success_count'],
                 'error_message' => json_encode($data['errors']),
+                'customer_ids' => $data['customer_ids'] ?? [],
                 'finish_at' => now(),
             ]);
             // DB::commit();

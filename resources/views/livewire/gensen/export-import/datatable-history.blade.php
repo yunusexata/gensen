@@ -130,18 +130,24 @@
                     console.log('EVENT MASUK:', e);
                     Livewire.dispatch('status-updated',{data: e.data});
                 });
+            window.Echo.channel('zip-seluruh-berkas-status')
+                .subscribed(() => console.log('SUBSCRIBED'))
+                .listen('.zip-seluruh-berkas.status.updated', (e) => {
+                    console.log('EVENT MASUK ZIP:', e);
+                    Livewire.dispatch('status-updated',{data: e.data});
+                });
                 //   .listen('.export-import.status.updated', (e) => {
                 //     console.log('DOT EVENT:', e);
                 // })
-        Livewire.on('download-export', ({ url }) => {
-            console.log(url);
-            const link = document.createElement('a');
-                link.href = url;
-                link.download = '';
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-            });
+            Livewire.on('download-export', ({ url }) => {
+                console.log(url);
+                const link = document.createElement('a');
+                    link.href = url;
+                    link.download = '';
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                });;
         });
     </script>
 @endpush

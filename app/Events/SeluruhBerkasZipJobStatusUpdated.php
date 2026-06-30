@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Gensen\GensenExportImportHistory;
+use App\Models\Gensen\GensenSeluruhBerkasZipJob;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -10,7 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class ExportImportStatusUpdated implements ShouldBroadcastNow
+class SeluruhBerkasZipJobStatusUpdated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,14 +20,15 @@ class ExportImportStatusUpdated implements ShouldBroadcastNow
     /**
      * Create a new event instance.
      */
-    public function __construct(GensenExportImportHistory $history)
+    public function __construct(GensenSeluruhBerkasZipJob $zipJob)
     {
         $this->data = [
-            'id' => $history->id,
-            'type' => $history->type,
-            'created_by' => $history->created_by,
-            'status' => $history->status->value,
-            'job_key' => $history->job_key,
+            'id' => $zipJob->id,
+            'type' => GensenSeluruhBerkasZipJob::class,
+            'status' => $zipJob->status->value,
+            'created_by' => $zipJob->created_by,
+            'zip_path' => $zipJob->zip_path,
+            'zip_disk' => $zipJob->zip_disk,
             // 'file_path' => $history->file_path,
             // 'disk' => $history->disk,
             // 'file_name' => $history->file_name,
@@ -41,16 +43,16 @@ class ExportImportStatusUpdated implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        Log::info('Broadcast channel hit');
+        Log::info('Broadcast channel hit Zip Seluruh Berkas');
         return [
             // 'export-status'
-            new Channel('export-import-status')
+            new Channel('zip-seluruh-berkas-status')
 
         ];
     }
     public function broadcastAs()
     {
-        return 'export-import.status.updated';
+        return 'zip-seluruh-berkas.status.updated';
     }
 
     public function broadcastWith(): array

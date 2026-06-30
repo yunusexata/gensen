@@ -31,7 +31,6 @@
                 <th class="text-center">ID CUSTOMER</th>
                 <th class="text-center">TANGGAL LENGKAP</th>
                 <th class="text-center">TANGGAL VERIFIED</th>
-                <th class="text-center">NO INPUT JEPANG</th>
                 <th class="text-center">TANGGAL PENGAJUAN</th>
                 <th class="text-center">TANGGAL Tarik Data</th>
                 <th class="text-center">Label</th>
@@ -39,6 +38,7 @@
                 <th class="text-center">NOMINAL CAIR</th>
                 <th class="text-center">STATUS</th>
                 <th class="text-center">KETERANGAN</th>
+                <th class="text-center">NO INPUT JEPANG</th>
                 <th class="text-center">NAMA LENGKAP</th>
                 <th class="text-center">TGL LAHIR</th>
                 <th class="text-center">TGL PULANG</th>
@@ -72,7 +72,6 @@
                         <td>{{ $data['id_customer'] }}</td>
                         <td>{{ $data['tanggal_lengkap'] ? Carbon\Carbon::parse($data['tanggal_lengkap'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['tanggal_verified'] ? Carbon\Carbon::parse($data['tanggal_verified'])->format('Ymd') : '' }}</td>
-                        <td>{{ $data['no_input_jepang']}}</td>
                         <td>{{ $data['tanggal_pengajuan'] ? Carbon\Carbon::parse($data['tanggal_pengajuan'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['tanggal_tarik_data_detail'] ? Carbon\Carbon::parse($data['tanggal_tarik_data_detail'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['label_detail'] }}</td>
@@ -82,6 +81,7 @@
                         </td>
                         <td>{{ $data['status']}}</td>
                         <td>{{ $data['keterangan']}}</td>
+                        <td>{{ $data['no_input_jepang']}}</td>
                         <td>{{ $data['nama_lengkap'] }}</td>
                         <td>{{ $data['tanggal_lahir'] ? Carbon\Carbon::parse($data['tanggal_lahir'])->format('Ymd') : '' }}</td>
                         <td>{{ $data['tanggal_kepulangan'] ? Carbon\Carbon::parse($data['tanggal_kepulangan'])->format('ymd') : '' }}</td>

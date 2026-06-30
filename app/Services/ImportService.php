@@ -9,6 +9,7 @@ use App\Models\GensenForm\GensenForm;
 use App\Models\User;
 use App\Repositories\GensenForm\GensenFormDetailRepository;
 use App\Repositories\GensenForm\GensenFormRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -275,6 +276,7 @@ class ImportService
     {
         $successCount = 0;
         $errorRows = [];
+        $successRows = [];
 
         foreach ($import->rows as $index => $row) {
             // logger([
@@ -337,11 +339,13 @@ class ImportService
 
             if ($updated > 0) {
                 $successCount++;
+                $customer_ids[] = $row['id_customer'];
             }
         }
         return [
             'success_count' => $successCount,
-            'errors' => $errorRows
+            'customer_ids' => $customer_ids,
+            'errors' => $errorRows,
         ];
     }
     private function importListDataDalamPengajuan($import): array
@@ -364,7 +368,7 @@ class ImportService
             $validatedData = [];
 
             $validatedData = [
-                'tanggal_pengajuan' => $row['tanggal_pengajuan'],
+                'tanggal_pengajuan' =>  Carbon::createFromFormat('ymd', $row['tanggal_pengajuan']),
                 'keterangan' => $row['keterangan'],
             ];
 

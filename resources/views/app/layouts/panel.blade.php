@@ -319,13 +319,24 @@
                 }
             });
         });
+        Livewire.on("{{ Alert::EVENT_LOADING }}", (event) => {
+            Swal.fire({
+                position: "top-end",
+                title: event[0],
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        });
         Livewire.on("{{ Alert::EVENT_INFORMATION }}", (event) => {
             Swal.fire({
                 position: "top-end",
                 icon: event[0],
                 title: event[1],
                 showConfirmButton: false,
-                timer: 1500
+                timer: event[2]
             });
             // Swal.fire({
             //     icon: event[0],

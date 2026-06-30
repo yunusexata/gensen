@@ -2,12 +2,16 @@
 
 namespace App\Livewire\Gensen\ExportImport;
 
+use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
 use App\Helpers\PermissionHelper;
+use App\Jobs\HistoryExportImport\GenerateZipJob;
+use App\Models\Gensen\GensenSeluruhBerkasZipJob;
 use App\Models\GensenForm\GensenForm;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\Gensen\GensenExportImportHistoryRepository;
+use App\Repositories\Gensen\GensenSeluruhBerkasZipJobRepository;
 use App\Traits\Livewire\WithDatatable as LivewireWithDatatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +50,30 @@ class DatatableHistory extends Component
                 // url: $data['url']
                 url: route('gensen_form_export_import.download', ['id' => $encryptedId])
             );
+        }
+        if ($data['type'] === 'import' && $data['created_by'] == Auth::user()->id && $data['status'] === JobStatus::DONE->value && $data['job_key'] === ExportImportJobKey::IMPORT_LIST_DATA_NO_INPUT_JAPAN->value) {
+            consoleLog($this, $data);
+            Alert::loading($this, 'Sedang Mengkompresi Berkas ... !');
+            GensenSeluruhBerkasZipJobRepository::create([
+                'gensen_export_import_history_id' => $data['id'],
+                'status' => JobStatus::PENDING,
+            ]);
+        }
+        if ($data['created_by'] == Auth::user()->id && $data['status'] === JobStatus::DONE->value && $data['type'] === GensenSeluruhBerkasZipJob::class) {
+            consoleLog($this, [
+                'berhasil ZIP',
+                $data
+            ]);
+            $encryptedId = Crypt::encrypt($data['id']);
+            consoleLog($this, $data);
+            // $url = route('gensen_form_export_import.download', ['id' => $encryptedId]);
+            $this->dispatch(
+                'download-export',
+                // url: $data['url']
+                url: route('gensen_form_export_import.download-seluruh-berkas', ['id' => $encryptedId])
+            );
+
+            Alert::information($this, 'Berkas Berhasil Dikompres!');
         }
         $this->statuses[$data['id']] = $data;
     }

@@ -5,49 +5,36 @@ namespace App\Models\Gensen;
 use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Jobs\ExportGensenJob;
+use App\Jobs\HistoryExportImport\GenerateZipJob;
 use App\Jobs\ImportGensenJob;
+use App\Jobs\MergePersyaratanPengurusanGensen;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Muhammadyunus1072\TrackHistory\HasTrackHistory;
 use Illuminate\Support\Facades\URL;
+use Muhammadyunus1072\TrackHistory\HasTrackHistory;
 
-class GensenExportImportHistory extends Model
+class GensenSeluruhBerkasZipJob extends Model
 {
     // php artisan reverb:start
     use HasFactory, SoftDeletes, HasTrackHistory;
 
     protected $fillable = [
-
-        'role',
-        'type',
-        'job_key',
-        'export_template',
+        'gensen_export_import_history_id',
         'status',
-
-        'file_template_name',
-        'disk_template',
-        'file_template_path',
-
-        'file_name',
-        'disk',
-        'file_path',
-        'customer_ids',
         'error_message',
-
-        'filters',
-        'amount',
-
+        'zip_disk',
+        'zip_path',
         'started_at',
         'finished_at',
+
     ];
 
     protected $guarded = ['id'];
 
     protected $casts = [
         'status' => JobStatus::class,
-        'job_key' => ExportImportJobKey::class,
         'customer_ids' => 'array',
     ];
 
@@ -59,24 +46,13 @@ class GensenExportImportHistory extends Model
             }
         });
         self::created(function ($model) {
-            if ($model->type === 'export') {
-                // if ($model->job_key != ExportImportJobKey::EXPORT_LIST_DATA_DALAM_PENGAJUAN) {
-                ExportGensenJob::dispatch($model->id)->onQueue('excel');
-                // }
-            }
-            if ($model->type === 'import') {
-                ImportGensenJob::dispatch($model->id)->onQueue('excel');
-            }
+            GenerateZipJob::dispatch($model->gensen_export_import_history_id)->onQueue('pdf');
         });
     }
 
-    public function previewUrl(): string
+    public function gensenExportImportHistory()
     {
-        return URL::temporarySignedRoute(
-            'gensen.attachment.preview-export-import',
-            now()->addMinutes(30),
-            ['history_id' => $this->id]
-        );
+        return $this->belongsTo(GensenExportImportHistory::class, 'gensen_export_import_history_id', 'id');
     }
     public function creator()
     {
