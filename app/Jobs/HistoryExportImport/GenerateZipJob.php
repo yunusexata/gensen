@@ -74,6 +74,7 @@ class GenerateZipJob implements ShouldQueue
                 $disk = Storage::disk($attachment->disk);
                 logger($attachment);
                 if ($disk->exists($attachment->path)) {
+                    logger('exists');
                     // Construct safe filename
                     $safeName = preg_replace('/[\/\\\:\*\?\"\<\>\|]/', '_', $attachment->no_input_jepang . "_" . $attachment->nama_lengkap);
                     $ext = ltrim($attachment->extension, '.');
