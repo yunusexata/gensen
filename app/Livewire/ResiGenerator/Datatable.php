@@ -143,7 +143,6 @@ class Datatable extends Component
                                 </div>";
                     } else {
                         // If not started yet (or failed), show the trigger button to start the job
-
                         $downloadHtml = "
                                 <div class='col-auto'>
                                     <button
@@ -157,7 +156,6 @@ class Datatable extends Component
                                     </button>
                                 </div>";
                     }
-
 
                     $html = "<div class='row p-0 m-0 d-flex justify-content-start flex-nowrap'>
                         $editHtml $destroyHtml $downloadHtml

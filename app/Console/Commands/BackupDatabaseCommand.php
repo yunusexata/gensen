@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
 
 #[Signature('backup:database')]
 #[Description('Backup PostgreSQL database')]
@@ -20,13 +22,39 @@ class BackupDatabaseCommand extends Command
 
     public function handle()
     {
+        // $filename = 'backup_' . now()->format('Y_m_d_His') . '.sql';
+
+        // $path = storage_path('app/backups/' . $filename);
+
+        // if (!is_dir(storage_path('app/backups'))) {
+        //     mkdir(storage_path('app/backups'), 0775, true);
+        // }
+
+        // $command = sprintf(
+        //     'PGPASSWORD="%s" pg_dump -U %s -h %s -p %s %s > %s',
+        //     env('DB_PASSWORD'),
+        //     env('DB_USERNAME'),
+        //     env('DB_HOST'),
+        //     env('DB_PORT'),
+        //     env('DB_DATABASE'),
+        //     $path
+        // );
+
+        // exec($command);
+        // collect(glob(storage_path('app/backups/*.sql')))
+        //     ->sort()
+        //     ->slice(0, -14)
+        //     ->each(fn($file) => unlink($file));
+
         $filename = 'backup_' . now()->format('Y_m_d_His') . '.sql';
 
-        $path = storage_path('app/backups/' . $filename);
+        $tempDir = storage_path('app/temp_backups');
 
-        if (!is_dir(storage_path('app/backups'))) {
-            mkdir(storage_path('app/backups'), 0775, true);
+        if (!is_dir($tempDir)) {
+            mkdir($tempDir, 0775, true);
         }
+
+        $localPath = $tempDir . DIRECTORY_SEPARATOR . $filename;
 
         $command = sprintf(
             'PGPASSWORD="%s" pg_dump -U %s -h %s -p %s %s > %s',
@@ -35,14 +63,27 @@ class BackupDatabaseCommand extends Command
             env('DB_HOST'),
             env('DB_PORT'),
             env('DB_DATABASE'),
-            $path
+            escapeshellarg($localPath)
         );
 
-        exec($command);
-        collect(glob(storage_path('app/backups/*.sql')))
-            ->sort()
-            ->slice(0, -14)
-            ->each(fn($file) => unlink($file));
+        exec($command, $output, $result);
+
+        if ($result !== 0 || !file_exists($localPath)) {
+            throw new Exception('Database backup failed.');
+        }
+
+        $disk = Storage::disk('supabase');
+
+        $remotePath = 'database_backups/' . $filename;
+
+        $stream = fopen($localPath, 'rb');
+
+        $disk->writeStream($remotePath, $stream);
+
+        fclose($stream);
+
+        // Delete local temp file
+        unlink($localPath);
 
         $this->info('Backup completed: ' . $filename);
     }

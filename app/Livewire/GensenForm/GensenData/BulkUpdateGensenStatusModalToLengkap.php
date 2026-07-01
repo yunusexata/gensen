@@ -91,12 +91,6 @@ class BulkUpdateGensenStatusModalToLengkap extends Component
 
             $fileName = ExportImportJobKey::IMPORT_LIST_DATA_LENGKAP->value . '-' . now()->format('Ymd') . '.' . $extension;
 
-            // $filePath = $this->inputFileBulkStatus
-            //     ->storeAs(
-            //         'imports/gensen',
-            //         $fileName,
-            //         $disk
-            //     );
             $filePath = Storage::disk($disk)->putFileAs(
                 'imports/gensen',
                 $this->inputFileBulkStatus,

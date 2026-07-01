@@ -100,12 +100,6 @@ class BulkUpdateGensenNoInputJepangModal extends Component
 
             $fileName = ExportImportJobKey::IMPORT_LIST_DATA_NO_INPUT_JAPAN->value . '-' . now()->format('Ymd') . '.' . $extension;
 
-            // $filePath = $this->inputFileBulkStatus
-            //     ->storeAs(
-            //         '',
-            //         $fileName,
-            //         $disk
-            //     );
             $filePath = Storage::disk($disk)->putFileAs(
                 'imports/gensen',
                 $this->inputFileBulkStatus,
