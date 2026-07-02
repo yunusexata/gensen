@@ -64,13 +64,19 @@ class DatatableHistory extends Component
                 'berhasil ZIP',
                 $data
             ]);
+
             $encryptedId = Crypt::encrypt($data['id']);
             consoleLog($this, $data);
+            if ($data['zip_disk'] === 'supabase') {
+                $url = 'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $data['zip_path'];
+            } else {
+                $url = route('gensen_form_export_import.download-seluruh-berkas', ['id' => $encryptedId]);
+            }
             // $url = route('gensen_form_export_import.download', ['id' => $encryptedId]);
             $this->dispatch(
                 'download-export',
                 // url: $data['url']
-                url: route('gensen_form_export_import.download-seluruh-berkas', ['id' => $encryptedId])
+                url: $url
             );
 
             Alert::information($this, 'Berkas Berhasil Dikompres!');
