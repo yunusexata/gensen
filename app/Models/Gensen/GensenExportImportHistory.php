@@ -78,6 +78,7 @@ class GensenExportImportHistory extends Model
             ['history_id' => $this->id]
         );
     }
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by', 'id');

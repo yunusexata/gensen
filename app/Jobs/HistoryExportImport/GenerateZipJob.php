@@ -83,7 +83,7 @@ class GenerateZipJob implements ShouldQueue
                 $safeName = preg_replace(
                     '/[\/\\\\:*?"<>|]/',
                     '_',
-                    "{$attachment->id_customer}_{$attachment->no_input_jepang}_{$attachment->nama_lengkap}"
+                    "{$attachment->no_input_jepang}_{$attachment->nama_lengkap}"
                 );
 
                 $localFilePath = $tempLocalFolder . DIRECTORY_SEPARATOR .

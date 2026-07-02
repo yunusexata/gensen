@@ -22,29 +22,6 @@ class BackupDatabaseCommand extends Command
 
     public function handle()
     {
-        // $filename = 'backup_' . now()->format('Y_m_d_His') . '.sql';
-
-        // $path = storage_path('app/backups/' . $filename);
-
-        // if (!is_dir(storage_path('app/backups'))) {
-        //     mkdir(storage_path('app/backups'), 0775, true);
-        // }
-
-        // $command = sprintf(
-        //     'PGPASSWORD="%s" pg_dump -U %s -h %s -p %s %s > %s',
-        //     env('DB_PASSWORD'),
-        //     env('DB_USERNAME'),
-        //     env('DB_HOST'),
-        //     env('DB_PORT'),
-        //     env('DB_DATABASE'),
-        //     $path
-        // );
-
-        // exec($command);
-        // collect(glob(storage_path('app/backups/*.sql')))
-        //     ->sort()
-        //     ->slice(0, -14)
-        //     ->each(fn($file) => unlink($file));
 
         $filename = 'backup_' . now()->format('Y_m_d_His') . '.sql';
 
