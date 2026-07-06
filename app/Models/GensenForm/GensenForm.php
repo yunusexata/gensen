@@ -165,11 +165,11 @@ class GensenForm extends Model
     public function statusColor()
     {
         return match ($this->status) {
-            self::STATUS_BELUM_LENGKAP => '#F9B2D7',
+            self::STATUS_BELUM_LENGKAP => '#eae1e5',
             self::STATUS_LENGKAP => '#5DEBD7',
-            self::STATUS_VERIFIED => '#89D4FF',
+            self::STATUS_VERIFIED => '#F9B2D7',
             self::STATUS_DALAM_PENGAJUAN => '#4689e8',
-            self::STATUS_TARIK_DATA => '#eb50c4',
+            self::STATUS_TARIK_DATA => '#66e442',
             self::STATUS_GENSEN_CAIR => '#E5C95F',
             self::STATUS_CANCEL => '#FFF6F6',
             self::STATUS_HONNIN => '#D1855C',
