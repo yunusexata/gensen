@@ -108,7 +108,7 @@ class Attachment extends Component
 
     public function mount()
     {
-        $this->tahun_gensen_choice =  collect(range(now()->year, now()->year - 4))
+        $this->tahun_gensen_choice =  collect(range(now()->year, now()->year - 5))
             ->map(function ($year) {
                 return [
                     'value' => toReiwaYear($year),
