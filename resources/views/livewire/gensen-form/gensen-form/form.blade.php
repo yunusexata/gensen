@@ -550,7 +550,7 @@
                                                     </div>
                                                 </div>
 
-                                                {!! $kertas_gensen_note[$index] !!}
+                                                {{-- {!! $kertas_gensen_note[$index] !!} --}}
                                                 
                                             @else
                                                 <div class="border rounded p-4 text-center bg-light">
@@ -1373,7 +1373,7 @@
                                                     </div>
                                                 </div>
 
-                                                {!! $kartu_keluarga_note[$index] !!}
+                                                {{-- {!! $kartu_keluarga_note[$index] !!} --}}
                                             
                                             @else
                                                 <div class="border rounded p-4 text-center bg-light">
