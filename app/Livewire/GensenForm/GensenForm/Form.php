@@ -376,16 +376,16 @@ class Form extends Component
     {
         consoleLog($this, 'submit dong');
         $this->saveData(true, true);
-        // Alert::confirmation(
-        //     $this,
-        //     Alert::ICON_SUCCESS,
-        //     "Berhasil",
-        //     "Data Berhasil Disimpan",
-        //     "on-dialog-confirm",
-        //     "on-dialog-cancel",
-        //     "Oke",
-        //     "Tutup",
-        // );
+        Alert::confirmation(
+            $this,
+            Alert::ICON_SUCCESS,
+            "Berhasil",
+            "Data Berhasil Disimpan",
+            "on-dialog-confirm",
+            "on-dialog-cancel",
+            "Oke",
+            "Tutup",
+        );
 
         // session()->flash('success', 'Form submitted!');
     }
@@ -819,7 +819,7 @@ class Form extends Component
             // Multiple Upload
             'kertas_gensen.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:10240',
             'kartu_keluarga.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:10240',
-            'rekap_pengiriman_uang.*' => 'nullable|file|mimes:pdf|max:10240',
+            'rekap_pengiriman_uang.file.*' => 'nullable|file|mimes:pdf|max:10240',
 
             // Single Upload
             'my_number_front' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
