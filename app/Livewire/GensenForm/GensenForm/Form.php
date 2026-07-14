@@ -754,6 +754,7 @@ class Form extends Component
                 $this->pic_phone = $gensenForm->getPicAttribute()->no_whatsapp;
 
                 consoleLog($this, ['gensenForm nih', $gensenForm]);
+                consoleLog($this, $withAttachment ? 'YA ATT' : 'TIDAK ATT');
 
                 if ($withAttachment) {
 
