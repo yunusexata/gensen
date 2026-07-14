@@ -398,7 +398,7 @@
                                                 <input
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('no_rekening_penerima') is-invalid border border-red-500 @enderror"
                                                     id="no_rekening_penerima" wire:model="no_rekening_penerima"
-                                                    name="first_name" placeholder="1234567890" type="text" />
+                                                    name="no_rekening_penerima" placeholder="0001234567890" type="text" />
 
                                                 @error('no_rekening_penerima')
                                                     <div class="invalid-feedback">
@@ -412,7 +412,7 @@
                                                         class="text-red-500">*</span></label>
                                                 <input
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('nama_penerima') is-invalid border border-red-500 @enderror"
-                                                    id="nama_penerima" wire:model="nama_penerima" name="first_name"
+                                                    id="nama_penerima" wire:model="nama_penerima" name="nama_penerima"
                                                     placeholder="exata" type="text" />
 
                                                 @error('nama_penerima')
@@ -427,7 +427,7 @@
                                                 <input
                                                     class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full @error('hubungan_penerima') is-invalid border border-red-500 @enderror"
                                                     id="hubungan_penerima" wire:model="hubungan_penerima"
-                                                    name="first_name" placeholder="Istri" type="text" />
+                                                    name="hubungan_penerima" placeholder="Istri" type="text" />
                                                 
                                                 <div class="form-text" id="basic-addon4">Kosongkan jika menggunakan rekening pribadi</div>
 

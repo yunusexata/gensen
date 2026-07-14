@@ -843,6 +843,8 @@ class Form extends Component
         }
         DB::transaction(function () use ($gensenForm, $batchId) {
             consoleLog($this, $gensenForm);
+            consoleLog($this, 'store attachment');
+            consoleLog($this, $this->attachmentInputs());
 
             foreach ($this->attachmentInputs() as $input) {
 
