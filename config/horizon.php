@@ -263,7 +263,7 @@ return [
                 'connection' => 'redis',
                 'queue' => ['crop'],
 
-                'maxProcesses' => 2,
+                'maxProcesses' => 4,
 
                 'memory' => 512,
 
