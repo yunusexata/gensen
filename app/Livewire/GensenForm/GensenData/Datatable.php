@@ -375,7 +375,7 @@ class Datatable extends Component
                     $nominal_gensen_details = explode(';', $item->nominal_gensen_details);
                     $html = "";
                     foreach ($tahun_gensen_details as $index => $tahun_gensen) {
-                        $html .= "<div class='text-nowrap'>{$tahun_gensen}/" . fromReiwaToYear($tahun_gensen) . " - {$nominal_gensen_details[$index]}</div>";
+                        $html .= "<div class='text-nowrap'>{$tahun_gensen}A / " . fromReiwaToYear($tahun_gensen) . " - {$nominal_gensen_details[$index]}</div>";
                     }
                     return $html;
                 }
@@ -776,11 +776,18 @@ class Datatable extends Component
             return;
         }
 
-        $row = GensenForm::findOrFail(simple_decrypt($id));
+        $row = GensenFormRepository::findWithTahunGensen(simple_decrypt($id));
         $this->editingRowId = simple_decrypt($id);
+        $tahun_gensen_details = explode(';', $row->tahun_gensen_details);
+        $nominal_gensen_details = explode(';', $row->nominal_gensen_details);
+        $html = "";
+        foreach ($tahun_gensen_details as $index => $tahun_gensen) {
+            $html .= "<div class='text-nowrap'>{$tahun_gensen}A A  / " . fromReiwaToYear($tahun_gensen) . " - {$nominal_gensen_details[$index]}</div>";
+        }
 
         $this->editingData = [
             'id' => simple_encrypt($row['id']),
+            'gensen_details' => $html,
             'status' => $row['status'],
             'nama_lengkap' => $row['nama_lengkap'],
             'tanggal_lahir' => $row['tanggal_lahir'],
@@ -802,7 +809,6 @@ class Datatable extends Component
             'hubungan_penerima' => $row['hubungan_penerima'],
             // 'status' => $row['status'],
             'tahun_gensen' => $row['tahun_gensen'],
-            'tahun_transfer' => $row['tahun_transfer'],
             'pic_code' => $row['pic_code'],
             'nama_instagram' => $row['nama_instagram'],
             'nama_tiktok' => $row['nama_tiktok'],

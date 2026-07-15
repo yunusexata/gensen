@@ -278,7 +278,7 @@ class ExportService
             ->where('gensen_forms.status', GensenForm::STATUS_BELUM_LENGKAP)
             ->whereNull('gensen_forms.tanggal_lengkap')
             ->orderBy('gensen_forms.created_at', 'asc')
-            ->orderBy('gfd.tahun_gensen', 'asc');
+            ->orderBy('gfd.tahun_gensen', 'desc');
     }
 
     private function exportListDataSiapVerifikasi($filters)
@@ -291,7 +291,7 @@ class ExportService
             ->whereNotNull('gensen_forms.tanggal_lengkap')
             ->whereNull('gensen_forms.tanggal_verified')
             ->orderBy('gensen_forms.created_at', 'asc')
-            ->orderBy('gfd.tahun_gensen', 'asc');
+            ->orderBy('gfd.tahun_gensen', 'desc');
     }
 
     private function exportListDataVerified($filters)
@@ -304,7 +304,7 @@ class ExportService
             ->whereNotNull('gensen_forms.tanggal_lengkap')
             ->whereNotNull('gensen_forms.tanggal_verified')
             ->orderBy('gensen_forms.created_at', 'asc')
-            ->orderBy('gfd.tahun_gensen', 'asc');
+            ->orderBy('gfd.tahun_gensen', 'desc');
         // ->whereNull('gensen_forms.no_input_jepang');
     }
 
@@ -325,14 +325,14 @@ class ExportService
             ->whereNotNull('gensen_forms.no_input_jepang')
             ->whereNull('gensen_forms.tanggal_pengajuan')
             ->orderBy('gensen_forms.created_at', 'asc')
-            ->orderBy('gfd.tahun_gensen', 'asc');
+            ->orderBy('gfd.tahun_gensen', 'desc');
     }
 
     private function exportListDataDalamPengajuan($filters)
     {
         return $this->queryGetTarikDataDalamPengajuan($filters)
             ->orderBy('gensen_forms.created_at', 'asc')
-            ->orderBy('gfd.tahun_gensen', 'asc');
+            ->orderBy('gfd.tahun_gensen', 'desc');
     }
 
     private function exportListDataTarikDataAcc($filters)
@@ -352,6 +352,6 @@ class ExportService
             })
             ->whereNull('gfd.tanggal_cair')
             ->orderBy('gensen_forms.created_at', 'asc')
-            ->orderBy('gfd.tahun_gensen', 'asc');
+            ->orderBy('gfd.tahun_gensen', 'desc');
     }
 }

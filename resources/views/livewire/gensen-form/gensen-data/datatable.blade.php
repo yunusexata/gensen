@@ -300,6 +300,10 @@
                                                                 </div>
                                                             </td>
                                                             <td>
+                                                                <label for="">Nominal Gensen</label>
+                                                                {!! $editingData['gensen_details'] !!}
+                                                            </td>
+                                                            <td>
                                                                 <label for="">Instagram</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input

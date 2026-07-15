@@ -277,6 +277,7 @@ class ImportService
         $successCount = 0;
         $errorRows = [];
         $successRows = [];
+        $customer_ids = [];
 
         foreach ($import->rows as $index => $row) {
             // logger([
@@ -304,26 +305,29 @@ class ImportService
 
                 $validatedData = [
                     'status' => GensenForm::STATUS_CANCEL,
+                    'tanggal_cancel' => now(),
                     'keterangan' => $row['keterangan'],
                 ];
             } elseif ($status === 'honnin') {
 
                 $validatedData = [
                     'status' => GensenForm::STATUS_HONNIN,
+                    'tanggal_honnin' => now(),
                     'keterangan' => $row['keterangan'],
                 ];
             } elseif ($status === 'mondai') {
 
                 $validatedData = [
                     'status' => GensenForm::STATUS_MONDAI,
+                    'tanggal_mondai' => now(),
                     'keterangan' => $row['keterangan'],
                 ];
             } elseif ($status === 'verified') {
 
-                $validatedData = [
-                    'status' => GensenForm::STATUS_VERIFIED,
-                    'keterangan' => $row['keterangan'],
-                ];
+                // $validatedData = [
+                //     'status' => GensenForm::STATUS_VERIFIED,
+                //     'keterangan' => $row['keterangan'],
+                // ];
             }
 
             $validatedData = array_merge($validatedData, [

@@ -20,6 +20,53 @@ class GensenFormRepository extends MasterDataRepository
         return GensenForm::class;
     }
 
+    public static function findWithTahunGensen($id)
+    {
+        $gensenDetailAgg = DB::table('gensen_form_details as gfd')
+            ->whereNull('gfd.deleted_at')
+            ->selectRaw("
+        gfd.gensen_form_id,
+
+        STRING_AGG(
+            gfd.tahun_gensen::text,
+            ';'
+            ORDER BY gfd.tahun_gensen DESC
+        ) AS tahun_gensen_details,
+        
+        STRING_AGG(
+            COALESCE(
+                TO_CHAR(gfd.tanggal_tarik_data, 'YYYY-MM-DD'),
+                ''
+            )
+            || ' - ' ||
+            COALESCE(gfd.label, ''),
+            ';'
+            ORDER BY gfd.tahun_gensen DESC
+        ) AS tarik_data_details,
+            
+        STRING_AGG(
+            COALESCE(REPLACE(
+                TO_CHAR(gfd.nominal_gensen, 'FM999,999,999,999'),
+                ',',
+                '.'
+            ), ''),
+            ';'
+            ORDER BY gfd.tahun_gensen DESC
+        ) AS nominal_gensen_details
+    ")
+            ->groupBy('gfd.gensen_form_id');
+        return GensenForm::select(
+            'gensen_forms.*',
+            'gfd.tahun_gensen_details',
+            'gfd.nominal_gensen_details',
+        )
+            ->where('id', '=', $id)
+            ->leftJoinSub($gensenDetailAgg, 'gfd', function ($join) {
+                $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id');
+            })
+            ->first();
+    }
+
     public static function copy($gensen_form_id)
     {
         DB::beginTransaction();
@@ -184,7 +231,7 @@ class GensenFormRepository extends MasterDataRepository
                         '.'
                     ),
                     ';'
-                    ORDER BY reg.transaction_year
+                    ORDER BY reg.transaction_year DESC
                 ) AS remittance_total_amounts,
 
                 STRING_AGG(
@@ -192,13 +239,13 @@ class GensenFormRepository extends MasterDataRepository
                      || ' - ' || 
                       COALESCE(reg.receiver_relationship, ''),
                     ';'
-                    ORDER BY reg.transaction_year
+                    ORDER BY reg.transaction_year DESC
                 ) AS remittance_receiver_names,
 
                 STRING_AGG(
                     reg.transaction_year::text,
                     ';'
-                    ORDER BY reg.transaction_year
+                    ORDER BY reg.transaction_year DESC
                 ) AS remittance_receiver_years
             ")
             ->groupBy('re.subject_id', 're.subject_type');
@@ -210,7 +257,7 @@ class GensenFormRepository extends MasterDataRepository
         STRING_AGG(
             gfd.tahun_gensen::text,
             ';'
-            ORDER BY gfd.tahun_gensen
+            ORDER BY gfd.tahun_gensen DESC
         ) AS tahun_gensen_details,
         
         STRING_AGG(
@@ -221,7 +268,7 @@ class GensenFormRepository extends MasterDataRepository
             || ' - ' ||
             COALESCE(gfd.label, ''),
             ';'
-            ORDER BY gfd.tahun_gensen
+            ORDER BY gfd.tahun_gensen DESC
         ) AS tarik_data_details,
             
         STRING_AGG(
@@ -231,7 +278,7 @@ class GensenFormRepository extends MasterDataRepository
                 '.'
             ), ''),
             ';'
-            ORDER BY gfd.tahun_gensen
+            ORDER BY gfd.tahun_gensen DESC
         ) AS nominal_gensen_details
     ")
             ->groupBy('gfd.gensen_form_id');
@@ -250,12 +297,12 @@ class GensenFormRepository extends MasterDataRepository
                 '.'
             ),
             '<br>;'
-            ORDER BY gfd.tahun_gensen
+            ORDER BY gfd.tahun_gensen DESC
         ) AS nominal_cair_details,
         STRING_AGG(
             gfd.tahun_gensen::text || '-' || gfd.tanggal_cair::text,
             '<br>;'
-            ORDER BY gfd.tahun_gensen
+            ORDER BY gfd.tahun_gensen DESC
         ) AS tanggal_cair_details
     ")
             ->groupBy('gfd.gensen_form_id');
