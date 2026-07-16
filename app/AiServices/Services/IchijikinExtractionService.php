@@ -27,22 +27,26 @@ class IchijikinExtractionService
         $schema = new Schema(
             type: DataType::OBJECT,
             properties: [
-                'kokumin' => new Schema(type: DataType::INTEGER, description: 'Return 0 if the image is blank/empty.', nullable: true),
+                'kokumin' => new Schema(
+                    type: DataType::INTEGER,
+                    description: 'The extracted numerical value.Remove commas and currency symbols (円). CRITICAL: If the image is blank, empty, or the detected value is less than 100, you MUST return 0. Example: 20,547円 -> 20547, 円 -> 0',
+                    nullable: true
+                ),
                 'nama_lengkap' => new Schema(
                     type: DataType::STRING,
                     description: 'Extract the full name verbatim. Pay extreme attention to double or repeating letters (e.g., ZZ, AA). Copy it character-by-character exactly as written, with zero spelling corrections.'
                 ),
                 'nenkin_20' => new Schema(
                     type: DataType::INTEGER,
-                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547'
+                    description: 'Remove commas and currency symbols (円). CRITICAL: If the extracted value is less than 100, you MUST return 0. Example: 20,547円 -> 20547, 円 -> 0'
                 ),
                 'nenkin_80' => new Schema(
                     type: DataType::INTEGER,
-                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547'
+                    description: 'Remove commas and currency symbols (円). CRITICAL: If the extracted value is less than 100, you MUST return 0. Example: 20,547円 -> 20547, 円 -> 0'
                 ),
                 'nenkin_100' => new Schema(
                     type: DataType::INTEGER,
-                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547'
+                    description: 'Remove commas and currency symbols (円). CRITICAL: If the extracted value is less than 100, you MUST return 0. Example: 20,547円 -> 20547, 円 -> 0'
                 ),
                 'no_nenkin' => new Schema(
                     type: DataType::STRING,
