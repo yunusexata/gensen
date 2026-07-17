@@ -76,9 +76,9 @@ class IchijikinExtractionService
             required: [
                 'kokumin',
                 'nama_lengkap',
-                'nenkin_100',
                 'nenkin_20',
                 'nenkin_80',
+                'nenkin_100',
                 'no_nenkin',
                 'lama_kerja',
                 'lama_kerja_kokumin',
@@ -93,13 +93,13 @@ class IchijikinExtractionService
         // 4. Interleave Field Names and Image Blobs into the payload
         $files = [
             'kokumin' => 'kokumin.png',
-            'nenkin_100' => 'nenkin_100.png',
+            'nama_lengkap' => 'nama_lengkap.png',
             'nenkin_20' => 'nenkin_20.png',
             'nenkin_80' => 'nenkin_80.png',
+            'nenkin_100' => 'nenkin_100.png',
             'no_nenkin' => 'no_nenkin.png',
             'lama_kerja' => 'lama_kerja.png',
             'lama_kerja_kokumin' => 'lama_kerja_kokumin.png',
-            'nama_lengkap' => 'nama_lengkap.png',
             'alamat' => 'alamat.png'
         ];
         foreach ($files as $key => $fileName) {
