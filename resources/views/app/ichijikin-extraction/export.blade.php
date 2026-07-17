@@ -61,7 +61,7 @@
                         }
 
                         if ($kokumin && $nenkin_100) {
-                            $color = '#00FF3C'; // Green
+                            $color = '#00CC31'; // Green
                         }
                     @endphp
 
