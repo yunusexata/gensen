@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Models\Gensen\GensenExportImportHistory;
+use App\Repositories\Ai\AiJobRepository;
 use App\Repositories\ResiGenerator\ResiGeneratorDetailRepository;
+use App\Services\Ichijikin\IchijikinService;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Browsershot\Browsershot;

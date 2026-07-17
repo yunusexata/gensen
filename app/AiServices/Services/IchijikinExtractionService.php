@@ -29,8 +29,7 @@ class IchijikinExtractionService
             properties: [
                 'kokumin' => new Schema(
                     type: DataType::INTEGER,
-                    description: 'The extracted numerical value.Remove commas and currency symbols (円). CRITICAL: If the image is blank, empty, or the detected value is less than 100, you MUST return 0. Example: 20,547円 -> 20547, 円 -> 0',
-                    nullable: true
+                    description: 'The extracted numerical value.Remove commas and currency symbols (円). CRITICAL: If the image is blank, or empty, you MUST return 0. Example: 20,547円 -> 20547, 円 -> 0',
                 ),
                 'nama_lengkap' => new Schema(
                     type: DataType::STRING,
@@ -38,21 +37,25 @@ class IchijikinExtractionService
                 ),
                 'nenkin_20' => new Schema(
                     type: DataType::INTEGER,
-                    description: 'Remove commas and currency symbols (円). CRITICAL: If the extracted value is less than 100, you MUST return 0. Example: 20,547円 -> 20547, 円 -> 0'
+                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547'
                 ),
                 'nenkin_80' => new Schema(
                     type: DataType::INTEGER,
-                    description: 'Remove commas and currency symbols (円). CRITICAL: If the extracted value is less than 100, you MUST return 0. Example: 20,547円 -> 20547, 円 -> 0'
+                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547'
                 ),
                 'nenkin_100' => new Schema(
                     type: DataType::INTEGER,
-                    description: 'Remove commas and currency symbols (円). CRITICAL: If the extracted value is less than 100, you MUST return 0. Example: 20,547円 -> 20547, 円 -> 0'
+                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547'
                 ),
                 'no_nenkin' => new Schema(
                     type: DataType::STRING,
                     description: 'The raw Nenkin pension number. Extract ONLY the raw digits (0-9). You must REMOVE all spaces, commas, periods, or punctuation. Crucially, do NOT treat this as a number—do NOT add thousands separators (e.g., never output ",8167095738") and do NOT drop leading zeros. Output as a clean, continuous string of digits. Example: "0160 618 880" -> "0160618880", "8167095738" -> "8167095738".'
                 ),
                 'lama_kerja' => new Schema(
+                    type: DataType::INTEGER,
+                    description: 'Remove all spaces. Example: 48'
+                ),
+                'lama_kerja_kokumin' => new Schema(
                     type: DataType::INTEGER,
                     description: 'Remove all spaces. Example: 48'
                 ),
@@ -78,6 +81,7 @@ class IchijikinExtractionService
                 'nenkin_80',
                 'no_nenkin',
                 'lama_kerja',
+                'lama_kerja_kokumin',
                 'alamat',
                 'confidence_score'
             ]
@@ -94,6 +98,7 @@ class IchijikinExtractionService
             'nenkin_80' => 'nenkin_80.png',
             'no_nenkin' => 'no_nenkin.png',
             'lama_kerja' => 'lama_kerja.png',
+            'lama_kerja_kokumin' => 'lama_kerja_kokumin.png',
             'nama_lengkap' => 'nama_lengkap.png',
             'alamat' => 'alamat.png'
         ];

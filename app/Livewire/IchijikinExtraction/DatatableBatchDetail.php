@@ -138,21 +138,21 @@ class DatatableBatchDetail extends Component
                 }
             ],
             [
-                'key' => 'lama_kerja',
-                'name' => 'Lama Kerja',
-                'render' => function ($item) {
-
-                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/' . $item->ichijikinExtractionDetail->stored_name . '/crop/' . $item->file_stored_name . '/lama_kerja.png');
-                    return "$item->lama_kerja<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
-                }
-            ],
-            [
                 'key' => 'kokumin',
                 'name' => 'Kokumin',
                 'render' => function ($item) {
 
                     $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/' . $item->ichijikinExtractionDetail->stored_name . '/crop/' . $item->file_stored_name . '/kokumin.png');
-                    return "$item->kokumin<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
+                    return ($item->kokumin < 1000 ? 0 : $item->kokumin) . "<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
+                }
+            ],
+            [
+                'key' => 'lama_kerja_kokumin',
+                'name' => 'Lama Kerja (Kokumin)',
+                'render' => function ($item) {
+
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/' . $item->ichijikinExtractionDetail->stored_name . '/crop/' . $item->file_stored_name . '/lama_kerja_kokumin.png');
+                    return "$item->lama_kerja_kokumin<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
             [
@@ -161,7 +161,16 @@ class DatatableBatchDetail extends Component
                 'render' => function ($item) {
 
                     $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/' . $item->ichijikinExtractionDetail->stored_name . '/crop/' . $item->file_stored_name . '/nenkin_100.png');
-                    return "$item->nenkin_100<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
+                    return ($item->nenkin_100 < 1000 ? 0 : $item->nenkin_100) . "<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
+                }
+            ],
+            [
+                'key' => 'lama_kerja',
+                'name' => 'Lama Kerja',
+                'render' => function ($item) {
+
+                    $url = asset('storage/ichijikin/' . $item->ichijikinExtraction->batch_name . '/' . $item->ichijikinExtractionDetail->stored_name . '/crop/' . $item->file_stored_name . '/lama_kerja.png');
+                    return "$item->lama_kerja<br><img src='" . $url . "' style='width:150px; height:auto; border:1px solid black; border-radius:5px;'>";
                 }
             ],
             [

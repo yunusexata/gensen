@@ -86,6 +86,7 @@ class AiResult extends Model
                     'nama_lengkap' => $result['nama_lengkap'],
                     'no_nenkin' => $result['no_nenkin'],
                     'lama_kerja' => $result['lama_kerja'],
+                    'lama_kerja_kokumin' => $result['lama_kerja_kokumin'],
                     'kokumin' => $result['kokumin'],
                     'nenkin_100' => $result['nenkin_100'],
                     'nenkin_80' => $result['nenkin_80'],

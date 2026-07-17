@@ -26,6 +26,7 @@ class IchijikinExtractionResult extends Model
         'alamat',
         'no_nenkin',
         'lama_kerja',
+        'lama_kerja_kokumin',
         'kokumin',
         'nenkin_100',
         'nenkin_80',
