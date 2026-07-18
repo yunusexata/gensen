@@ -120,7 +120,10 @@ class Detail extends Component
                     'is_matched' => false,
                     'status' => JobStatus::PENDING,
                 ];
-                ResiGeneratorDetailRepository::create($validatedData);
+
+                if ($validatedData['nominal'] && $validatedData['no']) {
+                    ResiGeneratorDetailRepository::create($validatedData);
+                }
             }
 
             GetEmailJob::dispatch($resi)->onQueue('extract');
