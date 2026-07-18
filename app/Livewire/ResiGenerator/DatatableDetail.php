@@ -122,6 +122,14 @@ class DatatableDetail extends Component
                 }
             ],
             [
+                'key' => 'nama_penerima',
+                'name' => 'Nama Penerima (Excel)',
+                'class' => 'bg-white',
+                'render' => function ($item) {
+                    return $item->nama_penerima;
+                }
+            ],
+            [
                 'key' => 'formatted_penerima',
                 'name' => 'Nama (Email)',
                 'class' => 'bg-light',

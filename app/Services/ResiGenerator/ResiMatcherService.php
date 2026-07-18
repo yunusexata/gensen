@@ -48,7 +48,7 @@ class ResiMatcherService
                     $availableEmails->forget($bestEmailKey);
                 } catch (\Exception $e) {
                     $detail->update(['is_matched' => false]);
-                    \Log::error("CRITICAL: Gagal render resi untuk {$detail->nama} - " . $e->getMessage());
+                    \Log::error("CRITICAL: Gagal render resi untuk {$detail->nama_penerima} - " . $e->getMessage());
                 }
             } else {
                 $detail->update([
@@ -86,7 +86,7 @@ class ResiMatcherService
 
         // Untuk BNI, Mandiri, BRI
         $emailNama = $email['formatted_penerima'];
-        $nameScore = $this->compareName($excel->nama, $emailNama);
+        $nameScore = $this->compareName($excel->nama_penerima, $emailNama);
 
         // Jika rekening sama sekali tidak cocok, berikan penalti ekstrem
         if ($accountScore === 0) {
