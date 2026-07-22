@@ -424,7 +424,7 @@ class IchijikinService
 
         imagesetthickness($image, 6);
 
-        if ($kokumin) {
+        if ($kokumin > 1000) {
             // === SCALE POSITION (Kokumin) ===
             $x = 313 * $scaleX;
             $y = 55  * $scaleY;
@@ -484,7 +484,7 @@ class IchijikinService
             imagerectangle($image, $rectX1, $rectY1, $rectX2, $rectY2, $blue);
         }
 
-        if ($nenkin_100) {
+        if ($nenkin_100 > 1000) {
 
             // === SCALE POSITION (Kokumin) ===
             $x = 300 * $scaleX;
