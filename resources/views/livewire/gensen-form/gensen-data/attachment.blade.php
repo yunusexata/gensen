@@ -209,7 +209,7 @@
                                         @if($item['isImage'] ?? 0)
                                             <div class="relative group/thumb" wire:key="kertas_gensen_old_{{ $item['id'] }}">
                                                 <!-- Preview -->
-                                                <a wire:ignore
+                                                <a
                                                     data-fslightbox="{{ $item['id'] }}"
                                                     href="{{ $item['url'] }}"
                                                     class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
@@ -249,7 +249,7 @@
                                             
                                             <div class="relative group/thumb" wire:key="kertas_gensen_old_{{ $item['id'] }}">
                                                 {{-- IFRAME PDF Preview --}}
-                                                <a wire:ignore data-fslightbox="{{$item['id']}}" data-type="iframe" href="#{{$item['id']}}"
+                                                <a data-fslightbox="{{$item['id']}}" data-type="iframe" href="#{{$item['id']}}"
                                                 class="block thumbnail-aspect bg-surface-container rounded-lg overflow-scroll">    
                                                     <embed src="{{ $item['url'] }}" type="application/pdf" width="100%" style="min-height: 200px;" class="pointer-events-none">
                                                 </a>       
@@ -2201,7 +2201,6 @@
         }
     </style>
 
-@push('css')
     <style>
         
         .collapse:not(table) {
@@ -2211,7 +2210,6 @@
             overflow: visible !important;
         }
     </style>
-@endpush
 @endpush
 
 @push('js')
@@ -2249,6 +2247,28 @@
     @script
         <script>
             document.addEventListener('livewire:initialized', () => {
+                Livewire.on('handleGetData',async (data) => {
+                    console.log('Fetching data asynchronously...');
+
+                    try {
+                        // This runs asynchronously without blocking the browser UI thread
+                        const result = await @this.call('getData', data); 
+                        
+                        console.log('Data fetched successfully!', result);
+                    } catch (error) {
+                        console.error('Failed to fetch data:', error);
+                    }
+                });
+                Livewire.on('initializeFileInputs', (data) => {
+                    setTimeout(() => {
+                        // updateSubstepDescription();
+                        // showUploadedFilesSummary();
+                        initializeFileInputs();
+                        if (typeof refreshFsLightbox !== 'undefined') {
+                            refreshFsLightbox();
+                        }
+                    }, 200); 
+                });
                 $wire.$set('onload', true);
                 $wire.getOnload();
                 
@@ -2367,26 +2387,6 @@
                     // });
                 },50);
             });
-                Livewire.on('handleGetData',async (data) => {
-                    console.log('Fetching data asynchronously...');
-
-                    try {
-                        // This runs asynchronously without blocking the browser UI thread
-                        const result = await @this.call('getData', data); 
-                        
-                        console.log('Data fetched successfully!', result);
-                    } catch (error) {
-                        console.error('Failed to fetch data:', error);
-                    }
-                });
-                Livewire.on('initializeFileInputs', (data) => {
-                    setTimeout(() => {
-                        // updateSubstepDescription();
-                        // showUploadedFilesSummary();
-                        initializeFileInputs();
-                        // initializeFormSubmits();
-                    }, 200); 
-                });
                 window.Echo.channel('export-remittance-extranction')
                     .subscribed(() => console.log('SUBSCRIBED AI EXTRACT'))
                     .listen('.export.remittance-extraction.finished', (e) => {

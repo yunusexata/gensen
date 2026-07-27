@@ -522,10 +522,6 @@ class Attachment extends Component
     {
 
         $property = Str::lower($property);
-        // consoleLog($this, [
-        //     'property',
-        //     $property
-        // ]);
         if (isset($this->{$property})) {
             $data = $this->{$property};
 
@@ -548,6 +544,7 @@ class Attachment extends Component
                 // consoleLog($this, $data);
                 // consoleLog($this, $this->{$property});
                 $this->{$property} = $data;
+                $this->dispatch('initializeFileInputs');
                 return;
             }
 
