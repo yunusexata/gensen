@@ -48,7 +48,7 @@ return [
         // ],
         [
             // 'id' => 'menu_admin'
-            'text' => 'Extraction Dokumen',
+            'text' => 'Fitur Lainnya',
             'icon' => 'ki-duotone ki-shield-tick',
             'submenu' => [
                 [
@@ -61,6 +61,16 @@ return [
                     'route' => 'resi_generator.index',
                     'icon_color' => 'success',
                 ],
+                [
+                    'text' => 'Template Posting',
+                    'route' => 'template_posting.index',
+                    'icon_color' => 'success',
+                ],
+                // [
+                //     'text' => 'List Posting',
+                //     'route' => 'list_posting.index',
+                //     'icon_color' => 'success',
+                // ],
             ],
         ],
         [

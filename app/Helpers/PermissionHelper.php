@@ -69,6 +69,10 @@ class PermissionHelper
     // RESI GENERATOR
     const ACCESS_RESI_GENERATOR = 'resi_generator';
 
+    // LIST POSTING
+    const ACCESS_TEMPLATE_POSTING = 'template_posting';
+    const ACCESS_LIST_POSTING = 'list_posting';
+
     const ACCESS_ALL = [
         self::ACCESS_DASHBOARD,
         self::ACCESS_USER,
@@ -88,6 +92,10 @@ class PermissionHelper
 
         // Resi Generator
         self::ACCESS_RESI_GENERATOR,
+
+        // List Posting
+        self::ACCESS_LIST_POSTING,
+        self::ACCESS_TEMPLATE_POSTING,
     ];
 
     const TRANSLATE_ACCESS = [
@@ -134,6 +142,10 @@ class PermissionHelper
 
         // RESI GENERATOR
         self::ACCESS_RESI_GENERATOR => 'Resi Generator',
+
+        // List Posting
+        self::ACCESS_LIST_POSTING => 'List Posting',
+        self::ACCESS_TEMPLATE_POSTING => 'Template Posting',
     ];
 
     const ACCESS_TYPE_ALL = [
@@ -182,6 +194,10 @@ class PermissionHelper
 
         // RESI GENERATOR
         self::ACCESS_RESI_GENERATOR => self::TYPE_ALL,
+
+        // LIST POSTING
+        self::ACCESS_LIST_POSTING => self::TYPE_ALL,
+        self::ACCESS_TEMPLATE_POSTING => self::TYPE_ALL,
     ];
 
     /*

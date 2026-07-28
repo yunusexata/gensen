@@ -332,6 +332,7 @@ class ImportService
 
             $validatedData = array_merge($validatedData, [
                 'no_input_jepang' => $row['no_input_jepang'],
+                'keterangan' => $row['keterangan'],
             ]);
 
             $updated = GensenFormRepository::updateBy([

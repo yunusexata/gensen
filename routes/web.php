@@ -28,6 +28,7 @@ Route::group([], __DIR__ . '/web/BukuNenkin.php');
 Route::group([], __DIR__ . '/web/OpenAi.php');
 Route::group([], __DIR__ . '/web/IchijikinExtraction.php');
 Route::group([], __DIR__ . '/web/ResiGenerator.php');
+Route::group([], __DIR__ . '/web/ListPosting.php');
 
 Route::middleware(['auth', 'access_permission'])->group(function () {
     Route::group(["controller" => DashboardController::class, "prefix" => "dashboard", "as" => "dashboard."], function () {
