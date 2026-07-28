@@ -42,7 +42,7 @@ return new class extends Migration
         $table->string('name');
         $table->string('path');
         $table->string('disk');
-        $table->json('text_config')->nullable();
+        $table->json('config')->nullable();
 
         $table->bigInteger("created_by")->unsigned()->nullable();
         $table->bigInteger("updated_by")->unsigned()->nullable();

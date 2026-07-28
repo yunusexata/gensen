@@ -270,6 +270,7 @@ return [
                 'timeout' => 120,
 
                 'tries' => 1,
+                'balance' => 'simple',
 
                 'maxTime' => 3600,
                 'maxJobs' => 100,

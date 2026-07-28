@@ -2,18 +2,18 @@
 
 namespace App\Repositories\ListPosting;
 
-use App\Models\ListPosting\TemplatePostingDetail;
+use App\Models\ListPosting\ListPOstingDetail;
 use App\Repositories\MasterDataRepository;
 
-class TemplatePostingDetailRepository extends MasterDataRepository
+class ListPOstingDetailRepository extends MasterDataRepository
 {
     protected static function className(): string
     {
-        return TemplatePostingDetail::class;
+        return ListPOstingDetail::class;
     }
 
     public static function datatable()
     {
-        return TemplatePostingDetail::query();
+        return ListPOstingDetail::query();
     }
 }

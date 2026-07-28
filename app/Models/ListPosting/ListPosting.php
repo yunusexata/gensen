@@ -2,6 +2,7 @@
 
 namespace App\Models\ListPosting;
 
+use App\Enums\Gensen\JobStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,10 @@ class ListPosting extends Model
     ];
 
     protected $guarded = ['id'];
+
+    protected $casts = [
+        'zip_status' => JobStatus::class,
+    ];
 
     public function creator()
     {

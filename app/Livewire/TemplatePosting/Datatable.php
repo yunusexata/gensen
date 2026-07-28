@@ -95,7 +95,7 @@ class Datatable extends Component
 
                     $id = Crypt::encrypt($item->id);
                     if ($this->isCanUpdate) {
-                        $editUrl = route('resi_generator.detail', $id);
+                        $editUrl = route('template_posting.detail', $id);
                         $editHtml = "<div class='col-auto'>
                             <a type='button' href='$editUrl' class='p-0 hover:bg-error/10 text-primary rounded transition-colors'>
                                 <span class='material-symbols-outlined text-lg' data-icon='edit'>edit</span>

@@ -61,16 +61,16 @@ return [
                     'route' => 'resi_generator.index',
                     'icon_color' => 'success',
                 ],
-                // [
-                //     'text' => 'Template Posting',
-                //     'route' => 'template_posting.index',
-                //     'icon_color' => 'success',
-                // ],
-                // [
-                //     'text' => 'List Posting',
-                //     'route' => 'list_posting.index',
-                //     'icon_color' => 'success',
-                // ],
+                [
+                    'text' => 'Template Posting',
+                    'route' => 'template_posting.index',
+                    'icon_color' => 'success',
+                ],
+                [
+                    'text' => 'List Posting',
+                    'route' => 'list_posting.index',
+                    'icon_color' => 'success',
+                ],
             ],
         ],
         [

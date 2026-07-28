@@ -19,13 +19,13 @@ class TemplatePosting extends Model
         'name',
         'path',
         'disk',
-        'text_config',
+        'config',
     ];
 
     protected $guarded = ['id'];
 
     protected $casts = [
-        'text_config' => 'array',
+        'config' => 'array',
     ];
 
     public function previewUrl(): string

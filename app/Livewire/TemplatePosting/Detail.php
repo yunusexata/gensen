@@ -31,21 +31,36 @@ class Detail extends Component
     #[Validate('required', message: 'Nama / Judul Harus Diisi', onUpdate: false)]
     public $name;
     #[Validate([
-        'required',
+        'nullable',
         'file',
         'max:10240', // 10 MB
     ], message: [
-        'required' => 'File Excel harus dipilih.',
         'file' => 'File tidak valid.',
         'max' => 'Ukuran file maksimal 10 MB.',
     ])]
     public $file_template;
+    public $file_template_path;
+
+    public $config = [
+        'name_list' => [
+            'font' => 'BEBAS NEUE BOLD',
+            'size' => 6.8,
+            'max_char' => 17,
+        ],
+        'page_number' => [
+            'font' => 'HELVETICA COMPRESSED REGULAR',
+            'size' => 32.63,
+            'max_char' => 2
+        ]
+    ];
 
     public function mount()
     {
         if ($this->objId) {
             $template_posting = TemplatePostingRepository::find(Crypt::decrypt($this->objId));
-            $this->name = $template_posting->label;
+            $this->name = $template_posting->name;
+            $this->config = $template_posting->config;
+            $this->file_template_path = $template_posting->previewUrl();
         }
     }
 
@@ -71,26 +86,36 @@ class Detail extends Component
         $this->validate();
         try {
             DB::beginTransaction();
-            $disk = env('DEFAULT_STORE_DISK', 'private');
-
-            $storedName = $this->name . '_' . Str::uuid() . '.' . $this->file_template->extension();
-            $filePath =   "list_posting/template";
-
-            $path = Storage::disk($disk)->putFileAs(
-                $filePath,
-                $this->file_template,
-                $storedName,
-                [
-                    'visibility' => 'private',
-                ]
-            );
-
-            TemplatePostingRepository::create([
+            $validatedData = [
                 'name' => $this->name,
+                'config' => $this->config,
+            ];
 
-                'disk' => $disk,
-                'path' => $path,
-            ]);
+            if ($this->file_template) {
+                $disk = 'private';
+
+                $storedName = $this->name . '_' . Str::uuid() . '.' . $this->file_template->extension();
+                $filePath =   "list_posting/template";
+
+                $path = Storage::disk($disk)->putFileAs(
+                    $filePath,
+                    $this->file_template,
+                    $storedName,
+                    [
+                        'visibility' => 'private',
+                    ]
+                );
+
+                $validatedData['disk'] = $disk;
+                $validatedData['path'] = $path;
+            }
+            if ($this->objId) {
+                TemplatePostingRepository::update(Crypt::decrypt($this->objId), $validatedData);
+            } else {
+
+                TemplatePostingRepository::create($validatedData);
+            }
+
 
             DB::commit();
             Alert::confirmation(

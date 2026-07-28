@@ -4,15 +4,10 @@ namespace App\Livewire\ListPosting;
 
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
-use App\Helpers\ExportHelper;
-use App\Imports\ExcelImportBulkStatusGensen;
-use App\Jobs\ResiGenerator\GetEmailJob;
-use App\Models\GensenForm\GensenForm;
-use App\Models\Ichijikin\IchijikinExtraction;
-use App\Models\ResiGenerator\ResiGenerator;
-use App\Repositories\ResiGenerator\ResiGeneratorDetailRepository;
+use App\Imports\ExcelImportListPosting;
+use App\Repositories\ListPosting\ListPostingRepository;
+use App\Repositories\ListPosting\TemplatePostingRepository;
 use App\Repositories\ResiGenerator\ResiGeneratorRepository;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -46,8 +41,12 @@ class Detail extends Component
     ])]
     public $file_excel;
 
+    public $templates = [];
+    public $template_posting_id;
+
     public function mount()
     {
+        $this->templates = TemplatePostingRepository::all();
         if ($this->objId) {
             $list_posting = ResiGeneratorRepository::find(Crypt::decrypt($this->objId));
             $this->name = $list_posting->name;
@@ -90,41 +89,14 @@ class Detail extends Component
                 ]
             );
 
-            $resi = ResiGeneratorRepository::create([
-                'label' => $this->label,
-                'bank' => $this->bank,
-
-                'source_file_name' => $storedName,
-                'source_file_disk' => $disk,
-                'source_file_path' => $path,
-                'get_email_status' => JobStatus::PENDING,
-                'matching_status' => JobStatus::PENDING,
+            $list = ListPostingRepository::create([
+                'template_posting_id' => $this->template_posting_id,
+                'name' => $this->name,
                 'zip_status' => JobStatus::PENDING,
             ]);
 
-            $import = new ExcelImportBulkStatusGensen();
-            Excel::import($import, $this->file_excel);
-
-            foreach ($import->rows as $index => $row) {
-                $validatedData = [
-                    'resi_generator_id' => $resi->id,
-                    'nama_penerima' => $row['nama_penerima'],
-                    'no' => $row['no'],
-                    'jenis_pencairan' => $row['jenis_pencairan'],
-                    'nama' => $row['nama'],
-                    'nominal' => $row['nominal'],
-                    'rekening' => $row['rekening'],
-                    'bank' => $row['bank'],
-                    'is_matched' => false,
-                    'status' => JobStatus::PENDING,
-                ];
-
-                if ($validatedData['nominal'] && $validatedData['no']) {
-                    ResiGeneratorDetailRepository::create($validatedData);
-                }
-            }
-
-            GetEmailJob::dispatch($resi)->onQueue('extract');
+            $import = new ExcelImportListPosting($list->id, $path);
+            Excel::queueImport($import, $this->file_excel);
             DB::commit();
             Alert::confirmation(
                 $this,

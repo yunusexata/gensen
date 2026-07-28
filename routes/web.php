@@ -43,9 +43,10 @@ Route::middleware(['auth', 'access_permission'])->group(function () {
 //         'loaded_ini' => php_ini_loaded_file(),
 //     ]);
 // });
-// Route::get('/sentry-test', function () {
-//     throw new Exception('Sentry Test');
-// });
+Route::get('/test', function () {
+    app(\App\Services\ListPosting\ArtboardGeneratorService::class)
+        ->generateArtboards(9);
+});
 Route::get('/health', function () {
     return response()->json([
         'status' => 'ok',
