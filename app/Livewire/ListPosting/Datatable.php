@@ -76,7 +76,7 @@ class Datatable extends Component
     public function generateZip($id)
     {
 
-        ZipGeneratedImagesJob::dispatch($id);
+        ZipGeneratedImagesJob::dispatch(Crypt::decrypt($id));
         Alert::success(
             $this,
             'Berhasil',
@@ -137,7 +137,7 @@ class Datatable extends Component
                     } elseif ($item->zip_status === JobStatus::PROCESSING) {
                         // If processing, show a disabled loading spinner/icon
                         $downloadHtml = "<div class='col-auto'>
-                                    <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' wire:click=\"generateZip($item->id)\">
+                                    <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' wire:click=\"generateZip($id)\">
                                         <span class='material-symbols-outlined text-lg text-warning animate-spin' title='Compiling ZIP...'>sync</span>
                                     </button>
                                 </div>";
