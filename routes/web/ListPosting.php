@@ -26,7 +26,7 @@ Route::middleware(['auth', 'access_permission'])->group(function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::get(
-        '/resi_generator/download/{id}',
+        '/list_posting/download/{id}',
         [ListPostingController::class, 'download']
-    )->name('resi_generator.download');
+    )->name('list_posting.download');
 });

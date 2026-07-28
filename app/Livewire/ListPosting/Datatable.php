@@ -5,6 +5,7 @@ namespace App\Livewire\ListPosting;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
 use App\Helpers\PermissionHelper;
+use App\Jobs\ListPosting\ZipGeneratedImagesJob;
 use App\Jobs\ResiGenerator\GenerateResiZipJob;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\ListPosting\ListPostingRepository;
@@ -74,8 +75,8 @@ class Datatable extends Component
 
     public function generateZip($id)
     {
-        GenerateResiZipJob::dispatch(ListPostingRepository::find(Crypt::decrypt($id)))->onQueue('pdf');
 
+        ZipGeneratedImagesJob::dispatch($id);
         Alert::success(
             $this,
             'Berhasil',
@@ -118,7 +119,7 @@ class Datatable extends Component
                         file_exists(storage_path('app/public/' . $item->zip_path))
                     ) {
                         $downloadUrl = route(
-                            'resi_generator.download',
+                            'list_posting.download',
                             $id
                         );
 
@@ -136,7 +137,9 @@ class Datatable extends Component
                     } elseif ($item->zip_status === JobStatus::PROCESSING) {
                         // If processing, show a disabled loading spinner/icon
                         $downloadHtml = "<div class='col-auto'>
-                                    <span class='material-symbols-outlined text-lg text-warning animate-spin' title='Compiling ZIP...'>sync</span>
+                                    <button type='button' class='p-0 hover:bg-error/10 text-error rounded transition-colors' wire:click=\"generateZip($item->id)\">
+                                        <span class='material-symbols-outlined text-lg text-warning animate-spin' title='Compiling ZIP...'>sync</span>
+                                    </button>
                                 </div>";
                     } else {
                         // If not started yet (or failed), show the trigger button to start the job

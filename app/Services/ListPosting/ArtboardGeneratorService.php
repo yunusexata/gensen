@@ -18,10 +18,6 @@ class ArtboardGeneratorService
         $task = ListPostingRepository::find($taskId);
 
         // Update status task bahwa proses dimulai
-        $task->update([
-            'zip_status' => 'processing',
-            'zip_started_at' => now(),
-        ]);
 
         $jobs = [];
         $pageNumber = 1;

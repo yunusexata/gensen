@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\ListPosting\ListPostingDetail;
+use App\Services\ListPosting\ArtboardGeneratorService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Storage; // Pastikan import facade Storage
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -46,13 +47,13 @@ class ExcelImportListPosting implements ToModel, WithBatchInserts, WithChunkRead
         return [
             AfterImport::class => function (AfterImport $event) {
                 // 1. Panggil service untuk memulai Generate Artboard
-                // app(\App\Services\ArtboardGeneratorService::class)
-                //     ->generateArtboards($this->taskId);
+                app(ArtboardGeneratorService::class)
+                    ->generateArtboards($this->taskId);
 
                 // 2. Hapus file Excel temporary dari storage lokal
-                // if (Storage::exists($this->filePath)) {
-                //     Storage::delete($this->filePath);
-                // }
+                if (Storage::exists($this->filePath)) {
+                    Storage::delete($this->filePath);
+                }
             },
         ];
     }

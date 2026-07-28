@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ListPosting;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\ListPosting\ListPostingRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -29,7 +30,7 @@ class ListPostingController extends Controller
 
     public function download($id)
     {
-        $item = ResiGeneratorRepository::find(Crypt::decrypt($id));
+        $item = ListPostingRepository::find(Crypt::decrypt($id));
 
         abort_if(
             blank($item->zip_path),
