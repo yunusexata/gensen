@@ -35,7 +35,7 @@ class GenerateArtboardJob implements ShouldQueue
         $this->listPostingId = $listPostingId;
 
         // Sesuaikan dengan lokasi font Anda
-        $this->fontPath = storage_path('app/fonts/BebasNeue-Regular.ttf');
+        $this->fontPath = storage_path('app/fonts/BebasNeue-Regular.otf');
         $this->fontPathNumber = storage_path('app/fonts/helvetica-compressed.otf');
     }
 
@@ -78,11 +78,11 @@ class GenerateArtboardJob implements ShouldQueue
         // 2. Konfigurasi Grid & Tipografi
         // Asumsi resolusi template Anda adalah sekitar 1080x1350px (Standar Portrait)
         $startX = 30;        // Margin kiri (sangat mepet dengan batas kiri artboard)
-        $startY = 270;       // Margin atas (dimulai persis di bawah bayangan banner 'PERIODE')
+        $startY = 230;       // Margin atas (dimulai persis di bawah bayangan banner 'PERIODE')
         $columnWidth = 262;  // Lebar area per kolom (memungkinkan 4 kolom muat sejajar)
-        $rowHeight = 24;   // Jarak antar baris (sangat rapat, nyaris bersentuhan)
+        $rowHeight = 26;   // Jarak antar baris (sangat rapat, nyaris bersentuhan)
         $maxRowsPerCol = 40; // Total baris per kolom
-        $fontSize = 28;      // Ukuran font disesuaikan dengan row height
+        $fontSize = 24;      // Ukuran font disesuaikan dengan row height
 
         // 3. Tulis Nama ke Artboard
         foreach ($this->namesChunk as $index => $nameData) {
@@ -100,7 +100,7 @@ class GenerateArtboardJob implements ShouldQueue
 
             $text = ($index + 1 + (($this->pageNumber - 1) * 160))
                 . '. '
-                . mb_substr(strtoupper($nameData), 0, 17);
+                . mb_substr(strtoupper($nameData), 0, 19);
 
             $image->text($text, $x, $y, function ($font) use ($fontSize) {
                 $font->file($this->fontPath);
