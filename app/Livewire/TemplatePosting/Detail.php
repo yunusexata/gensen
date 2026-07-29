@@ -42,15 +42,11 @@ class Detail extends Component
     public $file_template_path;
 
     public $config = [
-        'name_list' => [
-            'font' => 'BEBAS NEUE BOLD',
-            'size' => 6.8,
-            'max_char' => 17,
+        'list' => [
+            'color' => '#000000',
         ],
-        'page_number' => [
-            'font' => 'HELVETICA COMPRESSED REGULAR',
-            'size' => 32.63,
-            'max_char' => 2
+        'page' => [
+            'color' => '#000000',
         ]
     ];
 

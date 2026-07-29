@@ -78,7 +78,7 @@ class GenerateArtboardJob implements ShouldQueue
         // 2. Konfigurasi Grid & Tipografi
         // Asumsi resolusi template Anda adalah sekitar 1080x1350px (Standar Portrait)
         $startX = 30;        // Margin kiri (sangat mepet dengan batas kiri artboard)
-        $startY = 230;       // Margin atas (dimulai persis di bawah bayangan banner 'PERIODE')
+        $startY = 204;       // Margin atas (dimulai persis di bawah bayangan banner 'PERIODE')
         $columnWidth = 262;  // Lebar area per kolom (memungkinkan 4 kolom muat sejajar)
         $rowHeight = 26;   // Jarak antar baris (sangat rapat, nyaris bersentuhan)
         $maxRowsPerCol = 40; // Total baris per kolom
@@ -102,25 +102,24 @@ class GenerateArtboardJob implements ShouldQueue
                 . '. '
                 . mb_substr(strtoupper($nameData), 0, 19);
 
-            $image->text($text, $x, $y, function ($font) use ($fontSize) {
+            $image->text($text, $x, $y, function ($font) use ($fontSize, $template) {
                 $font->file($this->fontPath);
                 $font->size($fontSize);
 
                 // Warna font pada gambar referensi tidak murni hitam pekat (#000000), 
                 // melainkan abu-abu sangat gelap (charcoal) agar lebih menyatu dengan background.
-                $font->color('#1a1a1a');
+                $font->color($template->config['list']['color'] ?? '#000000');
 
                 $font->align('left');
                 $font->valign('top');
             });
         }
-
         // 4. Tulis Nomor Halaman Besar di Kiri Bawah
         $pageText = str_pad($this->pageNumber, 2, '0', STR_PAD_LEFT);
-        $image->text($pageText, 40, 1380, function ($font) {
+        $image->text($pageText, 40, 1380, function ($font) use ($template) {
             $font->file($this->fontPathNumber); // Bisa gunakan font style/weight berbeda jika ada
             $font->size(130);
-            $font->color('#0a1b3f');
+            $font->color($template->config['page']['color'] ?? '#000000');
             $font->align('left');
             $font->valign('bottom');
         });
@@ -138,7 +137,7 @@ class GenerateArtboardJob implements ShouldQueue
         // 6. BUAT FOLDER JIKA BELUM ADA (Ini kunci penyelesaian errornya)
         if (!Storage::disk($saveDisk)->exists($folderPath)) {
             Storage::disk($saveDisk)->makeDirectory($folderPath);
-            \Log::info('Membuat direktori baru: ' . $folderPath);
+            // \Log::info('Membuat direktori baru: ' . $folderPath);
         }
 
         // 7. Simpan Hasil
@@ -146,6 +145,6 @@ class GenerateArtboardJob implements ShouldQueue
         $absoluteSavePath = Storage::disk($saveDisk)->path($fullPath);
         $image->save($absoluteSavePath, quality: 90);
 
-        \Log::info('Berhasil menyimpan halaman artboard ke: ' . $absoluteSavePath);
+        // \Log::info('Berhasil menyimpan halaman artboard ke: ' . $absoluteSavePath);
     }
 }

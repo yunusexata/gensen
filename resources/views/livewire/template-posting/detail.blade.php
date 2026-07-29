@@ -23,6 +23,16 @@
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-3 mb-3">
+                <label>Warna List Nama</label>
+                <input type="color" class="form-control form-control-color" wire:model="config.list.color" required>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label>Warna Halaman</label>
+                <input type="color" class="form-control form-control-color" wire:model="config.page.color" required>
+            </div>
             {{-- <hr class="my-3">
             <h3 class="mb-3">Konfigurasi List Nama</h3>
             <div class="col-md-4 mb-3">
