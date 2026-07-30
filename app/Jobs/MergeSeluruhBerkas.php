@@ -1118,11 +1118,21 @@ class MergeSeluruhBerkas implements ShouldQueue
                 return $input;
             }
 
-            /*
-            |--------------------------------------------------------------------------
-            | 4. Parse Width & Height
-            |--------------------------------------------------------------------------
-            */
+            // /*
+            // |--------------------------------------------------------------------------
+            // | 4. Parse Width & Height
+            // |--------------------------------------------------------------------------
+            // */
+            // preg_match('/Page size:\s+([\d.]+)\s+x\s+([\d.]+)/i', $pageSizeLine, $matches);
+
+            // if (count($matches) < 3) {
+            //     return $input;
+            // }
+            // 1. Cari baris Page rot (jika ada) dari array $pdfInfoOutput
+            $pageRotLine = collect($pdfInfoOutput)
+                ->first(fn($line) => str_contains($line, 'Page rot:'));
+
+            // 2. Parse Width & Height
             preg_match('/Page size:\s+([\d.]+)\s+x\s+([\d.]+)/i', $pageSizeLine, $matches);
 
             if (count($matches) < 3) {
@@ -1132,7 +1142,46 @@ class MergeSeluruhBerkas implements ShouldQueue
             $width = (float) $matches[1];
             $height = (float) $matches[2];
 
-            $isLandscape = $width < $height;
+            // 3. Parse Rotation (default 0 jika metadata tidak ada)
+            $rotation = 0;
+            if ($pageRotLine) {
+                preg_match('/Page rot:\s+(\d+)/i', $pageRotLine, $rotMatches);
+                if (isset($rotMatches[1])) {
+                    $rotation = (int) $rotMatches[1];
+                }
+            }
+
+            // 4. Tentukan Orientasi Fisik
+            $isPhysicallyLandscape = $width > $height;
+
+            // 5. Tentukan Orientasi Visual (sesuai render browser)
+            // Jika dokumen diputar 90 atau 270 derajat, orientasi visualnya akan terbalik dari fisiknya.
+            if ($rotation === 90 || $rotation === 270) {
+                $isVisuallyLandscape = !$isPhysicallyLandscape;
+            } else {
+                // Rotasi 0 atau 180 orientasi visualnya sama dengan fisik
+                $isVisuallyLandscape = $isPhysicallyLandscape;
+            }
+
+            // Opsional: Log untuk mempermudah debugging jika ada file aneh lagi
+            logger([
+                'width' => $width,
+                'height' => $height,
+                'rotation' => $rotation,
+                'is_physically_landscape' => $isPhysicallyLandscape,
+                'is_visually_landscape' => $isVisuallyLandscape,
+            ]);
+
+            // 6. Evaluasi Akhir
+            if (!$isVisuallyLandscape) {
+                // Sudah portrait secara visual (seperti yang tampil di Chrome), lewati rotasi qpdf
+                return $input;
+            }
+
+            $width = (float) $matches[1];
+            $height = (float) $matches[2];
+
+            $isLandscape = $width > $height;
 
             if (!$isLandscape) {
                 // Sudah portrait, langsung kembalikan file hasil repair/decrypt
