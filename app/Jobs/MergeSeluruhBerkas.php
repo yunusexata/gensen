@@ -354,56 +354,55 @@ class MergeSeluruhBerkas implements ShouldQueue
                     |--------------------------------------------------------------------------
                     | Jika PDF -> repair pakai qpdf
                     |--------------------------------------------------------------------------
-                    */
-                    // elseif ($realMimeType === 'application/pdf') {
+                    */ elseif ($realMimeType === 'application/pdf') {
 
-                    //     $repairDir = storage_path('app/tmp/repair');
+                        $repairDir = storage_path('app/tmp/repair');
 
-                    //     if (!is_dir($repairDir)) {
-                    //         mkdir($repairDir, 0755, true);
-                    //     }
+                        if (!is_dir($repairDir)) {
+                            mkdir($repairDir, 0755, true);
+                        }
 
-                    //     $repairedPath = $repairDir . '/' . Str::uuid() . '.pdf';
+                        $repairedPath = $repairDir . '/' . Str::uuid() . '.pdf';
 
-                    //     exec(
-                    //         sprintf(
-                    //             'qpdf %s %s 2>&1',
-                    //             escapeshellarg($tmpPath),
-                    //             escapeshellarg($repairedPath)
-                    //         ),
-                    //         $output,
-                    //         $result
-                    //     );
+                        exec(
+                            sprintf(
+                                'qpdf %s %s 2>&1',
+                                escapeshellarg($tmpPath),
+                                escapeshellarg($repairedPath)
+                            ),
+                            $output,
+                            $result
+                        );
 
-                    //     logger([
-                    //         'qpdf_result' => $result,
-                    //         'qpdf_output' => $output,
-                    //         'repaired_exists' => file_exists($repairedPath),
-                    //     ]);
+                        logger([
+                            'qpdf_result' => $result,
+                            'qpdf_output' => $output,
+                            'repaired_exists' => file_exists($repairedPath),
+                        ]);
 
-                    //     /*
-                    //     |--------------------------------------------------------------------------
-                    //     | qpdf berhasil membuat file
-                    //     |--------------------------------------------------------------------------
-                    //     */
-                    //     if (file_exists($repairedPath) && filesize($repairedPath) > 0) {
+                        /*
+                        |--------------------------------------------------------------------------
+                        | qpdf berhasil membuat file
+                        |--------------------------------------------------------------------------
+                        */
+                        if (file_exists($repairedPath) && filesize($repairedPath) > 0) {
 
-                    //         $fullPath = $repairedPath;
+                            $fullPath = $repairedPath;
 
-                    //         $tempFiles[] = $repairedPath;
+                            $tempFiles[] = $repairedPath;
 
-                    //         logger([
-                    //             'using_repaired_pdf' => $repairedPath,
-                    //         ]);
-                    //     } else {
+                            logger([
+                                'using_repaired_pdf' => $repairedPath,
+                            ]);
+                        } else {
 
-                    //         $fullPath = $tmpPath;
+                            $fullPath = $tmpPath;
 
-                    //         logger([
-                    //             'using_original_pdf' => $tmpPath,
-                    //         ]);
-                    //     }
-                    // }
+                            logger([
+                                'using_original_pdf' => $tmpPath,
+                            ]);
+                        }
+                    }
                     /*
 |--------------------------------------------------------------------------
 | Jika PDF -> repair & decrypt pakai qpdf
@@ -815,6 +814,41 @@ class MergeSeluruhBerkas implements ShouldQueue
         | Rotate PDF
         |--------------------------------------------------------------------------
         */
+            // $mergeDir = storage_path('app/tmp/merge');
+
+            // if (!is_dir($mergeDir)) {
+            //     mkdir($mergeDir, 0775, true);
+            // }
+
+            // $rotated = $mergeDir . '/' . Str::uuid() . '.pdf';
+
+            // exec(
+            //     sprintf(
+            //         'qpdf %s --rotate=+90:1-z %s 2>&1',
+            //         escapeshellarg($input),
+            //         escapeshellarg($rotated)
+            //     ),
+            //     $rotateOutput,
+            //     $rotateResult
+            // );
+
+            // if (
+            //     $rotateResult === 0
+            //     && file_exists($rotated)
+            //     && filesize($rotated) > 0
+            // ) {
+            //     return $rotated;
+            // }
+
+            // logger('Rotate gagal', [
+            //     'result' => $rotateResult,
+            //     'output' => $rotateOutput,
+            // ]);
+            /*
+            |--------------------------------------------------------------------------
+            | Rotate PDF
+            |--------------------------------------------------------------------------
+            */
             $mergeDir = storage_path('app/tmp/merge');
 
             if (!is_dir($mergeDir)) {
@@ -823,9 +857,10 @@ class MergeSeluruhBerkas implements ShouldQueue
 
             $rotated = $mergeDir . '/' . Str::uuid() . '.pdf';
 
+            // 🚀 PERBAIKAN DI SINI: Opsi --rotate harus berada SEBELUM file input
             exec(
                 sprintf(
-                    'qpdf %s --rotate=+90:1-z %s 2>&1',
+                    'qpdf --rotate=+90:1-z %s %s 2>&1',
                     escapeshellarg($input),
                     escapeshellarg($rotated)
                 ),
@@ -841,9 +876,11 @@ class MergeSeluruhBerkas implements ShouldQueue
                 return $rotated;
             }
 
-            logger('Rotate gagal', [
-                'result' => $rotateResult,
-                'output' => $rotateOutput,
+            // Tambahkan logger yang lebih spesifik untuk membantu debugging jika masih gagal
+            logger()->error('Rotate gagal', [
+                'command' => sprintf('qpdf --rotate=+90:1-z %s %s', $input, $rotated),
+                'result'  => $rotateResult,
+                'output'  => implode("\n", $rotateOutput),
             ]);
         } catch (\Throwable $e) {
 
