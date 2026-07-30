@@ -1106,6 +1106,10 @@ class MergeSeluruhBerkas implements ShouldQueue
                 return $input;
             }
 
+            logger([
+                'PDF INFO',
+                $pdfInfoOutput
+            ]);
             $pageSizeLine = collect($pdfInfoOutput)
                 ->first(fn($line) => str_contains($line, 'Page size'));
 
