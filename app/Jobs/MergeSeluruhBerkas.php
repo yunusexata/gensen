@@ -968,41 +968,6 @@ class MergeSeluruhBerkas implements ShouldQueue
         | Rotate PDF
         |--------------------------------------------------------------------------
         */
-            // $mergeDir = storage_path('app/tmp/merge');
-
-            // if (!is_dir($mergeDir)) {
-            //     mkdir($mergeDir, 0775, true);
-            // }
-
-            // $rotated = $mergeDir . '/' . Str::uuid() . '.pdf';
-
-            // exec(
-            //     sprintf(
-            //         'qpdf %s --rotate=+90:1-z %s 2>&1',
-            //         escapeshellarg($input),
-            //         escapeshellarg($rotated)
-            //     ),
-            //     $rotateOutput,
-            //     $rotateResult
-            // );
-
-            // if (
-            //     $rotateResult === 0
-            //     && file_exists($rotated)
-            //     && filesize($rotated) > 0
-            // ) {
-            //     return $rotated;
-            // }
-
-            // logger('Rotate gagal', [
-            //     'result' => $rotateResult,
-            //     'output' => $rotateOutput,
-            // ]);
-            /*
-            |--------------------------------------------------------------------------
-            | Rotate PDF
-            |--------------------------------------------------------------------------
-            */
             $mergeDir = storage_path('app/tmp/merge');
 
             if (!is_dir($mergeDir)) {
@@ -1011,10 +976,9 @@ class MergeSeluruhBerkas implements ShouldQueue
 
             $rotated = $mergeDir . '/' . Str::uuid() . '.pdf';
 
-            // 🚀 PERBAIKAN DI SINI: Opsi --rotate harus berada SEBELUM file input
             exec(
                 sprintf(
-                    'qpdf --rotate=+90:1-z %s %s 2>&1',
+                    'qpdf %s --rotate=+90:1-z %s 2>&1',
                     escapeshellarg($input),
                     escapeshellarg($rotated)
                 ),
@@ -1030,12 +994,48 @@ class MergeSeluruhBerkas implements ShouldQueue
                 return $rotated;
             }
 
-            // Tambahkan logger yang lebih spesifik untuk membantu debugging jika masih gagal
-            logger()->error('Rotate gagal', [
-                'command' => sprintf('qpdf --rotate=+90:1-z %s %s', $input, $rotated),
-                'result'  => $rotateResult,
-                'output'  => implode("\n", $rotateOutput),
+            logger('Rotate gagal', [
+                'result' => $rotateResult,
+                'output' => $rotateOutput,
             ]);
+            /*
+            |--------------------------------------------------------------------------
+            | Rotate PDF
+            |--------------------------------------------------------------------------
+            */
+            // $mergeDir = storage_path('app/tmp/merge');
+
+            // if (!is_dir($mergeDir)) {
+            //     mkdir($mergeDir, 0775, true);
+            // }
+
+            // $rotated = $mergeDir . '/' . Str::uuid() . '.pdf';
+
+            // // 🚀 PERBAIKAN DI SINI: Opsi --rotate harus berada SEBELUM file input
+            // exec(
+            //     sprintf(
+            //         'qpdf --rotate=+90:1-z %s %s 2>&1',
+            //         escapeshellarg($input),
+            //         escapeshellarg($rotated)
+            //     ),
+            //     $rotateOutput,
+            //     $rotateResult
+            // );
+
+            // if (
+            //     $rotateResult === 0
+            //     && file_exists($rotated)
+            //     && filesize($rotated) > 0
+            // ) {
+            //     return $rotated;
+            // }
+
+            // // Tambahkan logger yang lebih spesifik untuk membantu debugging jika masih gagal
+            // logger()->error('Rotate gagal', [
+            //     'command' => sprintf('qpdf --rotate=+90:1-z %s %s', $input, $rotated),
+            //     'result'  => $rotateResult,
+            //     'output'  => implode("\n", $rotateOutput),
+            // ]);
         } catch (\Throwable $e) {
 
             logger('Error kritis PDF', [
