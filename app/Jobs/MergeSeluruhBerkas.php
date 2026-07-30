@@ -1132,7 +1132,7 @@ class MergeSeluruhBerkas implements ShouldQueue
             $width = (float) $matches[1];
             $height = (float) $matches[2];
 
-            $isLandscape = $width > $height;
+            $isLandscape = $width < $height;
 
             if (!$isLandscape) {
                 // Sudah portrait, langsung kembalikan file hasil repair/decrypt
