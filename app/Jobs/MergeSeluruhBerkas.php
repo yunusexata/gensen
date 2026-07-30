@@ -498,7 +498,8 @@ class MergeSeluruhBerkas implements ShouldQueue
                     $portraitPath = $this->normalizePdf($preparedPdf);
                     // $portraitPath = $this->ensurePortraitPdf($normalizedPath);
                 } else {
-                    $portraitPath = $this->ensurePortraitPdf($preparedPdf);
+                    $portraitPath = $preparedPdf;
+                    // $portraitPath = $this->ensurePortraitPdf($preparedPdf);
                     logger('remitance');
                     // $portraitPath = $preparedPdf;
                 }
