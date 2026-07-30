@@ -354,7 +354,61 @@ class MergeSeluruhBerkas implements ShouldQueue
                     |--------------------------------------------------------------------------
                     | Jika PDF -> repair pakai qpdf
                     |--------------------------------------------------------------------------
-                    */ elseif ($realMimeType === 'application/pdf') {
+                    */
+                    // elseif ($realMimeType === 'application/pdf') {
+
+                    //     $repairDir = storage_path('app/tmp/repair');
+
+                    //     if (!is_dir($repairDir)) {
+                    //         mkdir($repairDir, 0755, true);
+                    //     }
+
+                    //     $repairedPath = $repairDir . '/' . Str::uuid() . '.pdf';
+
+                    //     exec(
+                    //         sprintf(
+                    //             'qpdf %s %s 2>&1',
+                    //             escapeshellarg($tmpPath),
+                    //             escapeshellarg($repairedPath)
+                    //         ),
+                    //         $output,
+                    //         $result
+                    //     );
+
+                    //     logger([
+                    //         'qpdf_result' => $result,
+                    //         'qpdf_output' => $output,
+                    //         'repaired_exists' => file_exists($repairedPath),
+                    //     ]);
+
+                    //     /*
+                    //     |--------------------------------------------------------------------------
+                    //     | qpdf berhasil membuat file
+                    //     |--------------------------------------------------------------------------
+                    //     */
+                    //     if (file_exists($repairedPath) && filesize($repairedPath) > 0) {
+
+                    //         $fullPath = $repairedPath;
+
+                    //         $tempFiles[] = $repairedPath;
+
+                    //         logger([
+                    //             'using_repaired_pdf' => $repairedPath,
+                    //         ]);
+                    //     } else {
+
+                    //         $fullPath = $tmpPath;
+
+                    //         logger([
+                    //             'using_original_pdf' => $tmpPath,
+                    //         ]);
+                    //     }
+                    // }
+                    /*
+|--------------------------------------------------------------------------
+| Jika PDF -> repair & decrypt pakai qpdf
+|--------------------------------------------------------------------------
+*/ elseif ($realMimeType === 'application/pdf') {
 
                         $repairDir = storage_path('app/tmp/repair');
 
@@ -364,9 +418,10 @@ class MergeSeluruhBerkas implements ShouldQueue
 
                         $repairedPath = $repairDir . '/' . Str::uuid() . '.pdf';
 
+                        // ✨ ADD THE --decrypt FLAG HERE
                         exec(
                             sprintf(
-                                'qpdf %s %s 2>&1',
+                                'qpdf --decrypt %s %s 2>&1',
                                 escapeshellarg($tmpPath),
                                 escapeshellarg($repairedPath)
                             ),
@@ -381,10 +436,10 @@ class MergeSeluruhBerkas implements ShouldQueue
                         ]);
 
                         /*
-                        |--------------------------------------------------------------------------
-                        | qpdf berhasil membuat file
-                        |--------------------------------------------------------------------------
-                        */
+    |--------------------------------------------------------------------------
+    | qpdf berhasil membuat file
+    |--------------------------------------------------------------------------
+    */
                         if (file_exists($repairedPath) && filesize($repairedPath) > 0) {
 
                             $fullPath = $repairedPath;
