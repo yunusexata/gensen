@@ -6,6 +6,7 @@ use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
 use App\Helpers\PermissionHelper;
 use App\Jobs\ResiGenerator\GenerateResiZipJob;
+use App\Models\ListPosting\TemplatePosting;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\ListPosting\TemplatePostingRepository;
 use App\Traits\Livewire\WithDatatable;
@@ -123,6 +124,13 @@ class Datatable extends Component
             [
                 'key' => 'name',
                 'name' => 'Nama / Judul'
+            ],
+            [
+                'key' => 'type',
+                'name' => 'Jenis Template',
+                'render' => function ($item) {
+                    return TemplatePosting::TYPE_CHOICE[$item->type];
+                }
             ],
             [
                 'sortable' => false,

@@ -30,6 +30,8 @@ class Detail extends Component
 
     #[Validate('required', message: 'Nama / Judul Harus Diisi', onUpdate: false)]
     public $name;
+    #[Validate('required', message: 'Jenis Template Harus Diisi', onUpdate: false)]
+    public $type;
     #[Validate([
         'nullable',
         'file',
@@ -55,6 +57,7 @@ class Detail extends Component
         if ($this->objId) {
             $template_posting = TemplatePostingRepository::find(Crypt::decrypt($this->objId));
             $this->name = $template_posting->name;
+            $this->type = $template_posting->type;
             $this->config = $template_posting->config;
             $this->file_template_path = $template_posting->previewUrl();
         }
@@ -84,6 +87,7 @@ class Detail extends Component
             DB::beginTransaction();
             $validatedData = [
                 'name' => $this->name,
+                'type' => $this->type,
                 'config' => $this->config,
             ];
 

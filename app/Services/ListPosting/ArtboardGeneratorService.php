@@ -6,6 +6,7 @@ namespace App\Services\ListPosting;
 use App\Jobs\ListPosting\GenerateArtboardJob;
 use App\Jobs\ZipGeneratedImagesJob;
 use App\Models\ListPosting\ListPostingDetail;
+use App\Models\ListPosting\TemplatePosting;
 use App\Repositories\ListPosting\ListPostingRepository;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
@@ -22,6 +23,9 @@ class ArtboardGeneratorService
         $jobs = [];
         $pageNumber = 1;
         $chunkSize = 160;
+        if ($task->template->type === TemplatePosting::TYPE_KIRIM_BERKAS) {
+            $chunkSize = 105;
+        }
 
         // Gunakan cursor() atau chunk() dari database agar memori PHP tidak jebol 
         // jika datanya puluhan ribu.

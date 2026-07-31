@@ -20,12 +20,25 @@ class TemplatePosting extends Model
         'path',
         'disk',
         'config',
+        'type',
     ];
 
     protected $guarded = ['id'];
 
     protected $casts = [
         'config' => 'array',
+    ];
+
+    protected $attributes = [
+        'type' => self::TYPE_LIST_PENCAIRAN
+    ];
+
+    const TYPE_LIST_PENCAIRAN = 'list_pencairan';
+    const TYPE_KIRIM_BERKAS = 'kirim_berkas';
+
+    const TYPE_CHOICE = [
+        self::TYPE_LIST_PENCAIRAN => 'List Pencairan',
+        self::TYPE_KIRIM_BERKAS => 'Kirim Berkas',
     ];
 
     public function previewUrl(): string

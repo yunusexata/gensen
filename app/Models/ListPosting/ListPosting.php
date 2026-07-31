@@ -32,6 +32,11 @@ class ListPosting extends Model
         'zip_status' => JobStatus::class,
     ];
 
+    public function template()
+    {
+        return $this->belongsTo(TemplatePosting::class, 'template_posting_id', 'id');
+    }
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by', 'id');

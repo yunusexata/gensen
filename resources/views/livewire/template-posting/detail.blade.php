@@ -23,7 +23,21 @@
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
+            <div class="col-md-6 mb-3">
+                <label>Jenis Template</label>
+                <select class="form-control" wire:model="type" required>
+                    <option value="">Pilih Jenis Template</option>
+                    @foreach (App\Models\ListPosting\TemplatePosting::TYPE_CHOICE as $value => $name)
+                        <option value="{{ $value }}">{{$name}}</option>
+                    @endforeach
+                </select>
+
+                @error('type')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
         </div>
+        
         <div class="row d-flex justify-content-center">
             <div class="col-md-3 mb-3">
                 <label>Warna List Nama</label>

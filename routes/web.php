@@ -43,10 +43,10 @@ Route::middleware(['auth', 'access_permission'])->group(function () {
 //         'loaded_ini' => php_ini_loaded_file(),
 //     ]);
 // });
-// Route::get('/test', function () {
-//     app(\App\Services\ListPosting\ArtboardGeneratorService::class)
-//         ->generateArtboards(1);
-// });
+Route::get('/test', function () {
+    app(\App\Services\ListPosting\ArtboardGeneratorService::class)
+        ->generateArtboards(3);
+});
 Route::get('/health', function () {
     return response()->json([
         'status' => 'ok',
