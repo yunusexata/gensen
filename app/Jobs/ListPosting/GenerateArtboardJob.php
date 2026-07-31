@@ -45,14 +45,14 @@ class GenerateArtboardJob implements ShouldQueue
         $this->templatePath = $template->path;
         if ($template->type === TemplatePosting::TYPE_LIST_PENCAIRAN) {
             $this->fontPathNumber = storage_path('app/fonts/helvetica-compressed.otf');
-            $this->generateListPencairan($template);
+            $this->generateListPencairan($template, 160);
         } elseif ($template->type === TemplatePosting::TYPE_KIRIM_BERKAS) {
             $this->fontPathNumber = storage_path('app/fonts/Anton-Regular.ttf');
-            $this->generateKirimBerkas($template);
+            $this->generateKirimBerkas($template, 105);
         }
     }
 
-    protected function generateListPencairan($template)
+    protected function generateListPencairan($template, $chunkSize)
     {
         $disk = $template->disk; // misal: 'public' atau 'local'
 
@@ -109,7 +109,7 @@ class GenerateArtboardJob implements ShouldQueue
             // $text = ($index + 1 + (($this->pageNumber - 1) * 160)) . '. ' . strtoupper($nameData);
 
 
-            $text = ($index + 1 + (($this->pageNumber - 1) * 160))
+            $text = ($index + 1 + (($this->pageNumber - 1) * $chunkSize))
                 . '. '
                 . mb_substr(strtoupper($nameData), 0, 19);
 
@@ -158,7 +158,7 @@ class GenerateArtboardJob implements ShouldQueue
 
         // \Log::info('Berhasil menyimpan halaman artboard ke: ' . $absoluteSavePath);
     }
-    protected function generateKirimBerkas($template)
+    protected function generateKirimBerkas($template, $chunkSize)
     {
         $disk = $template->disk; // misal: 'public' atau 'local'
 
@@ -215,7 +215,7 @@ class GenerateArtboardJob implements ShouldQueue
             // $text = ($index + 1 + (($this->pageNumber - 1) * 160)) . '. ' . strtoupper($nameData);
 
 
-            $text = ($index + 1 + (($this->pageNumber - 1) * 160))
+            $text = ($index + 1 + (($this->pageNumber - 1) * $chunkSize))
                 . '. '
                 . mb_substr(strtoupper($nameData), 0, 21);
 
