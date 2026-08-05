@@ -5,6 +5,7 @@ namespace App\Livewire\GensenForm\GensenData;
 use App\Enums\Gensen\GensenAttachmenStatus;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\ExportHelper;
 use App\Helpers\PermissionHelper;
 use App\Models\Exata\Exata;
@@ -16,14 +17,13 @@ use App\Traits\Livewire\WithDatatable;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\Cursor;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
-
-use Illuminate\Pagination\Cursor;
 
 class Datatable extends Component
 {
@@ -137,7 +137,11 @@ class Datatable extends Component
             return;
         }
 
-        GensenFormRepository::delete(Crypt::decrypt($this->targetDeleteId));
+        $id = AppCrypt::decrypt($this->targetDeleteId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        GensenFormRepository::delete($id);
         Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
     }
 
@@ -171,7 +175,11 @@ class Datatable extends Component
             return;
         }
 
-        GensenFormRepository::copy(Crypt::decrypt($this->targetCopyId));
+        $id = AppCrypt::decrypt($this->targetCopyId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        GensenFormRepository::copy($id);
         Alert::success($this, 'Berhasil', 'Data berhasil diperbarui');
     }
 
@@ -232,19 +240,7 @@ class Datatable extends Component
                             </button>
                         </div>";
                     }
-                    // @click=\"\$dispatch('edit-data', { id: '" . $id . "' })\"
                     $editHtml = "";
-
-                    // $editHtml = "<div class='col-auto' wire:key='datatable_row_main_" . $item['id'] . "'>
-                    //     <button type='button' class='p-0 hover:bg-success/10 text-success rounded transition-colors'
-
-                    //         data-bs-toggle='collapse'
-                    //         data-bs-target='#collapse-" . $item['id'] . "'
-                    //         style='cursor: pointer;'
-                    //         wire:click=\" editRow('" . simple_encrypt($item['id']) . "')\">
-                    //         <span class='material-symbols-outlined text-lg' data-icon='edit_square'>edit_square</span>
-                    //     </button>
-                    // </div>";
                     $editHtml = "
 <div class='col-auto' x-data=\"{ open: false }\"
     wire:key='datatable_row_main_{$item['id']}'>
@@ -328,20 +324,6 @@ class Datatable extends Component
                     return $html;
                 }
             ],
-            // [
-            //     'key' => 'is_should_filled',
-            //     'name' => 'Pengisian',
-            //     'render' => function ($item) {
-            //         return "<p class='btn btn-sm py-1 mb-0 btn-" . ($item->is_should_filled ? 'success' : 'danger') . "'>" . ($item->is_should_filled ? 'Sudah' : 'Belum') . "</p>";
-            //     }
-            // ],
-            // [
-            //     'key' => 'is_submitted',
-            //     'name' => 'Submit',
-            //     'render' => function ($item) {
-            //         return "<p class='btn btn-sm py-1 mb-0 btn-" . ($item->is_submitted ? 'success' : 'danger') . "'>" . ($item->is_submitted ? 'Sudah' : 'Belum') . "</p>";
-            //     }
-            // ],
             [
                 'key' => 'status',
                 'name' => 'Status',
@@ -349,11 +331,6 @@ class Datatable extends Component
                     return "<p class='btn btn-sm py-1 mb-0' style='background-color:" . $item->statusColor() . "'>" . $item->status . "</p>";
                 }
             ],
-            // [
-            //     'key' => 'id_customer',
-            //     'name' => 'Id Customer',
-            // ],
-
             [
                 'key' => 'no_input_jepang',
                 'name' => 'No Input Jepang',
@@ -370,7 +347,6 @@ class Datatable extends Component
                 'key' => 'tanggal_kepulangan',
                 'name' => 'Tanggal Kepulangan',
             ],
-
             [
                 'key' => 'no_rekening_penerima',
                 'name' => 'No Rekening Penerima',
@@ -387,7 +363,6 @@ class Datatable extends Component
                 'key' => 'hubungan_penerima',
                 'name' => 'Hubungan Penerima',
             ],
-
             [
                 'sortable' => false,
                 'searchable' => false,
@@ -456,12 +431,10 @@ class Datatable extends Component
                 'key' => 'kode_pos_jepang',
                 'name' => 'Kode POS Jepang',
             ],
-
             [
                 'key' => 'nama_lpk',
                 'name' => 'Nama LPK/SO/PT',
             ],
-
             [
                 'key' => 'pic_code',
                 'name' => 'Kode PIC',
@@ -471,8 +444,14 @@ class Datatable extends Component
 
     public function getQuery(): Builder
     {
+        if ($this->gensenFormLinkId) {
+            $id = AppCrypt::decrypt($this->gensenFormLinkId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+        }
         return GensenFormRepository::datatable(
-            $this->gensenFormLinkId ? Crypt::decrypt($this->gensenFormLinkId) : null,
+            $this->gensenFormLinkId ? $id : null,
             $this->filter_status,
             $this->filter_pic,
             $this->filter_tanggal_input_dari ?
@@ -712,9 +691,13 @@ class Datatable extends Component
 
     public function editRow($id)
     {
-        $row = GensenForm::findOrFail(simple_decrypt($id));
+        $id = simple_decrypt($id);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        $row = GensenForm::findOrFail($id);
 
-        $this->editingRowId = simple_decrypt($id);
+        $this->editingRowId = $id;
 
         $this->editingData = [
             'id' => Crypt::encrypt($row['id']),

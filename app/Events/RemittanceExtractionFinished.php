@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Helpers\AppLog;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -31,7 +32,14 @@ class RemittanceExtractionFinished implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        logger('Broadcast channel hit finish');
+        AppLog::info(
+            'Remittance Extraction Finish',
+            'event_remittance_extraction',
+            [
+                'gensen_form_id' => $this->gensen_form_id,
+            ],
+            []
+        );
         return [
             // 'export-status'
             new Channel('export-remittance-extranction')

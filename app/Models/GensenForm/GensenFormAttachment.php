@@ -68,14 +68,7 @@ class GensenFormAttachment extends Model
     {
         return str_starts_with($this->mime_type, 'image/');
     }
-    // public function previewUrl(): string
-    // {
-    //     return URL::temporarySignedRoute(
-    //         'gensen.attachment.preview',
-    //         now()->addMinutes(30),
-    //         ['attachment' => $this->id]
-    //     );
-    // }
+
     public function previewUrl(): string
     {
         if ($this->type === GensenAttachmentType::SELURUH_BERKAS) {
@@ -89,8 +82,7 @@ class GensenFormAttachment extends Model
             // =========================================
             // LOCAL PUBLIC
             // =========================================
-            // 'public' => Storage::disk('public')
-            //     ->url($this->path),
+
             'public' => URL::temporarySignedRoute(
                 'gensen.attachment.preview',
                 now()->addMinutes(30),
@@ -98,9 +90,11 @@ class GensenFormAttachment extends Model
                     'attachment' => $this->id,
                 ]
             ),
+
             // =========================================
             // LOCAL PRIVATE
             // =========================================
+
             'private' => URL::temporarySignedRoute(
                 'gensen.attachment.preview',
                 now()->addMinutes(30),
@@ -120,33 +114,10 @@ class GensenFormAttachment extends Model
                         'attachment' => $this->id,
                     ]
                 ) : 'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $this->path,
-            // 'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/'
-            //     . $this->path
-            //     . '?download=' . urlencode("G " . $this->gensenForm->nama_lengkap . " " . Carbon::parse($this->gensenForm->tanggal_lahir)->format('Ymd') . "." . $this->extension),
-            // 'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $this->path,
-
             default => throw new \Exception(
                 "Unsupported disk [{$this->disk}]"
             ),
         };
-
-        // return $this->disk === 'supabase' ?
-        //     // Storage::disk($this->disk)
-        //     // ->temporaryUrl(
-        //     //     $this->path,
-        //     //     now()->addMinutes(10),
-        //     //     [
-        //     //         'ResponseCacheControl' => 'private, max-age=3600',
-        //     //         'ResponseContentDisposition' =>
-        //     //         'inline; filename="' . $filename . '"',
-        //     //     ]
-        //     // )
-        //     'https://pevrthazwqqzmxrthphg.supabase.co/storage/v1/object/public/gensen-exata/' . $this->path
-        //     :  URL::temporarySignedRoute(
-        //         'gensen.attachment.preview',
-        //         now()->addMinutes(30),
-        //         ['attachment' => $this->id]
-        //     );
     }
 
     public function saveInfo($object, $data = false, $prefix = "")
@@ -193,13 +164,6 @@ class GensenFormAttachment extends Model
             if (!$model->status) {
                 $model->status = GensenAttachmenStatus::STATUS_STORED;
             }
-        });
-        self::created(function ($model) {
-
-            // $try = GensenFormAttachmentHistory::create([
-            //     'gensen_form_id' => $model->gensen_form_id,
-            //     'gensen_form_attachment_id' => $model->id,
-            // ]);
         });
     }
 

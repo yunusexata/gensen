@@ -2,6 +2,7 @@
 
 namespace App\Mail\Admin;
 
+use App\Helpers\AppLog;
 use App\Models\GensenForm\GensenForm;
 use App\Models\Service\SendEmailLog;
 use Illuminate\Bus\Queueable;
@@ -40,7 +41,16 @@ class ClientAttachmentUploaded extends Mailable
     {
         $data = json_decode($this->log->data, true);
         $attachments = $this->log->subject->attachments->where('upload_batch_id', $data['upload_batch_id']);
-        logger(['send batch att', $data, $attachments]);
+        AppLog::info(
+            'Success Create Email',
+            'mail_client_attachment_uploaded',
+            [],
+            [
+                'subject_id' => $this->log->subject_id,
+                'subject_type' => $this->log->subject_type,
+                'subject' => $this->log->subject_line,
+            ],
+        );
         return new Content(
             view: 'app.gensen.emails.admin.client_attachment_uploaded',
             with: [

@@ -3,6 +3,7 @@
 namespace App\Livewire\Exata\ExataFormCandidate;
 
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\FilePathHelper;
 use App\Models\Exata\Exata;
 use App\Models\Exata\ExataFormCandidate;
@@ -161,14 +162,17 @@ class Form extends Component
     public function mount()
     {
         try {
-            $form_id = Crypt::decrypt($this->objId);
+            $form_id = AppCrypt::decrypt($this->objId);
+            if (!$form_id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
             $form = ExataFormCandidateRepository::find($form_id);
             if (!$form) {
                 abort(404, 'Form Tidak Tersedia');
             }
             if ($form->expired_at && now()->greaterThan($form->expired_at)) {
                 ExataFormCandidateRepository::update(
-                    Crypt::decrypt($this->objId),
+                    $form_id,
                     ['status' => ExataFormCandidate::STATUS_EXPIRED]
                 );
                 abort(403, 'Form sudah expired');
@@ -198,8 +202,10 @@ class Form extends Component
     {
         try {
 
-            $form_id = Crypt::decrypt($this->objId);
-
+            $form_id = AppCrypt::decrypt($this->objId);
+            if (!$form_id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
             $form = ExataFormCandidateRepository::find($form_id);
 
             if (!$form) {
@@ -392,8 +398,12 @@ class Form extends Component
                     ExataCurriculumVitaeRepository::create($validatedCv);
                 }
 
+                $id = AppCrypt::decrypt($this->objId);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
                 ExataFormCandidateRepository::update(
-                    Crypt::decrypt($this->objId),
+                    $id,
                     [
                         'status' => ExataFormCandidate::STATUS_SUBMITTED,
                         'exata_id' => $exata_id,

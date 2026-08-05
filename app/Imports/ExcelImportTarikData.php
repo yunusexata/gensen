@@ -28,10 +28,6 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
                         ->where('gfd.tahun_gensen', trim($value['tahun_gensen']));
                 })
                 ->first();
-            // logger([
-            //     'data export dalam pengajuan query',
-            //     $data
-            // ]);
             $validateData = [
 
                 // From Excel

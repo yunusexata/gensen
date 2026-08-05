@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
+use App\Helpers\AppLog;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\PersyaratanGensenJob;
 use App\Services\GensenAttachmentService;
@@ -30,7 +31,6 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
      */
     public function __construct($processId, $gensenFormId)
     {
-        logger('construct merge persyaratan');
         $this->processId = $processId;
         $this->gensenFormId = $gensenFormId;
     }
@@ -47,14 +47,7 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
             'started_at' => now(),
         ]);
         try {
-
-            $gensenFormId = $process->gensen_form_id;
-
-
-            logger('start merger');
-
             $type = GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN->value;
-
             $relativePath =
                 "gensen/{$this->gensenFormId}/{$type}/" . Str::uuid() . '.pdf';
 
@@ -84,11 +77,6 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
 
             $files = $gensen->attachments
                 ->keyBy(fn($item) => $item->type->value);
-
-            // logger([
-            //     'files attachment line 89',
-            //     $files
-            // ]);
             $this->merge(
                 $this->attachmentPath($files, GensenAttachmentType::ZAIRYOU_CARD_FRONT),
                 $this->attachmentPath($files, GensenAttachmentType::ZAIRYOU_CARD_BACK),
@@ -114,10 +102,27 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
                 'status' => JobStatus::DONE,
                 'finished_at' => now(),
             ]);
+            AppLog::info(
+                'Success Merge Perssyaratan Gensen',
+                'merge_persyaratan_gensen',
+                [],
+                [
+                    'persyaratan_gensen_job_id' => $process->id,
+                    'status' => JobStatus::DONE,
+                ],
+            );
             $gensen->handleMergeSeluruhBerkas();
-            logger('end merger');
         } catch (\Throwable $e) {
-
+            AppLog::error(
+                'Gagal Merge Persyaratan Gensen',
+                'merge_persyaratan_gensen',
+                [],
+                [
+                    'persyaratan_gensen_job_id' => $this->processId,
+                ],
+                $e,
+                'document_validation'
+            );
             $process->update([
                 'status' => JobStatus::FAILED,
                 'error_message' => $e->getMessage(),
@@ -130,6 +135,16 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
     public function failed(?Throwable $e): void
     {
 
+        AppLog::error(
+            'Gagal Merge Persyaratan Gensen',
+            'merge_persyaratan_gensen',
+            [],
+            [
+                'persyaratan_gensen_job_id' => $this->processId,
+            ],
+            $e,
+            'document_validation'
+        );
         $process = PersyaratanGensenJob::findOrFail($this->processId);
         $process->update([
             'status' => JobStatus::FAILED,
@@ -141,21 +156,20 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
     {
         $attachment = $files->get($type->value);
 
-        // logger([
-        //     'detail att line 145',
-        //     $attachment
-        // ]);
         if (!$attachment) {
-            logger("Attachment {$type->label()} not found");
+            AppLog::error(
+                'Gagal melakukan Merge Persyaratan Gensen',
+                'merge_persyaratan_gensen',
+                [],
+                [
+                    'type' => $type->label(),
+                    'cause' => 'Attachment not found'
+                ],
+                null,
+                'document_validation' // <--- Parameter ke-6: Nama Channel
+            );
             return false;
         }
-
-        // $disk = $attachment->disk ?? 'private';
-
-        // $path = Storage::disk($disk)->path($attachment->path);
-
-        // if (!file_exists($path)) {
-        //     throw new \Exception("File missing: {$path}");
         // }
         $disk = $attachment->disk ?? 'private';
 
@@ -174,10 +188,11 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
         $tmpPath = $tmpDir . '/' . basename($attachment->path);
 
         /*
-|--------------------------------------------------------------------------
-| STREAM DOWNLOAD (Supabase → Local)
-|--------------------------------------------------------------------------
-*/
+        |--------------------------------------------------------------------------
+        | STREAM DOWNLOAD (Supabase → Local)
+        |--------------------------------------------------------------------------
+        */
+
         $readStream = $storage->readStream($attachment->path);
 
         if ($readStream === false) {
@@ -193,226 +208,9 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
 
         $path = $tmpPath;
 
-
-        // $path = $tmpDir . '/' . basename($attachment->path);
-
-        // // ⭐ STREAM COPY (VERY IMPORTANT)
-        // $readStream = $disk->readStream($attachment->path);
-        // $writeStream = fopen($path, 'w');
-
-        // stream_copy_to_stream($readStream, $writeStream);
-
-        // fclose($readStream);
-        // fclose($writeStream);
-        // logger([
-        //     'attachment path line 169',
-        //     $path
-        // ]);
         return $path;
     }
 
-    // public function merge(
-    //     string $ktpFront,
-    //     string $ktpBack,
-    //     string $zaryouFront,
-    //     string $zaryouBack,
-    //     string $rekeningIndonesia,
-    //     string $outputPath
-    // ) 
-    // {
-
-    //     /*
-    //     |--------------------------------------------------------------------------
-    //     | A4 Canvas
-    //     |--------------------------------------------------------------------------
-    //     */
-    //         $A4_WIDTH  = 2480;
-    //         $A4_HEIGHT = 3508;
-
-    //         $TOP_AREA_HEIGHT = $A4_HEIGHT / 2;
-
-    //         /*
-    //     |--------------------------------------------------------------------------
-    //     | Create A4 canvas
-    //     |--------------------------------------------------------------------------
-    //     */
-    //         $canvas = imagecreatetruecolor($A4_WIDTH, $A4_HEIGHT);
-
-    //         $white = imagecolorallocate($canvas, 255, 255, 255);
-    //         imagefill($canvas, 0, 0, $white);
-
-    //         /*
-    //     |--------------------------------------------------------------------------
-    //     | Image loader
-    //     |--------------------------------------------------------------------------
-    //     */
-    //         $load = function ($path) {
-    //             $mime = mime_content_type($path);
-
-    //             return match ($mime) {
-    //                 'image/jpeg', 'image/jpg' => imagecreatefromjpeg($path),
-    //                 'image/png' => imagecreatefrompng($path),
-    //                 default => throw new Exception("Unsupported image: {$path}")
-    //             };
-    //         };
-    //         if ($ktpFront) {
-    //             $img1 = $load($ktpFront);
-    //         }
-    //         if ($ktpBack) {
-    //             $img2 = $load($ktpBack);
-    //         }
-    //         if ($zaryouFront) {
-    //             $img3 = $load($zaryouFront);
-    //         }
-    //         if ($zaryouBack) {
-    //             $img4 = $load($zaryouBack);
-    //         }
-    //         if ($rekeningIndonesia) {
-    //             $img5 = $load($rekeningIndonesia);
-    //         }
-
-    //         /*
-    //     |--------------------------------------------------------------------------
-    //     | Each image slot size (2x2 grid)
-    //     |--------------------------------------------------------------------------
-    //     */
-    //         $slotWidth  = $A4_WIDTH / 2;
-    //         $slotHeight = $TOP_AREA_HEIGHT / 2;
-
-    //         /*
-    //     |--------------------------------------------------------------------------
-    //     | Helper placement
-    //     |--------------------------------------------------------------------------
-    //     */
-    //         $place = function ($img, $x, $y, $customWidth = null, $customHeight = null) use ($canvas, $slotWidth, $slotHeight) {
-
-    //             imagecopyresampled(
-    //                 $canvas,
-    //                 $img,
-    //                 $x,
-    //                 $y,
-    //                 0,
-    //                 0,
-    //                 $customWidth ? $customWidth : $slotWidth,
-    //                 $customHeight ? $customHeight : $slotHeight,
-    //                 imagesx($img),
-    //                 imagesy($img)
-    //             );
-    //         };
-
-    //         /*
-    //     |--------------------------------------------------------------------------
-    //     | Place images (TOP HALF ONLY)
-    //     |--------------------------------------------------------------------------
-    //     */
-
-    //         // Top Left
-    //         if ($ktpFront) {
-    //             $place($img1, 0, 0);
-    //         }
-
-    //         // Top Right
-    //         if ($ktpBack) {
-    //             $place($img2, $slotWidth, 0);
-    //         }
-    //         // Bottom Left (still inside top half)
-    //         if ($zaryouFront) {
-    //             $place($img3, 0, $slotHeight);
-    //         }
-    //         // Bottom Right
-    //         if ($zaryouBack) {
-    //             $place($img4, $slotWidth, $slotHeight);
-    //         }
-    //         // Bottom
-    //         if ($rekeningIndonesia) {
-    //             $place($img5, 0, $TOP_AREA_HEIGHT, $A4_WIDTH, $TOP_AREA_HEIGHT);
-    //         }
-    //         /*
-    //     |--------------------------------------------------------------------------
-    //     | Save
-    //     |--------------------------------------------------------------------------
-    //     */
-    //         // RETURN AS IMAGE
-    //         // $dir = dirname($outputPath);
-
-    //         // if (!file_exists($dir)) {
-    //         //     mkdir($dir, 0755, true);
-    //         // }
-
-    //         // imagejpeg($canvas, $outputPath, 95);
-
-    //         /*
-    //         |--------------------------------------------------------------------------
-    //         | Free memory
-    //         |--------------------------------------------------------------------------
-    //         */
-    //         unset(
-    //             $img1,
-    //             $img2,
-    //             $img3,
-    //             $img4,
-    //             $img5,
-    //         );
-    //         /*
-    //         |--------------------------------------------------------------------------
-    //         | Create temp image
-    //         |--------------------------------------------------------------------------
-    //         */
-
-    //         $tempImage = storage_path('app/tmp/' . uniqid() . '.jpg');
-
-    //         if (!file_exists(dirname($tempImage))) {
-    //             mkdir(dirname($tempImage), 0755, true);
-    //         }
-    //         imagejpeg($canvas, $tempImage, 95);
-
-
-    //         /*
-    //         |--------------------------------------------------------------------------
-    //         | Generate PDF
-    //         |--------------------------------------------------------------------------
-    //         */
-
-    //         $html = '
-    //         <html>
-    //             <head>
-    //                 <style>
-    //                     body {
-    //                         margin:0;
-    //                         padding:0;
-    //                     }
-    //                     img {
-    //                         width:100%;
-    //                         height:auto;
-    //                     }
-    //                 </style>
-    //             </head>
-    //             <body>
-    //                 <img src="' . $tempImage . '">
-    //             </body>
-    //         </html>
-    //         ';
-
-    //         $pdf = Pdf::loadHTML($html)
-    //             ->setPaper('a4', 'portrait');
-
-    //         $dir = dirname($outputPath);
-
-    //         if (!file_exists($dir)) {
-    //             mkdir($dir, 0755, true);
-    //         }
-
-    //         file_put_contents($outputPath, $pdf->output());
-
-    //         /*
-    //         |--------------------------------------------------------------------------
-    //         | Cleanup temp
-    //         |--------------------------------------------------------------------------
-    //         */
-
-    //         unlink($tempImage);
-    //         return $outputPath;
-    // }
     public function merge(
         string $ktpFront,
         string $ktpBack,
@@ -422,10 +220,10 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
         string $outputPath
     ) {
         /*
-    |--------------------------------------------------------------------------
-    | A4 Canvas (300 DPI)
-    |--------------------------------------------------------------------------
-    */
+        |--------------------------------------------------------------------------
+        | A4 Canvas (300 DPI)
+        |--------------------------------------------------------------------------
+        */
         $A4_WIDTH  = 2480;
         $A4_HEIGHT = 3508;
         // $A4_WIDTH  = 1240;
@@ -434,20 +232,20 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
         $TOP_AREA_HEIGHT = $A4_HEIGHT / 2;
 
         /*
-    |--------------------------------------------------------------------------
-    | Create Canvas
-    |--------------------------------------------------------------------------
-    */
+        |--------------------------------------------------------------------------
+        | Create Canvas
+        |--------------------------------------------------------------------------
+        */
         $canvas = imagecreatetruecolor($A4_WIDTH, $A4_HEIGHT);
 
         $white = imagecolorallocate($canvas, 255, 255, 255);
         imagefill($canvas, 0, 0, $white);
 
         /*
-    |--------------------------------------------------------------------------
-    | Image Loader
-    |--------------------------------------------------------------------------
-    */
+        |--------------------------------------------------------------------------
+        | Image Loader
+        |--------------------------------------------------------------------------
+        */
         $load = function ($path) {
 
             $mime = mime_content_type($path);
@@ -466,18 +264,18 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
         $img5 = $rekeningIndonesia ? $load($rekeningIndonesia) : null;
 
         /*
-    |--------------------------------------------------------------------------
-    | Slot Size (2x2 grid top area)
-    |--------------------------------------------------------------------------
-    */
+        |--------------------------------------------------------------------------
+        | Slot Size (2x2 grid top area)
+        |--------------------------------------------------------------------------
+        */
         $slotWidth  = $A4_WIDTH / 2;
         $slotHeight = $TOP_AREA_HEIGHT / 2;
 
         /*
-    |--------------------------------------------------------------------------
-    | SMART PLACE (NO STRETCHING)
-    |--------------------------------------------------------------------------
-    */
+        |--------------------------------------------------------------------------
+        | SMART PLACE (NO STRETCHING)
+        |--------------------------------------------------------------------------
+        */
         $place = function ($img, $x, $y, $slotW = null, $slotH = null)
         use ($canvas, $slotWidth, $slotHeight) {
 
@@ -532,10 +330,10 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
         };
 
         /*
-    |--------------------------------------------------------------------------
-    | Place Images
-    |--------------------------------------------------------------------------
-    */
+        |--------------------------------------------------------------------------
+        | Place Images
+        |--------------------------------------------------------------------------
+        */
 
         $place($img1, 0, 0);
         $place($img2, $slotWidth, 0);
@@ -552,10 +350,10 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
         );
 
         /*
-    |--------------------------------------------------------------------------
-    | Create Temp Image
-    |--------------------------------------------------------------------------
-    */
+        |--------------------------------------------------------------------------
+        | Create Temp Image
+        |--------------------------------------------------------------------------
+        */
         $tempImage = storage_path('app/tmp/' . uniqid() . '.jpg');
 
         if (!file_exists(dirname($tempImage))) {
@@ -565,22 +363,22 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
         imagejpeg($canvas, $tempImage, 95);
 
         /*
-    |--------------------------------------------------------------------------
-    | Generate PDF
-    |--------------------------------------------------------------------------
-    */
+        |--------------------------------------------------------------------------
+        | Generate PDF
+        |--------------------------------------------------------------------------
+        */
         $html = '
-    <html>
-        <head>
-            <style>
-                body{margin:0;padding:0;}
-                img{width:100%;height:auto;}
-            </style>
-        </head>
-        <body>
-            <img src="' . $tempImage . '">
-        </body>
-    </html>';
+        <html>
+            <head>
+                <style>
+                    body{margin:0;padding:0;}
+                    img{width:100%;height:auto;}
+                </style>
+            </head>
+            <body>
+                <img src="' . $tempImage . '">
+            </body>
+        </html>';
 
         $pdf = Pdf::loadHTML($html)
             ->setPaper('a4', 'portrait');
@@ -594,10 +392,10 @@ class MergePersyaratanPengurusanGensen implements ShouldQueue
         file_put_contents($outputPath, $pdf->output());
 
         /*
-    |--------------------------------------------------------------------------
-    | Cleanup Memory
-    |--------------------------------------------------------------------------
-    */
+        |--------------------------------------------------------------------------
+        | Cleanup Memory
+        |--------------------------------------------------------------------------
+        */
 
         // unlink($ktpFront);
         // unlink($ktpBack);

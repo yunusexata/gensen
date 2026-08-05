@@ -3,6 +3,7 @@
 namespace App\Livewire\BukuNenkin;
 
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Repositories\BukuNenkin\BukuNenkinCompanyRepository;
 use App\Repositories\BukuNenkin\BukuNenkinRepository;
 use Exception;
@@ -26,7 +27,12 @@ class Generate extends Component
     public function mount()
     {
         if ($this->objId) {
-            $buku_nenkin = BukuNenkinRepository::find(Crypt::decrypt($this->objId));
+
+            $id = AppCrypt::decrypt($this->objId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+            $buku_nenkin = BukuNenkinRepository::find($id);
             $this->nama = $buku_nenkin->nama;
             $this->tanggal_lahir = $buku_nenkin->tanggal_lahir;
             $this->alamat_jepang = $buku_nenkin->alamat_jepang;

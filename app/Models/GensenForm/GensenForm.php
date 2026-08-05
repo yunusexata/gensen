@@ -6,6 +6,7 @@ use App\Enums\Gensen\EmailLogStatus;
 use App\Enums\Gensen\GensenAttachmenStatus;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
+use App\Helpers\AppLog;
 use App\Helpers\NumberGenerator;
 use App\Helpers\PermissionHelper;
 use App\Mail\Admin\ClientNewSubmission;
@@ -212,52 +213,83 @@ class GensenForm extends Model
         });
         self::updating(function ($model) {
             if ($model->isDirty('tanggal_lengkap') && $model->tanggal_lengkap) {
-                logger('dirty lengkap');
+                AppLog::info(
+                    'Updating Tanggal Lengkap',
+                    'models_gensen_form',
+                    [],
+                    [
+                        'id' => $model->id,
+                        'from' => $model->getOriginal('tanggal_lengkap'),
+                        'to' => $model->tanggal_lengkap,
+                    ],
+                );
                 $model->status = self::STATUS_LENGKAP;
             }
             if ($model->isDirty('tanggal_verified') && $model->tanggal_verified) {
-                logger('dirty verif');
+                AppLog::info(
+                    'Updating Tanggal Verified',
+                    'models_gensen_form',
+                    [],
+                    [
+                        'id' => $model->id,
+                        'from' => $model->getOriginal('tanggal_verified'),
+                        'to' => $model->tanggal_verified,
+                    ],
+                );
                 $model->status = self::STATUS_VERIFIED;
             }
-            // if ($model->isDirty('tanggal_cair') && $model->tanggal_cair && $model->isDirty('nominal_cair') && $model->nominal_cair) {
-            //     $model->status = self::STATUS_GENSEN_CAIR;
-            // }
+
             if ($model->isDirty('tanggal_pengajuan') && $model->tanggal_pengajuan) {
-                logger('dirty pengajuan');
+                AppLog::info(
+                    'Updating Tanggal Pengajuan',
+                    'models_gensen_form',
+                    [],
+                    [
+                        'id' => $model->id,
+                        'from' => $model->getOriginal('tanggal_pengajuan'),
+                        'to' => $model->tanggal_pengajuan,
+                    ],
+                );
                 $model->status = self::STATUS_DALAM_PENGAJUAN;
             }
             if ($model->isDirty('tanggal_tarik_data') && $model->tanggal_tarik_data) {
-                logger('dirty tarik_data');
+                AppLog::info(
+                    'Updating Tanggal Tarik Data',
+                    'models_gensen_form',
+                    [],
+                    [
+                        'id' => $model->id,
+                        'from' => $model->getOriginal('tanggal_tarik_data'),
+                        'to' => $model->tanggal_tarik_data,
+                    ],
+                );
                 $model->status = self::STATUS_TARIK_DATA;
             }
-            // if ($model->isDirty('no_input_jepang') && $model->no_input_jepang) {
-            // $model->status = self::STATUS_GENSEN_CAIR;
-            // }
         });
         self::created(function ($model) {
             if ($model->remarks_type === GensenFormLink::class) {
                 $model->remarks->incrementUsedCount();
             }
         });
-        self::updated(function ($model) {
-            if ($model->status === self::STATUS_LENGKAP) {
+        // self::updated(function ($model) {
+        // if ($model->status === self::STATUS_LENGKAP) {
 
-                // $aiJob = AiJob::create([
+        // $aiJob = AiJob::create([
 
-                //     'provider' => 'gemini-ai',
+        //     'provider' => 'gemini-ai',
 
-                //     'model' => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
+        //     'model' => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
 
-                //     'job_type' => AiJob::JOB_TYPE_REMITTANCE_EXTRACTION,
+        //     'job_type' => AiJob::JOB_TYPE_REMITTANCE_EXTRACTION,
 
-                //     'status' => 'pending',
+        //     'status' => 'pending',
 
-                //     'subject_type' => $model::class,
+        //     'subject_type' => $model::class,
 
-                //     'subject_id' => $model->id,
-                // ]);
-            }
-        });
+        //     'subject_id' => $model->id,
+        // ]);
+        // }
+        // });
         self::deleted(function ($model) {
             if ($model->remarks_type === GensenFormLink::class) {
                 $model->remarks->decrementUsedCount();

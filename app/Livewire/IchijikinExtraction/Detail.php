@@ -3,6 +3,7 @@
 namespace App\Livewire\IchijikinExtraction;
 
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\ExportHelper;
 use App\Models\Exata\ExataFormCandidate;
 use App\Models\GensenForm\GensenForm;
@@ -37,7 +38,12 @@ class Detail extends Component
     public function mount()
     {
         if ($this->objId) {
-            $this->batch_name = IchijikinExtractionRepository::find(Crypt::decrypt($this->objId))->batch_name;
+
+            $id = AppCrypt::decrypt($this->objId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+            $this->batch_name = IchijikinExtractionRepository::find($id)->batch_name;
         }
     }
 
@@ -62,10 +68,15 @@ class Detail extends Component
     public function export($type)
     {
         $fileName = "Data Ichijikin $this->batch_name " . Carbon::now()->format('Y-m-d H:i:s');
+
+        $id = AppCrypt::decrypt($this->objId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
         return ExportHelper::export(
             $type,
             $fileName,
-            IchijikinExtractionFileRepository::datatable(Crypt::decrypt($this->objId))->orderBy('file_stored_name', 'ASC'),
+            IchijikinExtractionFileRepository::datatable($id)->orderBy('file_stored_name', 'ASC'),
             'app.ichijikin-extraction.export',
             [
                 'title' => "Data Ichijikin $this->batch_name",
@@ -91,8 +102,12 @@ class Detail extends Component
                 ];
 
                 if ($this->objId) {
-                    $ichijin_id = Crypt::decrypt($this->objId);
-                    IchijikinExtraction::update($ichijin_id, $validateData);
+
+                    $id = AppCrypt::decrypt($this->objId);
+                    if (!$id) {
+                        abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                    }
+                    IchijikinExtraction::update($id, $validateData);
                 } else {
                     $ichijikin = IchijikinExtraction::create($validateData);
                 }

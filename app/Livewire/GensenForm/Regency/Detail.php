@@ -3,6 +3,7 @@
 namespace App\Livewire\MasterData\Regency;
 
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Repositories\MasterData\Regency\RegencyRepository;
 use Exception;
 use Illuminate\Support\Facades\Crypt;
@@ -22,7 +23,12 @@ class Detail extends Component
     public function mount()
     {
         if ($this->objId) {
-            $regency = RegencyRepository::find(Crypt::decrypt($this->objId));
+
+            $id = AppCrypt::decrypt($this->objId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+            $regency = RegencyRepository::find($id);
             $this->name = $regency->name;
         }
     }
@@ -53,8 +59,12 @@ class Detail extends Component
                 ];
                 $vehicle_id = null;
                 if ($this->objId) {
-                    $regency_id = Crypt::decrypt($this->objId);
-                    RegencyRepository::update($regency_id, $validateData);
+
+                    $id = AppCrypt::decrypt($this->objId);
+                    if (!$id) {
+                        abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                    }
+                    RegencyRepository::update($id, $validateData);
                 } else {
                     $vehicle = RegencyRepository::create($validateData);
                     $vehicle_id = $vehicle->id;

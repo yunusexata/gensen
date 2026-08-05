@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ResiGenerator;
 
+use App\Helpers\AppCrypt;
 use App\Http\Controllers\Controller;
 use App\Models\Ichijikin\IchijikinExtraction;
 use App\Repositories\IchijikinExtraction\IchijikinExtractionRepository;
@@ -31,7 +32,12 @@ class ResiGeneratorController extends Controller
     }
     public function download($id)
     {
-        $item = ResiGeneratorRepository::find(Crypt::decrypt($id));
+
+        $id = AppCrypt::decrypt($id);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        $item = ResiGeneratorRepository::find($id);
 
         abort_if(
             blank($item->zip_path),

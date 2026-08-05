@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\IchijikinExtraction;
 
+use App\Helpers\AppCrypt;
 use App\Http\Controllers\Controller;
 use App\Models\Ichijikin\IchijikinExtraction;
 use App\Repositories\IchijikinExtraction\IchijikinExtractionRepository;
@@ -30,7 +31,12 @@ class IchijikinExtractionController extends Controller
     }
     public function download($id)
     {
-        $item = IchijikinExtractionRepository::find(Crypt::decrypt($id));
+
+        $id = AppCrypt::decrypt($id);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        $item = IchijikinExtractionRepository::find($id);
 
         abort_if(
             blank($item->zip_path),

@@ -45,7 +45,7 @@ Route::middleware(['auth', 'access_permission'])->group(function () {
 // });
 Route::get('/test', function () {
     app(\App\Services\ListPosting\ArtboardGeneratorService::class)
-        ->generateArtboards(3);
+        ->generateArtboards(5);
 });
 Route::get('/health', function () {
     return response()->json([

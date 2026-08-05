@@ -139,8 +139,12 @@ class Create extends Component
         $this->validate();
         try {
             DB::transaction(function () {
+                $id = simple_decrypt($this->objId);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
                 $form = GensenFormLinkRepository::findBy([
-                    ['token', simple_decrypt($this->objId)]
+                    ['token', $id]
                 ]);
                 // Form Candidate
                 $validateData = [

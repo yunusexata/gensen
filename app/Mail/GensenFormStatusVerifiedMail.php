@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Helpers\AppLog;
 use App\Models\GensenForm\GensenForm;
 use App\Models\Service\SendEmailLog;
 use Illuminate\Bus\Queueable;
@@ -38,7 +39,16 @@ class GensenFormStatusVerifiedMail extends Mailable
      */
     public function content(): Content
     {
-        logger('mail created');
+        AppLog::info(
+            'Success Create Email',
+            'mail_gensen_form_status_verified',
+            [],
+            [
+                'subject_id' => $this->log->subject_id,
+                'subject_type' => $this->log->subject_type,
+                'subject' => $this->log->subject_line,
+            ],
+        );
         return new Content(
             view: 'app.gensen.emails.status_verified',
             with: [

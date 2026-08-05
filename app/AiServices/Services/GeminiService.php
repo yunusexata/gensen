@@ -4,8 +4,11 @@ namespace App\AiServices\Services;
 
 use App\Enums\Gensen\GensenAttachmenStatus;
 use App\Enums\Gensen\GensenAttachmentType;
+use App\Helpers\AppLog;
+use App\Livewire\GensenForm\GensenData\Attachment;
 use App\Models\Ai\AiJob;
 use App\Models\GensenForm\GensenForm;
+use App\Models\GensenForm\GensenFormAttachment;
 use Exception;
 use Gemini\Data\Blob;
 use Gemini\Data\Content;
@@ -32,229 +35,244 @@ class GeminiService
      */
     public function extractRemittance(GensenForm $gensen_form): array
     {
-        $attachments = $gensen_form->attachmentsConvertedRekapanPengirimanUang;
-
-        // logger(['attachments', $attachments]);
-
-        // $blobs = collect($attachments)->map(function ($file) {
-
-        //     $storage = Storage::disk($file['disk']);
-
-        //     if (!$storage->exists($file['path'])) {
-        //         logger("File missing: {$file['path']}");
-        //     }
-
-        //     // $stream = $storage->path($file['path']);
-
-        //     // if ($stream === false) {
-        //     //     logger("Cannot read file stream");
-        //     // }
-
-        //     $stream = $storage->readStream($file['path']);
-
-        //     logger(['data attachment to blob', $file['path']]);
-        //     if (!is_resource($stream)) {
-        //         logger("Unable to open stream: {$file['path']}");
-        //     }
-
-        //     $data = stream_get_contents($stream);
-
-        //     fclose($stream);
-        //     // $data = file_get_contents($stream);
-        //     // logger(['data stream', $stream]);
-
-        //     return new Blob(
-        //         mimeType: $this->getMimeType($file['extension']),
-        //         data: base64_encode($data)
-        //     );
-        // })->toArray();
-        $blobs = collect($attachments)->map(function ($file) {
-            $storage = Storage::disk($file['disk']);
-
-            // 1. Cek eksistensi file
-            if (!$storage->exists($file['path'])) {
-                logger()->error("File missing on disk [{$file['disk']}]: {$file['path']}");
-                return null; // Kembalikan null agar bisa difilter nanti
-            }
-
-            // 2. Ambil MIME Type langsung dari Storage (Lebih Aman & Akurat)
-            // Ini menyelesaikan masalah keamanan yang kita bahas sebelumnya
-            $mimeType = $storage->mimeType($file['path']);
-
-            // 3. Baca isi file
-            // Method get() bekerja universal untuk S3, Supabase, dan Local.
-            // Karena kita butuh base64_encode seluruh file, menggunakan get() lebih praktis 
-            // daripada mengelola stream secara manual.
-            $data = $storage->get($file['path']);
-
-            if ($data === null) {
-                logger()->error("Unable to read file content: {$file['path']}");
-                return null;
-            }
-
-            // 4. Return Blob untuk Gemini
-            return new Blob(
-                mimeType: $this->getMimeType($file['mime_type']),
-                data: base64_encode($data)
-            );
-        })->filter()->toArray(); // filter() akan membuang array bernilai 'null' jika ada file yang error
-
-
-        // High-precision configuration for tax data
-        $responseSchema = new Schema(
-            type: DataType::OBJECT,
-            properties: [
-                'groups' => new Schema(
-                    type: DataType::ARRAY,
-                    items: new Schema(
-                        type: DataType::OBJECT,
-                        // PERUBAHAN: Menegaskan batasan kemiripan bahkan untuk 1 karakter/huruf
-                        description: "Group the data by BOTH the exact name string of the recipient AND the transaction year. CRITICAL: Be extremely strict. Even a single character, letter, or punctuation difference (e.g., 'FAJAR' vs 'FAJAL', or 'ALWIRAWAN' vs 'ALWIRAWAM') means they are COMPLETELY DIFFERENT entities and MUST be split into separate groups. Do not perform any fuzzy matching, grouping by similarity, or name consolidation.",
-                        properties: [
-                            'receiver_name' => new Schema(
-                                type: DataType::STRING,
-                                // PERUBAHAN: Mengizinkan simbol baca (apostrof, strip), tapi memblokir mutlak huruf Jepang
-                                description: "The full name of the recipient. Extract the Latin alphabet (A-Z), spaces, and any related punctuation/symbols (such as apostrophes in 'ma'arif' or hyphens). STRICTLY IGNORE and remove all Japanese characters (Kanji, Hiragana, Katakana, e.g., '様' or 'さま'). After dropping the Japanese characters, read the remaining text CHARACTER-BY-CHARACTER exactly as visually printed with zero tolerance for typos, omissions, or assumptions. Capture the raw string as-is without rearranging the word order. Do not attempt to fix typos or normalize spelling."
-                            ),
-                            'transaction_year' => new Schema(
-                                type: DataType::INTEGER,
-                                description: "The Gregorian year (YYYY). Convert Reiwa/Heisei if necessary."
-                            ),
-                            'amount_details' => new Schema(
-                                type: DataType::ARRAY,
-                                description: "AUDIT TRAIL: A list of every individual transaction amount found for this person in the year before aggregation.",
-                                items: new Schema(
-                                    type: DataType::NUMBER,
-                                    description: "The raw numeric value of a single valid transfer entry on Yen/JPY."
-                                )
-                            ),
-                            'total_amount' => new Schema(
-                                type: DataType::NUMBER,
-                                description: "The mathematical SUM of all values listed in 'amount_details'."
-                            ),
-                            'currency' => new Schema(
-                                type: DataType::STRING,
-                                description: "Standardized currency code, e.g., 'JPY'."
-                            ),
-                            'transfer_transaction_count' => new Schema(
-                                type: DataType::INTEGER,
-                                description: "The count of items in the 'amount_details' array."
-                            ),
-                        ],
-                        required: [
-                            'receiver_name',
-                            'transaction_year',
-                            'amount_details',
-                            'total_amount',
-                            'currency',
-                            'transfer_transaction_count'
-                        ]
-                    )
-                ),
-                'confidence_score' => new Schema(
-                    type: DataType::INTEGER,
-                    description: "Extraction confidence (0-100) based on document clarity."
-                ),
-                'confidence_note' => new Schema(
-                    type: DataType::STRING,
-                    description: "IF confidence_score < 85 should explain the reason, ELSE null."
-                )
-            ],
-            required: ['groups', 'confidence_score']
+        // 1. MILESTONE: Catat bahwa proses penting dimulai
+        AppLog::info(
+            'Memulai persiapan file untuk ekstraksi Gemini',
+            'gemini_extraction_started',
+            ['gensen_form_id' => $gensen_form->id]
         );
-        $systemInstruction = "You are a strict Financial Auditor and Remittance Extraction Engine." .
+        try {
+            $attachments = $gensen_form->attachmentsConvertedRekapanPengirimanUang;
+            $blobs = collect($attachments)->map(function ($file) use ($gensen_form) {
+                $storage = Storage::disk($file['disk']);
 
-            "GOAL: Extract, aggregate, and group valid JPY remittance transfers." .
+                // 1. Cek eksistensi file
+                if (!$storage->exists($file['path'])) {
 
-            "OUTPUT: Return strict JSON only. No preamble.";
-        $result = Gemini::generativeModel(model: config('gemini.model'))
-            ->withSystemInstruction(Content::parse($systemInstruction))
-            ->withGenerationConfig(
-                generationConfig: new GenerationConfig(
-                    responseMimeType: ResponseMimeType::APPLICATION_JSON,
-                    responseSchema: $responseSchema,
+                    AppLog::warning(
+                        "File lampiran remittance tidak ditemukan di storage",
+                        'remittance_file_missing',
+                        ['gensen_form_id' => $gensen_form->id],
+                        ['disk' => $file['disk'], 'path' => $file['path']],
+                        'gemini_remittance_extraction'
+                    );
 
-                    // Critical for legal/tax accuracy:
-                    temperature: 0.0,
-                    mediaResolution: MediaResolution::MEDIA_RESOLUTION_HIGH,
+                    return null; // Kembalikan null agar bisa difilter nanti
+                }
 
-                    // Advanced Reasoning:
-                    thinkingConfig: new ThinkingConfig(
-                        includeThoughts: true,
-                        thinkingLevel: ThinkingLevel::HIGH,
+                // 2. Ambil MIME Type langsung dari Storage (Lebih Aman & Akurat)
+                // Ini menyelesaikan masalah keamanan yang kita bahas sebelumnya
+                $mimeType = $storage->mimeType($file['path']);
+
+                // 3. Baca isi file
+                // Method get() bekerja universal untuk S3, Supabase, dan Local.
+                // Karena kita butuh base64_encode seluruh file, menggunakan get() lebih praktis 
+                // daripada mengelola stream secara manual.
+                $data = $storage->get($file['path']);
+
+                if ($data === null) {
+                    AppLog::warning(
+                        "Gagal membaca isi file lampiran",
+                        'remittance_file_unreadable',
+                        ['gensen_form_id' => $gensen_form->id],
+                        ['path' => $file['path']],
+                        'gemini_remittance_extraction'
+                    );
+                    return null;
+                }
+
+                // 4. Return Blob untuk Gemini
+                return new Blob(
+                    mimeType: $this->getMimeType($file['mime_type']),
+                    data: base64_encode($data)
+                );
+            })->filter()->toArray(); // filter() akan membuang array bernilai 'null' jika ada file yang error
+
+
+            // High-precision configuration for tax data
+            $responseSchema = new Schema(
+                type: DataType::OBJECT,
+                properties: [
+                    'groups' => new Schema(
+                        type: DataType::ARRAY,
+                        items: new Schema(
+                            type: DataType::OBJECT,
+                            // PERUBAHAN: Menegaskan batasan kemiripan bahkan untuk 1 karakter/huruf
+                            description: "Group the data by BOTH the exact name string of the recipient AND the transaction year. CRITICAL: Be extremely strict. Even a single character, letter, or punctuation difference (e.g., 'FAJAR' vs 'FAJAL', or 'ALWIRAWAN' vs 'ALWIRAWAM') means they are COMPLETELY DIFFERENT entities and MUST be split into separate groups. Do not perform any fuzzy matching, grouping by similarity, or name consolidation.",
+                            properties: [
+                                'receiver_name' => new Schema(
+                                    type: DataType::STRING,
+                                    // PERUBAHAN: Mengizinkan simbol baca (apostrof, strip), tapi memblokir mutlak huruf Jepang
+                                    description: "The full name of the recipient. Extract the Latin alphabet (A-Z), spaces, and any related punctuation/symbols (such as apostrophes in 'ma'arif' or hyphens). STRICTLY IGNORE and remove all Japanese characters (Kanji, Hiragana, Katakana, e.g., '様' or 'さま'). After dropping the Japanese characters, read the remaining text CHARACTER-BY-CHARACTER exactly as visually printed with zero tolerance for typos, omissions, or assumptions. Capture the raw string as-is without rearranging the word order. Do not attempt to fix typos or normalize spelling."
+                                ),
+                                'transaction_year' => new Schema(
+                                    type: DataType::INTEGER,
+                                    description: "The Gregorian year (YYYY). Convert Reiwa/Heisei if necessary."
+                                ),
+                                'amount_details' => new Schema(
+                                    type: DataType::ARRAY,
+                                    description: "AUDIT TRAIL: A list of every individual transaction amount found for this person in the year before aggregation.",
+                                    items: new Schema(
+                                        type: DataType::NUMBER,
+                                        description: "The raw numeric value of a single valid transfer entry on Yen/JPY."
+                                    )
+                                ),
+                                'total_amount' => new Schema(
+                                    type: DataType::NUMBER,
+                                    description: "The mathematical SUM of all values listed in 'amount_details'."
+                                ),
+                                'currency' => new Schema(
+                                    type: DataType::STRING,
+                                    description: "Standardized currency code, e.g., 'JPY'."
+                                ),
+                                'transfer_transaction_count' => new Schema(
+                                    type: DataType::INTEGER,
+                                    description: "The count of items in the 'amount_details' array."
+                                ),
+                            ],
+                            required: [
+                                'receiver_name',
+                                'transaction_year',
+                                'amount_details',
+                                'total_amount',
+                                'currency',
+                                'transfer_transaction_count'
+                            ]
+                        )
+                    ),
+                    'confidence_score' => new Schema(
+                        type: DataType::INTEGER,
+                        description: "Extraction confidence (0-100) based on document clarity."
+                    ),
+                    'confidence_note' => new Schema(
+                        type: DataType::STRING,
+                        description: "IF confidence_score < 85 should explain the reason, ELSE null."
+                    )
+                ],
+                required: ['groups', 'confidence_score']
+            );
+            $systemInstruction = "You are a strict Financial Auditor and Remittance Extraction Engine." .
+                "GOAL: Extract, aggregate, and group valid JPY remittance transfers." .
+                "OUTPUT: Return strict JSON only. No preamble.";
+
+            AppLog::info(
+                'Mengirim request ke Gemini API',
+                'gemini_api_requesting',
+                ['gensen_form_id' => $gensen_form->id],
+                ['file_count' => count($blobs), 'model' => config('gemini.model')],
+                'gemini_remittance_extraction'
+            );
+
+            $result = Gemini::generativeModel(model: config('gemini.model'))
+                ->withSystemInstruction(Content::parse($systemInstruction))
+                ->withGenerationConfig(
+                    generationConfig: new GenerationConfig(
+                        responseMimeType: ResponseMimeType::APPLICATION_JSON,
+                        responseSchema: $responseSchema,
+
+                        // Critical for legal/tax accuracy:
+                        temperature: 0.0,
+                        mediaResolution: MediaResolution::MEDIA_RESOLUTION_HIGH,
+
+                        // Advanced Reasoning:
+                        thinkingConfig: new ThinkingConfig(
+                            includeThoughts: true,
+                            thinkingLevel: ThinkingLevel::HIGH,
+                        )
                     )
                 )
-            )
-            ->generateContent([
-                $this->getTaxPrompt(),
-                ...$blobs
-            ]);
+                ->generateContent([
+                    $this->getTaxPrompt(),
+                    ...$blobs
+                ]);
 
-        // logger(['result', $result]);
+            // logger(['result', $result]);
 
-        $response = [];
-        $thoughts = null;
-        foreach ($result->parts() as $part) {
-            if ($part->thought === true) {
-                // This part contains the model's thinking process
-                $thoughts = json_encode($part->text, true);
-            } else if ($part->text !== null) {
-                // This is the final answer
-                $response['json'] = json_decode($part->text, true);
+            $response = [];
+            $thoughts = null;
+            foreach ($result->parts() as $part) {
+                if ($part->thought === true) {
+                    // This part contains the model's thinking process
+                    $thoughts = json_encode($part->text, true);
+                } else if ($part->text !== null) {
+                    // This is the final answer
+                    $response['json'] = json_decode($part->text, true);
+                }
             }
+            $response['request_payload'] = json_encode([
+                'system_instruction' => $systemInstruction,
+                'prompt' => $this->getTaxPrompt(),
+                'attachments_count' => count($blobs),
+                'config' => [
+                    'temperature' => 0.0,
+                    'thinking_level' => 'HIGH',
+                    'resolution' => 'HIGH'
+                ]
+            ], true);
+            $response['confidence_score'] = $response['json']['confidence_score'];
+            $response['confidence_note'] = isset($response['json']['confidence_note']) ? $response['json']['confidence_note'] : null;
+
+            $metadata = $result->usageMetadata;
+
+            $response['response_payload'] = json_encode([
+                'data' => $response['json'],
+                'thinking_process' => $thoughts, // Crucial for debugging why an extraction failed
+                'usage' => [
+                    'prompt_tokens' => $metadata->promptTokenCount,
+                    'candidates_tokens' => $metadata->candidatesTokenCount,
+                    'total_tokens' => $metadata->totalTokenCount,
+                ]
+            ], true);
+
+            $response['input_tokens']    = $metadata->promptTokenCount;
+            $response['output_tokens']   = $metadata->candidatesTokenCount;
+            $response['cached_tokens']   = $metadata->cachedContentTokenCount ?? 0;
+            $response['thinking_tokens'] = $metadata->thoughtsTokenCount ?? 0;
+            $response['total_tokens']    = $metadata->totalTokenCount;
+
+            $input_price = env('GEMINI_INPUT_PRICE', 0.25); // per 1M tokens
+            $output_price = env('GEMINI_OUTPUT_PRICE', 1.50); // per 1M tokens
+
+            // 1. Calculate costs by dividing by 1,000,000
+            $response['input_cost']    = ($response['input_tokens'] / 1000000) * $input_price;
+
+            // 2. Note: 'output_tokens' usually includes the 'thinking_tokens' 
+            // if you are using candidatesTokenCount + thoughtsTokenCount
+            $response['output_cost']   = ($response['output_tokens'] / 1000000) * $output_price;
+
+            $response['thinking_cost'] = ($response['thinking_tokens'] / 1000000) * $output_price;
+
+            // 3. Total Cost is just the sum of input and output costs
+            // (Do NOT add the token counts to the currency amount)
+            $response['total_cost']    = $response['input_cost'] + $response['output_cost'] + $response['thinking_cost'];
+
+            AppLog::info(
+                'Ekstraksi Gemini berhasil diselesaikan',
+                'gemini_extraction_success',
+                ['gensen_form_id' => $gensen_form->id],
+                [
+                    'confidence_score' => $response['confidence_score'] ?? 0,
+                    'total_cost_usd'   => $response['total_cost'] ?? 0,
+                    'total_tokens'     => $response['total_tokens'] ?? 0
+                ],
+                'gemini_remittance_extraction'
+            );
+
+            return $response ?? [];
+        } catch (\Throwable $e) {
+            AppLog::error(
+                'Gagal melakukan ekstraksi data remittance via Gemini',
+                'gemini_extraction_failed',
+                ['gensen_form_id' => $gensen_form->id ?? null],
+                [
+                    'attachment_count' => count($attachments ?? [])
+                ],
+                $e,
+                'gemini_remittance_extraction' // Anda bisa membuat channel khusus untuk log AI/Gemini
+            );
+
+            throw $e;
         }
-        $response['request_payload'] = json_encode([
-            'system_instruction' => $systemInstruction,
-            'prompt' => $this->getTaxPrompt(),
-            'attachments_count' => count($blobs),
-            'config' => [
-                'temperature' => 0.0,
-                'thinking_level' => 'HIGH',
-                'resolution' => 'HIGH'
-            ]
-        ], true);
-        logger(['score', $response['json']['confidence_score']]);
-        $response['confidence_score'] = $response['json']['confidence_score'];
-        $response['confidence_note'] = isset($response['json']['confidence_note']) ? $response['json']['confidence_note'] : null;
-
-        $metadata = $result->usageMetadata;
-
-        $response['response_payload'] = json_encode([
-            'data' => $response['json'],
-            'thinking_process' => $thoughts, // Crucial for debugging why an extraction failed
-            'usage' => [
-                'prompt_tokens' => $metadata->promptTokenCount,
-                'candidates_tokens' => $metadata->candidatesTokenCount,
-                'total_tokens' => $metadata->totalTokenCount,
-            ]
-        ], true);
-
-        $response['input_tokens']    = $metadata->promptTokenCount;
-        $response['output_tokens']   = $metadata->candidatesTokenCount;
-        $response['cached_tokens']   = $metadata->cachedContentTokenCount ?? 0;
-        $response['thinking_tokens'] = $metadata->thoughtsTokenCount ?? 0;
-        $response['total_tokens']    = $metadata->totalTokenCount;
-
-        $input_price = env('GEMINI_INPUT_PRICE', 0.25); // per 1M tokens
-        $output_price = env('GEMINI_OUTPUT_PRICE', 1.50); // per 1M tokens
-
-        // 1. Calculate costs by dividing by 1,000,000
-        $response['input_cost']    = ($response['input_tokens'] / 1000000) * $input_price;
-
-        // 2. Note: 'output_tokens' usually includes the 'thinking_tokens' 
-        // if you are using candidatesTokenCount + thoughtsTokenCount
-        $response['output_cost']   = ($response['output_tokens'] / 1000000) * $output_price;
-
-        $response['thinking_cost'] = ($response['thinking_tokens'] / 1000000) * $output_price;
-
-        // 3. Total Cost is just the sum of input and output costs
-        // (Do NOT add the token counts to the currency amount)
-        $response['total_cost']    = $response['input_cost'] + $response['output_cost'] + $response['thinking_cost'];
-        logger([
-            'RESPONSE FINAL',
-            $response
-        ]);
-        return $response ?? [];
     }
 
     private function getTaxPrompt(): string

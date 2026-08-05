@@ -1,9 +1,10 @@
 <?php
 
+use App\Helpers\AppLog;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
-
+use Vinkla\Hashids\Facades\Hashids;
 
 if (!function_exists('calculatedDiscount')) {
     function calculatedDiscount($amount, $percentage)
@@ -20,9 +21,7 @@ if (!function_exists('generateUrl')) {
 if (!function_exists('simple_encrypt')) {
     function simple_encrypt($value)
     {
-        $key = hash('sha256', env('ENCRYPT_KEY'), true);
-        $iv = substr($key, 0, 16); // Fixed IV
-        return base64_encode(openssl_encrypt($value, 'aes-256-cbc', $key, 0, $iv));
+        return Hashids::encode($value);
     }
 }
 if (!function_exists('toReiwaYear')) {
@@ -88,9 +87,36 @@ if (!function_exists('formatFileSize')) {
 if (!function_exists('simple_decrypt')) {
     function simple_decrypt($encryptedValue)
     {
-        $key = hash('sha256', env('ENCRYPT_KEY'), true);
-        $iv = substr($key, 0, 16);
-        return openssl_decrypt(base64_decode($encryptedValue), 'aes-256-cbc', $key, 0, $iv);
+        if (blank($encryptedValue)) {
+            return null;
+        }
+
+        try {
+            // Hashids::decode() mengembalikan array. Contoh sukses: [123]
+            $decodedArray = Hashids::decode($encryptedValue);
+
+            // Jika array kosong, berarti payload dimanipulasi atau tidak valid
+            if (empty($decodedArray)) {
+                throw new \Exception("Hashids menghasilkan array kosong (payload tidak valid).");
+            }
+
+            // Kembalikan angka ID-nya
+            return $decodedArray[0];
+        } catch (\Throwable $e) {
+            // Log aktivitas mencurigakan ini
+            AppLog::warning(
+                'Terdeteksi manipulasi pada URL Hashids',
+                'hashids_decode_failed',
+                [],
+                [
+                    'invalid_payload' => $encryptedValue,
+                    'error_message'   => $e->getMessage()
+                ],
+                'security' // Masuk ke file security.log
+            );
+
+            return null;
+        }
     }
 }
 

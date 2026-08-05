@@ -2,12 +2,10 @@
 
 namespace App\Mail;
 
-use App\Models\GensenForm\GensenForm;
+use App\Helpers\AppLog;
 use App\Models\Service\SendEmailLog;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -38,7 +36,16 @@ class GensenFormStatusHonninMail extends Mailable
      */
     public function content(): Content
     {
-        logger('mail created');
+        AppLog::info(
+            'Success Create Email',
+            'mail_gensen_form_status_honnin',
+            [],
+            [
+                'subject_id' => $this->log->subject_id,
+                'subject_type' => $this->log->subject_type,
+                'subject' => $this->log->subject_line,
+            ],
+        );
         return new Content(
             view: 'app.gensen.emails.status_honnin',
             with: [

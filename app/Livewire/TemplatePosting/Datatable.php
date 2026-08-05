@@ -4,6 +4,7 @@ namespace App\Livewire\TemplatePosting;
 
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\PermissionHelper;
 use App\Jobs\ResiGenerator\GenerateResiZipJob;
 use App\Models\ListPosting\TemplatePosting;
@@ -75,7 +76,12 @@ class Datatable extends Component
 
     public function generateZip($id)
     {
-        GenerateResiZipJob::dispatch(TemplatePostingRepository::find(Crypt::decrypt($id)))->onQueue('pdf');
+
+        $id = AppCrypt::decrypt($id);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        GenerateResiZipJob::dispatch(TemplatePostingRepository::find($id))->onQueue('pdf');
 
         Alert::success(
             $this,

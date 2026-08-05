@@ -4,6 +4,7 @@ namespace App\Livewire\ResiGenerator;
 
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\ExportHelper;
 use App\Imports\ExcelImportBulkStatusGensen;
 use App\Jobs\ResiGenerator\GetEmailJob;
@@ -51,7 +52,12 @@ class Detail extends Component
     public function mount()
     {
         if ($this->objId) {
-            $resi_generator = ResiGeneratorRepository::find(Crypt::decrypt($this->objId));
+
+            $id = AppCrypt::decrypt($this->objId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+            $resi_generator = ResiGeneratorRepository::find($id);
             $this->label = $resi_generator->label;
             $this->bank = $resi_generator->bank;
         }

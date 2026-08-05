@@ -4,6 +4,7 @@ namespace App\Http\Controllers\GensenForm;
 
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
+use App\Helpers\AppCrypt;
 use App\Http\Controllers\Controller;
 use App\Models\Gensen\GensenExportImportHistory;
 use App\Models\Gensen\GensenSeluruhBerkasZipJob;
@@ -30,7 +31,11 @@ class GensenFormExportImportController extends Controller
     }
     public function download($id)
     {
-        $history = GensenExportImportHistory::findOrFail(Crypt::decrypt($id));
+        $id = AppCrypt::decrypt($id);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        $history = GensenExportImportHistory::findOrFail($id);
 
         // 'supabase' atau 's3' atau 'private' - semuanya bisa menggunakan method ini
         $disk = Storage::disk($history->disk);
@@ -44,7 +49,12 @@ class GensenFormExportImportController extends Controller
     }
     public function downloadSeluruhBerkas($id)
     {
-        $zipJob = GensenSeluruhBerkasZipJob::findOrFail(Crypt::decrypt($id));
+
+        $id = AppCrypt::decrypt($id);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        $zipJob = GensenSeluruhBerkasZipJob::findOrFail($id);
 
         // 'supabase' atau 's3' atau 'private' - semuanya bisa menggunakan method ini
         $disk = Storage::disk($zipJob->zip_disk);
@@ -59,28 +69,4 @@ class GensenFormExportImportController extends Controller
             basename($zipJob->zip_path)
         );
     }
-    // public function download($id)
-    // {
-    //     $history = GensenExportImportHistory::findOrFail(Crypt::decrypt($id));
-
-    //     $disk = Storage::disk($history->disk);
-
-    //     if ($history->disk === 'private') {
-    //         $path = storage_path('app/private/' . $history->file_path);
-
-    //         return response()->download($path);
-    //     }
-
-    //     $tmpPath = storage_path('app/tmp/' . basename($history->file_path));
-
-    //     $stream = $disk->readStream($history->file_path);
-    //     $target = fopen($tmpPath, 'w');
-
-    //     stream_copy_to_stream($stream, $target);
-
-    //     fclose($stream);
-    //     fclose($target);
-
-    //     return response()->download($tmpPath)->deleteFileAfterSend(true);
-    // }
 }

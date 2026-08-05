@@ -5,6 +5,7 @@ namespace App\Livewire\GensenForm\GensenData;
 use App\Enums\Gensen\GensenAttachmenStatus;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\ExportHelper;
 use App\Helpers\PermissionHelper;
 use App\Models\Exata\Exata;
@@ -130,8 +131,11 @@ class Datatable extends Component
         if (!$this->isCanDelete || $this->targetDeleteId == null) {
             return;
         }
-
-        GensenFormRepository::delete(simple_decrypt($this->targetDeleteId));
+        $id = simple_decrypt($this->targetDeleteId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        GensenFormRepository::delete($id);
         Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
     }
 
@@ -165,7 +169,11 @@ class Datatable extends Component
             return;
         }
 
-        GensenFormRepository::copy(Crypt::decrypt($this->targetCopyId));
+        $id = AppCrypt::decrypt($this->targetCopyId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        GensenFormRepository::copy($id);
         Alert::success($this, 'Berhasil', 'Data berhasil diperbarui');
     }
 
@@ -561,8 +569,16 @@ class Datatable extends Component
 
     public function getQuery(): Builder
     {
+
+        if ($this->gensenFormLinkId) {
+            $id = AppCrypt::decrypt($this->gensenFormLinkId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+        }
         return GensenFormRepository::datatable(
-            $this->gensenFormLinkId ? Crypt::decrypt($this->gensenFormLinkId) : null,
+
+            $this->gensenFormLinkId ? $id : null,
             $this->filter_status,
             $this->filter_pic,
             $this->filter_tanggal_input_dari ?
@@ -609,18 +625,7 @@ class Datatable extends Component
                     'nama_bank_penerima' => $this->editingData['nama_bank_penerima'],
                     'nama_penerima' => $this->editingData['nama_penerima'],
                     'hubungan_penerima' => $this->editingData['hubungan_penerima'],
-                    // 'tanggal_cair' => $this->editingData['tanggal_cair'] ? $this->editingData['tanggal_cair'] : null,
-                    // 'nominal_cair' => imaskToValue($this->editingData['nominal_cair']),
-                    // 'nominal_gensen' => imaskToValue($this->editingData['nominal_gensen']),
-                    // 'jumlah_kirim_uang' => imaskToValue($this->editingData['jumlah_kirim_uang']),
                     'tanggal_kepulangan' => $this->editingData['tanggal_kepulangan'] ? $this->editingData['tanggal_kepulangan'] : null,
-                    // REK PENERIMA
-                    // 'status' => $this->editingData['status'],
-                    // 'tahun_gensen' => $this->editingData['tahun_gensen'],
-                    // 'tahun_transfer' => $this->editingData['tahun_transfer'],
-                    // 'alamat_jepang' => $this->editingData['alamat_jepang'],
-                    // 'kode_pos_jepang' => $this->editingData['kode_pos_jepang'],
-                    // 'nama_lpk' => $this->editingData['nama_lpk'],
                     'keterangan' => $this->editingData['keterangan'],
                 ];
             }
@@ -680,7 +685,6 @@ class Datatable extends Component
     }
 
     // TRAITS 
-
     public function mount()
     {
         $this->onMount();
@@ -775,9 +779,12 @@ class Datatable extends Component
             $this->editingRowId = null;
             return;
         }
-
-        $row = GensenFormRepository::findWithTahunGensen(simple_decrypt($id));
-        $this->editingRowId = simple_decrypt($id);
+        $id = simple_decrypt($id);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        $row = GensenFormRepository::findWithTahunGensen($id);
+        $this->editingRowId = $id;
         $tahun_gensen_details = explode(';', $row->tahun_gensen_details);
         $nominal_gensen_details = explode(';', $row->nominal_gensen_details);
         $html = "";

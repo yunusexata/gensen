@@ -6,6 +6,7 @@ use App\Enums\Gensen\EmailLogStatus;
 use App\Enums\Gensen\GensenAttachmentRemittanceType;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Mail\Admin\ClientAttachmentUploaded;
 use App\Mail\Admin\ClientNewSubmission;
 use App\Mail\GensenFormStatusLengkapMail;
@@ -177,7 +178,11 @@ class Form extends Component
                 ];
             })->values();
         if ($this->isUploadAttachment) {
-            $this->gensenFormId = simple_decrypt($this->gensenFormId);
+            $id = simple_decrypt($this->gensenFormId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+            $this->gensenFormId = $id;
             $this->authorized = true;
             $this->dispatch('onAuthorized');
             consoleLog($this, 'upload att');
@@ -616,7 +621,12 @@ class Form extends Component
     #[On('on-delete-dialog-file-confirm')]
     public function onDialogDeleteFileConfirm()
     {
-        $data = GensenFormAttachmentRepository::delete(Crypt::decrypt($this->targetDeleteId));
+        $id = AppCrypt::decrypt($this->targetDeleteId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+
+        $data = GensenFormAttachmentRepository::delete($id);
         Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
         $this->removeAttachmentFromGroups($this->targetDeleteId, $this->targetPropertyId);
 

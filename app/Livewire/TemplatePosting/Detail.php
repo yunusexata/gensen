@@ -4,6 +4,7 @@ namespace App\Livewire\TemplatePosting;
 
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Imports\ExcelImportBulkStatusGensen;
 use App\Jobs\ResiGenerator\GetEmailJob;
 use App\Repositories\ListPosting\TemplatePostingRepository;
@@ -55,7 +56,12 @@ class Detail extends Component
     public function mount()
     {
         if ($this->objId) {
-            $template_posting = TemplatePostingRepository::find(Crypt::decrypt($this->objId));
+
+            $id = AppCrypt::decrypt($this->objId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+            $template_posting = TemplatePostingRepository::find($id);
             $this->name = $template_posting->name;
             $this->type = $template_posting->type;
             $this->config = $template_posting->config;
@@ -110,7 +116,12 @@ class Detail extends Component
                 $validatedData['path'] = $path;
             }
             if ($this->objId) {
-                TemplatePostingRepository::update(Crypt::decrypt($this->objId), $validatedData);
+
+                $id = AppCrypt::decrypt($this->objId);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
+                TemplatePostingRepository::update($id, $validatedData);
             } else {
 
                 TemplatePostingRepository::create($validatedData);

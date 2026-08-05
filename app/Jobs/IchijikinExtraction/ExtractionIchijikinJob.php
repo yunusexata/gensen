@@ -26,7 +26,7 @@ class ExtractionIchijikinJob implements ShouldQueue
     public function handle(
         IchijikinExtractionService $service
     ): void {
-        logger('prosessing');
+        // logger('prosessing');
         $this->aiJob->update([
             'status' => JobStatus::PROCESSING,
             'started_at' => now(),

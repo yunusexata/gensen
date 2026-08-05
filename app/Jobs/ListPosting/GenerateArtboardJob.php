@@ -89,9 +89,9 @@ class GenerateArtboardJob implements ShouldQueue
         // 2. Konfigurasi Grid & Tipografi
         // Asumsi resolusi template Anda adalah sekitar 1080x1350px (Standar Portrait)
         $startX = 30;        // Margin kiri (sangat mepet dengan batas kiri artboard)
-        $startY = 204;       // Margin atas (dimulai persis di bawah bayangan banner 'PERIODE')
+        $startY = 234;       // Margin atas (dimulai persis di bawah bayangan banner 'PERIODE')
         $columnWidth = 262;  // Lebar area per kolom (memungkinkan 4 kolom muat sejajar)
-        $rowHeight = 26;   // Jarak antar baris (sangat rapat, nyaris bersentuhan)
+        $rowHeight = 25.3;   // Jarak antar baris (sangat rapat, nyaris bersentuhan)
         $maxRowsPerCol = 40; // Total baris per kolom
         $fontSize = 24;      // Ukuran font disesuaikan dengan row height
 
@@ -127,9 +127,9 @@ class GenerateArtboardJob implements ShouldQueue
         }
         // 4. Tulis Nomor Halaman Besar di Kiri Bawah
         $pageText = str_pad($this->pageNumber, 2, '0', STR_PAD_LEFT);
-        $image->text($pageText, 40, 1380, function ($font) use ($template) {
+        $image->text($pageText, 910, 1320, function ($font) use ($template) {
             $font->file($this->fontPathNumber); // Bisa gunakan font style/weight berbeda jika ada
-            $font->size(130);
+            $font->size(90);
             $font->color($template->config['page']['color'] ?? '#000000');
             $font->align('left');
             $font->valign('bottom');

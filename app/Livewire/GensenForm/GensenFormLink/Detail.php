@@ -3,16 +3,12 @@
 namespace App\Livewire\GensenForm\GensenFormLink;
 
 use App\Helpers\Alert;
-use App\Models\Exata\ExataFormCandidate;
-use App\Models\GensenForm\GensenForm;
+use App\Helpers\AppCrypt;
 use App\Models\GensenForm\GensenFormLink;
-use App\Repositories\Exata\ExataFormCandidateRepository;
 use App\Repositories\GensenForm\GensenFormLinkRepository;
-use App\Repositories\MasterData\Regency\RegencyRepository;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -36,7 +32,14 @@ class Detail extends Component
         $this->expired_at = Carbon::now()->addDays(7)->format('Y-m-d\TH:i');
         $this->password = Auth::user()->password_gensen_form;
         if ($this->objId) {
-            $form = GensenFormLinkRepository::find(Crypt::decrypt($this->objId));
+            $id = AppCrypt::decrypt($this->objId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+            $form = GensenFormLinkRepository::find($id);
+            if (!$form) {
+                abort(404, 'Form Tidak Ditemukan');
+            }
             $this->password = $form->password;
             $this->max_usage = $form->max_usage;
             $this->name = $form->name;
@@ -75,7 +78,7 @@ class Detail extends Component
                 ];
                 $vehicle_id = null;
                 if ($this->objId) {
-                    $regency_id = Crypt::decrypt($this->objId);
+                    $regency_id = AppCrypt::decrypt($this->objId);
                     GensenFormLinkRepository::update($regency_id, $validateData);
                 } else {
                     $vehicle = GensenFormLinkRepository::create($validateData);

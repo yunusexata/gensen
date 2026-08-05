@@ -4,15 +4,16 @@ namespace App\Jobs;
 
 use App\Enums\Gensen\EmailLogStatus;
 use App\Enums\Gensen\JobStatus;
+use App\Helpers\AppLog;
 use App\Mail\GensenFormCreatedMail;
 use App\Models\GensenForm\GensenForm;
 use App\Models\Service\SendEmailLog;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\SerializesModels;
 use Throwable;
 
 class SendEmailJob implements ShouldQueue
@@ -22,7 +23,6 @@ class SendEmailJob implements ShouldQueue
 
     public function handle()
     {
-        logger('email sending');
         $this->log->update([
             'status' => EmailLogStatus::SENDING,
             'started_at' => now(),
@@ -30,10 +30,17 @@ class SendEmailJob implements ShouldQueue
         ]);
 
         try {
-
-            logger(['email process', $this->log->email]);
             Mail::to($this->log->email)->send(new $this->log->mailable($this->log));
 
+            AppLog::info(
+                'Success sent Email Job',
+                'job_send_email',
+                [],
+                [
+                    'send_email_log_id' => $this->log->id,
+                    'mail_to' => $this->log->email,
+                ],
+            );
             $this->log->update([
                 'status' => EmailLogStatus::SENT,
                 'finished_at' => now(),

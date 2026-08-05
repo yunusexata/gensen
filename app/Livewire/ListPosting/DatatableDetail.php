@@ -3,6 +3,7 @@
 namespace App\Livewire\ResiGenerator;
 
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\NumberFormatter;
 use App\Helpers\PermissionHelper;
 use App\Repositories\Account\UserRepository;
@@ -177,7 +178,11 @@ class DatatableDetail extends Component
 
     public function getQuery(): Builder
     {
-        return ResiGeneratorDetailRepository::datatable(Crypt::decrypt($this->objId));
+        $id = AppCrypt::decrypt($this->objId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        return ResiGeneratorDetailRepository::datatable($id);
     }
 
     public function getView(): string

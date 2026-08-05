@@ -7,6 +7,7 @@ use App\Enums\Gensen\GensenAttachmentRemittanceType;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\PermissionHelper;
 use App\Jobs\ConvertPdfToImagesJob;
 use App\Models\Ai\AiJob;
@@ -175,16 +176,24 @@ class Attachment extends Component
                         }
                     } else {
                         if ($tahun_gensen['tahun_gensen'] && $tahun_gensen['nominal_gensen']) {
+                            $id = simple_decrypt($this->objId);
+                            if (!$id) {
+                                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                            }
                             GensenFormDetailRepository::create([
-                                'gensen_form_id' => simple_decrypt($this->objId),
+                                'gensen_form_id' => $id,
                                 'tahun_gensen' => $tahun_gensen['tahun_gensen'],
                                 'nominal_gensen' => $tahun_gensen['nominal_gensen'],
                             ]);
                         }
                     }
                 }
+                $id = simple_decrypt($this->objId);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
                 $remittance_extraction = RemittanceExtractionRepository::findBy([
-                    ['subject_id', simple_decrypt($this->objId)],
+                    ['subject_id', $id],
                     ['subject_type', GensenForm::class]
                 ]);
 
@@ -206,10 +215,14 @@ class Attachment extends Component
         try {
             $this->confirmRemittanceValidation();
             DB::transaction(function () {
+                $id = simple_decrypt($this->objId);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
                 $job = AiJob::firstOrCreate(
                     [
                         'subject_type' => GensenForm::class,
-                        'subject_id'   => simple_decrypt($this->objId),
+                        'subject_id'   => $id,
                         'job_type'     => AiJob::JOB_TYPE_REMITTANCE_EXTRACTION,
                         'status'       => 'pending',
                     ],
@@ -236,7 +249,11 @@ class Attachment extends Component
     {
 
         if ($this->objId) {
-            $gensen = GensenFormRepository::find(simple_decrypt($this->objId));
+            $id = simple_decrypt($this->objId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+            $gensen = GensenFormRepository::find($id);
 
             $this->tahun_gensen_details = $gensen->gensenFormDetails->toArray();
         }
@@ -246,7 +263,14 @@ class Attachment extends Component
     {
         consoleLog($this, ['get data', $data]);
         if ($this->objId) {
-            $gensen = GensenFormRepository::find(simple_decrypt($this->objId));
+            $id = simple_decrypt($this->objId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+            $gensen = GensenFormRepository::find($id);
+            if (!$gensen) {
+                abort(404, 'Data Tidak Ditemukan');
+            }
             $this->nama_lengkap = $gensen->nama_lengkap;
             $this->tanggal_lahir = $gensen->tanggal_lahir;
             $this->nomor_whatsapp = $gensen->nomor_whatsapp;
@@ -309,7 +333,11 @@ class Attachment extends Component
     public function getOnload()
     {
         // consoleLog($this, 'onload');
-        $gensen = GensenFormRepository::find(simple_decrypt($this->objId));
+        $id = simple_decrypt($this->objId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        $gensen = GensenFormRepository::find($id);
 
         $this->getRemittanceExtraction($gensen);
     }
@@ -323,7 +351,11 @@ class Attachment extends Component
         // consoleLog($this, 'sama id');
 
         if (!$gensen) {
-            $gensen = GensenFormRepository::find(simple_decrypt($this->objId));
+            $id = simple_decrypt($this->objId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+            $gensen = GensenFormRepository::find($id);
         }
         // dd($gensen->with('aiJobs')->first());
         // dd($gensen->aiJobs()->exists());
@@ -412,7 +444,11 @@ class Attachment extends Component
     {
 
         if ($this->objId) {
-            $gensen = GensenFormRepository::find(simple_decrypt($this->objId));
+            $id = simple_decrypt($this->objId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+            $gensen = GensenFormRepository::find($id);
 
             $attachments = $gensen->attachmentGroups(
                 [
@@ -461,12 +497,17 @@ class Attachment extends Component
     #[On('on-delete-dialog-file-confirm')]
     public function onDialogDeleteFileConfirm()
     {
+
+        $id = AppCrypt::decrypt($this->targetDeleteId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
         if (!$this->isCanDelete && $this->targetDeleteId != null) {
-            $data = GensenFormAttachmentRepository::update(Crypt::decrypt($this->targetDeleteId), [
+            $data = GensenFormAttachmentRepository::update($id, [
                 'status' => GensenAttachmenStatus::STATUS_REJECTED
             ]);
         } elseif ($this->isCanDelete && $this->targetDeleteId != null) {
-            $data = GensenFormAttachmentRepository::delete(Crypt::decrypt($this->targetDeleteId));
+            $data = GensenFormAttachmentRepository::delete($id);
         }
 
         Alert::information($this, 'Data berhasil dihapus');
@@ -504,7 +545,11 @@ class Attachment extends Component
     #[On('on-dialog-convert-to-image-confirm')]
     public function onDialogConvertToImageConfirm()
     {
-        $gensen_form_attachment = GensenFormAttachmentRepository::find(Crypt::decrypt($this->targetConvertId));
+        $id = AppCrypt::decrypt($this->targetConvertId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        $gensen_form_attachment = GensenFormAttachmentRepository::find($id);
 
         ConvertPdfToImagesJob::dispatch(
             self::class,
@@ -675,13 +720,16 @@ class Attachment extends Component
 
     public function getUploadTargetPath($type)
     {
-        $formId = simple_decrypt($this->objId);
+        $id = simple_decrypt($this->objId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
         $type = GensenAttachmentType::fromLabel($type);
 
         $storedName = Str::uuid() . '.jpg';
 
         return [
-            'path' => "gensen/{$formId}/{$type->value}/{$storedName}",
+            'path' => "gensen/{$id}/{$type->value}/{$storedName}",
             'stored_name' => $storedName
         ];
     }
@@ -694,14 +742,28 @@ class Attachment extends Component
             DB::transaction(function () {
 
                 // consoleLog($this, 'store ac');
-                $gensenForm = GensenFormRepository::find(simple_decrypt($this->objId));
+                $id = simple_decrypt($this->objId);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
+                $gensenForm = GensenFormRepository::find($id);
+
+                $id = AppCrypt::decrypt($this->editedData['id']);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
+
+                $id = AppCrypt::decrypt($id);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
                 $this->handleGensenFormAttachemntStore(
                     $this->photo,
                     $this->editedData['type'] ? GensenAttachmentType::fromLabel($this->editedData['type']) : null,
                     $gensenForm->id,
                     null,
                     'update',
-                    Crypt::decrypt($this->editedData['id'])
+                    $id
                 );
             });
 
@@ -741,7 +803,11 @@ class Attachment extends Component
         try {
             DB::transaction(function () {
                 $this->saveData(true);
-                $gensenForm = GensenFormRepository::find(simple_decrypt($this->objId));
+                $id = simple_decrypt($this->objId);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
+                $gensenForm = GensenFormRepository::find($id);
                 $gensenForm->handleMergePersyaratanGensen();
 
                 $attachments = $gensenForm->attachmentGroups([
@@ -766,7 +832,11 @@ class Attachment extends Component
     {
         try {
             DB::transaction(function () {
-                $gensenForm = GensenFormRepository::find(simple_decrypt($this->objId));
+                $id = simple_decrypt($this->objId);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
+                $gensenForm = GensenFormRepository::find($id);
                 $gensenForm->handleMergePersyaratanGensen();
                 $gensenForm->handleMergeSeluruhBerkas();
             });
@@ -855,7 +925,11 @@ class Attachment extends Component
     {
         try {
             DB::transaction(function () use ($isSubmitted, $withAttachment) {
-                $gensenForm = GensenFormRepository::find(simple_decrypt($this->objId));
+                $id = simple_decrypt($this->objId);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
+                $gensenForm = GensenFormRepository::find($id);
                 if ($withAttachment) {
                     $this->storeAttachments($gensenForm);
                 }

@@ -126,13 +126,58 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'security' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/security.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'replace_placeholders' => true,
+            'locking' => true,      // Mengamankan penulisan paralel worker
+            'permission' => 0664,   // Mencegah error permission denied
+        ],
+
         'null' => [
             'driver' => 'monolog',
             'handler' => NullHandler::class,
         ],
 
-        'emergency' => [
-            'path' => storage_path('logs/laravel.log'),
+        'gemini_remittance_extraction' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/gemini_remittance_extraction.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+            'replace_placeholders' => true,
+            'locking' => true,      // Mengamankan penulisan paralel worker
+            'permission' => 0664,   // Mencegah error permission denied
+        ],
+
+        'data_submission' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/data_submission.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+            'replace_placeholders' => true,
+            'locking' => true,      // Mengamankan penulisan paralel worker
+            'permission' => 0664,   // Mencegah error permission denied
+        ],
+
+        'document_validation' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/document_validation.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+            'replace_placeholders' => true,
+            'locking' => true,      // Mengamankan penulisan paralel worker
+            'permission' => 0664,   // Mencegah error permission denied
+        ],
+
+        'status_export_import' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/status_export_import.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+            'replace_placeholders' => true,
+            'locking' => true,      // Mengamankan penulisan paralel worker
+            'permission' => 0664,   // Mencegah error permission denied
         ],
     ],
 

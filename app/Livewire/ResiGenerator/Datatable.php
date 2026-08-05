@@ -4,6 +4,7 @@ namespace App\Livewire\ResiGenerator;
 
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\PermissionHelper;
 use App\Jobs\IchijikinExtraction\GenerateIchijikinZipJob;
 use App\Jobs\ResiGenerator\GenerateResiZipJob;
@@ -76,7 +77,11 @@ class Datatable extends Component
 
     public function generateZip($id)
     {
-        GenerateResiZipJob::dispatch(ResiGeneratorRepository::find(Crypt::decrypt($id)))->onQueue('pdf');
+        $id = AppCrypt::decrypt($id);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        GenerateResiZipJob::dispatch(ResiGeneratorRepository::find($id))->onQueue('pdf');
 
         Alert::success(
             $this,

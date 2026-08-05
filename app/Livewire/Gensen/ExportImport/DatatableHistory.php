@@ -5,6 +5,7 @@ namespace App\Livewire\Gensen\ExportImport;
 use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\PermissionHelper;
 use App\Jobs\HistoryExportImport\GenerateZipJob;
 use App\Models\Gensen\GensenSeluruhBerkasZipJob;
@@ -100,7 +101,11 @@ class DatatableHistory extends Component
             return;
         }
 
-        GensenExportImportHistoryRepository::delete(Crypt::decrypt($this->targetDeleteId));
+        $id = AppCrypt::decrypt($this->targetDeleteId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        GensenExportImportHistoryRepository::delete($id);
         Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
     }
 

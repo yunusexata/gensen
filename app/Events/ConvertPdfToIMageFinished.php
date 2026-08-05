@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Helpers\AppLog;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -33,7 +34,15 @@ class ConvertPdfToIMageFinished implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        logger('Broadcast channel hit Convert to Image Finish');
+        AppLog::info(
+            'Convert to Image Finish',
+            'event_convert_pdf_to_image',
+            [
+                'gensen_form_id' => $this->gensen_form_id,
+                'attachment_type' => $this->attachment_type
+            ],
+            []
+        );
         return [
             // 'export-status'
             new Channel('convert-attachment')

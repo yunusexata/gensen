@@ -3,6 +3,7 @@
 namespace App\Livewire\IchijikinExtraction;
 
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\ExportHelper;
 use App\Helpers\PermissionHelper;
 use App\Repositories\Account\UserRepository;
@@ -227,7 +228,11 @@ class DatatableBatchDetail extends Component
 
     public function getQuery(): Builder
     {
-        return IchijikinExtractionFileRepository::datatable(Crypt::decrypt($this->objId));
+        $id = AppCrypt::decrypt($this->objId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        return IchijikinExtractionFileRepository::datatable($id);
     }
 
     public function getView(): string

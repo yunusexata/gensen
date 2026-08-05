@@ -4,6 +4,7 @@ namespace App\Livewire\ListPosting;
 
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\PermissionHelper;
 use App\Jobs\ListPosting\ZipGeneratedImagesJob;
 use App\Jobs\ResiGenerator\GenerateResiZipJob;
@@ -75,8 +76,11 @@ class Datatable extends Component
 
     public function generateZip($id)
     {
-
-        ZipGeneratedImagesJob::dispatch(Crypt::decrypt($id));
+        $id = AppCrypt::decrypt($id);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        ZipGeneratedImagesJob::dispatch($id);
         Alert::success(
             $this,
             'Berhasil',

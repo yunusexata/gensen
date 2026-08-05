@@ -5,6 +5,7 @@ namespace App\Livewire\GensenForm\GensenData;
 use App\Enums\Gensen\GensenAttachmenStatus;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\ExportHelper;
 use App\Helpers\PermissionHelper;
 use App\Models\Exata\Exata;
@@ -12,7 +13,6 @@ use App\Models\GensenForm\GensenForm;
 use App\Models\User;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\GensenForm\GensenFormRepository;
-// use App\Traits\Livewire\WithDatatable;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -128,7 +128,11 @@ class DatatableFix extends Component
             return;
         }
 
-        GensenFormRepository::delete(Crypt::decrypt($this->targetDeleteId));
+        $id = AppCrypt::decrypt($this->targetDeleteId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        GensenFormRepository::delete($id);
         Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
     }
 
@@ -162,7 +166,11 @@ class DatatableFix extends Component
             return;
         }
 
-        GensenFormRepository::copy(Crypt::decrypt($this->targetCopyId));
+        $id = AppCrypt::decrypt($this->targetCopyId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        GensenFormRepository::copy($id);
         Alert::success($this, 'Berhasil', 'Data berhasil diperbarui');
     }
 
@@ -500,8 +508,14 @@ class DatatableFix extends Component
 
     public function getQuery(): Builder
     {
+        if ($this->gensenFormLinkId) {
+            $id = AppCrypt::decrypt($this->objId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+        }
         return GensenFormRepository::datatable(
-            $this->gensenFormLinkId ? Crypt::decrypt($this->gensenFormLinkId) : null,
+            $this->gensenFormLinkId ? $id : null,
             $this->filter_status,
             $this->filter_pic,
             $this->filter_tanggal_input_dari ?
@@ -667,9 +681,13 @@ class DatatableFix extends Component
     }
     public function editRow($id)
     {
-        $row = GensenForm::findOrFail(simple_decrypt($id));
+        $id = simple_decrypt($id);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        $row = GensenForm::findOrFail($id);
 
-        $this->editingRowId = simple_decrypt($id);
+        $this->editingRowId = $id;
 
         $this->editingData = [
             'id' => Crypt::encrypt($row['id']),

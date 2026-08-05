@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ListPosting;
 
+use App\Helpers\AppCrypt;
 use App\Http\Controllers\Controller;
 use App\Repositories\ListPosting\ListPostingRepository;
 use Illuminate\Http\Request;
@@ -30,7 +31,12 @@ class ListPostingController extends Controller
 
     public function download($id)
     {
-        $item = ListPostingRepository::find(Crypt::decrypt($id));
+
+        $id = AppCrypt::decrypt($id);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        $item = ListPostingRepository::find($id);
 
         abort_if(
             blank($item->zip_path),

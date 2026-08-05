@@ -127,8 +127,6 @@ class GensenFormController extends Controller
         } else {
             $filename = $attachment->original_name;
         }
-        // logger(['preview filename supabase', $filename, $attachment]);
-
         return response()->stream(
             function () use ($response) {
                 echo $response->body();

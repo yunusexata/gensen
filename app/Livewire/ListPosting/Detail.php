@@ -4,6 +4,7 @@ namespace App\Livewire\ListPosting;
 
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Imports\ExcelImportListPosting;
 use App\Repositories\ListPosting\ListPostingRepository;
 use App\Repositories\ListPosting\TemplatePostingRepository;
@@ -48,7 +49,11 @@ class Detail extends Component
     {
         $this->templates = TemplatePostingRepository::all();
         if ($this->objId) {
-            $list_posting = ResiGeneratorRepository::find(Crypt::decrypt($this->objId));
+            $id = AppCrypt::decrypt($this->objId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+            $list_posting = ResiGeneratorRepository::find($id);
             $this->name = $list_posting->name;
         }
     }

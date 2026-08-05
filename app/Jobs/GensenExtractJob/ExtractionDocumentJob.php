@@ -26,7 +26,7 @@ class ExtractionDocumentJob implements ShouldQueue
     public function handle(
         GeminiService $service
     ): void {
-        logger('prosessing');
+
         $this->aiJob->update([
             'status' => JobStatus::PROCESSING,
             'started_at' => now(),

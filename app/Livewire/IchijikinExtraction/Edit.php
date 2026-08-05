@@ -3,6 +3,7 @@
 namespace App\Livewire\IchijikinExtraction;
 
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\ExportHelper;
 use App\Jobs\IchijikinExtraction\DrawLabelIchijikinJob;
 use App\Models\Ai\AiJob;
@@ -54,7 +55,11 @@ class Edit extends Component
     public function mount()
     {
         if ($this->objId) {
-            $this->ichijikin_file = IchijikinExtractionFileRepository::find(Crypt::decrypt($this->objId));
+            $id = AppCrypt::decrypt($this->objId);
+            if (!$id) {
+                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+            }
+            $this->ichijikin_file = IchijikinExtractionFileRepository::find($id);
 
             $ichijikin_result = $this->ichijikin_file->result;
             if ($ichijikin_result) {
@@ -106,13 +111,23 @@ class Edit extends Component
                     ]
                 );
 
-                IchijikinExtractionFileRepository::update(Crypt::decrypt($this->objId), [
+                $id = AppCrypt::decrypt($this->objId);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
+
+                IchijikinExtractionFileRepository::update($id, [
                     'file_size' => $this->photo->getSize()
                 ]);
 
+
+                $id = AppCrypt::decrypt($this->objId);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
                 $job = AiJob::create([
                     'subject_type' => IchijikinExtractionFile::class,
-                    'subject_id'   => Crypt::decrypt($this->objId),
+                    'subject_id'   => $id,
                     'job_type'     => AiJob::JOB_TYPE_ICHIJIKIN_EXTRACTION,
                     'status'       => 'pending',
                     'provider'     => 'gemini-ai',
@@ -148,8 +163,13 @@ class Edit extends Component
                     'alamat' => $this->alamat,
                     'type' => $this->type,
                 ];
+
+                $id = AppCrypt::decrypt($this->objId);
+                if (!$id) {
+                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                }
                 IchijikinExtractionResultRepository::updateBy([
-                    ['ichijikin_extraction_file_id', Crypt::decrypt($this->objId)]
+                    ['ichijikin_extraction_file_id', $id]
                 ], $validatedData);
             });
 

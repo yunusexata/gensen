@@ -7,16 +7,13 @@ use App\Enums\Gensen\JobStatus;
 use App\Events\ExportImportStatusUpdated;
 use App\Exports\CollectionExport;
 use App\Helpers\ExportHelper;
-use App\Imports\ExcelImportBulkStatusGensen;
 use App\Imports\ExcelImportTarikDataDalamPengajuan;
 use App\Models\Gensen\GensenExportImportHistory;
 use App\Services\ExportService;
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -35,8 +32,6 @@ class ExportGensenJob implements ShouldQueue
 
     public function handle()
     {
-
-        logger('START EXPORT');
         $history = GensenExportImportHistory::findOrFail($this->historyId);
 
         try {
@@ -44,11 +39,6 @@ class ExportGensenJob implements ShouldQueue
                 'started_at' => now(),
                 'status' => JobStatus::PROCESSING
             ]);
-            Log::info('Broadcasting event', [
-                'id' => $history->id,
-                'job_key' => $history->job_key->value,
-            ]);
-
 
             if ($history->job_key == ExportImportJobKey::EXPORT_LIST_DATA_DALAM_PENGAJUAN) {
 
@@ -87,12 +77,6 @@ class ExportGensenJob implements ShouldQueue
                 'amount' => $data?->count(),
                 'finish_at' => now(),
             ]);
-
-            Log::info('Broadcasting event', [
-                'id' => $history->id,
-                'job_key' => $history->job_key->value,
-            ]);
-
             broadcast(
                 new ExportImportStatusUpdated(
                     $history
@@ -107,10 +91,6 @@ class ExportGensenJob implements ShouldQueue
             ]);
 
             broadcast(new ExportImportStatusUpdated($history));
-            Log::info('Broadcasting event', [
-                'id' => $history->id,
-                'job_key' => $history->job_key->value,
-            ]);
         }
     }
 

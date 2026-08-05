@@ -56,8 +56,6 @@ class MergeSeluruhBerkas implements ShouldQueue
             'started_at' => now(),
         ]);
 
-        logger('START MERGE PDF');
-
         try {
 
             /*
@@ -67,10 +65,6 @@ class MergeSeluruhBerkas implements ShouldQueue
             */
 
             $files = $this->loadAttachments();
-            logger([
-                "MERGE SELURUH BERKAS FILES",
-                $files->toArray()
-            ]);
 
             if ($files->isEmpty()) {
                 throw new Exception('No PDF files to merge.');
@@ -124,15 +118,12 @@ class MergeSeluruhBerkas implements ShouldQueue
             ]);
 
             event(new MergeAttachmentStatus($this->gensenFormId));
-            logger('MERGE PDF SUCCESS');
         } catch (\Throwable $e) {
 
             $process->update([
                 'status' => JobStatus::FAILED,
                 'error_message' => $e->getMessage(),
             ]);
-
-            logger($e->getMessage());
 
             throw $e; // allow retry
         }
@@ -222,7 +213,6 @@ class MergeSeluruhBerkas implements ShouldQueue
         foreach ($files as $file) {
 
             $disk = $file->disk ?? 'private';
-            logger($file);
 
             try {
 
@@ -302,12 +292,12 @@ class MergeSeluruhBerkas implements ShouldQueue
                     | Debug ukuran file
                     |--------------------------------------------------------------------------
                     */
-                    logger([
-                        'supabase_file' => $file->path,
-                        'supabase_size' => Storage::disk('supabase')->size($file->path),
-                        'local_size'    => filesize($tmpPath),
-                        'local_path'    => $tmpPath,
-                    ]);
+                    // logger([
+                    //     'supabase_file' => $file->path,
+                    //     'supabase_size' => Storage::disk('supabase')->size($file->path),
+                    //     'local_size'    => filesize($tmpPath),
+                    //     'local_path'    => $tmpPath,
+                    // ]);
 
                     /*
                     |--------------------------------------------------------------------------
@@ -317,11 +307,6 @@ class MergeSeluruhBerkas implements ShouldQueue
                     $finfo = new \finfo(FILEINFO_MIME_TYPE);
 
                     $realMimeType = $finfo->file($tmpPath);
-
-                    logger([
-                        'mime_type' => $realMimeType,
-                        'file' => $tmpPath,
-                    ]);
 
                     /*
                     |--------------------------------------------------------------------------
@@ -344,66 +329,8 @@ class MergeSeluruhBerkas implements ShouldQueue
                         $fullPath = $pdfPath;
 
                         $tempFiles[] = $pdfPath;
-
-                        logger([
-                            'converted_image_to_pdf' => $pdfPath,
-                        ]);
                     }
 
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Jika PDF -> repair pakai qpdf
-                    |--------------------------------------------------------------------------
-                    */
-                    // elseif ($realMimeType === 'application/pdf') {
-
-                    //     $repairDir = storage_path('app/tmp/repair');
-
-                    //     if (!is_dir($repairDir)) {
-                    //         mkdir($repairDir, 0755, true);
-                    //     }
-
-                    //     $repairedPath = $repairDir . '/' . Str::uuid() . '.pdf';
-
-                    //     exec(
-                    //         sprintf(
-                    //             'qpdf %s %s 2>&1',
-                    //             escapeshellarg($tmpPath),
-                    //             escapeshellarg($repairedPath)
-                    //         ),
-                    //         $output,
-                    //         $result
-                    //     );
-
-                    //     logger([
-                    //         'qpdf_result' => $result,
-                    //         'qpdf_output' => $output,
-                    //         'repaired_exists' => file_exists($repairedPath),
-                    //     ]);
-
-                    //     /*
-                    //     |--------------------------------------------------------------------------
-                    //     | qpdf berhasil membuat file
-                    //     |--------------------------------------------------------------------------
-                    //     */
-                    //     if (file_exists($repairedPath) && filesize($repairedPath) > 0) {
-
-                    //         $fullPath = $repairedPath;
-
-                    //         $tempFiles[] = $repairedPath;
-
-                    //         logger([
-                    //             'using_repaired_pdf' => $repairedPath,
-                    //         ]);
-                    //     } else {
-
-                    //         $fullPath = $tmpPath;
-
-                    //         logger([
-                    //             'using_original_pdf' => $tmpPath,
-                    //         ]);
-                    //     }
-                    // }
                     /*
                     |--------------------------------------------------------------------------
                     | Jika PDF -> repair & decrypt pakai qpdf
@@ -429,33 +356,33 @@ class MergeSeluruhBerkas implements ShouldQueue
                             $result
                         );
 
-                        logger([
-                            'qpdf_result' => $result,
-                            'qpdf_output' => $output,
-                            'repaired_exists' => file_exists($repairedPath),
-                        ]);
+                        // logger([
+                        //     'qpdf_result' => $result,
+                        //     'qpdf_output' => $output,
+                        //     'repaired_exists' => file_exists($repairedPath),
+                        // ]);
 
                         /*
-    |--------------------------------------------------------------------------
-    | qpdf berhasil membuat file
-    |--------------------------------------------------------------------------
-    */
+                        |--------------------------------------------------------------------------
+                        | qpdf berhasil membuat file
+                        |--------------------------------------------------------------------------
+                        */
                         if (file_exists($repairedPath) && filesize($repairedPath) > 0) {
 
                             $fullPath = $repairedPath;
 
                             $tempFiles[] = $repairedPath;
 
-                            logger([
-                                'using_repaired_pdf' => $repairedPath,
-                            ]);
+                            // logger([
+                            //     'using_repaired_pdf' => $repairedPath,
+                            // ]);
                         } else {
 
                             $fullPath = $tmpPath;
 
-                            logger([
-                                'using_original_pdf' => $tmpPath,
-                            ]);
+                            // logger([
+                            //     'using_original_pdf' => $tmpPath,
+                            // ]);
                         }
                     }
 
@@ -673,358 +600,6 @@ class MergeSeluruhBerkas implements ShouldQueue
 
         return $normalized;
     }
-    // private function ensurePortraitPdf(string $input): string
-
-    // {
-
-    //     try {
-
-
-
-    //         /*
-
-    //     |--------------------------------------------------------------------------
-
-    //     | Validasi file
-
-    //     |--------------------------------------------------------------------------
-
-    //     */
-
-    //         if (!file_exists($input)) {
-
-    //             logger("File tidak ditemukan", [
-
-    //                 'file' => $input,
-
-    //             ]);
-
-
-
-    //             return $input;
-    //         }
-
-
-
-    //         $mime = (new \finfo(FILEINFO_MIME_TYPE))->file($input);
-
-
-
-    //         if ($mime !== 'application/pdf') {
-
-
-
-    //             logger("File bukan PDF", [
-
-    //                 'file' => $input,
-
-    //                 'mime' => $mime,
-
-    //             ]);
-
-
-
-    //             return $input;
-    //         }
-
-
-
-    //         /*
-
-    //     |--------------------------------------------------------------------------
-
-    //     | Folder temp
-
-    //     |--------------------------------------------------------------------------
-
-    //     */
-
-    //         $repairDir = storage_path('app/tmp/repair');
-
-
-
-    //         if (!is_dir($repairDir)) {
-
-    //             mkdir($repairDir, 0775, true);
-    //         }
-
-
-
-    //         /*
-
-    //     |--------------------------------------------------------------------------
-
-    //     | Repair PDF dengan qpdf
-
-    //     |--------------------------------------------------------------------------
-
-    //     */
-
-    //         $repaired = $repairDir . '/' . Str::uuid() . '.pdf';
-
-
-
-    //         exec(
-
-    //             sprintf(
-
-    //                 'qpdf --object-streams=disable %s %s 2>&1',
-
-    //                 escapeshellarg($input),
-
-    //                 escapeshellarg($repaired)
-
-    //             ),
-
-    //             $repairOutput,
-
-    //             $repairResult
-
-    //         );
-
-
-
-    //         logger([
-
-    //             'qpdf_result' => $repairResult,
-
-    //             'repaired_exists' => file_exists($repaired),
-
-    //         ]);
-
-
-
-    //         if (
-
-    //             file_exists($repaired)
-
-    //             && filesize($repaired) > 0
-
-    //         ) {
-
-    //             $input = $repaired;
-    //         }
-
-
-
-    //         /*
-
-    //     |--------------------------------------------------------------------------
-
-    //     | Ambil orientasi dengan pdfinfo
-
-    //     |--------------------------------------------------------------------------
-
-    //     */
-
-    //         $pdfInfoOutput = [];
-
-
-
-    //         exec(
-
-    //             sprintf(
-
-    //                 'pdfinfo %s 2>&1',
-
-    //                 escapeshellarg($input)
-
-    //             ),
-
-    //             $pdfInfoOutput,
-
-    //             $pdfInfoResult
-
-    //         );
-
-
-
-    //         if ($pdfInfoResult !== 0) {
-
-
-
-    //             logger('pdfinfo gagal', [
-
-    //                 'file' => $input,
-
-    //                 'output' => $pdfInfoOutput,
-
-    //             ]);
-
-
-
-    //             return $input;
-    //         }
-
-
-
-    //         $pageSizeLine = collect($pdfInfoOutput)
-
-    //             ->first(fn($line) => str_contains($line, 'Page size'));
-
-
-
-    //         if (!$pageSizeLine) {
-
-
-
-    //             logger('Page size tidak ditemukan', [
-
-    //                 'file' => $input,
-
-    //             ]);
-
-
-
-    //             return $input;
-    //         }
-
-
-
-    //         /*
-
-    //     |--------------------------------------------------------------------------
-
-    //     | Parse width & height
-
-    //     |--------------------------------------------------------------------------
-
-    //     */
-
-    //         preg_match(
-
-    //             '/Page size:\s+([\d.]+)\s+x\s+([\d.]+)/i',
-
-    //             $pageSizeLine,
-
-    //             $matches
-
-    //         );
-
-
-
-    //         if (count($matches) < 3) {
-
-    //             return $input;
-    //         }
-
-
-
-    //         $width = (float) $matches[1];
-
-    //         $height = (float) $matches[2];
-
-
-
-    //         $isLandscape = $width > $height;
-
-
-
-    //         logger([
-
-    //             'width' => $width,
-
-    //             'height' => $height,
-
-    //             'is_landscape' => $isLandscape,
-
-    //         ]);
-
-
-
-    //         if (!$isLandscape) {
-
-    //             return $input;
-    //         }
-
-
-
-    //         /*
-
-    //     |--------------------------------------------------------------------------
-
-    //     | Rotate PDF
-
-    //     |--------------------------------------------------------------------------
-
-    //     */
-
-    //         $mergeDir = storage_path('app/tmp/merge');
-
-
-
-    //         if (!is_dir($mergeDir)) {
-
-    //             mkdir($mergeDir, 0775, true);
-    //         }
-
-
-
-    //         $rotated = $mergeDir . '/' . Str::uuid() . '.pdf';
-
-
-
-    //         exec(
-
-    //             sprintf(
-
-    //                 'qpdf %s --rotate=+90:1-z %s 2>&1',
-
-    //                 escapeshellarg($input),
-
-    //                 escapeshellarg($rotated)
-
-    //             ),
-
-    //             $rotateOutput,
-
-    //             $rotateResult
-
-    //         );
-
-
-
-    //         if (
-
-    //             $rotateResult === 0
-
-    //             && file_exists($rotated)
-
-    //             && filesize($rotated) > 0
-
-    //         ) {
-
-    //             return $rotated;
-    //         }
-
-
-
-    //         logger('Rotate gagal', [
-
-    //             'result' => $rotateResult,
-
-    //             'output' => $rotateOutput,
-
-    //         ]);
-    //     } catch (\Throwable $e) {
-
-
-
-    //         logger('Error kritis PDF', [
-
-    //             'file' => $input,
-
-    //             'message' => $e->getMessage(),
-
-    //             'trace' => $e->getTraceAsString(),
-
-    //         ]);
-    //     }
-
-
-
-    //     return $input;
-    // }
     private function ensurePortraitPdf(string $input): string
     {
         try {
@@ -1118,16 +693,12 @@ class MergeSeluruhBerkas implements ShouldQueue
                 return $input;
             }
 
-            // /*
-            // |--------------------------------------------------------------------------
-            // | 4. Parse Width & Height
-            // |--------------------------------------------------------------------------
-            // */
-            // preg_match('/Page size:\s+([\d.]+)\s+x\s+([\d.]+)/i', $pageSizeLine, $matches);
+            /*
+            |--------------------------------------------------------------------------
+            | 4. Parse Width & Height
+            |--------------------------------------------------------------------------
+            */
 
-            // if (count($matches) < 3) {
-            //     return $input;
-            // }
             // 1. Cari baris Page rot (jika ada) dari array $pdfInfoOutput
             $pageRotLine = collect($pdfInfoOutput)
                 ->first(fn($line) => str_contains($line, 'Page rot:'));
@@ -1164,13 +735,13 @@ class MergeSeluruhBerkas implements ShouldQueue
             }
 
             // Opsional: Log untuk mempermudah debugging jika ada file aneh lagi
-            logger([
-                'width' => $width,
-                'height' => $height,
-                'rotation' => $rotation,
-                'is_physically_landscape' => $isPhysicallyLandscape,
-                'is_visually_landscape' => $isVisuallyLandscape,
-            ]);
+            // logger([
+            //     'width' => $width,
+            //     'height' => $height,
+            //     'rotation' => $rotation,
+            //     'is_physically_landscape' => $isPhysicallyLandscape,
+            //     'is_visually_landscape' => $isVisuallyLandscape,
+            // ]);
 
             // 6. Evaluasi Akhir
             if (!$isVisuallyLandscape) {
@@ -1231,432 +802,6 @@ class MergeSeluruhBerkas implements ShouldQueue
 
         return $input;
     }
-
-    // private function ensurePortraitPdf(string $input): string
-    // {
-    //     try {
-    //         /*
-    //         |--------------------------------------------------------------------------
-    //         | 1. Validasi File
-    //         |--------------------------------------------------------------------------
-    //         */
-    //         if (!file_exists($input)) {
-    //             logger()->warning("File tidak ditemukan", ['file' => $input]);
-    //             return $input;
-    //         }
-
-    //         $mime = (new \finfo(FILEINFO_MIME_TYPE))->file($input);
-
-    //         if ($mime !== 'application/pdf') {
-    //             logger()->warning("File bukan PDF", [
-    //                 'file' => $input,
-    //                 'mime' => $mime,
-    //             ]);
-    //             return $input;
-    //         }
-
-    //         /*
-    //         |--------------------------------------------------------------------------
-    //         | 2. Repair & Decrypt PDF dengan qpdf
-    //         |--------------------------------------------------------------------------
-    //         */
-    //         $repairDir = storage_path('app/tmp/repair');
-
-    //         if (!is_dir($repairDir)) {
-    //             mkdir($repairDir, 0775, true);
-    //         }
-
-    //         $repaired = $repairDir . '/' . Str::uuid() . '.pdf';
-
-    //         // ✨ PERBAIKAN: Tambahkan --decrypt di sini untuk menghapus enkripsi
-    //         exec(
-    //             sprintf(
-    //                 'qpdf --decrypt --object-streams=disable %s %s 2>&1',
-    //                 escapeshellarg($input),
-    //                 escapeshellarg($repaired)
-    //             ),
-    //             $repairOutput,
-    //             $repairResult
-    //         );
-
-    //         if (file_exists($repaired) && filesize($repaired) > 0) {
-    //             // Gunakan file yang sudah bersih dari enkripsi untuk tahap selanjutnya
-    //             $input = $repaired;
-    //         } else {
-    //             logger()->error('qpdf repair/decrypt gagal', [
-    //                 'result' => $repairResult,
-    //                 'output' => $repairOutput,
-    //             ]);
-    //         }
-
-    //         /*
-    //         |--------------------------------------------------------------------------
-    //         | 3. Ambil Orientasi dengan pdfinfo
-    //         |--------------------------------------------------------------------------
-    //         */
-    //         $pdfInfoOutput = [];
-
-    //         exec(
-    //             sprintf(
-    //                 'pdfinfo %s 2>&1',
-    //                 escapeshellarg($input)
-    //             ),
-    //             $pdfInfoOutput,
-    //             $pdfInfoResult
-    //         );
-
-    //         if ($pdfInfoResult !== 0) {
-    //             logger()->error('pdfinfo gagal', [
-    //                 'file' => $input,
-    //                 'output' => $pdfInfoOutput,
-    //             ]);
-    //             return $input;
-    //         }
-
-    //         $pageSizeLine = collect($pdfInfoOutput)
-    //             ->first(fn($line) => str_contains($line, 'Page size'));
-
-    //         if (!$pageSizeLine) {
-    //             logger()->warning('Page size tidak ditemukan', ['file' => $input]);
-    //             return $input;
-    //         }
-
-    //         /*
-    //         |--------------------------------------------------------------------------
-    //         | 4. Parse Width & Height
-    //         |--------------------------------------------------------------------------
-    //         */
-    //         preg_match('/Page size:\s+([\d.]+)\s+x\s+([\d.]+)/i', $pageSizeLine, $matches);
-
-    //         if (count($matches) < 3) {
-    //             return $input;
-    //         }
-
-    //         $width = (float) $matches[1];
-    //         $height = (float) $matches[2];
-
-    //         $isLandscape = $width > $height;
-
-    //         if (!$isLandscape) {
-    //             // Sudah portrait, langsung kembalikan file hasil repair/decrypt
-    //             return $input;
-    //         }
-
-    //         /*
-    //         |--------------------------------------------------------------------------
-    //         | 5. Rotate PDF (Hanya jika Landscape)
-    //         |--------------------------------------------------------------------------
-    //         */
-    //         $mergeDir = storage_path('app/tmp/merge');
-
-    //         if (!is_dir($mergeDir)) {
-    //             mkdir($mergeDir, 0775, true);
-    //         }
-
-    //         $rotated = $mergeDir . '/' . Str::uuid() . '.pdf';
-
-    //         // ✨ PERBAIKAN: Opsi --rotate berada SEBELUM file input
-    //         exec(
-    //             sprintf(
-    //                 'qpdf --rotate=+90:1-z %s %s 2>&1',
-    //                 escapeshellarg($input),
-    //                 escapeshellarg($rotated)
-    //             ),
-    //             $rotateOutput,
-    //             $rotateResult
-    //         );
-
-    //         if ($rotateResult === 0 && file_exists($rotated) && filesize($rotated) > 0) {
-    //             return $rotated;
-    //         }
-
-    //         logger()->error('Rotate gagal', [
-    //             'command' => sprintf('qpdf --rotate=+90:1-z %s %s', $input, $rotated),
-    //             'result'  => $rotateResult,
-    //             'output'  => implode("\n", $rotateOutput),
-    //         ]);
-    //     } catch (\Throwable $e) {
-    //         logger()->error('Error kritis PDF', [
-    //             'file' => $input,
-    //             'message' => $e->getMessage(),
-    //             'trace' => $e->getTraceAsString(),
-    //         ]);
-    //     }
-
-    //     return $input;
-    // }
-    // private function ensurePortraitPdf(string $input): string
-    // {
-    //     try {
-
-    //         /*
-    //     |--------------------------------------------------------------------------
-    //     | Validasi file
-    //     |--------------------------------------------------------------------------
-    //     */
-    //         if (!file_exists($input)) {
-    //             logger("File tidak ditemukan", [
-    //                 'file' => $input,
-    //             ]);
-
-    //             return $input;
-    //         }
-
-    //         $mime = (new \finfo(FILEINFO_MIME_TYPE))->file($input);
-
-    //         if ($mime !== 'application/pdf') {
-
-    //             logger("File bukan PDF", [
-    //                 'file' => $input,
-    //                 'mime' => $mime,
-    //             ]);
-
-    //             return $input;
-    //         }
-
-    //         /*
-    //     |--------------------------------------------------------------------------
-    //     | Folder temp
-    //     |--------------------------------------------------------------------------
-    //     */
-    //         $repairDir = storage_path('app/tmp/repair');
-
-    //         if (!is_dir($repairDir)) {
-    //             mkdir($repairDir, 0775, true);
-    //         }
-
-    //         /*
-    //     |--------------------------------------------------------------------------
-    //     | Repair PDF dengan qpdf
-    //     |--------------------------------------------------------------------------
-    //     */
-    //         $repaired = $repairDir . '/' . Str::uuid() . '.pdf';
-
-    //         exec(
-    //             sprintf(
-    //                 'qpdf --object-streams=disable %s %s 2>&1',
-    //                 escapeshellarg($input),
-    //                 escapeshellarg($repaired)
-    //             ),
-    //             $repairOutput,
-    //             $repairResult
-    //         );
-
-    //         logger([
-    //             'qpdf_result' => $repairResult,
-    //             'repaired_exists' => file_exists($repaired),
-    //         ]);
-
-    //         if (
-    //             file_exists($repaired)
-    //             && filesize($repaired) > 0
-    //         ) {
-    //             $input = $repaired;
-    //         }
-
-    //         /*
-    //     |--------------------------------------------------------------------------
-    //     | Ambil orientasi dengan pdfinfo
-    //     |--------------------------------------------------------------------------
-    //     */
-    //         $pdfInfoOutput = [];
-
-    //         exec(
-    //             sprintf(
-    //                 'pdfinfo %s 2>&1',
-    //                 escapeshellarg($input)
-    //             ),
-    //             $pdfInfoOutput,
-    //             $pdfInfoResult
-    //         );
-
-    //         if ($pdfInfoResult !== 0) {
-
-    //             logger('pdfinfo gagal', [
-    //                 'file' => $input,
-    //                 'output' => $pdfInfoOutput,
-    //             ]);
-
-    //             return $input;
-    //         }
-    //         logger($pdfInfoOutput);
-
-    //         $pageSizeLine = collect($pdfInfoOutput)
-    //             ->first(fn($line) => str_contains($line, 'Page size'));
-
-    //         if (!$pageSizeLine) {
-
-    //             logger('Page size tidak ditemukan', [
-    //                 'file' => $input,
-    //             ]);
-
-    //             return $input;
-    //         }
-
-    //         /*
-    //     |--------------------------------------------------------------------------
-    //     | Parse width & height
-    //     |--------------------------------------------------------------------------
-    //     */
-    //         preg_match(
-    //             '/Page size:\s+([\d.]+)\s+x\s+([\d.]+)/i',
-    //             $pageSizeLine,
-    //             $matches
-    //         );
-
-    //         if (count($matches) < 3) {
-    //             return $input;
-    //         }
-
-    //         $width = (float) $matches[1];
-    //         $height = (float) $matches[2];
-
-    //         $isLandscape = $width > $height;
-
-    //         logger([
-    //             'width' => $width,
-    //             'height' => $height,
-    //             'is_landscape' => $isLandscape,
-    //         ]);
-
-    //         if (!$isLandscape) {
-    //             return $input;
-    //         }
-
-    //         /*
-    //     |--------------------------------------------------------------------------
-    //     | Rotate PDF
-    //     |--------------------------------------------------------------------------
-    //     */
-    //         $mergeDir = storage_path('app/tmp/merge');
-
-    //         if (!is_dir($mergeDir)) {
-    //             mkdir($mergeDir, 0775, true);
-    //         }
-
-    //         $rotated = $mergeDir . '/' . Str::uuid() . '.pdf';
-
-    //         exec(
-    //             sprintf(
-    //                 'qpdf %s --rotate=+90:1-z %s 2>&1',
-    //                 escapeshellarg($input),
-    //                 escapeshellarg($rotated)
-    //             ),
-    //             $rotateOutput,
-    //             $rotateResult
-    //         );
-
-    //         if (
-    //             $rotateResult === 0
-    //             && file_exists($rotated)
-    //             && filesize($rotated) > 0
-    //         ) {
-    //             return $rotated;
-    //         }
-
-    //         logger('Rotate gagal', [
-    //             'result' => $rotateResult,
-    //             'output' => $rotateOutput,
-    //         ]);
-    //         /*
-    //         |--------------------------------------------------------------------------
-    //         | Rotate PDF
-    //         |--------------------------------------------------------------------------
-    //         */
-    //         // $mergeDir = storage_path('app/tmp/merge');
-
-    //         // if (!is_dir($mergeDir)) {
-    //         //     mkdir($mergeDir, 0775, true);
-    //         // }
-
-    //         // $rotated = $mergeDir . '/' . Str::uuid() . '.pdf';
-
-    //         // // 🚀 PERBAIKAN DI SINI: Opsi --rotate harus berada SEBELUM file input
-    //         // exec(
-    //         //     sprintf(
-    //         //         'qpdf --rotate=+90:1-z %s %s 2>&1',
-    //         //         escapeshellarg($input),
-    //         //         escapeshellarg($rotated)
-    //         //     ),
-    //         //     $rotateOutput,
-    //         //     $rotateResult
-    //         // );
-
-    //         // if (
-    //         //     $rotateResult === 0
-    //         //     && file_exists($rotated)
-    //         //     && filesize($rotated) > 0
-    //         // ) {
-    //         //     return $rotated;
-    //         // }
-
-    //         // // Tambahkan logger yang lebih spesifik untuk membantu debugging jika masih gagal
-    //         // logger()->error('Rotate gagal', [
-    //         //     'command' => sprintf('qpdf --rotate=+90:1-z %s %s', $input, $rotated),
-    //         //     'result'  => $rotateResult,
-    //         //     'output'  => implode("\n", $rotateOutput),
-    //         // ]);
-    //     } catch (\Throwable $e) {
-
-    //         logger('Error kritis PDF', [
-    //             'file' => $input,
-    //             'message' => $e->getMessage(),
-    //             'trace' => $e->getTraceAsString(),
-    //         ]);
-    //     }
-
-    //     return $input;
-    // }
-    // private function ensurePortraitPdf(string $input): string
-    // {
-    //     try {
-    //         $fpdi = new Fpdi();
-    //         $fpdi->setSourceFile($input);
-    //         $templateId = $fpdi->importPage(1);
-    //         $size = $fpdi->getTemplateSize($templateId);
-
-    //         // Jika Landscape, kita rotasi
-    //         $isLandscape = ($size['orientation'] === 'L') || ($size['width'] > $size['height']);
-
-    //         logger([
-    //             'ensure portrait',
-    //             $size
-    //         ]);
-    //         if (!$isLandscape) {
-    //             return $input;
-    //         }
-
-    //         $rotated = storage_path('app/tmp/merge/' . Str::uuid() . '.pdf');
-
-    //         if (!file_exists(dirname($rotated))) {
-    //             mkdir(dirname($rotated), 0777, true);
-    //         }
-
-    //         /**
-    //          * QPDF --rotate=90
-    //          * Ini akan memutar seluruh halaman termasuk kontennya.
-    //          * Karena ini bukan 'rendering', maka tidak mungkin terjadi crop.
-    //          * Semua objek, teks, dan gambar akan ikut berputar 90 derajat.
-    //          */
-    //         $command = sprintf(
-    //             'qpdf --rotate=90 %s %s 2>&1',
-    //             escapeshellarg($input),
-    //             escapeshellarg($rotated)
-    //         );
-
-    //         exec($command, $output, $result);
-
-    //         if ($result === 0 && file_exists($rotated)) {
-    //             return $rotated;
-    //         }
-
-    //         logger("qpdf gagal merotasi PDF", ['result' => $result, 'output' => $output]);
-    //     } catch (\Exception $e) {
-    //         logger("Error FPDI: " . $e->getMessage());
-    //     }
-
-    //     return $input;
-    // }
     /*
     |--------------------------------------------------------------------------
     | IMPORT SINGLE PDF
@@ -1683,48 +828,6 @@ class MergeSeluruhBerkas implements ShouldQueue
             $pdf->useTemplate($tpl);
         }
     }
-
-    private function importPdfOld(Fpdi $pdf, string $path): void
-    {
-        $pageCount = $pdf->setSourceFile($path);
-
-        for ($page = 1; $page <= $pageCount; $page++) {
-
-            $tpl = $pdf->importPage($page);
-            // $template = $pdf->importPage($page);
-
-            $size = $pdf->getTemplateSize($tpl);
-            $pdf->AddPage('P', 'A4');
-
-            $a4W = 210;
-            $a4H = 297;
-
-            $ratio = min(
-                $a4W / $size['width'],
-                $a4H / $size['height']
-            );
-
-            $w = $size['width'] * $ratio;
-            $h = $size['height'] * $ratio;
-
-            $x = ($a4W - $w) / 2;
-            $y = ($a4H - $h) / 2;
-
-            $pdf->useTemplate($tpl, $x, $y, $w, $h);
-            /*
-            ✅ IMPORTANT
-            Fix different page sizes problem
-            */
-
-            // $pdf->AddPage(
-            //     $size['orientation'],
-            //     [$size['width'], $size['height']]
-            // );
-
-            // $pdf->useTemplate($tpl);
-        }
-    }
-
     /*
     |--------------------------------------------------------------------------
     | ENSURE DIRECTORY EXISTS
@@ -1739,38 +842,7 @@ class MergeSeluruhBerkas implements ShouldQueue
             mkdir($dir, 0755, true);
         }
     }
-    private function normalizePdfToA4(string $source, string $output)
-    {
-        $pdf = new Fpdi();
 
-        $pageCount = $pdf->setSourceFile($source);
-
-        for ($i = 1; $i <= $pageCount; $i++) {
-
-            $tpl = $pdf->importPage($i);
-            $size = $pdf->getTemplateSize($tpl);
-
-            $pdf->AddPage('P', 'A4');
-
-            $a4W = 210;
-            $a4H = 297;
-
-            $ratio = min(
-                $a4W / $size['width'],
-                $a4H / $size['height']
-            );
-
-            $w = $size['width'] * $ratio;
-            $h = $size['height'] * $ratio;
-
-            $x = ($a4W - $w) / 2;
-            $y = ($a4H - $h) / 2;
-
-            $pdf->useTemplate($tpl, $x, $y, $w, $h);
-        }
-
-        $pdf->Output($output, 'F');
-    }
     private function imageToA4Pdf(string $image, string $output)
     {
         $pdf = new \FPDF('P', 'mm', 'A4');
@@ -1786,31 +858,5 @@ class MergeSeluruhBerkas implements ShouldQueue
         );
 
         $pdf->Output($output, 'F');
-    }
-
-    private function mergePdfFilesOld($files, string $outputPath): void
-    {
-        $pdf = new Fpdi();
-
-        $pdf->SetMargins(0, 0, 0);
-        $pdf->SetAutoPageBreak(false);
-        $pdf->setPrintHeader(false);
-        $pdf->setPrintFooter(false);
-        // logger('files all');
-        // logger($files);
-        foreach ($files as $file) {
-
-            $fullPath = Storage::disk($file->disk)
-                ->path($file->path);
-
-            if (!file_exists($fullPath)) {
-                logger("Missing file: {$fullPath}");
-                continue;
-            }
-
-            $this->importPdf($pdf, $fullPath);
-        }
-
-        $pdf->Output($outputPath, 'F');
     }
 }

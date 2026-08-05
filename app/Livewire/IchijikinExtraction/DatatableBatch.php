@@ -4,6 +4,7 @@ namespace App\Livewire\IchijikinExtraction;
 
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
+use App\Helpers\AppCrypt;
 use App\Helpers\PermissionHelper;
 use App\Jobs\IchijikinExtraction\GenerateIchijikinZipJob;
 use App\Repositories\Account\UserRepository;
@@ -75,7 +76,11 @@ class DatatableBatch extends Component
 
     public function generateZip($id)
     {
-        GenerateIchijikinZipJob::dispatch(IchijikinExtractionRepository::find(Crypt::decrypt($id)))->onQueue('pdf');
+        $id = AppCrypt::decrypt($id);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+        GenerateIchijikinZipJob::dispatch(IchijikinExtractionRepository::find($id))->onQueue('pdf');
 
         Alert::success(
             $this,
