@@ -4,7 +4,7 @@ namespace App\Services\ListPosting;
 
 
 use App\Jobs\ListPosting\GenerateArtboardJob;
-use App\Jobs\ZipGeneratedImagesJob;
+use App\Jobs\ListPosting\ZipGeneratedImagesJob;
 use App\Models\ListPosting\ListPostingDetail;
 use App\Models\ListPosting\TemplatePosting;
 use App\Repositories\ListPosting\ListPostingRepository;
