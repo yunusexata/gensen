@@ -753,10 +753,6 @@ class Attachment extends Component
                     abort(404, 'Link tidak valid atau telah dimanipulasi.');
                 }
 
-                $id = AppCrypt::decrypt($id);
-                if (!$id) {
-                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
-                }
                 $this->handleGensenFormAttachemntStore(
                     $this->photo,
                     $this->editedData['type'] ? GensenAttachmentType::fromLabel($this->editedData['type']) : null,
