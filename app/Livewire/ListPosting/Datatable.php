@@ -33,6 +33,9 @@ class Datatable extends Component
         $authUser = UserRepository::authenticatedUser();
         $this->isCanUpdate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_RESI_GENERATOR, PermissionHelper::TYPE_UPDATE));
         $this->isCanDelete = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_RESI_GENERATOR, PermissionHelper::TYPE_DELETE));
+
+        $this->sortBy('created_at');
+        $this->sortDirection('DESC');
     }
 
     #[On('on-delete-dialog-confirm')]
@@ -167,6 +170,10 @@ class Datatable extends Component
 
                     return $html;
                 },
+            ],
+            [
+                'key' => 'created_at',
+                'name' => 'Tgl Dibuat'
             ],
             [
                 'key' => 'name',
