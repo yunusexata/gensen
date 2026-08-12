@@ -37,7 +37,7 @@ class GensenFormController extends Controller
     }
     public function success_default(Request $request)
     {
-        return view('app.gensen-form.gensen-form.success', ["objId" => null, "phone" => isset($request->phone) ? $request->phone : null]);
+        return view('app.gensen-form.gensen-form.success', ["objId" => null, "phone" => isset($request->phone) ? $request->phone : '6281293999219']);
     }
     public function upload_attachment(Request $request)
     {

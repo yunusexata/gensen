@@ -1,4 +1,4 @@
-<a target="_BLANK" href="https://api.whatsapp.com/send/?phone={{$phone}}&type=phone_number&app_absent=0&text=Halo%20kak,%20saya%20akan%20mau%20tanya%20perihal%20gensen" class="detail-item">
+<a target="_BLANK" href="https://api.whatsapp.com/send/?phone={{$phone ?? '6281293999219'}}&type=phone_number&app_absent=0&text=Halo%20Kak,%20saya%20mau%20tanya%20perihal%20Gensen" class="detail-item">
     <div class="detail-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>

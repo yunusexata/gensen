@@ -209,6 +209,7 @@ class Form extends Component
             $form = GensenFormLinkRepository::findBy([
                 ['token', $token],
             ]);
+            $this->pic_phone = $form->creator->no_whatsapp;
             if (!$form) {
                 abort(403, 'Form Tidak Tersedia');
             }
