@@ -6,6 +6,7 @@ use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
 use App\Helpers\AppCrypt;
 use App\Imports\ExcelImportListPosting;
+use App\Models\ListPosting\TemplatePosting;
 use App\Repositories\ListPosting\ListPostingRepository;
 use App\Repositories\ListPosting\TemplatePostingRepository;
 use App\Repositories\ResiGenerator\ResiGeneratorRepository;
@@ -123,7 +124,7 @@ class Detail extends Component
 
     public function render()
     {
-        $templates = TemplatePostingRepository::latest('created_at')->paginate(8);
+        $templates = TemplatePosting::latest('created_at')->paginate(8);
 
         return view('livewire.list-posting.detail', [
             'templates' => $templates
