@@ -18,12 +18,14 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 
 class Detail extends Component
 {
 
-    use WithFileUploads;
+    use WithFileUploads, WithPagination;
+    protected $paginationTheme = 'bootstrap';
 
     public $objId;
 
@@ -42,12 +44,12 @@ class Detail extends Component
     ])]
     public $file_excel;
 
-    public $templates = [];
+    // public $templates = [];
     public $template_posting_id;
 
     public function mount()
     {
-        $this->templates = TemplatePostingRepository::all();
+        // $this->templates = TemplatePostingRepository::all();
         if ($this->objId) {
             $id = AppCrypt::decrypt($this->objId);
             if (!$id) {
@@ -121,6 +123,10 @@ class Detail extends Component
 
     public function render()
     {
-        return view('livewire.list-posting.detail');
+        $templates = TemplatePostingRepository::paginate(8);
+
+        return view('livewire.list-posting.detail', [
+            'templates' => $templates
+        ]);
     }
 }

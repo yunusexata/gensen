@@ -18,7 +18,6 @@
             {{-- SECTION PILIH TEMPLATE --}}
             <div class="col-md-8 mb-4">
                 <label class="form-label fw-bold">Pilih Template Artboard</label>
-                
                 <div class="row g-3">
                     {{-- Lakukan looping data template dari database --}}
                     @foreach($templates as $template)
@@ -45,6 +44,11 @@
                         </label>
                     </div>
                     @endforeach
+                </div>
+
+                {{-- Pagination Links Wrapper --}}
+                <div class="mt-4 d-flex justify-content-center">
+                    {{ $templates->links() }}
                 </div>
 
                 @error('template_id')
