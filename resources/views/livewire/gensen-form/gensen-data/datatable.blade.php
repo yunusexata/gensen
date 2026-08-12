@@ -321,7 +321,7 @@
                                                                 <label for="">Tiktok</label>
                                                                 <div class="d-flex align-items-center">
                                                                     <input
-                                                                        type="text" class="form-control" 
+                                                                        type="text" class="form-control w-[150px]" 
                                                                         @if ($this->isCanUpdate)
                                                                         wire:model.defer="editingData.nama_tiktok"
                                                                         @else
