@@ -5,7 +5,7 @@
         </svg>
     </div>
     <div class="detail-text">
-        <h3>Konfirmasi via Whatsapp</h3>
+        <h3>Ketuk untuk konfirmasi via Whatsapp sekarang!</h3>
         <p>Harap hubungi tim kami via WhatsApp untuk konfirmasi</p>
     </div>
 </a>
