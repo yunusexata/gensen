@@ -123,7 +123,7 @@ class Detail extends Component
 
     public function render()
     {
-        $templates = TemplatePostingRepository::paginate(8);
+        $templates = TemplatePostingRepository::latest('created_at')->paginate(8);
 
         return view('livewire.list-posting.detail', [
             'templates' => $templates
