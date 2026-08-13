@@ -110,7 +110,7 @@ return new class extends Migration
         $table->boolean('is_previously_processed')->default(false)->nullable(); // Gensen pernah diproses sebelumnya oleh pihak lain (belum/sudah)
 
 
-        //             CREATE INDEX idx_gensen_bulk_filter
+        //         CREATE INDEX idx_gensen_bulk_filter
         // ON gensen_forms (
         //     no_input_jepang,
         //     nama_lengkap

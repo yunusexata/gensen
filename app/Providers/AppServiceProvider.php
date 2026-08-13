@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\GensenForm\GensenForm;
+use App\Models\GensenForm\GensenFormAttachment;
+use App\Observers\GensenAttachmentObserver;
 use App\Observers\GensenFormObserver;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -45,5 +47,6 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo fromReiwaToYear($expression); ?>";
         });
         GensenForm::observe(GensenFormObserver::class);
+        GensenFormAttachment::observe(GensenAttachmentObserver::class);
     }
 }

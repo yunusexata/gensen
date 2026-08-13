@@ -41,6 +41,11 @@ return [
             'route'  => 'gensen_form_export_import.index',
             'icon' => 'ki-duotone ki-element-11',
         ],
+        [
+            'text' => 'Sampah Berkas Gensen',
+            'route'  => 'gensen_attachment_trash.index',
+            'icon' => 'ki-duotone ki-trash',
+        ],
         // [
         //     'text' => 'Pengganti Buku Nenkin',
         //     'route'  => 'buku_nenkin.index',

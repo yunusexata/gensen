@@ -205,4 +205,9 @@ class GensenFormAttachment extends Model
     {
         return $this->morphMany(AiJob::class, 'subject');
     }
+
+    public function deletedByUser()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'deleted_by', 'id');
+    }
 }

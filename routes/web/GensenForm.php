@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GensenForm\GensenAttachmentTrashController;
 use App\Http\Controllers\GensenForm\GensenDataController;
 use App\Http\Controllers\GensenForm\GensenFormController;
 use App\Http\Controllers\GensenForm\GensenFormExportImportController;
@@ -8,6 +9,7 @@ use App\Models\GensenForm\GensenFormAttachment;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+
 
 
 Route::group(["controller" => GensenFormExportImportController::class, "prefix" => "gensen_form_export_import", "as" => "gensen_form_export_import."], function () {
@@ -111,6 +113,9 @@ Route::middleware(['auth', 'access_permission'])->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('create', 'create')->name('create');
         Route::get('{id}/edit', 'edit')->name('edit');
+    });
+    Route::group(["controller" => GensenAttachmentTrashController::class, "prefix" => "gensen_attachment_trash", "as" => "gensen_attachment_trash."], function () {
+        Route::get('/', 'index')->name('index');
     });
 });
 Route::middleware(['auth'])->group(function () {
