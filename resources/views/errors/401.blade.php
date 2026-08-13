@@ -22,8 +22,8 @@
               401
           </h1>
 
-          <img src="/images/error/404.svg" alt="404" class="dark:hidden mx-auto max-h-64 mb-8" />
-          <img src="/images/error/404-dark.svg" alt="404" class="hidden dark:block mx-auto max-h-64 mb-8" />
+          <img src="/images/error/401.svg" alt="401" class="dark:hidden mx-auto max-h-64 mb-8" />
+          <img src="/images/error/401-dark.svg" alt="401" class="hidden dark:block mx-auto max-h-64 mb-8" />
 
           <h2 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white/90">Maaf, Akses ditolak</h2>
           <p class="mt-4 mb-8 text-sm sm:text-base text-gray-600 dark:text-gray-400">
