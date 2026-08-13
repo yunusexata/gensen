@@ -100,6 +100,55 @@ class Datatable extends Component
         $this->targetDeleteId = null;
     }
 
+    // --- Force Delete By Filter Dialog & Action ---
+    public function showForceDeleteFilterDialog()
+    {
+        if (!$this->isCanDelete) {
+            return;
+        }
+
+        $count = GensenFormAttachmentRepository::datatableTrash($this->search)->count();
+
+        if ($count === 0) {
+            Alert::fail($this, "Gagal", "Tidak ada data berkas yang cocok dengan filter pencarian untuk dihapus.");
+            return;
+        }
+
+        $message = !empty($this->search)
+            ? "Apakah Anda yakin ingin menghapus permanent {$count} berkas yang sesuai dengan kata kunci pencarian '{$this->search}'? Tindakan ini tidak dapat dibatalkan."
+            : "Apakah Anda yakin ingin menghapus permanent SELURUH berkas ({$count} berkas) di tempat sampah? Tindakan ini tidak dapat dibatalkan.";
+
+        Alert::confirmation(
+            $this,
+            Alert::ICON_WARNING,
+            "Hapus Permanent Hasil Filter",
+            $message,
+            "on-force-delete-filter-dialog-confirm",
+            "on-force-delete-filter-dialog-cancel",
+            "Hapus Permanent ({$count})",
+            "Batal",
+        );
+    }
+
+    #[On('on-force-delete-filter-dialog-confirm')]
+    public function onDialogForceDeleteFilterConfirm()
+    {
+        if (!$this->isCanDelete) {
+            return;
+        }
+
+        $count = GensenFormAttachmentRepository::forceDeleteByFilter($this->search);
+        $this->resetPage();
+
+        Alert::information($this, "{$count} berkas berhasil dihapus permanent");
+    }
+
+    #[On('on-force-delete-filter-dialog-cancel')]
+    public function onDialogForceDeleteFilterCancel()
+    {
+        // No action needed on cancel
+    }
+
     #[On('refresh-table')]
     public function refreshTable()
     {

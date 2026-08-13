@@ -53,4 +53,15 @@ class GensenFormAttachmentRepository extends MasterDataRepository
         $attachment = GensenFormAttachment::onlyTrashed()->find($id);
         return $attachment ? $attachment->forceDelete() : false;
     }
+
+    public static function forceDeleteByFilter($search = null)
+    {
+        $attachments = self::datatableTrash($search)->get();
+        $count = 0;
+        foreach ($attachments as $attachment) {
+            $attachment->forceDelete();
+            $count++;
+        }
+        return $count;
+    }
 }
