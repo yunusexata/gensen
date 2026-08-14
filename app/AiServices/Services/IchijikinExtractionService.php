@@ -193,6 +193,7 @@ class IchijikinExtractionService
         $output_price = env('GEMINI_OUTPUT_PRICE', 1.50);
 
         $response['input_cost']    = ($response['input_tokens'] / 1000000) * $input_price;
+        $response['thinking_cost']   = ($response['thinking_tokens'] / 1000000) * $output_price;
         $response['output_cost']   = ($response['output_tokens'] / 1000000) * $output_price;
         // Output tokens already include thinking tokens, so total cost is just Input + Output
         $response['total_cost']    = $response['input_cost'] + $response['output_cost'];
