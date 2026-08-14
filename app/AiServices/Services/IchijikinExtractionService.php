@@ -186,6 +186,7 @@ class IchijikinExtractionService
         $response['input_tokens']    = $metadata->promptTokenCount ?? 0;
         $response['output_tokens']   = $metadata->candidatesTokenCount ?? 0;
         $response['thinking_tokens'] = $metadata->thoughtsTokenCount ?? 0;
+        $response['cached_tokens']   = $metadata->cachedContentTokenCount ?? 0;
         $response['total_tokens']    = $metadata->totalTokenCount ?? 0;
 
         $input_price = env('GEMINI_INPUT_PRICE', 0.25);
