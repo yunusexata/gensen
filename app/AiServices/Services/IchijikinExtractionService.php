@@ -69,7 +69,7 @@ class IchijikinExtractionService
                 ),
                 'confidence_note' => new Schema(
                     type: DataType::STRING,
-                    description: "IF confidence_score < 85, explain the exact reason (e.g., 'All crops are blank, layout might be rotated or incorrect'). ELSE, return null.",
+                    description: "IF confidence_score < 100, explain the exact reason (e.g., 'All crops are blank, layout might be rotated or incorrect'). ELSE, return null.",
                     nullable: true
                 )
             ],
