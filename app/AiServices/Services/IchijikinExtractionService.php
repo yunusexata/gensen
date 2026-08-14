@@ -146,7 +146,7 @@ class IchijikinExtractionService
                         // Removed MediaResolution::HIGH to save input tokens on small crops
                         thinkingConfig: new ThinkingConfig(
                             includeThoughts: true,
-                            thinkingLevel: ThinkingLevel::MEDIUM, // Downgraded from HIGH to save output tokens
+                            thinkingLevel: ThinkingLevel::HIGH, // Downgraded from HIGH to save output tokens
                         )
                     )
                 )
