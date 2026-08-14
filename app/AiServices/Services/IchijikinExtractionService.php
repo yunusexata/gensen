@@ -33,7 +33,7 @@ class IchijikinExtractionService
                 ),
                 'nama_lengkap' => new Schema(
                     type: DataType::STRING,
-                    description: 'Extract the full name verbatim. Pay extreme attention to double or repeating letters (e.g., ZZ, AA). Copy it character-by-character exactly as written, with zero spelling corrections.'
+                    description: 'Extract the full name verbatim. Pay extreme attention to double or repeating letters (e.g., ZZ, AA, RR). Copy it character-by-character exactly as written, with zero spelling corrections.'
                 ),
                 'nenkin_20' => new Schema(
                     type: DataType::INTEGER,
