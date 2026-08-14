@@ -12,67 +12,70 @@ use Gemini\Enums\ResponseMimeType;
 use Gemini\Data\Schema;
 use Gemini\Enums\DataType;
 use Gemini\Data\Content;
-use Gemini\Enums\MediaResolution;
 use Gemini\Enums\ThinkingLevel;
 use Gemini\Data\ThinkingConfig;
+use Illuminate\Support\Facades\Log;
 
 class IchijikinExtractionService
 {
     public function extract(IchijikinExtractionFile $ichijikin)
     {
-
-
         // 1. Define the Strict JSON Schema
-        // This forces Gemini to return the exact keys and data types you requested.
+        // All fields are explicitly nullable to match database migrations and missing image fallbacks.
         $schema = new Schema(
             type: DataType::OBJECT,
             properties: [
                 'kokumin' => new Schema(
                     type: DataType::INTEGER,
-                    description: 'The extracted numerical value.Remove commas and currency symbols (円). CRITICAL: If the image is blank, or empty, you MUST return 0. Example: 20,547円 -> 20547, 円 -> 0',
+                    description: 'Extract numerical value. Remove commas and currency symbols. If blank, missing, or empty, return 0.',
                 ),
                 'nama_lengkap' => new Schema(
                     type: DataType::STRING,
-                    description: 'Extract the full name verbatim. Pay extreme attention to double or repeating letters (e.g., ZZ, AA, RR). Copy it character-by-character exactly as written, with zero spelling corrections.'
+                    description: 'Extract full name verbatim. Pay extreme attention to double letters (e.g., ZZ, AA, RR). Return null if missing.',
+                    nullable: true
                 ),
                 'nenkin_20' => new Schema(
                     type: DataType::INTEGER,
-                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547'
+                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547. Return 0 if missing.',
                 ),
                 'nenkin_80' => new Schema(
                     type: DataType::INTEGER,
-                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547'
+                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547. Return 0 if missing.',
                 ),
                 'nenkin_100' => new Schema(
                     type: DataType::INTEGER,
-                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547'
+                    description: 'Remove commas and currency symbols (円). Example: 20,547円 -> 20547. Return 0 if missing.',
                 ),
                 'no_nenkin' => new Schema(
                     type: DataType::STRING,
-                    description: 'The raw Nenkin pension number. Extract ONLY the raw digits (0-9). You must REMOVE all spaces, commas, periods, or punctuation. Crucially, do NOT treat this as a number—do NOT add thousands separators (e.g., never output ",8167095738") and do NOT drop leading zeros. Output as a clean, continuous string of digits. Example: "0160 618 880" -> "0160618880", "8167095738" -> "8167095738".'
+                    description: 'Extract raw digits only. Remove spaces and punctuation. DO NOT remove leading zeros. Example: "0160 618 880" -> "0160618880". Return null if missing.',
+                    nullable: true
                 ),
                 'lama_kerja' => new Schema(
                     type: DataType::INTEGER,
-                    description: 'Remove all spaces. Example: 48'
+                    description: 'Remove all spaces. Example: 48. Return 0 if missing.',
                 ),
                 'lama_kerja_kokumin' => new Schema(
                     type: DataType::INTEGER,
-                    description: 'Remove all spaces. Example: 48'
+                    description: 'Remove all spaces. Example: 48. Return 0 if missing.',
                 ),
                 'alamat' => new Schema(
                     type: DataType::STRING,
-                    description: 'Extract the full address exactly as shown.'
+                    description: 'Extract the full address exactly as shown. Return null if missing.',
+                    nullable: true
                 ),
                 'confidence_score' => new Schema(
                     type: DataType::INTEGER,
-                    description: "MUST be 0 if ALL or MOST image crops are blank, empty, or contain no data values. Otherwise, provide a score from 1 to 100 based on text readability."
+                    description: 'Provide a score from 1 to 100 based on readability. Return 0 if ALL crops are blank or missing.'
                 ),
                 'confidence_note' => new Schema(
                     type: DataType::STRING,
-                    description: "IF confidence_score < 100, explain the exact reason (e.g., 'All crops are blank, layout might be rotated or incorrect'). ELSE, return null.",
+                    description: "IF confidence_score < 100, explain the reason. ELSE, return null.",
                     nullable: true
                 )
             ],
+            // Keeping them in 'required' forces Gemini to always output the JSON keys, 
+            // but 'nullable: true' allows the values to be null.
             required: [
                 'kokumin',
                 'nama_lengkap',
@@ -87,10 +90,20 @@ class IchijikinExtractionService
             ]
         );
 
-        // 3. Define the System Instruction / Primary Prompt
+        // 2. Define the System Instruction (Context + Behavior)
+        $systemInstruction = "You are a precise data extraction AI. The document contains Japanese text (Kanji, Kana, Romaji) and numerical financial data.
+        
+        CRITICAL TRANSCRIPTION RULES:
+        1. Act as a verbatim transcription tool. Do NOT assume common spellings or autocorrect names.
+        2. Perform a strict character-by-character copy.
+        3. If a field's image is blank, entirely unreadable, or flagged as 'IMAGE MISSING', you MUST return null for that field.
+        
+        Return the data ONLY as a valid JSON object matching the requested schema.";
+
+        // 3. Define the Prompt (Task specific rules)
         $promptParts = $this->getPrompt();
 
-        // 4. Interleave Field Names and Image Blobs into the payload
+        // 4. Interleave Field Names and Image Blobs
         $files = [
             'kokumin' => 'kokumin.png',
             'nama_lengkap' => 'nama_lengkap.png',
@@ -102,156 +115,111 @@ class IchijikinExtractionService
             'lama_kerja_kokumin' => 'lama_kerja_kokumin.png',
             'alamat' => 'alamat.png'
         ];
+
+        $missingFilesCount = 0;
+
         foreach ($files as $key => $fileName) {
-            $filePath = storage_path("app/public/ichijikin/{$ichijikin->ichijikinExtraction->batch_name}/{$ichijikin->ichijikinExtractionDetail->stored_name}/crop/$ichijikin->file_stored_name/{$fileName}");
+            $filePath = storage_path("app/public/ichijikin/{$ichijikin->ichijikinExtraction->batch_name}/{$ichijikin->ichijikinExtractionDetail->stored_name}/crop/{$ichijikin->file_stored_name}/{$fileName}");
 
-            // logger([
-            //     'param att path',
-            //     $filePath
-            // ]);
             if (file_exists($filePath)) {
-                // Tell Gemini which field this image belongs to
                 $promptParts[] = "Field Name: " . $key;
-
-                // Provide the image
                 $promptParts[] = new Blob(
                     mimeType: MimeType::IMAGE_PNG,
-                    // data: filesize($filePath)
                     data: base64_encode(file_get_contents($filePath))
                 );
+            } else {
+                // Prevent hallucination by explicitly telling the model the image is missing
+                $promptParts[] = "Field Name: {$key} - [IMAGE MISSING. You MUST return null for this field].";
+                $missingFilesCount++;
             }
         }
-        // logger([
-        //     'FILE ATTACHMENTS',
-        //     $promptParts
-        // ]);
 
-        // logger([
-        //     'ICHIJIKIN AI PROMPT PART',
-        //     $promptParts
-        // ]);
-
-        // $systemInstruction = "You are a precise data extraction AI. Analyze the provided Ichijikin document and extract the key fields accurately. Return the data ONLY as a valid JSON object matching the requested fields. If a field is missing, return null.";
-        $systemInstruction = "You are a precise data extraction AI. Analyze the provided Ichijikin document and extract the key fields with absolute literal accuracy.
-
-        CRITICAL TRANSCRIPTION RULES:
-        1. Act as a verbatim transcription tool. Do NOT assume common spellings or attempt to 'autocorrect' names.
-        2. Perform a strict character-by-character copy for all text fields (especially 'nama_lengkap'). Pay extreme attention to consecutive identical characters (such as 'ZZ', 'RR', or 'AA') and ensure no letters are dropped.
-        3. Extract the text exactly as it appears visually on the document.
-
-        OUTPUT FORMAT:
-        Return the data ONLY as a valid JSON object matching the requested fields. If a field is missing, return null. Do not include any markdown wrapper or conversational text outside the JSON.";
-
-        // return;
-        // 5. Send the SINGLE request to Gemini
-        $result = Gemini::generativeModel(model: config('gemini.model'))
-            ->withSystemInstruction(Content::parse($systemInstruction))
-            ->withGenerationConfig(
-                generationConfig: new GenerationConfig(
-                    responseMimeType: ResponseMimeType::APPLICATION_JSON,
-                    responseSchema: $schema,
-
-                    // Critical for legal/tax accuracy:
-                    temperature: 0.0,
-                    mediaResolution: MediaResolution::MEDIA_RESOLUTION_HIGH,
-
-                    // Advanced Reasoning:
-                    thinkingConfig: new ThinkingConfig(
-                        includeThoughts: true,
-                        thinkingLevel: ThinkingLevel::HIGH,
+        // 5. Send Request to Gemini
+        try {
+            $result = Gemini::generativeModel(model: config('gemini.model'))
+                ->withSystemInstruction(Content::parse($systemInstruction))
+                ->withGenerationConfig(
+                    generationConfig: new GenerationConfig(
+                        responseMimeType: ResponseMimeType::APPLICATION_JSON,
+                        responseSchema: $schema,
+                        temperature: 0.0, // Strict extraction
+                        // Removed MediaResolution::HIGH to save input tokens on small crops
+                        thinkingConfig: new ThinkingConfig(
+                            includeThoughts: true,
+                            thinkingLevel: ThinkingLevel::MEDIUM, // Downgraded from HIGH to save output tokens
+                        )
                     )
                 )
-            )
-            ->generateContent($promptParts);
+                ->generateContent($promptParts);
+        } catch (\Exception $e) {
+            Log::error("Gemini API Error: " . $e->getMessage());
+            return ['error' => 'API communication failed.'];
+        }
 
+        // 6. Parse Response Safely
         $response = [];
         $thoughts = null;
+        $jsonText = null;
+
         foreach ($result->parts() as $part) {
             if ($part->thought === true) {
-                // This part contains the model's thinking process
-                $thoughts = json_encode($part->text, true);
+                $thoughts = $part->text;
             } else if ($part->text !== null) {
-                // This is the final answer
-                $response['json'] = json_decode($part->text, true);
+                $jsonText = $part->text;
             }
         }
-        $response['request_payload'] = json_encode([
-            'system_instruction' => $systemInstruction,
-            'prompt' => $this->getPrompt(),
-            'attachments_count' => count($files),
-            'config' => [
-                'temperature' => 0.0,
-                'thinking_level' => new ThinkingConfig(
-                    includeThoughts: true,
-                    thinkingLevel: ThinkingLevel::HIGH,
-                )
-            ]
-        ], true);
-        // logger(['score', $response['json']['confidence_score']]);
-        $response['confidence_score'] = $response['json']['confidence_score'];
-        $response['confidence_note'] = isset($response['json']['confidence_note']) ? $response['json']['confidence_note'] : null;
 
+        // Bulletproof JSON decoding
+        $decodedJson = json_decode($jsonText, true);
+        if (json_last_error() !== JSON_ERROR_NONE || !is_array($decodedJson)) {
+            Log::error("Gemini JSON Parse Error: " . json_last_error_msg() . " Raw Text: " . $jsonText);
+            return ['error' => 'Invalid JSON returned from model.'];
+        }
+
+        $response['json'] = $decodedJson;
+        $response['confidence_score'] = $decodedJson['confidence_score'] ?? ($missingFilesCount === count($files) ? 0 : 50);
+        $response['confidence_note'] = $decodedJson['confidence_note'] ?? null;
+
+        // 7. Token Usage & Cost Calculation
         $metadata = $result->usageMetadata;
+
+        $response['input_tokens']    = $metadata->promptTokenCount ?? 0;
+        $response['output_tokens']   = $metadata->candidatesTokenCount ?? 0;
+        $response['thinking_tokens'] = $metadata->thoughtsTokenCount ?? 0;
+        $response['total_tokens']    = $metadata->totalTokenCount ?? 0;
+
+        $input_price = env('GEMINI_INPUT_PRICE', 0.25);
+        $output_price = env('GEMINI_OUTPUT_PRICE', 1.50);
+
+        $response['input_cost']    = ($response['input_tokens'] / 1000000) * $input_price;
+        $response['output_cost']   = ($response['output_tokens'] / 1000000) * $output_price;
+        // Output tokens already include thinking tokens, so total cost is just Input + Output
+        $response['total_cost']    = $response['input_cost'] + $response['output_cost'];
+
+        $response['request_payload'] = json_encode([
+            'missing_files' => $missingFilesCount,
+            'config' => ['temperature' => 0.0, 'thinking_level' => 'STANDARD']
+        ], true);
 
         $response['response_payload'] = json_encode([
             'data' => $response['json'],
-            'thinking_process' => $thoughts, // Crucial for debugging why an extraction failed
-            'usage' => [
-                'prompt_tokens' => $metadata->promptTokenCount,
-                'candidates_tokens' => $metadata->candidatesTokenCount,
-                'total_tokens' => $metadata->totalTokenCount,
-            ]
+            'thinking_process' => $thoughts,
         ], true);
 
-        $response['input_tokens']    = $metadata->promptTokenCount;
-        $response['output_tokens']   = $metadata->candidatesTokenCount;
-        $response['cached_tokens']   = $metadata->cachedContentTokenCount ?? 0;
-        $response['thinking_tokens'] = $metadata->thoughtsTokenCount ?? 0;
-        $response['total_tokens']    = $metadata->totalTokenCount;
-
-        $input_price = env('GEMINI_INPUT_PRICE', 0.25); // per 1M tokens
-        $output_price = env('GEMINI_OUTPUT_PRICE', 1.50); // per 1M tokens
-
-        // 1. Calculate costs by dividing by 1,000,000
-        $response['input_cost']    = ($response['input_tokens'] / 1000000) * $input_price;
-
-        // 2. Note: 'output_tokens' usually includes the 'thinking_tokens' 
-        // if you are using candidatesTokenCount + thoughtsTokenCount
-        $response['output_cost']   = ($response['output_tokens'] / 1000000) * $output_price;
-
-        $response['thinking_cost'] = ($response['thinking_tokens'] / 1000000) * $output_price;
-
-        // 3. Total Cost is just the sum of input and output costs
-        // (Do NOT add the token counts to the currency amount)
-        $response['total_cost']    = $response['input_cost'] + $response['output_cost'];
-        // logger([
-        //     'RESPONSE FINAL',
-        //     $response
-        // ]);
-        return $response ?? [];
+        return $response;
     }
 
     private function getPrompt()
     {
         return [
-            "You are an expert OCR and data extraction system. I am providing you with multiple cropped images from a document. Each image is preceded by its field name.
-            You will receive MULTIPLE image in a SINGLE request.
+            "You are an expert OCR system. I am providing multiple cropped images from a Japanese document. Each image is preceded by its field name.
             
-            GOAL: Extract valid data in images.
-            OBJECTIVE: Extract and aggregate valid value accurately
-            across all documents.
-            OUTPUT: Return strict JSON only. No preamble.
-        
-        RULES:
-        1. Extract the text from each image and map it to the corresponding field name.
-        2. For the 'nama_lengkap' field, extract the exact text.
-        3. For all 'nenkin_100', 'nenkin_80', 'nenkin_20', 'kokumin', and 'no_nenkin' fields, you MUST return ONLY an integer.
-        4. Strip out all currency symbols (like 円), commas (,), and spaces ( ). For example, '100,625円' becomes 100625. '4161 325041' becomes 4161325041.
-        5. If an image is completely blank or empty (like 'kokumin'), return 0 or null.
-        6.If value is uncertain:
-                - choose safest conservative interpretation
-                - NEVER overcount
-        "
+            RULES:
+            1. Extract the text from each image and map it to the corresponding field name.
+            2. For 'nenkin_100', 'nenkin_80', 'nenkin_20', and 'kokumin', you MUST return an integer. Strip out all currency symbols (円), commas (,), and spaces.
+            3. For 'no_nenkin', you MUST return a continuous string of digits. Do NOT remove leading zeros.
+            4. If an image is blank, empty, or unreadable, return null.
+            5. If a value is uncertain, choose the safest conservative interpretation and lower the confidence_score."
         ];
     }
 }

@@ -34,7 +34,7 @@ class OpenAIService
         $response = $client->responses()->create([
 
             // 'model' => 'gpt-4o-mini',
-            'model' => 'gpt-5-mini',
+            'model' => 'hemini 3.1 flash-lite',
 
             'input' => [[
                 'role' => 'user',
