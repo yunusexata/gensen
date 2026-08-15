@@ -85,7 +85,6 @@ class ImportGensenJob implements ShouldQueue
                 'finish_at' => now(),
             ]);
             // DB::commit();
-
             broadcast(
                 new ExportImportStatusUpdated(
                     $history
@@ -94,7 +93,6 @@ class ImportGensenJob implements ShouldQueue
         } catch (\Throwable $e) {
 
             // DB::rollBack();
-
             $history->update([
                 'status' => JobStatus::FAILED,
                 'error_message' => $e->getMessage(),

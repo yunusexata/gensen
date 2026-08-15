@@ -20,7 +20,7 @@ class Detail extends Component
     public $name;
 
     #[Validate('required', message: 'Tipe Harus Dipilih', onUpdate: false)]
-    public $type = PermissionHelper::TYPE_ALL[0];
+    public $type = 'all';
 
     public function mount()
     {
@@ -54,25 +54,48 @@ class Detail extends Component
     {
         $this->validate();
 
-        $permissionName = PermissionHelper::transform($this->name, $this->type);
-
-        $permission = PermissionRepository::findByName($permissionName);
-        if (!empty($permission) && $permission->id != $this->objId) {
-            $translatedPermissionName = PermissionHelper::translate($permissionName);
-            Alert::fail($this, 'Gagal', "Akses dengan nama {$translatedPermissionName} sudah pernah dibuat");
-            return;
-        }
-
-        $validatedData = [
-            'name' => $permissionName
-        ];
-
         try {
             DB::beginTransaction();
-            if ($this->objId) {
-                PermissionRepository::update($this->objId, $validatedData);
+            if ($this->type == 'all') {
+                foreach (PermissionHelper::TRANSLATE_TYPE as $key => $val) {
+                    $permissionName = PermissionHelper::transform($this->name, $key);
+
+                    $permission = PermissionRepository::findByName($permissionName);
+                    if (!empty($permission) && $permission->id != $this->objId) {
+                        $translatedPermissionName = PermissionHelper::translate($permissionName);
+                        Alert::fail($this, 'Gagal', "Akses dengan nama {$translatedPermissionName} sudah pernah dibuat");
+                        return;
+                    }
+
+                    $validatedData = [
+                        'name' => $permissionName
+                    ];
+
+                    if ($this->objId) {
+                        PermissionRepository::update($this->objId, $validatedData);
+                    } else {
+                        PermissionRepository::create($validatedData);
+                    }
+                }
             } else {
-                PermissionRepository::create($validatedData);
+                $permissionName = PermissionHelper::transform($this->name, $this->type);
+
+                $permission = PermissionRepository::findByName($permissionName);
+                if (!empty($permission) && $permission->id != $this->objId) {
+                    $translatedPermissionName = PermissionHelper::translate($permissionName);
+                    Alert::fail($this, 'Gagal', "Akses dengan nama {$translatedPermissionName} sudah pernah dibuat");
+                    return;
+                }
+
+                $validatedData = [
+                    'name' => $permissionName
+                ];
+
+                if ($this->objId) {
+                    PermissionRepository::update($this->objId, $validatedData);
+                } else {
+                    PermissionRepository::create($validatedData);
+                }
             }
             DB::commit();
 
