@@ -27,6 +27,17 @@
                         Tambah Baru
                     </a>
                 </div>
+                <div class="col-md-auto mt-2">
+                    <!-- Use $dispatch for Livewire 3 to trigger an event -->
+                    <button type="button" class="btn btn-primary" onclick="Livewire.dispatch('refresh-table')">
+                        {{-- <span class='material-symbols-outlined text-white'>sync</span> --}}
+                        <i class="ki-duotone ki-arrows-circle fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                        </i>
+                    </button>
+                </div>
             </div>
         
     </div>
@@ -36,7 +47,7 @@
 
     <div class="card">
         <div class="card-body">
-            <livewire:ichijikin-extraction.datatable-batch lazy />
+            <livewire:ichijikin-extraction.datatable-batch />
         </div>
     </div>
 @stop
