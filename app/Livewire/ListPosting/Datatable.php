@@ -179,6 +179,14 @@ class Datatable extends Component
                 'key' => 'name',
                 'name' => 'Nama / Judul'
             ],
+            [
+                'sortable' => false,
+                'searchable' => false,
+                'name' => 'Creator',
+                'render' => function ($item) {
+                    return $item->creator->name;
+                }
+            ],
         ];
     }
 
