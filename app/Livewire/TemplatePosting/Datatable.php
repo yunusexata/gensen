@@ -148,6 +148,14 @@ class Datatable extends Component
             [
                 'sortable' => false,
                 'searchable' => false,
+                'name' => 'Creator',
+                'render' => function ($item) {
+                    return $item->creator->name;
+                }
+            ],
+            [
+                'sortable' => false,
+                'searchable' => false,
                 'name' => 'File',
                 'render' => function ($item) {
                     return '<img style="width:150px; height:auto; border:1px solid black; border-radius:5px" src="' . $item->previewUrl() . '" alt="">';
