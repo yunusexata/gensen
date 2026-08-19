@@ -40,7 +40,6 @@ class ResiMatcherService
                         'is_matched' => true,
                         'resi_generator_email_id' => $bestMatch->id,
                         'confidence_score' =>  (int) round($highestScore),
-                        // 'generated_image_path' => 'resi-generated/' . $$detail->resi->label . '/' . $fileName
                     ]);
 
                     GenerateReceiptImageJob::dispatch($detail)->onQueue('extract');
@@ -54,7 +53,6 @@ class ResiMatcherService
                 $detail->update([
                     'is_matched' => false,
                     'confidence_score' =>  (int) round($highestScore),
-                    // 'generated_image_path' => 'resi-generated/' . $$detail->resi->label . '/' . $fileName
                 ]);
             }
         }

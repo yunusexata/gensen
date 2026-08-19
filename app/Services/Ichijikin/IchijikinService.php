@@ -21,7 +21,6 @@ class IchijikinService
     {
         try {
             //code...
-
             $srcPath = storage_path('app/public/' . $path);
 
             if (!file_exists($srcPath)) {
@@ -29,7 +28,6 @@ class IchijikinService
             }
 
             // Load image (JPEG only as per your original code)
-            // $src = imagecreatefromjpeg($srcPath);
             $mime = mime_content_type($srcPath);
 
             switch ($mime) {
@@ -109,17 +107,6 @@ class IchijikinService
             // 5️⃣ CROP
             // ==============================
             $dst = imagecreatetruecolor($width, $height);
-
-            // imagecopy(
-            //     $dst,
-            //     $src,
-            //     0,
-            //     0,
-            //     $x,
-            //     $y,
-            //     $width,
-            //     $height
-            // );
             imagecopyresampled(
                 $dst,
                 $src,
@@ -140,11 +127,6 @@ class IchijikinService
             $destFolder = storage_path('app/public/' . $des);
             $destPath   = $destFolder . "/$name.png";
 
-            // logger([
-            //     'DEST CROP',
-            //     $destPath
-            // ]);
-
             if (!file_exists($destFolder)) {
                 mkdir($destFolder, 0755, true);
             }
@@ -155,11 +137,6 @@ class IchijikinService
 
             return $destPath;
         } catch (\Throwable $th) {
-            //throw $th;
-            // logger([
-            //     'CROP SERVICE ERROR',
-            //     $th
-            // ]);
         }
     }
 
@@ -169,17 +146,9 @@ class IchijikinService
         $epath = explode('/', $file->path);
 
         $path = $file->path;
-        // $folder = $epath[0] . '/' . $epath[1];
         $folder = "ichijikin/{$file->ichijikinExtraction->batch_name}/{$file->ichijikinExtractionDetail->stored_name}/crop/$file->file_stored_name";
 
-        // $storedName = pathinfo($file->stored_name, PATHINFO_FILENAME);
-
-        // // Crop Date
-        // $coord = ['x' => 30, 'y' => 250, 'width' => 250, 'height' => 45];
-        // $this->cropImage($path, $coord, $folder, 'date');
-
         // New Reference Dimensions: Width = 1241, Height = 1755
-
         // Crop Kokumin
         $coord = ['x' => 665, 'y' => 55, 'width' => 200, 'height' => 65];
         $this->cropImage($path, $coord, $folder, 'kokumin');
@@ -215,48 +184,6 @@ class IchijikinService
         $this->cropImage($path, $coord, $folder, 'alamat');
 
         ExtractionIchijikinJob::dispatch($model)->onQueue('extract');
-        // // Crop Payment Top
-        // $coord = ['x' => 610, 'y' => 50, 'width' => 165, 'height' => 50];
-        // $this->cropImage($path, $coord, $folder, 'kokumin');
-
-        // // Crop Payment
-        // $coord = ['x' => 610, 'y' => 370, 'width' => 180, 'height' => 50];
-        // $this->cropImage($path, $coord, $folder, 'nenkin_100');
-
-        // // Crop Income
-        // $coord = ['x' => 610, 'y' => 440, 'width' => 180, 'height' => 50];
-        // $this->cropImage($path, $coord, $folder, 'nenkin_20');
-
-        // // Crop Net
-        // $coord = ['x' => 610, 'y' => 530, 'width' => 180, 'height' => 50];
-        // $this->cropImage($path, $coord, $folder, 'nenkin_80');
-
-        // // Crop Number
-        // $coord = ['x' => 660, 'y' => 950, 'width' => 170, 'height' => 50];
-        // $this->cropImage($path, $coord, $folder, 'no_nenkin');
-
-        // // Crop Name
-        // $coord = ['x' => 420, 'y' => 1000, 'width' => 700, 'height' => 70];
-        // $this->cropImage($path, $coord, $folder, 'nama_lengkap');
-
-        // Crop Address
-        // $coord = ['x' => 400, 'y' => 1050, 'width' => 700, 'height' => 100];
-        // $this->cropImage($path, $coord, $folder, 'alamat');
-
-        // $nenkin = ConvertDataIchijikinRepository::update($model->id, [
-        //     'date' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/date.png'), 'date')['text'] ?? null,
-        //     'payment_top' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/payment_top.png'), 'payment_top')['text'] ?? null,
-        //     'payment' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/payment.png'), 'payment')['text'] ?? null,
-        //     'income' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/income.png'), 'income')['text'] ?? null,
-        //     'net' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/net.png'), 'net')['text'] ?? null,
-        //     'number' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/number.png'), 'number')['text'] ?? null,
-        //     'name' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/name.png'), 'name')['text'] ?? null,
-        //     'address' => $this->detectDocumentText(storage_path('app/public/' . $folder . '/address.png'), 'address')['text'] ?? null,
-        // ]);
-
-        // $this->drawLabelPdf(storage_path('app/public/' . $path), $folder, ConvertDataIchijikinRepository::find($model->id));
-
-        // $this->drawLabelImage(storage_path('app/public/' . $path), $folder, $model->kokumin, $model->nenkin_100);
     }
 
     public function detectDocumentText($path, string $name)
@@ -346,63 +273,17 @@ class IchijikinService
 
                 $result['text'] = trim($reconstructed) ?: null;
             }
-
-            // // For simplicity, we just save the full text. You can also save structured info like blocks, paragraphs, etc.
-            // foreach ($fullText->getPages() as $pageIndex => $page) {
-            //     foreach ($page->getBlocks() as $blockIndex => $block) {
-            //         $block_text = '';
-            //         foreach ($block->getParagraphs() as $paragraph) {
-            //             foreach ($paragraph->getWords() as $word) {
-            //                 foreach ($word->getSymbols() as $symbol) {
-            //                     $block_text .= $symbol->getText();
-            //                 }
-            //                 $block_text .= ' ';
-            //             }
-            //             $block_text .= "\n";
-            //         }
-
-            //         // Get bounding box
-            //         $vertices = $block->getBoundingBox()->getVertices();
-            //         $bounds = [];
-            //         foreach ($vertices as $vertex) {
-            //             $bounds[] = [
-            //                 'x' => $vertex->getX(),
-            //                 'y' => $vertex->getY(),
-            //             ];
-            //         }
-
-            //         // Save structured block info
-            //         $result['pages'][$pageIndex]['blocks'][$blockIndex] = [
-            //             'text' => trim($block_text),
-            //             'confidence' => $block->getConfidence(),
-            //             'bounds' => $bounds,
-            //         ];
-            //     }
-            // }
         } else {
             $result['text'] = null;
         }
 
         $client->close();
-        // $json = file_get_contents(storage_path('app/nenkin.json')); // or your JSON string
-        // $result = json_decode($json, true);
-        // $this->drawBlocksOnPdf($path, $result['pages'][0]['blocks'], public_path('output.pdf'));
-        // $this->drawBlocksOnPdf($path, $result['text'], public_path('output.pdf'));
 
         return $result;
-        // return $result['pages'][0]['blocks'];
     }
 
     public function drawLabelImage($imagePath, $desPath, $fileName, $kokumin = null, $nenkin_100 = null)
     {
-        // logger([
-        //     'draw label',
-        //     $imagePath,
-        //     $desPath,
-        //     $fileName,
-        //     $kokumin,
-        //     $nenkin_100
-        // ]);
         // Load image
         $image = imagecreatefromjpeg($imagePath);
 
@@ -457,11 +338,6 @@ class IchijikinService
             $x = 300 * $scaleX;
             $y = 1  * $scaleY;
 
-            // $rectX1 = 669 * $scaleX;
-            // $rectY1 = 55  * $scaleY;
-            // $rectX2 = 889 * $scaleX; // 669 + 220 width
-            // $rectY2 = 132 * $scaleY; // 55 + 77 height
-
             // Resize label
             $labelImage = imagecreatefrompng(public_path('kokumin_nenkin.png'));
 
@@ -489,11 +365,6 @@ class IchijikinService
             // === SCALE POSITION (Kokumin) ===
             $x = 300 * $scaleX;
             $y = 350  * $scaleY;
-
-            // $rectX1 = 669 * $scaleX;
-            // $rectY1 = 55  * $scaleY;
-            // $rectX2 = 889 * $scaleX; // 669 + 220 width
-            // $rectY2 = 132 * $scaleY; // 55 + 77 height
 
             // Resize label
             $labelImage = imagecreatefrompng(public_path('kousei_nenkin.png'));
@@ -625,207 +496,6 @@ class IchijikinService
 
         return $outputPath;
     }
-    // public function drawLabelImageOld($imagePath, $desPath, $kokumin = null, $nenkin_100 = null)
-    // {
-    //     // Load image
-    //     $image = imagecreatefromjpeg($imagePath);
-
-    //     $currentWidth  = imagesx($image);
-    //     $currentHeight = imagesy($image);
-
-    //     // Blueprint size (acuan desain koordinat Anda)
-    //     $baseWidth  = 1131;
-    //     $baseHeight = 1600;
-
-    //     // Hitung rasio
-    //     $scaleX = $currentWidth / $baseWidth;
-    //     $scaleY = $currentHeight / $baseHeight;
-
-    //     // Colors
-    //     $blue = imagecolorallocate($image, 0, 2, 245);
-    //     $red = imagecolorallocate($image, 245, 5, 1);
-    //     $orange = imagecolorallocate($image, 250, 100, 6);
-
-    //     imagesetthickness($image, 6);
-
-    //     if ($kokumin) {
-
-    //         // === SCALE POSITION ===
-    //         $x = 285 * $scaleX;
-    //         $y = 50  * $scaleY;
-
-    //         $rectX1 = 610 * $scaleX;
-    //         $rectY1 = 50  * $scaleY;
-    //         $rectX2 = (610 + 200) * $scaleX;
-    //         $rectY2 = (70 + 50)  * $scaleY;
-
-    //         // Resize label
-    //         $label100 = imagecreatefrompng(public_path('100%.png'));
-
-    //         $labelWidth  = 200 * $scaleX;
-    //         $labelHeight = 70  * $scaleY;
-
-    //         imagecopyresampled(
-    //             $image,
-    //             $label100,
-    //             $x,
-    //             $y,
-    //             0,
-    //             0,
-    //             $labelWidth,
-    //             $labelHeight,
-    //             imagesx($label100),
-    //             imagesy($label100)
-    //         );
-
-    //         imagerectangle(
-    //             $image,
-    //             $rectX1,
-    //             $rectY1,
-    //             $rectX2,
-    //             $rectY2,
-    //             $blue
-    //         );
-    //     }
-
-    //     if ($nenkin_100) {
-    //         /*
-    //         === DRAW 100% LABEL ===
-    //         */
-
-    //         // === SCALE POSITION ===
-    //         $x = 285 * $scaleX;
-    //         $y = 370  * $scaleY;
-
-    //         $rectX1 = 610 * $scaleX;
-    //         $rectY1 = 370  * $scaleY;
-    //         $rectX2 = (610 + 200) * $scaleX;
-    //         $rectY2 = (390 + 50)  * $scaleY;
-
-    //         // Resize label
-    //         $label100 = imagecreatefrompng(public_path('100%.png'));
-
-    //         $labelWidth  = 200 * $scaleX;
-    //         $labelHeight = 70  * $scaleY;
-    //         imagecopyresampled(
-    //             $image,
-    //             $label100,
-    //             $x,
-    //             $y,
-    //             0,
-    //             0,
-    //             $labelWidth,
-    //             $labelHeight,
-    //             imagesx($label100),
-    //             imagesy($label100)
-    //         );
-
-    //         imagerectangle(
-    //             $image,
-    //             $rectX1,
-    //             $rectY1,
-    //             $rectX2,
-    //             $rectY2,
-    //             $blue
-    //         );
-
-    //         /*
-    //         === DRAW 20% LABEL ===
-    //         */
-    //         // === SCALE POSITION ===
-    //         $x = 285 * $scaleX;
-    //         $y = 450  * $scaleY;
-
-    //         $rectX1 = 610 * $scaleX;
-    //         $rectY1 = 450  * $scaleY;
-    //         $rectX2 = (610 + 200) * $scaleX;
-    //         $rectY2 = (470 + 50)  * $scaleY;
-
-    //         // Resize label
-    //         $label100 = imagecreatefrompng(public_path('20%.png'));
-
-    //         $labelWidth  = 200 * $scaleX;
-    //         $labelHeight = 70  * $scaleY;
-    //         imagecopyresampled(
-    //             $image,
-    //             $label100,
-    //             $x,
-    //             $y,
-    //             0,
-    //             0,
-    //             $labelWidth,
-    //             $labelHeight,
-    //             imagesx($label100),
-    //             imagesy($label100)
-    //         );
-
-    //         imagerectangle(
-    //             $image,
-    //             $rectX1,
-    //             $rectY1,
-    //             $rectX2,
-    //             $rectY2,
-    //             $red
-    //         );
-
-    //         /*
-    //         === DRAW 80% LABEL ===
-    //         */
-    //         // === SCALE POSITION ===
-    //         $x = 285 * $scaleX;
-    //         $y = 530  * $scaleY;
-
-    //         $rectX1 = 610 * $scaleX;
-    //         $rectY1 = 530  * $scaleY;
-    //         $rectX2 = (610 + 200) * $scaleX;
-    //         $rectY2 = (550 + 50)  * $scaleY;
-
-    //         // Resize label
-    //         $label100 = imagecreatefrompng(public_path('80%.png'));
-
-    //         $labelWidth  = 200 * $scaleX;
-    //         $labelHeight = 70  * $scaleY;
-    //         imagecopyresampled(
-    //             $image,
-    //             $label100,
-    //             $x,
-    //             $y,
-    //             0,
-    //             0,
-    //             $labelWidth,
-    //             $labelHeight,
-    //             imagesx($label100),
-    //             imagesy($label100)
-    //         );
-
-    //         imagerectangle(
-    //             $image,
-    //             $rectX1,
-    //             $rectY1,
-    //             $rectX2,
-    //             $rectY2,
-    //             $orange
-    //         );
-    //     }
-
-    //     // Destination folder
-    //     $destFolder = storage_path('app/public/convert-data-ichijikin-labeled');
-
-    //     if (!file_exists($destFolder)) {
-    //         mkdir($destFolder, 0755, true);
-    //     }
-
-    //     // $outputPath = $destFolder . '/' . $model->number . '-' . $model->name . '.jpg';
-
-    //     // Save as JPG
-    //     imagejpeg($image, $outputPath, 100);
-
-    //     $outputPath = storage_path('app/public/' . $desPath . '/labeled.jpg');
-
-    //     imagejpeg($image, $outputPath, 100);
-
-    //     return $outputPath;
-    // }
 
     public function drawLabelPdf($imagePath, $desPath, $model)
     {

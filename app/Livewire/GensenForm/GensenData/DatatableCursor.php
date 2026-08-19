@@ -66,8 +66,6 @@ class Datatable extends Component
     public $filter_tanggal_kepulangan_dari;
     public $filter_tanggal_kepulangan_sampai;
 
-    // public int $length = 25;
-
     public ?string $cursor = null;
 
     public array $loadedIds = []; // prevent duplicates
@@ -80,11 +78,6 @@ class Datatable extends Component
         $this->isCanCreate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_DATA, PermissionHelper::TYPE_CREATE));
         $this->isCanUpdate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_DATA, PermissionHelper::TYPE_UPDATE));
         $this->isCanDelete = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_GENSEN_DATA, PermissionHelper::TYPE_DELETE));
-
-        // $this->sortBy = 'id';
-        // $this->sortDirection = 'ASC';
-        // $this->sortBy = 'created_at';
-        // $this->sortDirection = 'DESC';
     }
 
     #[On('export')]
@@ -242,33 +235,29 @@ class Datatable extends Component
                     }
                     $editHtml = "";
                     $editHtml = "
-<div class='col-auto' x-data=\"{ open: false }\"
-    wire:key='datatable_row_main_{$item['id']}'>
+                        <div class='col-auto' x-data=\"{ open: false }\"
+                            wire:key='datatable_row_main_{$item['id']}'>
 
-    <button type='button'
-        @click=\"open = !open; if(open){ \$wire.editRow('" . simple_encrypt($item['id']) . "') }\"
-        class='p-0 hover:bg-success/10 text-success rounded transition-colors'
-        data-bs-toggle='collapse'
-        data-bs-target='#collapse-" . $item['id'] . "'
-        style='cursor: pointer;'
-        >
+                            <button type='button'
+                                @click=\"open = !open; if(open){ \$wire.editRow('" . simple_encrypt($item['id']) . "') }\"
+                                class='p-0 hover:bg-success/10 text-success rounded transition-colors'
+                                data-bs-toggle='collapse'
+                                data-bs-target='#collapse-" . $item['id'] . "'
+                                style='cursor: pointer;'
+                                >
 
-        <span class='material-symbols-outlined text-lg'>edit_square</span>
-    </button>
+                                <span class='material-symbols-outlined text-lg'>edit_square</span>
+                            </button>
 
-    <div x-show='open' x-collapse class='mt-2'></div>
+                            <div x-show='open' x-collapse class='mt-2'></div>
 
-</div>";
-
+                        </div>";
 
                     $html = "<div class='row p-0 m-0 d-flex d-inline flex-nowrap justify-content-center'>
                         
                         $editHtml 
                         <h1>{$index}</h1>
                     </div>";
-
-
-
                     return $html;
                 },
             ],
@@ -284,7 +273,6 @@ class Datatable extends Component
                 'sortable' => false,
                 'name' => 'Progres Berkas',
                 'render' => function ($item) {
-                    // dd($item->isAttachmentCompleted());
                     $uploadedTypes = $item->attachments
                         ->where('status', '!=', GensenAttachmenStatus::STATUS_REJECTED)
                         ->pluck('type')
@@ -299,7 +287,6 @@ class Datatable extends Component
                         $statuses[] = [
                             'name' => $type->label(),
                             'status' => $completed,
-                            // 'color' => '#F1416C',
                             'color' => 'surface-container-high',
                             'nomor_urut' => $index + 1,
                         ];
@@ -309,7 +296,6 @@ class Datatable extends Component
                     foreach ($statuses as $proses) {
 
                         $color = $proses['status']
-                            // ? '#50CD89'
                             ? 'primary'
                             : $proses['color'];
 
@@ -318,9 +304,7 @@ class Datatable extends Component
         data-bs-toggle="tooltip"
             title="' . $proses['name'] . '">' . $proses['nomor_urut'] . '</span>';
                     }
-
                     $html .= '</div>';
-
                     return $html;
                 }
             ],

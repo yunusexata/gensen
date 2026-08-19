@@ -18,10 +18,8 @@ class GensenAttachmentService
         $localDisk = 'private';
 
         $remoteDisk = env('DEFAULT_STORE_DISK', 'private');
-        // $remoteDisk = 'supabase';
 
         $fullPath = Storage::disk($localDisk)->path($filePath);
-        // $storedName = basename($filePath);
         GensenFormAttachmentRepository::deleteBy([
             ['gensen_form_id', $gensenFormId],
             ['type', $type],
@@ -33,9 +31,7 @@ class GensenAttachmentService
         );
         GensenFormAttachmentRepository::create([
             'gensen_form_id' => $gensenFormId,
-
             'type' => $type,
-
             'disk' => $remoteDisk,
             'path' => $filePath,
 

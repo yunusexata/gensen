@@ -60,9 +60,7 @@ class GensenExportImportHistory extends Model
         });
         self::created(function ($model) {
             if ($model->type === 'export') {
-                // if ($model->job_key != ExportImportJobKey::EXPORT_LIST_DATA_DALAM_PENGAJUAN) {
                 ExportGensenJob::dispatch($model->id)->onQueue('excel');
-                // }
             }
             if ($model->type === 'import') {
                 ImportGensenJob::dispatch($model->id)->onQueue('excel');

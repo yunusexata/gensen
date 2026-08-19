@@ -56,16 +56,6 @@ class GensenFormSendEmailService
                 'reg.transaction_year'
             );
 
-        // return GensenForm::query()
-        //     ->leftJoinSub($remittanceAgg, 'remittances', function ($join) {
-        //         $join->on('remittances.subject_id', '=', 'gensen_forms.id')
-        //             ->where('remittances.subject_type', '=', GensenForm::class);
-        //     })
-        //     ->select([
-        //         'gensen_forms.*',
-        //         'remittances.remittance_total_amounts',
-        //         'remittances.remittance_receiver_names',
-        //     ])
         return GensenForm::query()
             ->join('gensen_form_details as gfd', function ($join) {
                 $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id')

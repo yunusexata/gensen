@@ -67,7 +67,6 @@ class ArtboardGeneratorService
             ->dispatch();
 
         // Opsional: Simpan ID batch ke task Anda jika ingin melacak progress bar di UI
-        // $task->update(['batch_id' => $batch->id]);
 
         return response()->json([
             'message' => 'Proses generate sedang berjalan di background.',

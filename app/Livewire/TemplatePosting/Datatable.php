@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Crypt;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-
 class Datatable extends Component
 {
     use WithDatatable;

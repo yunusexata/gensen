@@ -47,7 +47,6 @@ class DatatableDetail extends Component
             return;
         }
 
-        // IchijikinExtractionFileRepository::delete($this->targetDeleteId);
         Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
     }
 

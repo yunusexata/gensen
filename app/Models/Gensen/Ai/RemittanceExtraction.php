@@ -44,10 +44,6 @@ class RemittanceExtraction extends Model
             // We look through all extractions belonging to this subject
             $newTotal = $this->remittanceExtractionGroups->where('is_validate', true)
                 ->sum('total_amount');
-            // logger([
-            //     'new_total',
-            //     $newTotal
-            // ]);
 
             $this->update(['total_transfer' => $newTotal]);
         }

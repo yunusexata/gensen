@@ -108,11 +108,6 @@ class AiJob extends Model
                     });
 
                 ExtractionDocumentJob::dispatch($model)->onQueue('extract');
-
-                // ConvertPdfToImagesJob::dispatch(
-                //     self::class,
-                //     $model
-                // )->onQueue('pdf');
             }
             if ($model->job_type === self::JOB_TYPE_ICHIJIKIN_EXTRACTION) {
                 IchijikinExtractionResult::where('ichijikin_extraction_file_id', $model->subject_id)

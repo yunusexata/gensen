@@ -80,7 +80,6 @@ class DatatableBatchDetail extends Component
     public function getColumns(): array
     {
         return [
-
             [
                 'name' => 'Action',
                 'sortable' => false,

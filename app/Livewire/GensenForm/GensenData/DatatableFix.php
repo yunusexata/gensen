@@ -231,7 +231,6 @@ class DatatableFix extends Component
                             </button>
                         </div>";
                     }
-                    // @click=\"\$dispatch('edit-data', { id: '" . $id . "' })\"
                     $editHtml = "";
                     if ($this->isCanUpdate) {
                         $editHtml = "<div class='col-auto' wire:key='datatable_row_main_" . $item['id'] . "'>
@@ -264,7 +263,6 @@ class DatatableFix extends Component
                 'sortable' => false,
                 'name' => 'Progres Berkas',
                 'render' => function ($item) {
-                    // dd($item->isAttachmentCompleted());
                     $uploadedTypes = $item->attachments
                         ->where('status', '!=', GensenAttachmenStatus::STATUS_REJECTED)
                         ->pluck('type')
@@ -279,7 +277,6 @@ class DatatableFix extends Component
                         $statuses[] = [
                             'name' => $type->label(),
                             'status' => $completed,
-                            // 'color' => '#F1416C',
                             'color' => 'surface-container-high',
                             'nomor_urut' => $index + 1,
                         ];
@@ -289,7 +286,6 @@ class DatatableFix extends Component
                     foreach ($statuses as $proses) {
 
                         $color = $proses['status']
-                            // ? '#50CD89'
                             ? 'primary'
                             : $proses['color'];
 
@@ -298,26 +294,10 @@ class DatatableFix extends Component
         data-bs-toggle="tooltip"
             title="' . $proses['name'] . '">' . $proses['nomor_urut'] . '</span>';
                     }
-
                     $html .= '</div>';
-
                     return $html;
                 }
             ],
-            // [
-            //     'key' => 'is_should_filled',
-            //     'name' => 'Pengisian',
-            //     'render' => function ($item) {
-            //         return "<p class='btn btn-sm py-1 mb-0 btn-" . ($item->is_should_filled ? 'success' : 'danger') . "'>" . ($item->is_should_filled ? 'Sudah' : 'Belum') . "</p>";
-            //     }
-            // ],
-            // [
-            //     'key' => 'is_submitted',
-            //     'name' => 'Submit',
-            //     'render' => function ($item) {
-            //         return "<p class='btn btn-sm py-1 mb-0 btn-" . ($item->is_submitted ? 'success' : 'danger') . "'>" . ($item->is_submitted ? 'Sudah' : 'Belum') . "</p>";
-            //     }
-            // ],
             [
                 'key' => 'status',
                 'name' => 'Status',
@@ -373,20 +353,6 @@ class DatatableFix extends Component
                     return $item->tanggal_pengajuan ? Carbon::parse($item->tanggal_pengajuan)->format('Y-m-d') : '-';
                 }
             ],
-            // [
-            //     'key' => 'tanggal_cair',
-            //     'name' => 'Tanggal Cair',
-            //     'render' => function ($item) {
-            //         return $item->tanggal_cair ? Carbon::parse($item->tanggal_cair)->format('Y-m-d') : '-';
-            //     }
-            // ],
-            // [
-            //     'key' => 'nominal_cair',
-            //     'name' => 'Nominal Cair',
-            //     'render' => function ($item) {
-            //         return $item->nominal_cair ? number_format($item->nominal_cair, 0, ',', '.') : '-';
-            //     }
-            // ],
             [
                 'key' => 'tanggal_kepulangan',
                 'name' => 'Tanggal Kepulangan',
@@ -407,15 +373,6 @@ class DatatableFix extends Component
                 'key' => 'hubungan_penerima',
                 'name' => 'Hubungan Penerima',
             ],
-            // [
-            //     'key' => 'tahun_gensen',
-            //     'name' => 'Tahun Gensen',
-            // ],
-            // [
-            //     'key' => 'tahun_transfer',
-            //     'name' => 'Tahun Transfer',
-            // ],
-
             [
                 'key' => 'nama_instagram',
                 'name' => 'Nama Instagram',
@@ -703,14 +660,12 @@ class DatatableFix extends Component
             'nominal_cair' => valueToImask($row['nominal_cair']),
             'created_at' => $row['created_at'] ? Carbon::parse($row['created_at'])->format('Y-m-d') : null,
             'nominal_gensen' => valueToImask($row['nominal_gensen']),
-            // 'jumlah_kirim_uang' => valueToImask($row['jumlah_kirim_uang']),
             'tanggal_kepulangan' => $row['tanggal_kepulangan'] ? Carbon::parse($row['tanggal_kepulangan'])->format('Y-m-d') : null,
             // REK PENERIMA
             'no_rekening_penerima' => $row['no_rekening_penerima'],
             'nama_bank_penerima' => $row['nama_bank_penerima'],
             'nama_penerima' => $row['nama_penerima'],
             'hubungan_penerima' => $row['hubungan_penerima'],
-            // 'status' => $row['status'],
             'tahun_gensen' => $row['tahun_gensen'],
             'tahun_transfer' => $row['tahun_transfer'],
             'pic_code' => $row['pic_code'],
@@ -740,8 +695,6 @@ class DatatableFix extends Component
     public function render()
     {
         $data = $this->datatableGetData();
-
-        // $this->hydrateEditedRows($data);
 
         return view($this->getView(), [
             'data' => $data,

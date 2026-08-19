@@ -83,9 +83,6 @@ class Form extends Component
     public $hubungan_penerima;
 
     public $status;
-    // #[Validate('required', message: 'Tahun Gensen Harus Diisi', onUpdate: false)]
-    // public $tahun_gensen;
-    // public $tahun_transfer;
     #[Validate('required', message: 'Urus sendiri/konsultan lain Harus Diisi', onUpdate: false)]
     public $is_previously_processed;
 
@@ -133,10 +130,6 @@ class Form extends Component
     public $rekap_pengiriman_uang_old_note = [];
     public $rekening_indonesia_old_note = [];
 
-    // public $cv = [];
-    // public $cv_old = [];
-    // public $cv_removes = [];
-
     public $input_password;
     public $max_attempts = 3;
     public $authorized = false;
@@ -179,7 +172,6 @@ class Form extends Component
             $this->gensenFormId = $id;
             $this->authorized = true;
             $this->dispatch('onAuthorized');
-            // consoleLog($this, 'upload att');
             $this->validatationStepper(1);
         } else {
             $this->gensen_form_details[] = [
@@ -282,11 +274,6 @@ class Form extends Component
     }
     public function validateCurrentStep()
     {
-        // consoleLog($this, [
-        //     'current',
-        //     $this->currentStep
-        // ]);
-
         $this->validatationStepper($this->currentStep);
 
 
@@ -296,8 +283,6 @@ class Form extends Component
     }
     private function validatationStepper($index)
     {
-        // consoleLog($this, $this->isUploadAttachment);
-        // consoleLog($this, ['index', $index]);
         if ($this->isUploadAttachment) {
             match ($index) {
 
@@ -317,11 +302,6 @@ class Form extends Component
     }
     private function validateStepPersonal()
     {
-        // consoleLog($this, [
-        //     'firstcheck',
-        //     $this->isFirstCheck
-        // ]);
-        // try {
         if (!$this->isFirstCheck) {
             $this->firstCheck(); // your existing logic
         } else {
@@ -331,11 +311,6 @@ class Form extends Component
 
             $this->saveData(false);
         }
-        // } catch (\Illuminate\Validation\ValidationException $e) {
-
-        //     Alert::fail($this, "Gagal", $e->getMessage());
-        //     return;
-        // }
     }
 
     private function validateStepAttachment()
@@ -353,8 +328,6 @@ class Form extends Component
     public function handleStepClick($step)
     {
         $target = $step;
-        // consoleLog($this, $target);
-        // consoleLog($this, $this->currentStep);
 
         $this->validatationStepper(1);
         $this->currentStep = $target;
@@ -363,18 +336,10 @@ class Form extends Component
     }
     public function validatePersonalInformation($stepType)
     {
-        // consoleLog($this, 'valid');
-        // $this->validate();
-        // $this->saveData(false);
-        // consoleLog($this, [
-        //     'index',
-        //     $index
-        // ]);
         $this->dispatch($stepType);
     }
     public function submitForm()
     {
-        // consoleLog($this, 'submit dong');
         $this->saveData(true, true);
         Alert::confirmation(
             $this,
@@ -386,13 +351,9 @@ class Form extends Component
             "Oke",
             "Tutup",
         );
-
-        // session()->flash('success', 'Form submitted!');
     }
     public function firstCheck()
     {
-        // consoleLog($this, ['first', $this->gensenFormId]);
-
         if ($this->gensenFormId) {
             $gensenForm = GensenFormRepository::find($this->gensenFormId);
 
@@ -414,8 +375,7 @@ class Form extends Component
                 ->where('status', '!=', GensenForm::STATUS_GENSEN_CAIR)
                 ->first();
         }
-        // consoleLog('validate');
-        // consoleLog($this, ['gensen_form firstcheck', $gensenForm]);
+
         if ($gensenForm) {
 
             if ($gensenForm->status !== GensenForm::STATUS_BELUM_LENGKAP) {
@@ -443,8 +403,6 @@ class Form extends Component
             $this->hubungan_penerima = $gensenForm->hubungan_penerima;
 
             $this->status = $gensenForm->status;
-            // $this->tahun_gensen = $gensenForm->tahun_gensen;
-            // $this->tahun_transfer = $gensenForm->tahun_transfer;
 
             $this->is_previously_processed = $gensenForm->is_previously_processed ? 'sudah' : 'belum';
             $this->is_should_filled = $gensenForm->is_should_filled;
@@ -458,7 +416,6 @@ class Form extends Component
             }
 
             $attachments = $gensenForm->attachmentGroups();
-            // consoleLog($this, $attachments);
             $this->kertas_gensen_old = $attachments[GensenAttachmentType::KERTAS_GENSEN->value] ?? [];
             $this->kartu_keluarga_old = $attachments[GensenAttachmentType::KARTU_KELUARGA->value] ?? [];
             $this->rekap_pengiriman_uang_old = $attachments[GensenAttachmentType::REKAP_PENGIRIMAN_UANG->value] ?? [];
@@ -469,7 +426,6 @@ class Form extends Component
             $this->rekening_indonesia_old = $attachments[GensenAttachmentType::REKENING_INDONESIA->value] ?? [];
         } else {
             if ($this->isAdmin) {
-                // consoleLog($this, 'buat baru');
                 $this->saveData(false);
                 if (!$this->is_should_filled) {
                     throw \Illuminate\Validation\ValidationException::withMessages([
@@ -484,13 +440,11 @@ class Form extends Component
                     ['token', $this->objId],
                 ]);
                 if ($form->max_usage <= $form->used_count && $form->status == GensenFormLink::STATUS_SUCCESS) {
-                    // abort(403, "Form {$form['name']} sudah Maksimal");
 
                     return redirect()
                         ->route('form.max-usage')
                         ->with('error', "Form {$form['name']} sudah maksimal");
                 } else {
-                    // consoleLog($this, 'buat baru');
                     $this->saveData(false);
                     if (!$this->is_should_filled) {
                         throw \Illuminate\Validation\ValidationException::withMessages([
@@ -505,9 +459,6 @@ class Form extends Component
     public function checkPassword()
     {
         try {
-            // $token = $this->objId;
-            // $this->checkForm($token);
-
             // ✅ password validation
             if ($this->input_password !== $this->password) {
 
@@ -652,21 +603,17 @@ class Form extends Component
                     ->toArray();
 
                 $data['uploaded'] = count($data['groups']) > 0;
-                // consoleLog($this, $data);
-                // consoleLog($this, $this->{$property});
                 $this->{$property} = $data;
                 return;
             }
 
             // CASE 2: single file
             if (isset($data['id']) && $data['id'] === $attachmentId) {
-                // consoleLog($this, 'GAK GROUPS');
                 $this->{$property}['id'] = null;
                 $this->{$property}['uploaded'] = false;
                 $this->{$property}['url'] = null;
             }
         }
-        // consoleLog($this, $this->{$property});
     }
 
     public function saveData($withAttachment = false, $isSubmitted = null)
@@ -674,8 +621,6 @@ class Form extends Component
         try {
 
             DB::transaction(function () use ($isSubmitted, $withAttachment) {
-                // $nomor_whatsapp = preg_replace('/[^\d]/', '', $this->nomor_whatsapp);
-                // $nomor_whatsapp_darurat = preg_replace('/[^\d]/', '', $this->nomor_whatsapp_darurat);
                 // Form Candidate
                 $validateData = [
                     // Form J-Expert
@@ -700,9 +645,6 @@ class Form extends Component
 
                     'is_previously_processed' => $this->is_previously_processed === 'sudah',
 
-                    // 'tahun_gensen' => $this->tahun_gensen,
-                    // 'tahun_transfer' => $this->tahun_transfer,
-
                 ];
                 if ($this->gensenFormId) {
                     if (!is_null($isSubmitted)) {
@@ -710,7 +652,6 @@ class Form extends Component
                             'is_submitted' => $isSubmitted,
                         ]);
                     }
-                    // consoleLog($this, $validateData);
                     GensenFormRepository::update($this->gensenFormId, $validateData);
                 } else {
                     $remarks = Auth::check()
@@ -752,15 +693,11 @@ class Form extends Component
                         }
                     }
                 }
-                // consoleLog($this, $this->gensenFormId);
                 $gensenForm = GensenFormRepository::find($this->gensenFormId);
                 $this->is_should_filled = $gensenForm->is_should_filled;
                 $this->is_submitted = $gensenForm->is_submitted;
 
                 $this->pic_phone = $gensenForm->getPicAttribute()->no_whatsapp;
-
-                // consoleLog($this, ['gensenForm nih', $gensenForm]);
-                // consoleLog($this, $withAttachment ? 'YA ATT' : 'TIDAK ATT');
 
                 if ($withAttachment) {
 
@@ -806,8 +743,6 @@ class Form extends Component
             Alert::fail($this, "Gagal", $e->getMessage());
         } catch (ValidationException $e) {
             DB::rollBack();
-
-            // consoleLog($this, ['validation', $e->errors()]);
 
             $message = collect($e->errors())
                 ->flatten()
@@ -865,7 +800,6 @@ class Form extends Component
                 $files = is_array($files) ? $files : [$files];
 
                 foreach ($files as $file) {
-                    // consoleLog($this, $file);
                     if ($type === GensenAttachmentType::REKAP_PENGIRIMAN_UANG) {
                         foreach ($file['file'] as $item) {
                             $filePath = "gensen/{$gensenForm->id}/{$type->value}/" . $file['remittance_type'];
@@ -884,11 +818,6 @@ class Form extends Component
         $storedName = Str::uuid() . '.' . $file->extension();
 
         $filePath = $path ? $path :  "gensen/{$gensenForm->id}/{$type->value}";
-        // $path = $file->storeAs(
-        //     $filePath,
-        //     $storedName,
-        //     'private'
-        // );
 
         $disk = env('DEFAULT_STORE_DISK', 'private');
         $path = Storage::disk($disk)->putFileAs(
@@ -925,45 +854,12 @@ class Form extends Component
                 'gensen_form_id' => $gensenForm->id,
                 'type' => $type->value,
             ], $validatedData);
-
-            // $this->dispatch('consoleLog', [
-            //     $try,
-            //     $validatedData,
-            //     [
-            //         ['gensen_form_id', $gensenForm->id],
-            //         ['type', $type->value],
-            //     ]
-            // ]);
         } else {
             GensenFormAttachmentRepository::create($validatedData);
         }
     }
 
-    public function cobaStore()
-    {
-        // foreach ($this->photo as $item) {
-        //     consoleLog(
-        //         $this,
-        //         [
-        //             'compress',
-        //             $item->getClientOriginalName(),
-        //             $item->getSize(),
-        //             $item->temporaryUrl(),
-        //         ]
-        //     );
-        // }
-        // foreach ($this->kertas_gensen as $item) {
-        //     consoleLog(
-        //         $this,
-        //         [
-        //             'original',
-        //             $item->getClientOriginalName(),
-        //             $item->getSize(),
-        //             $item->temporaryUrl(),
-        //         ]
-        //     );
-        // }
-    }
+    public function cobaStore() {}
 
     public function render()
     {

@@ -123,9 +123,6 @@ class GensenFormAttachment extends Model
     public function saveInfo($object, $data = false, $prefix = "")
     {
         if ($data) {
-            // foreach ($data as $item) {
-            //     $object[$prefix . "" . $item] = $this->$item;
-            // }
         } else {
             $object[$prefix . 'type'] = $this->type?->value;
             $object[$prefix . 'original_name'] = $this->original_name;

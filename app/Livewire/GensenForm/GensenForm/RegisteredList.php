@@ -28,7 +28,6 @@ class RegisteredList extends Component
     {
         if ($this->gensenFormId) {
             $this->data = [];
-            // $gensenForm = GensenFormRepository::find(Crypt::decrypt($this->gensenFormId));
         }
         if ($this->token) {
             $token = $this->token;

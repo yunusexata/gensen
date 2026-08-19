@@ -157,9 +157,7 @@ class ImportService
     private function validateListDataGensenCair(array $row)
     {
         return Validator::make($row, [
-            // 'id_customer' => 'required|exists:gensen_forms,id_customer',
             'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
-            // 'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
             'nama_lengkap' => [
                 'required',
 
@@ -179,8 +177,6 @@ class ImportService
             'tanggal_cair' => 'required',
             'nominal_cair' => 'required',
         ], [
-            // 'id_customer.required' => 'Id customer harus di isi',
-            // 'id_customer.exists' => 'Id customer tidak terdaftar',
             'no_input_jepang.required' => 'No Input Jepang harus di isi',
             'no_input_jepang.exists' => 'No Input Jepang tidak terdaftar',
             'nama_lengkap.required' => 'Nama Lengkap harus di isi',
@@ -220,8 +216,6 @@ class ImportService
 
             $updated = GensenFormRepository::updateBy([
                 ['id_customer', $row['id_customer']],
-                // ['nama_lengkap', $row['nama_lengkap']],
-                // ['tanggal_lengkap', '!=', null],
             ], $validatedData);
 
             if ($updated > 0) {
@@ -259,8 +253,6 @@ class ImportService
 
             $updated = GensenFormRepository::updateBy([
                 ['id_customer', $row['id_customer']],
-                // ['nama_lengkap', $row['nama_lengkap']],
-                // ['tanggal_lengkap', '!=', null],
             ], $validatedData);
 
             if ($updated > 0) {
@@ -280,10 +272,6 @@ class ImportService
         $customer_ids = [];
 
         foreach ($import->rows as $index => $row) {
-            // logger([
-            //     'data row',
-            //     $row
-            // ]);
             $validator = $this->validateListDataNoInputJapan($row->toArray());
 
             if ($validator->fails()) {
@@ -323,7 +311,6 @@ class ImportService
                     'keterangan' => $row['keterangan'],
                 ];
             } elseif ($status === 'verified') {
-
                 // $validatedData = [
                 //     'status' => GensenForm::STATUS_VERIFIED,
                 //     'keterangan' => $row['keterangan'],
@@ -337,9 +324,6 @@ class ImportService
 
             $updated = GensenFormRepository::updateBy([
                 ['id_customer', $row['id_customer']],
-                // ['nama_lengkap', $row['nama_lengkap']],
-                // ['tanggal_lengkap', '!=', null],
-                // ['tanggal_verified', '!=', null],
             ], $validatedData);
 
             if ($updated > 0) {
@@ -379,8 +363,6 @@ class ImportService
 
             $updated = GensenFormRepository::updateBy([
                 ['id_customer', $row['id_customer']],
-                // ['nama_lengkap', $row['nama_lengkap']],
-                // ['tanggal_lengkap', '!=', null],
             ], $validatedData);
 
             if ($updated > 0) {
@@ -413,7 +395,6 @@ class ImportService
 
             $gensenForm = GensenFormRepository::findBy([
                 ['no_input_jepang', $row['no_input_jepang']],
-                // ['nama_lengkap', $row['nama_lengkap']],
             ]);
             preg_match('/^\d+/', trim($row['tahun_gensen']), $tahun_reiwa);
             $validatedData = [
@@ -422,26 +403,12 @@ class ImportService
                 'keterangan' => $row['keterangan'],
             ];
 
-            // logger([
-            //     'cair',
-            //     [
-            //         ['gensen_form_id', $gensenForm->id],
-            //         ['tahun_gensen', $tahun_reiwa[0]],
-            //     ],
-            //     $validatedData
-            // ]);
             $data = GensenFormDetailRepository::findBy([
-                // ['id_customer', $row['id_customer']],
                 ['gensen_form_id', $gensenForm->id],
                 ['tahun_gensen', $tahun_reiwa[0]],
             ]);
-            // logger([
-            //     'jika data',
-            //     $data
-            // ]);
 
             $updated = GensenFormDetailRepository::updateBy([
-                // ['id_customer', $row['id_customer']],
                 ['gensen_form_id', $gensenForm->id],
                 ['tahun_gensen', $tahun_reiwa[0]],
             ], $validatedData);
@@ -452,14 +419,6 @@ class ImportService
                     $q->whereNull('nominal_cair')
                         ->orWhere('nominal_cair', 0);
                 });
-            // logger([
-            //     'query belum cair',
-            //     $query_belum_cair->get()
-            // ]);
-            // logger([
-            //     'query count',
-            //     $query->count(),
-            // ]);
             if (!$query_belum_cair->exists() && $gensenForm->gensenFormDetails()->count() > 0) {
                 $gensenForm->update([
                     'status' => GensenForm::STATUS_GENSEN_CAIR

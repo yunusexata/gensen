@@ -247,36 +247,22 @@
                 }
 
                 url = image.src;
-                // console.log(['url',url]);
                 image.src = url;
-                // preview_type.innerHTML = url;
 
-                // image.onload = () => {
-                // cropper = new Cropper(image, {
-                //     viewMode:1,
-                //     autoCropArea:1,
-                //     responsive:true,
-
-                //     movable: true,
-                //     cropBoxMovable: true,
-                //     cropBoxResizable: true,
-
-                //     dragMode: 'move',
-                // });
                 cropper = new Cropper(image, {
-    viewMode: 0,
-                    autoCropArea:1,
+                viewMode: 0,
+                autoCropArea:1,
 
-    dragMode: 'move',
-    movable: true,
-    zoomable: true,
-    scalable: true,
+                dragMode: 'move',
+                movable: true,
+                zoomable: true,
+                scalable: true,
 
-    cropBoxMovable: true,
-    cropBoxResizable: true,
+                cropBoxMovable: true,
+                cropBoxResizable: true,
 
-    background: false,
-});
+                background: false,
+            });
         });
     </script>
     @endscript

@@ -164,11 +164,9 @@ class DatatableHistory extends Component
                             </button>
                         </div>";
                     }
-
                     $html = "<div class='row'>
                         $destroyHtml 
                     </div>";
-
                     return $html;
                 },
             ],
@@ -199,15 +197,15 @@ class DatatableHistory extends Component
                 'name' => 'Tipe',
                 'render' => function ($item) {
                     return "  <span 
-        x-data 
-        x-bind:class=\"{
-            'badge badge-success': ('{$item->type}') === 'export',
-            'badge badge-primary': ('{$item->type}') === 'import',
-        }\"
-        x-text=\"('{$item->type}')\"
-    >
-    </span>
-";
+                            x-data 
+                            x-bind:class=\"{
+                                'badge badge-success': ('{$item->type}') === 'export',
+                                'badge badge-primary': ('{$item->type}') === 'import',
+                            }\"
+                            x-text=\"('{$item->type}')\"
+                        >
+                        </span>
+                    ";
                 }
             ],
             [
@@ -215,19 +213,19 @@ class DatatableHistory extends Component
                 'name' => 'Status',
                 'render' => function ($item) {
                     return "
-    <span 
-        x-data 
-        x-bind:class=\"{
-            'badge badge-warning': (\$wire.statuses[{$item->id}]?.status ?? '{$item->status->value}') === 'pending',
-            'badge badge-info': (\$wire.statuses[{$item->id}]?.status ?? '{$item->status->value}') === 'processing',
-            'badge badge-success': (\$wire.statuses[{$item->id}]?.status ?? '{$item->status->value}') === 'done',
-            'badge badge-danger': (\$wire.statuses[{$item->id}]?.status ?? '{$item->status->value}') === 'failed',
-            'badge badge-secondary': !['pending','processing','done','failed'].includes(\$wire.statuses[{$item->id}]?.status ?? '{$item->status->value}')
-        }\"
-        x-text=\"(\$wire.statuses[{$item->id}]?.status ?? '{$item->status->value}')\"
-    >
-    </span>
-";
+                        <span 
+                            x-data 
+                            x-bind:class=\"{
+                                'badge badge-warning': (\$wire.statuses[{$item->id}]?.status ?? '{$item->status->value}') === 'pending',
+                                'badge badge-info': (\$wire.statuses[{$item->id}]?.status ?? '{$item->status->value}') === 'processing',
+                                'badge badge-success': (\$wire.statuses[{$item->id}]?.status ?? '{$item->status->value}') === 'done',
+                                'badge badge-danger': (\$wire.statuses[{$item->id}]?.status ?? '{$item->status->value}') === 'failed',
+                                'badge badge-secondary': !['pending','processing','done','failed'].includes(\$wire.statuses[{$item->id}]?.status ?? '{$item->status->value}')
+                            }\"
+                            x-text=\"(\$wire.statuses[{$item->id}]?.status ?? '{$item->status->value}')\"
+                        >
+                        </span>
+                    ";
                 }
             ],
             [
@@ -239,17 +237,8 @@ class DatatableHistory extends Component
                     $encryptedId = Crypt::encrypt($item->id);
                     $url = route('gensen_form_export_import.download', ['id' => $encryptedId]);
                     $download = "<a download='$item->filename' href='{$url}' class='btn btn-success btn-sm'>
-                    Download
-                </a>";
-                    //                 $html = "
-                    //     <div x-data>
-                    //         <template x-if=\"\$wire.statuses[{$item->id}]?.status === 'done' && $item->type == 'export'\">
-                    //             <a download='$item->filename' href='{$url}' class='btn btn-success btn-sm'>
-                    //                 Download
-                    //             </a>
-                    //         </template>
-                    //     </div>
-                    // ";
+                        Download
+                    </a>";
                     $html = "";
                     if ($item->status === JobStatus::DONE) {
                         $html .= $download;

@@ -93,8 +93,6 @@ class GensenForm extends Model
         'tanggal_pengajuan',  // Tanggal Pengajuan Ke Kantor Pajak
 
         // Step 6 - Acc Exata
-        // 'nominal_cair',
-        // 'tanggal_cair',
 
         // MONDAI
         'keterangan',
@@ -271,25 +269,6 @@ class GensenForm extends Model
                 $model->remarks->incrementUsedCount();
             }
         });
-        // self::updated(function ($model) {
-        // if ($model->status === self::STATUS_LENGKAP) {
-
-        // $aiJob = AiJob::create([
-
-        //     'provider' => 'gemini-ai',
-
-        //     'model' => env('GEMINI_MODEL', 'gemini-3.1-flash-lite'),
-
-        //     'job_type' => AiJob::JOB_TYPE_REMITTANCE_EXTRACTION,
-
-        //     'status' => 'pending',
-
-        //     'subject_type' => $model::class,
-
-        //     'subject_id' => $model->id,
-        // ]);
-        // }
-        // });
         self::deleted(function ($model) {
             if ($model->remarks_type === GensenFormLink::class) {
                 $model->remarks->decrementUsedCount();
@@ -300,9 +279,6 @@ class GensenForm extends Model
     public function copyInfo($object, $data = false, $prefix = "")
     {
         if ($data) {
-            // foreach ($data as $item) {
-            //     $object[$prefix . "" . $item] = $this->$item;
-            // }
         } else {
 
             // ---------- //
@@ -402,13 +378,9 @@ class GensenForm extends Model
     public function handleMergePersyaratanGensen()
     {
         if (
-            // $this->isAttachmentReady(GensenAttachmentType::mergeIdentity())
-            // && 
-            (
-                !$this->persyaratanGensenJob() || !$this->persyaratanGensenJob()
-                    ->where('status', '=', JobStatus::PENDING)
-                    ->exists()
-            )
+            !$this->persyaratanGensenJob() || !$this->persyaratanGensenJob()
+                ->where('status', '=', JobStatus::PENDING)
+                ->exists()
         ) {
             PersyaratanGensenJobRepository::create([
                 'gensen_form_id' => $this->id,
@@ -420,13 +392,9 @@ class GensenForm extends Model
     public function handleMergeSeluruhBerkas()
     {
         if (
-            // $this->isAttachmentReady(GensenAttachmentType::mergeAllIdentity())
-            // && 
-            (
-                !$this->seluruhBerkasJob() || !$this->seluruhBerkasJob()
-                    ->where('status', '=', JobStatus::PENDING)
-                    ->exists()
-            )
+            !$this->seluruhBerkasJob() || !$this->seluruhBerkasJob()
+                ->where('status', '=', JobStatus::PENDING)
+                ->exists()
         ) {
             SeluruhBerkasJobRepository::create([
                 'gensen_form_id' => $this->id,
@@ -612,8 +580,6 @@ class GensenForm extends Model
     public function attachmentsConvertedRekapanPengirimanUang()
     {
         return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')->where('type', GensenAttachmentType::REKAP_PENGIRIMAN_UANG);
-        // ->where('mime_type', '!=', 'application/pdf');
-        // ->where('status', GensenAttachmenStatus::STATUS_CONVERTED);
     }
     public function attachmentsCopy()
     {

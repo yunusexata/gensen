@@ -47,9 +47,6 @@ class ExportDalamPengajuanModal extends Component
             $validator = Validator::make($d, [
                 'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
                 'nama_lengkap' => 'required|exists:gensen_forms,nama_lengkap',
-                // 'tanggal_lengkap' => 'required',
-                // 'tanggal_verified' => 'required',
-                // 'no_input_jepang' => 'required',
                 'tanggal_tarik_data' => 'required',
                 'label' => 'required',
             ], [
@@ -95,7 +92,6 @@ class ExportDalamPengajuanModal extends Component
                     }
                 }
             }
-            // $disk = 'env('DEFAULT_STORE_DISK', 'private');'
             $disk = 'private';
 
             $extension = $this->inputFileBulkStatus
@@ -103,12 +99,6 @@ class ExportDalamPengajuanModal extends Component
 
             $fileName = ExportImportJobKey::EXPORT_LIST_DATA_DALAM_PENGAJUAN->value . '-' . now()->format('Ymd') . '.' . $extension;
 
-            // $filePath = $this->inputFileBulkStatus
-            //     ->storeAs(
-            //         '',
-            //         $fileName,
-            //         $disk
-            //     );
             $filePath = Storage::disk($disk)->putFileAs(
                 'exports/gensen/template_dalam_pengajuan',
                 $this->inputFileBulkStatus,
@@ -131,11 +121,6 @@ class ExportDalamPengajuanModal extends Component
                 'disk_template' => $disk,
                 'start_at' => now(),
 
-                // 'file_name' => $fileName,
-                // 'file_path' => $filePath,
-                // 'disk' => $disk,
-                // 'amount' => $successCount,
-                // 'finish_at' => now(),
             ]);
             $path = $this->inputFileBulkStatus->getRealPath();
             unlink($path);
@@ -149,20 +134,6 @@ class ExportDalamPengajuanModal extends Component
             $this->closeExportDalamPengajuanModal();
 
             Alert::information($this, 'Data berhasil disimpan');
-            // return ExportHelper::export(
-            //     ExportHelper::TYPE_EXCEL,
-            //     $fileName,
-            //     $this->previewBulkStatusRows,
-            //     'app.gensen-form.gensen-data.export-dalam-pengajuan',
-            //     [
-            //         'title' => 'Data Gensen Dalam Pengajuan',
-            //         'type' => ExportHelper::TYPE_EXCEL,
-            //     ],
-            //     [
-            //         'size' => 'legal',
-            //         'orientation' => 'landscape',
-            //     ]
-            // );
         } catch (\Exception $e) {
             DB::rollBack();
             Alert::fail($this, "Gagal", $e->getMessage());

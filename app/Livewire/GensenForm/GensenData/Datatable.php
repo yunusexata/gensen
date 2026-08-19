@@ -216,8 +216,6 @@ class Datatable extends Component
                 // 'class' => 'd-flex  border border-danger',
                 'render' => function ($item, $index) {
                     $id = Crypt::encrypt($item->id);
-
-                    // @click=\"open = !open; if(open){ \$wire.editRow('" . simple_encrypt($item['id']) . "') }\"
                     $editHtml = "
                         <div class='col-auto m-0 p-0 d-flex d-inline flex-nowrap justify-content-center align-items-end' x-data=\"{ open: false }\"
                             wire:key='datatable_row_main_{$item['id']}'>
@@ -276,7 +274,6 @@ class Datatable extends Component
                         $statuses[] = [
                             'name' => $type->label(),
                             'status' => $completed,
-                            // 'color' => '#F1416C',
                             'color' => 'surface-container-high',
                             'nomor_urut' => $index + 1,
                         ];
@@ -301,20 +298,6 @@ class Datatable extends Component
                     return $html;
                 }
             ],
-            // [
-            //     'key' => 'is_should_filled',
-            //     'name' => 'Pengisian',
-            //     'render' => function ($item) {
-            //         return "<p class='btn btn-sm py-1 mb-0 btn-" . ($item->is_should_filled ? 'success' : 'danger') . "'>" . ($item->is_should_filled ? 'Sudah' : 'Belum') . "</p>";
-            //     }
-            // ],
-            // [
-            //     'key' => 'is_submitted',
-            //     'name' => 'Submit',
-            //     'render' => function ($item) {
-            //         return "<p class='btn btn-sm py-1 mb-0 btn-" . ($item->is_submitted ? 'success' : 'danger') . "'>" . ($item->is_submitted ? 'Sudah' : 'Belum') . "</p>";
-            //     }
-            // ],
             [
                 'key' => 'status',
                 'name' => 'Status',
@@ -323,11 +306,6 @@ class Datatable extends Component
                     return "<p class='btn btn-sm py-1 mb-0 text-nowrap' style='background-color:" . $item->statusColor() . "'>" . $item->status . "</p>";
                 }
             ],
-            // [
-            //     'key' => 'id_customer',
-            //     'name' => 'Id Customer',
-            // ],
-
             [
                 'key' => 'no_input_jepang',
                 'name' => 'No Input Jepang',
@@ -343,10 +321,6 @@ class Datatable extends Component
                 'name' => 'Tgl Lahir',
                 'class' => 'text-center',
             ],
-            // [
-            //     'key' => 'email',
-            //     'name' => 'Email',
-            // ],
             [
                 'key' => 'tanggal_kepulangan',
                 'name' => 'Tgl Kepulangan',
@@ -412,18 +386,6 @@ class Datatable extends Component
                 'render' => function ($item) {
 
                     $tarik_data_details = explode(';', $item->tarik_data_details);
-
-                    // $q = $item->gensenFormDetails()
-                    //     ->whereNull('deleted_at')
-                    //     ->whereNull('tanggal_tarik_data')
-                    //     ->where(function ($q) {
-                    //         $q->whereNull('label')
-                    //             ->orWhere('label', '=', '');
-                    //     });
-                    // $html = json_encode([
-                    //     $q->exists(),
-                    //     $q->count()
-                    // ], true);
                     $html = '';
                     foreach ($tarik_data_details as $index => $data) {
                         $html .= "<div class='text-nowrap'>{$data}</div>";
@@ -495,75 +457,6 @@ class Datatable extends Component
                 'name' => 'Kode PIC',
                 'class' => 'text-center',
             ],
-            // [
-            //     'key' => 'tanggal_lengkap',
-            //     'name' => 'Tanggal Lengkap',
-            //     'render' => function ($item) {
-            //         return $item->tanggal_lengkap ? Carbon::parse($item->tanggal_lengkap)->format('Y-m-d') : '-';
-            //     }
-            // ],
-            // [
-            //     'key' => 'tanggal_verified',
-            //     'name' => 'Tanggal Verified',
-            //     'render' => function ($item) {
-            //         return $item->tanggal_verified ? Carbon::parse($item->tanggal_verified)->format('Y-m-d') : '-';
-            //     }
-            // ],
-            // [
-            //     'key' => 'tanggal_pengajuan',
-            //     'name' => 'Tanggal Pengajuan',
-            //     'render' => function ($item) {
-            //         return $item->tanggal_pengajuan ? Carbon::parse($item->tanggal_pengajuan)->format('Y-m-d') : '-';
-            //     }
-            // ],
-            // [
-            //     'key' => 'tanggal_cair',
-            //     'name' => 'Tanggal Cair',
-            //     'render' => function ($item) {
-            //         return $item->tanggal_cair ? Carbon::parse($item->tanggal_cair)->format('Y-m-d') : '-';
-            //     }
-            // ],
-            // [
-            //     'key' => 'nominal_cair',
-            //     'name' => 'Nominal Cair',
-            //     'render' => function ($item) {
-            //         return $item->nominal_cair ? number_format($item->nominal_cair, 0, ',', '.') : '-';
-            //     }
-            // ],
-
-            // [
-            //     'key' => 'tahun_gensen',
-            //     'name' => 'Tahun Gensen',
-            // ],
-            // [
-            //     'key' => 'tahun_transfer',
-            //     'name' => 'Tahun Transfer',
-            // ],
-
-            // [
-            //     'key' => 'nama_instagram',
-            //     'name' => 'Nama Instagram',
-            // ],
-            // [
-            //     'key' => 'nama_tiktok',
-            //     'name' => 'Nama Tiktok',
-            // ],
-            // [
-            //     'key' => 'nomor_whatsapp',
-            //     'name' => 'Nomor Whatsapp',
-            // ],
-            // [
-            //     'key' => 'nomor_whatsapp_darurat',
-            //     'name' => 'Nomor Whatsapp Darurat',
-            // ],
-            // [
-            //     'searchable' => false,
-            //     'key' => 'remarks_type',
-            //     'name' => 'Asal Pembuatan',
-            //     'render' => function ($item) {
-            //         return $item->remarks_type == User::class ? 'Manual' : 'Client';
-            //     }
-            // ],
         ];
     }
 
@@ -769,7 +662,6 @@ class Datatable extends Component
 
     public function datatableGetData()
     {
-        // return $this->datatablePaginate($this->datatableGetProcessedQuery());
         return $this->datatableGetProcessedQuery()
             ->cursorPaginate($this->length);
     }
@@ -814,7 +706,6 @@ class Datatable extends Component
             'nama_bank_penerima' => $row['nama_bank_penerima'],
             'nama_penerima' => $row['nama_penerima'],
             'hubungan_penerima' => $row['hubungan_penerima'],
-            // 'status' => $row['status'],
             'tahun_gensen' => $row['tahun_gensen'],
             'pic_code' => $row['pic_code'],
             'nama_instagram' => $row['nama_instagram'],

@@ -57,7 +57,6 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                 'hubungan_keluarga' => $row['hubungan_keluarga'],
             ];
             $validator = Validator::make($d, [
-                // 'id_customer' => 'required|exists:gensen_forms,id_customer',
                 'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
                 'nama_lengkap' => [
                     'required',
@@ -72,8 +71,6 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                 'tanggal_cair' => 'required',
                 'nominal_cair' => 'required',
             ], [
-                // 'id_customer.required' => 'Id customer harus di isi',
-                // 'id_customer.exists' => 'Id customer tidak terdaftar',
                 'no_input_jepang.required' => 'No Input Jepang harus di isi',
                 'no_input_jepang.exists' => 'No Input Jepang tidak terdaftar',
                 'nama_lengkap.required' => 'Nama lengkap harus di isi',

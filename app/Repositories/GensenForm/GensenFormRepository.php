@@ -208,10 +208,6 @@ class GensenFormRepository extends MasterDataRepository
 
         $pic_code = $pic ? $pic : Auth::user()->pic_code;
 
-        // return GensenForm::when($gensenFormLinkId, function ($q) use ($gensenFormLinkId) {
-        //     $q->where('remarks_id', $gensenFormLinkId)
-        //         ->where('remarks_type', GensenFormLink::class);
-        // })
         $remittanceAgg = DB::table('remittance_extraction_groups as reg')
             ->join('remittance_extractions as re', function ($join) {
                 $join->on('re.id', '=', 'reg.remittance_extraction_id')
@@ -377,7 +373,6 @@ class GensenFormRepository extends MasterDataRepository
                         ->whereNotNull('tanggal_verified')
                         ->whereNotNull('no_input_jepang');
                 }
-                // ->get()
             );
     }
     public static function export(

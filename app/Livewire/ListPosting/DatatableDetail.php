@@ -42,7 +42,6 @@ class DatatableDetail extends Component
         if (!$this->isCanDelete || $this->targetDeleteId == null) {
             return;
         }
-
         // IchijikinExtractionFileRepository::delete($this->targetDeleteId);
         Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
     }

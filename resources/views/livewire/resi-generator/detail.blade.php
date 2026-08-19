@@ -22,16 +22,6 @@
                     <input placeholder="Nama Batch" type="text" value="{{$label}}" class="form-control" readonly>
                 </div>
                 
-                {{-- <div class="col-md-6">
-                    <button
-                        type="button"
-                        class="btn btn-success btn-sm"
-                        x-data
-                        @click="$dispatch('export', { type: '{{ App\Helpers\ExportHelper::TYPE_EXCEL }}' })">
-                        <i class="fa fa-file-excel"></i>
-                        Download
-                    </button>
-                </div> --}}
             </div>
             <div class="row">
                 <livewire:resi-generator.datatable-detail :objId="$objId" />

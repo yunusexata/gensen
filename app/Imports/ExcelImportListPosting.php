@@ -26,6 +26,10 @@ class ExcelImportListPosting implements ToModel, WithBatchInserts, WithChunkRead
 
     public function model(array $row)
     {
+        // Skip row if 'nama' is null, empty, or just whitespace
+        if (blank($row['nama'] ?? null)) {
+            return null;
+        }
         return new ListPostingDetail([
             'list_posting_id' => $this->taskId,
             'name'            => $row['nama'],

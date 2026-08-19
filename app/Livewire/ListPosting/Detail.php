@@ -44,13 +44,10 @@ class Detail extends Component
         'max' => 'Ukuran file maksimal 10 MB.',
     ])]
     public $file_excel;
-
-    // public $templates = [];
     public $template_posting_id;
 
     public function mount()
     {
-        // $this->templates = TemplatePostingRepository::all();
         if ($this->objId) {
             $id = AppCrypt::decrypt($this->objId);
             if (!$id) {

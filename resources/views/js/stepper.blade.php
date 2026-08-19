@@ -3,14 +3,6 @@
         let stepper;
 
         document.addEventListener('livewire:init', () => {
-            // const isUploadAttachment = {{$isUploadAttachment}}
-
-            // if(isUploadAttachment){
-            //     setTimeout(() => {
-            //         console.log('init')
-            //         initStepper();
-            //     }, 300);
-            // }
             
             Livewire.on('stepper-go-next', () => {
                 stepper.goNext();
@@ -28,74 +20,72 @@
             });
         });
 
-function initStepper() {
+        function initStepper() {
 
-    const element = document.querySelector("#kt_stepper_example_clickable");
+            const element = document.querySelector("#kt_stepper_example_clickable");
 
-    if (!element) return;
-    if (stepper) {
-        try {
-            stepper.destroy();
-        } catch(e) {
-            console.log("Stepper already destroyed");
+            if (!element) return;
+            if (stepper) {
+                try {
+                    stepper.destroy();
+                } catch(e) {
+                    console.log("Stepper already destroyed");
+                }
+
+                stepper = null;
+            }
+            stepper = new KTStepper(element);
+        
+            /*
+            |--------------------------------------------------------------------------
+            | NEXT
+            |--------------------------------------------------------------------------
+            */
+            stepper.on("kt.stepper.next", function (stepperObj) {
+
+                event.preventDefault();
+                console.log('harusnya next')
+                Livewire.dispatch('stepper-next-request');
+            });
+
+            /*
+            |--------------------------------------------------------------------------
+            | CLICK STEP NAV
+            |--------------------------------------------------------------------------
+            */
+            stepper.on("kt.stepper.click", function () {
+                event.preventDefault();
+                console.log('stepper click')
+                Livewire.dispatch(
+                    'stepper-click-request',
+                    { step: stepper.getClickedStepIndex() }
+                );
+            });
+
+            /*
+            |--------------------------------------------------------------------------
+            | AFTER STEP CHANGED ⭐ IMPORTANT
+            |--------------------------------------------------------------------------
+            */
+        stepper.on("kt.stepper.changed", function () {
+            
+            });
+
+            /*
+            |--------------------------------------------------------------------------
+            | PREVIOUS
+            |--------------------------------------------------------------------------
+            */
+            stepper.on("kt.stepper.previous", function () {
+                stepper.goPrevious();
+            });
+
         }
-
-        stepper = null;
-    }
-    stepper = new KTStepper(element);
-   
-    /*
-    |--------------------------------------------------------------------------
-    | NEXT
-    |--------------------------------------------------------------------------
-    */
-    stepper.on("kt.stepper.next", function (stepperObj) {
-
-        event.preventDefault();
-        console.log('harusnya next')
-        Livewire.dispatch('stepper-next-request');
-    });
-
-    /*
-    |--------------------------------------------------------------------------
-    | CLICK STEP NAV
-    |--------------------------------------------------------------------------
-    */
-    stepper.on("kt.stepper.click", function () {
-        event.preventDefault();
-        console.log('stepper click')
-        Livewire.dispatch(
-            'stepper-click-request',
-            { step: stepper.getClickedStepIndex() }
-        );
-    });
-
-     /*
-    |--------------------------------------------------------------------------
-    | AFTER STEP CHANGED ⭐ IMPORTANT
-    |--------------------------------------------------------------------------
-    */
-   stepper.on("kt.stepper.changed", function () {
-    
-    });
-
-    /*
-    |--------------------------------------------------------------------------
-    | PREVIOUS
-    |--------------------------------------------------------------------------
-    */
-    stepper.on("kt.stepper.previous", function () {
-        stepper.goPrevious();
-    });
-
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| LIVEWIRE RESPONSE EVENTS
-|--------------------------------------------------------------------------
-*/
+        /*
+        |--------------------------------------------------------------------------
+        | LIVEWIRE RESPONSE EVENTS
+        |--------------------------------------------------------------------------
+        */
 
     </script>
 @endpush

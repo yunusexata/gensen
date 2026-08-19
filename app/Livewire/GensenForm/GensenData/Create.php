@@ -74,20 +74,10 @@ class Create extends Component
     public function mount() {}
 
     #[On('on-dialog-confirm')]
-    public function onDialogConfirm()
-    {
-        // if ($this->objId) {
-        //     $this->redirectRoute('gensen_data.edit', $this->objId);
-        // } else {
-        //     $this->redirectRoute('gensen_data.create');
-        // }
-    }
+    public function onDialogConfirm() {}
 
     #[On('on-dialog-cancel')]
-    public function onDialogCancel()
-    {
-        // $this->redirectRoute('gensen_data.index');
-    }
+    public function onDialogCancel() {}
 
 
     public function addRekapPengirimanUang()

@@ -52,7 +52,6 @@ class IchijikinExtractionFile extends Model
 
     protected static function onBoot()
     {
-        // self::creating(function ($model) {});
         self::created(function ($model) {
             $job = AiJob::create([
                 'subject_type' => self::class,

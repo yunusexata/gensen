@@ -148,7 +148,6 @@ class DatatableBatch extends Component
                                 </div>";
                         } else {
                             // If not started yet (or failed), show the trigger button to start the job
-
                             $downloadHtml = "
                                 <div class='col-auto'>
                                     <button

@@ -47,34 +47,6 @@
                 <label>Warna Halaman</label>
                 <input type="color" class="form-control form-control-color" wire:model="config.page.color" required>
             </div>
-            {{-- <hr class="my-3">
-            <h3 class="mb-3">Konfigurasi List Nama</h3>
-            <div class="col-md-4 mb-3">
-                <label>Font</label>
-                <input placeholder="Font" type="text" wire:model="config.name_list.font" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-                <label>Size</label>
-                <input placeholder="Size" type="text" wire:model="config.name_list.size" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-                <label>Max Char</label>
-                <input placeholder="Max Char" type="text" wire:model="config.name_list.max_char" class="form-control">
-            </div>
-            <hr class="my-3">
-            <h3 class="mb-3">Konfigurasi Nomor Halaman</h3>
-            <div class="col-md-4 mb-3">
-                <label>Font</label>
-                <input placeholder="Font" type="text" wire:model="config.page_number.font" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-                <label>Size</label>
-                <input placeholder="Size" type="text" wire:model="config.page_number.size" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-                <label>Max Char</label>
-                <input placeholder="Max Char" type="text" wire:model="config.page_number.max_char" class="form-control">
-            </div> --}}
             <div class="col-md-8 mb-3">
                 <div wire:key="file_template" x-data="{
                         isDragging: false,

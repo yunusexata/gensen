@@ -18,14 +18,8 @@ use Muhammadyunus1072\TrackHistory\HasTrackHistory;
 #[Fillable(
     [
         'ai_job_id',
-
         'result_type',
-        // gensen_extraction
-        // remittance_extraction
-        // validation_result
-
         'result_json',
-
         'confidence_score',
         'confidence_note',
     ]
@@ -42,11 +36,8 @@ class AiResult extends Model
     protected static function onBoot()
     {
         self::created(function ($model) {
-            // logger(['model result', $model->result_type]);
             if ($model->result_type == AiJob::JOB_TYPE_REMITTANCE_EXTRACTION) {
                 $result = json_decode($model->result_json, true);
-                // logger(['model result all', $model]);
-                // logger(['model result', $result]);
                 $remittance = RemittanceExtraction::create(
                     [
                         'subject_id' => $model->aiJob->subject_id,
@@ -75,7 +66,6 @@ class AiResult extends Model
             };
 
             if ($model->result_type == AiJob::JOB_TYPE_ICHIJIKIN_EXTRACTION) {
-                // logger('DAH SAMPE RESULT ICHIJIKIN');
                 $result = json_decode($model->result_json, true);
                 $validatedData = [
                     'ai_job_id' => $model->aiJob->id,
@@ -97,16 +87,11 @@ class AiResult extends Model
 
                     'error_message' => null,
 
-                    // 'started_at' => $model->aiJob,
-                    // 'finished_at' => $model->aiJob,
                     'confidence_score' => $result['confidence_score'],
                     'confidence_note' => isset($result['confidence_note']) ? $result['confidence_note'] : null,
-
-                    // lifecycle state
                     'status' => JobStatus::DONE,
 
                 ];
-                // logger(['insert validated data', $validatedData]);
                 IchijikinExtractionResultRepository::create($validatedData);
             }
         });

@@ -50,17 +50,15 @@
                                                 @foreach($previewBulkStatusRows as $i => $row)
                                                     @if (!$row['error'])
                                                         <tr>
-                                                        {{-- <tr class="{{ count($row['error']) ? '--kt-gray-100' : '' }}"> --}}
-                                                                <td>{{ $no++ }}</td>
-                                                                <td>{{ $row['data']['id_customer'] }}</td>
-                                                                <td>{{ $row['data']['nama_lengkap'] }}</td>
-                                                                <td>{{ $row['data']['tanggal_lengkap'] }}</td>
-                                                                <td>{{ $row['data']['tahun_gensen'] }} / 
-                                                                     @fromReiwaToYear($row['data']['tahun_gensen'])</td>
-                                                                <td>{{ $row['data']['nominal_gensen'] }}</td>
-                                                                <td>{{ $row['data']['jumlah_kirim_uang'] }}</td>
-                                                                <td>{{ $row['data']['hubungan_keluarga'] }}</td>
-                                                                
+                                                            <td>{{ $no++ }}</td>
+                                                            <td>{{ $row['data']['id_customer'] }}</td>
+                                                            <td>{{ $row['data']['nama_lengkap'] }}</td>
+                                                            <td>{{ $row['data']['tanggal_lengkap'] }}</td>
+                                                            <td>{{ $row['data']['tahun_gensen'] }} / 
+                                                                    @fromReiwaToYear($row['data']['tahun_gensen'])</td>
+                                                            <td>{{ $row['data']['nominal_gensen'] }}</td>
+                                                            <td>{{ $row['data']['jumlah_kirim_uang'] }}</td>
+                                                            <td>{{ $row['data']['hubungan_keluarga'] }}</td>
                                                         </tr>
                                                     @endif
                                                 @endforeach
@@ -91,16 +89,15 @@
                                                 @foreach($previewBulkStatusRows as $i => $row)
                                                     @if ($row['error'])
                                                         <tr>
-                                                        {{-- <tr class="{{ count($row['error']) ? '--kt-gray-100' : '' }}"> --}}
-                                                                <td>{{ $no_error++ }}</td>
-                                                                <td>{{ $row['data']['id_customer'] }}</td>
-                                                                <td>{{ $row['data']['nama_lengkap'] }}</td>
-                                                                <td>{{ $row['data']['tanggal_lengkap'] }}</td>
-                                                                <td>{{ $row['data']['tahun_gensen'] }} / 
-                                                                     @fromReiwaToYear($row['data']['tahun_gensen'])</td>
-                                                                <td>{{ $row['data']['nominal_gensen'] }}</td>
-                                                                <td>{{ $row['data']['jumlah_kirim_uang'] }}</td>
-                                                                <td>{{ $row['data']['hubungan_keluarga'] }}</td>
+                                                            <td>{{ $no_error++ }}</td>
+                                                            <td>{{ $row['data']['id_customer'] }}</td>
+                                                            <td>{{ $row['data']['nama_lengkap'] }}</td>
+                                                            <td>{{ $row['data']['tanggal_lengkap'] }}</td>
+                                                            <td>{{ $row['data']['tahun_gensen'] }} / 
+                                                                    @fromReiwaToYear($row['data']['tahun_gensen'])</td>
+                                                            <td>{{ $row['data']['nominal_gensen'] }}</td>
+                                                            <td>{{ $row['data']['jumlah_kirim_uang'] }}</td>
+                                                            <td>{{ $row['data']['hubungan_keluarga'] }}</td>
                                                             <td>
                                                                 @foreach($row['error'] as $field => $msg)
                                                                     <div>{{ json_encode($msg) }}</div>

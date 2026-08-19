@@ -99,8 +99,6 @@ class Edit extends Component
     {
         try {
             DB::transaction(function () {
-
-                // $disk = env('DEFAULT_STORE_DISK', 'public');
                 $directory = dirname($this->ichijikin_file->path);
                 $path = Storage::disk('public')->putFileAs(
                     $directory,
@@ -176,7 +174,6 @@ class Edit extends Component
 
             DB::commit();
             Alert::information($this, 'Data berhasil disimpan');
-            // $this->getData();
 
             $this->dispatch('handleGetData');
         } catch (Exception $e) {

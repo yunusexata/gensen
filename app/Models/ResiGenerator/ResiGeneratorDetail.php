@@ -52,10 +52,7 @@ class ResiGeneratorDetail extends Model
 
     protected static function onBoot()
     {
-        // self::creating(function ($model) {});
-        self::created(function ($model) {
-            // GenerateReceiptImageJob::dispatch($model)->onQueue('extract');
-        });
+        self::created(function ($model) {});
     }
 
     public function resi()

@@ -329,14 +329,6 @@
                                                     </div>
                                                 @enderror
                                             </div>
-                                            {{-- <div class="flex flex-col gap-2 md:col-span-5">
-                                            <label class="font-label text-xs font-medium text-on-surface-variant" for="city">City</label>
-                                            <input class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full" id="city" name="city" placeholder="San Francisco" type="text"/>
-                                        </div>
-                                        <div class="flex flex-col gap-2 md:col-span-3">
-                                            <label class="font-label text-xs font-medium text-on-surface-variant" for="state">State / Province</label>
-                                            <input class="bg-surface-container-low border-none rounded-lg p-3 font-body text-on-surface form-input-focus placeholder:text-outline-variant/80 w-full" id="state" name="state" placeholder="CA" type="text"/>
-                                        </div> --}}
                                             <div class="flex flex-col gap-2 md:col-span-5">
                                                 <label class="font-label text-xs font-medium text-on-surface-variant"
                                                     for="kode_pos_jepang">Kode Pos Jepang (Tanpa Strip)<span
@@ -445,20 +437,9 @@
                     @endif
                     <!--begin::Personal Information-->
 
-                    <!--begin::Example Attachment-->
-                    {{-- <div class="flex-column {{ $isUploadAttachment ? 'current' : '' }}"
-                        data-kt-stepper-element="content" wire:ignore.self>
-                        <div class="row">
-                            
-                        </div>
-                    </div> --}}
-                    <!--begin::Example Attachment-->
-
                     <!--begin::Upload Attachment-->
                     <div class="flex-column {{ $isUploadAttachment ? 'current' : '' }}" data-kt-stepper-element="content" wire:ignore.self>
                         <!-- Section: File Upload -->
-                        {{-- GENSEN --}}
-                        {{-- @if (!isset($kertas_gensen_old['groups']) || !$kertas_gensen_old['groups']->isNotEmpty()) --}}
                         <section class="mt-5">
                             
                             <div x-data="{
@@ -511,7 +492,7 @@
                                     class="border-2 border-dashed border-outline-variant/30 rounded-xl p-10 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
                                     <input class="hidden validate-upload-file" id="kertas_gensen"
                                         name="kertas_gensen" type="file" multiple x-ref="input"
-                                        {{-- wire:model="kertas_gensen" --}} @change="handleFiles"
+                                        @change="handleFiles"
                                         accept="application/pdf, image/jpeg, image/png"
                                         class="position-absolute invisible" />
                                     <label class="cursor-pointer flex flex-col items-center gap-3"
@@ -549,9 +530,6 @@
                                                             style="max-width: 100%; max-height: 300px; border-radius: 4px; border: 2px solid #e0e0e0; object-fit: contain;">
                                                     </div>
                                                 </div>
-
-                                                {{-- {!! $kertas_gensen_note[$index] !!} --}}
-                                                
                                             @else
                                                 <div class="border rounded p-4 text-center bg-light">
                                                     <i class="bi bi-file-earmark fs-1"></i>
@@ -564,7 +542,6 @@
                                     @endif
                                     @if (!empty($kertas_gensen_old['groups']))
                                         @foreach ($kertas_gensen_old['groups'][0]['files'] as $item)
-                                            {{-- {!! $kertas_gensen_old_note[$index] !!} --}}
                                             @if ($item['isImage'])
                                                 <div class="relative group/thumb">
                                                     <!-- Preview -->
@@ -605,9 +582,7 @@
 
                             </div>
                         </section>
-                        {{-- @endif --}}
                         {{-- Zairyou Card Depan --}}
-                        {{-- @if (!$zairyou_card_front_old || !$zairyou_card_front_old['id']) --}}
                         <section class="mt-5">
                             
                             <div class="flex items-center gap-3 mb-5">
@@ -709,8 +684,6 @@
                             @endif
 
                         </section>
-                        {{-- @endif --}}
-                        {{-- Zairyou Card Belakang --}}
                         <section class="mt-5">
 
                             <div class="flex items-center gap-3 mb-5">
@@ -812,7 +785,6 @@
 
                         </section>
                         {{-- My Number Depan --}}
-                        {{-- @if (!$my_number_front_old || !$my_number_front_old['id']) --}}
                         <section class="mt-5">
 
                             <div class="flex items-center gap-3 mb-5">
@@ -874,7 +846,7 @@
                                         class="border-2 border-dashed border-outline-variant/30 rounded-xl p-10 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
                                         <input class="hidden validate-upload-file" id="my_number_front"
                                             name="my_number_front" type="file" x-ref="input"
-                                            {{-- wire:model="my_number_front" --}} @change="handleFiles"
+                                            @change="handleFiles"
                                             accept="image/jpeg, image/png"
                                             class="position-absolute invisible" />
                                         <label class="cursor-pointer flex flex-col items-center gap-3"
@@ -895,7 +867,6 @@
                                         if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])){
                                             $url = $my_number_front->temporaryUrl();
                                         
-                                            // $url = route('preview.temp.image', $my_number_front->getFileName());
                                             $filename = $my_number_front->getClientOriginalName();
                                         }else{
                                             $filename = $my_number_front->getClientOriginalName();
@@ -913,9 +884,7 @@
                             @endif
 
                         </section>
-                        {{-- @endif --}}
                         {{-- My Number Belakang --}}
-                        {{-- @if (!$my_number_back_old || !$my_number_back_old['id']) --}}
                         <section class="mt-5">
 
                             <div class="flex items-center gap-3 mb-5">
@@ -978,7 +947,7 @@
                                         class="border-2 border-dashed border-outline-variant/30 rounded-xl p-10 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
                                         <input class="hidden validate-upload-file" id="my_number_back"
                                             name="my_number_back" type="file" x-ref="input"
-                                            {{-- wire:model="my_number_back" --}} @change="handleFiles"
+                                            @change="handleFiles"
                                             accept="image/jpeg, image/png"
                                             class="position-absolute invisible" />
                                         <label class="cursor-pointer flex flex-col items-center gap-3"
@@ -999,7 +968,6 @@
                                         if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])){
                                             $url = $my_number_back->temporaryUrl();
                                         
-                                            // $url = route('preview.temp.image', $my_number_back->getFileName());
                                             $filename = $my_number_back->getClientOriginalName();
                                         }else{
                                             $filename = $my_number_back->getClientOriginalName();
@@ -1017,9 +985,7 @@
                             @endif
 
                         </section>
-                        {{-- @endif --}}
                         {{-- Rekening Indonesia --}}
-                        {{-- @if (!$rekening_indonesia_old || !$rekening_indonesia_old['id']) --}}
                         <section class="mt-5">
 
                             <div class="flex items-center gap-3 mb-5">
@@ -1081,7 +1047,7 @@
                                         class="border-2 border-dashed border-outline-variant/30 rounded-xl p-10 text-center bg-surface-container-low/30 hover:bg-surface-container-low transition-colors duration-300">
                                         <input class="hidden validate-upload-file" id="rekening_indonesia"
                                             name="rekening_indonesia" type="file" x-ref="input"
-                                            {{-- wire:model="rekening_indonesia" --}} @change="handleFiles"
+                                            @change="handleFiles"
                                             accept="image/jpeg, image/png"
                                             class="position-absolute invisible" />
                                         <label class="cursor-pointer flex flex-col items-center gap-3"
@@ -1102,7 +1068,6 @@
                                         if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])){
                                             $url = $rekening_indonesia->temporaryUrl();
                                         
-                                            // $url = route('preview.temp.image', $rekening_indonesia->getFileName());
                                             $filename = $rekening_indonesia->getClientOriginalName();
                                         }else{
                                             $filename = $rekening_indonesia->getClientOriginalName();
@@ -1119,9 +1084,7 @@
                             @endif
 
                         </section>
-                        {{-- @endif --}}
                         {{-- Rekap Pengiriman Uang --}}
-                        {{-- @if (!isset($rekap_pengiriman_uang_old['groups']) || !$rekap_pengiriman_uang_old['groups']->isNotEmpty()) --}}
                         <section class="mt-5">
                             <div class="row mt-5">
                                 <div class="flex items-center gap-3">
@@ -1146,7 +1109,6 @@
                             </div>
                             {{-- REMITTANCE EXAMPLE --}}
                             
-
                             @if ($rekap_pengiriman_uang)
                                 @foreach ($rekap_pengiriman_uang as $rekap_index => $rekap)
                                     <div wire:key="rekap_pengiriman_uang_{{ $rekap_index }}" x-data="{
@@ -1218,7 +1180,6 @@
                                                         if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])){
                                                             $url = $item->temporaryUrl();
                                                         
-                                                            // $url = route('preview.temp.image', $item->getFileName());
                                                             $filename = $item->getClientOriginalName();
                                                         }else{
                                                             $filename = $item->getClientOriginalName();
@@ -1279,9 +1240,7 @@
                                 @endforeach
                             @endif
                         </section>
-                        {{-- @endif --}}
                         {{-- Kartu Keluarga --}}
-                        {{-- @if (!isset($kartu_keluarga_old['groups']) || !$kartu_keluarga_old['groups']->isNotEmpty()) --}}
                         <section class="mt-5">
                             <div x-data="{
                                 isDragging: false,
@@ -1356,7 +1315,6 @@
                                                 if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])){
                                                     $url = $item->temporaryUrl();
                                                 
-                                                    // $url = route('preview.temp.image', $item->getFileName());
                                                     $filename = $item->getClientOriginalName();
                                                 }else{
                                                     $filename = $item->getClientOriginalName();
@@ -1372,8 +1330,6 @@
                                                             style="max-width: 100%; max-height: 300px; border-radius: 4px; border: 2px solid #e0e0e0; object-fit: contain;">
                                                     </div>
                                                 </div>
-
-                                                {{-- {!! $kartu_keluarga_note[$index] !!} --}}
                                             
                                             @else
                                                 <div class="border rounded p-4 text-center bg-light">
@@ -1387,7 +1343,6 @@
                                     @endif
                                     @if (!empty($kartu_keluarga_old['groups']))
                                         @foreach ($kartu_keluarga_old['groups'][0]['files'] as $item)
-                                            {{-- {!! $kartu_keluarga_old_note[$index] !!} --}}
                                             @if ($item['isImage'])
                                                 <div class="relative group/thumb">
                                                     <!-- Preview -->
@@ -1429,7 +1384,6 @@
 
                             </div>
                         </section>
-                        {{-- @endif --}}
                     </div>
                     <!--begin::Upload Attachment-->
                 </div>
@@ -1649,105 +1603,8 @@
                 setTimeout(() => {
                     initializeFileInputs();
                 }, 500);
-                // setTimeout(() => {
-                //     // initStepper();
-                //     // updateSubstepDescription();
-                //     // showUploadedFilesSummary();
-                //     initializeFileInputs();
-                //     // initializeFormSubmits();
-                // }, 500); 
 
             });
-
-            // document.addEventListener('DOMContentLoaded', () => {
-            //     document.querySelectorAll('input[type="file"]').forEach(input => {
-            //         input.addEventListener('change', async function(e) {
-            //             console.log('change');
-            //             // Prevent the generic public.php handler from running
-            //             e.stopImmediatePropagation();
-            //             const id = e.target.id;
-
-            //             const fileKey = id.split('.')[0];
-
-            //             // Handle special case for ktp_file
-            //             const previewId = fileKey === 'ktp_file' ? 'preview_ktp_file' : 'preview_' + fileKey ;
-            //             const preview = document.getElementById(previewId);
-
-            //             const multiUpload = ['kertas_gensen', 'kartu_keluarga', 'rekap_pengiriman_uang'];
-            //             previewResult = '';
-            //             uploadIndex = 0;
-            //             console.log('fileKey');
-            //             console.log(fileKey);
-            //             if(multiUpload.includes(fileKey)){
-            //                 const files = e.target.files;
-            //                 uploadMulti = true;
-            //                 if (files.length) {
-            //                     await processUploadQueue(files, fileKey, preview);
-            //                 }
-            //             }else{
-            //                 uploadMulti = false;
-            //                 const file = e.target.files[0];
-            //                 handleUploadedFile(file, fileKey, preview);
-            //             }
-
-            //             // preview.innerHTML = previewResult;
-
-            //             // ✅ NOW file exists
-            //             setTimeout(() => {
-            //                 @this.call('cobaStore');
-            //             }, 3000);
-
-            //         });
-            //     }, true);
-            //     document.addEventListener('change', function (e) {
-
-            //         if (!e.target.classList.contains('validate-upload-file')) return;
-
-            //         const input = e.target;
-            //         const files = Array.from(input.files);
-
-            //         if (!files.length) return;
-
-            //         const maxSize = 2 * 1024 * 1024; // 2MB
-
-            //         const validFiles = [];
-            //         let hasError = false;
-
-            //         files.forEach(file => {
-            //             if (file.size > maxSize) {
-            //                 hasError = true;
-            //             } else {
-            //                 validFiles.push(file);
-            //             }
-            //         });
-
-            //         // ❌ if any file invalid
-            //         if (hasError) {
-
-            //             Livewire.dispatch('{{ Alert::EVENT_INFO }}', [
-            //                 '{{ Alert::ICON_ERROR }}',
-            //                 'Gagal',
-            //                 'Ukuran file maksimal 2MB'
-            //             ]);
-
-            //             // rebuild file list (only valid files)
-            //             const dataTransfer = new DataTransfer();
-
-            //             validFiles.forEach(file => {
-            //                 dataTransfer.items.add(file);
-            //             });
-
-            //             input.files = dataTransfer.files;
-
-            //             // VERY IMPORTANT → re-trigger change
-            //             input.dispatchEvent(new Event('change', { bubbles: true }));
-
-            //             return false;
-            //         }
-
-            //     }, true); // CAPTURE MODE
-
-            // });
         });
 
 

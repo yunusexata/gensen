@@ -26,31 +26,6 @@ class ExportService
 
     private function query($filters)
     {
-        // $remittanceAgg = DB::table('remittance_extraction_groups as reg')
-        //     ->join('remittance_extractions as re', function ($join) {
-        //         $join->on('re.id', '=', 'reg.remittance_extraction_id')
-        //             ->where('re.subject_type', '=', GensenForm::class)
-        //             ->whereNull('re.deleted_at');
-        //     })
-        //     ->where('reg.is_validate', '=', true)
-        //     ->whereNull('reg.deleted_at')
-        //     ->selectRaw("
-        //         re.subject_id,
-        //         re.subject_type,
-
-        //         STRING_AGG(
-        //             reg.total_amount::text,
-        //             '; '
-        //             ORDER BY reg.transaction_year
-        //         ) AS remittance_total_amounts,
-
-        //         STRING_AGG(
-        //             reg.receiver_name,
-        //             '; '
-        //             ORDER BY reg.transaction_year
-        //         ) AS remittance_receiver_names
-        //     ")
-        //     ->groupBy('re.subject_id', 're.subject_type');
         $remittanceAgg = DB::table('remittance_extraction_groups as reg')
             ->join('remittance_extractions as re', function ($join) {
                 $join->on('re.id', '=', 'reg.remittance_extraction_id')
@@ -82,17 +57,6 @@ class ExportService
                 're.subject_type',
                 'reg.transaction_year'
             );
-
-        // return GensenForm::query()
-        //     ->leftJoinSub($remittanceAgg, 'remittances', function ($join) {
-        //         $join->on('remittances.subject_id', '=', 'gensen_forms.id')
-        //             ->where('remittances.subject_type', '=', GensenForm::class);
-        //     })
-        //     ->select([
-        //         'gensen_forms.*',
-        //         'remittances.remittance_total_amounts',
-        //         'remittances.remittance_receiver_names',
-        //     ])
         return GensenForm::query()
             ->join('gensen_form_details as gfd', function ($join) {
                 $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id')
@@ -161,14 +125,7 @@ class ExportService
                 're.subject_type',
                 'reg.transaction_year'
             );
-        // $noInputJepang = collect($filters->rows)
-        //     ->pluck('no_input_jepang')
-        //     ->filter()
-        //     ->unique()
-        //     ->values()
-        //     ->toArray();
 
-        // WHERE deleted_at IS NULL;
         $rows = collect($filters)
 
             ->map(fn($row) => [
@@ -225,11 +182,7 @@ class ExportService
                 ' . implode(',', $placeholders) . '
             )
             ';
-        // logger([
-        //     'SQL export service',
-        //     $sql,
-        //     $bindings
-        // ]);
+
         return GensenForm::query()
             ->join('gensen_form_details as gfd', function ($join) {
                 $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id')
@@ -311,12 +264,6 @@ class ExportService
     private function exportListDataNoInputJapan($filters)
     {
         return   $this->query($filters)
-            // ->where('gensen_forms.status', GensenForm::STATUS_VERIFIED)
-            // ->whereNotIn('gensen_forms.status', [
-            //     GensenForm::STATUS_CANCEL,
-            //     GensenForm::STATUS_HONNIN,
-            //     GensenForm::STATUS_MONDAI,
-            // ])
             ->when(isset($filters['tanggal_input']) && $filters['tanggal_input'], function ($query) use ($filters) {
                 $query->whereBetween('gensen_forms.created_at', $filters['tanggal_input']);
             })
