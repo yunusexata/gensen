@@ -3,8 +3,11 @@
 namespace App\Repositories\GensenForm;
 
 use App\Enums\Gensen\GensenAttachmentType;
+use App\Models\Gensen\Ai\RemittanceExtraction;
+use App\Models\Gensen\Ai\RemittanceExtractionGroup;
 use App\Models\GensenForm\GensenForm;
 use App\Models\GensenForm\GensenFormLink;
+use App\Repositories\Gensen\Ai\RemittanceExtractionRepository;
 use App\Repositories\GensenForm\GensenFormAttachmentRepository;
 use App\Repositories\MasterDataRepository;
 use Exception;
@@ -127,10 +130,10 @@ class GensenFormRepository extends MasterDataRepository
                 }
 
                 /*
-            |--------------------------------------------------------------------------
-            | Generate NEW FILE PATH
-            |--------------------------------------------------------------------------
-            */
+                |--------------------------------------------------------------------------
+                | Generate NEW FILE PATH
+                |--------------------------------------------------------------------------
+                */
 
                 $extension = $attachment->extension;
                 $newStoredName = Str::uuid() . '.' . $extension;
@@ -160,10 +163,10 @@ class GensenFormRepository extends MasterDataRepository
 
 
                 /*
-            |--------------------------------------------------------------------------
-            | Create New Attachment Row
-            |--------------------------------------------------------------------------
-            */
+                |--------------------------------------------------------------------------
+                | Create New Attachment Row
+                |--------------------------------------------------------------------------
+                */
 
                 GensenFormAttachmentRepository::create([
                     'gensen_form_id' => $newForm->id,
@@ -187,6 +190,32 @@ class GensenFormRepository extends MasterDataRepository
                 ]);
             }
 
+            $remittanceExtraction = $gensen_form->remittanceExtraction;
+            if ($remittanceExtraction) {
+                $remittance = RemittanceExtraction::create(
+                    [
+                        'subject_id' => $newForm->id,
+                        'subject_type' => GensenForm::class,
+                        'ai_job_id' => $remittanceExtraction->ai_job_id,
+                        'confidence_score' => $remittanceExtraction->confidence_score,
+                        'confidence_note' => $remittanceExtraction->confidence_note,
+                    ]
+                );
+                foreach ($remittanceExtraction->remittanceExtractionGroups as $data) {
+                    RemittanceExtractionGroup::create(
+                        [
+                            'remittance_extraction_id' => $remittance->id,
+                            'receiver_name' => $data->receiver_name,
+                            'transaction_year' => $data->transaction_year,
+                            'total_amount' => $data->total_amount,
+                            'amount_details' => $data->amount_details,
+                            'currency' => $data->currency,
+                            'is_validate' => false,
+                            'transfer_transaction_count' => $data->transfer_transaction_count,
+                        ]
+                    );
+                }
+            }
             DB::commit();
 
             return $newForm;

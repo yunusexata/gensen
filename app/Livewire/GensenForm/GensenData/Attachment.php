@@ -149,37 +149,103 @@ class Attachment extends Component
 
     public function confirmRemittanceValidation()
     {
+        $targetYear = toReiwaYear(now()->year);
+
+        // 1. Use filter() to get all details that match the current year
+        $matchedDetails = collect($this->tahun_gensen_details)
+            ->filter(fn($detail) => $detail['tahun_gensen'] == $targetYear);
+
+        // 2. If we found matches, show the alert and wait for the frontend event
+        if ($matchedDetails->isNotEmpty()) {
+            Alert::confirmation(
+                $this,
+                Alert::ICON_WARNING,
+                "Terdapat Tahun Gensen " . $targetYear . "/" . now()->year,
+                "Data akan disesuaikan !",
+                "on-copy-dialog-confirm", // This event will fire when "Setuju" is clicked
+                "on-copy-dialog-cancel",
+                "Setuju",
+                "Batal"
+            );
+
+            return; // STOP execution here. Wait for the user to click "Setuju"
+        }
+
+        // 3. If no matches were found, proceed normally
+        $this->confirmRemittanceValidationSubmit();
+    }
+
+    #[On('on-copy-dialog-confirm')]
+    public function onDialogCopyConfirm()
+    {
+        $id = simple_decrypt($this->objId);
+        if (!$id) {
+            abort(404, 'Link tidak valid atau telah dimanipulasi.');
+        }
+
+        $gensenForm = GensenFormRepository::find($id);
+
+        $targetYear = toReiwaYear(now()->year);
+        $hasTargetYear = GensenForm::where('nama_lengkap', trim(Str::upper($gensenForm->nama_lengkap)))
+            ->where('email', trim(Str::upper($gensenForm->email)))
+            ->where('tanggal_lahir', trim($gensenForm->tanggal_lahir))
+            ->whereHas('gensenFormDetails', function ($query) use ($targetYear) {
+                $query->where('tahun_gensen', $targetYear);
+            })
+            ->exists();
+        $matchedDetails = collect($this->tahun_gensen_details)
+            ->filter(fn($detail) => $detail['tahun_gensen'] == $targetYear);
+        if (!$hasTargetYear) {
+            $newForm = GensenFormRepository::copy($id);
+
+            GensenFormDetailRepository::create([
+                'gensen_form_id' => $newForm->id,
+                'tahun_gensen' => $matchedDetails[0]['tahun_gensen'],
+                'nominal_gensen' => $matchedDetails[0]['nominal_gensen'],
+            ]);
+        }
+
+        // Delete from database
+        foreach ($matchedDetails as $detail) {
+            if (!empty($detail['id']) && ($detail['tahun_gensen'] != $targetYear)) {
+                GensenFormDetailRepository::delete($detail['id']);
+            }
+        }
+
+        $this->confirmRemittanceValidationSubmit();
+        Alert::success($this, 'Berhasil', 'Data berhasil diperbarui');
+    }
+
+    public function confirmRemittanceValidationSubmit()
+    {
         try {
             if (empty($this->tahun_gensen_details)) {
                 throw new Exception("Data Gensen harus di isi!");
             }
-            // foreach ($this->tahun_gensen_details as $detail) {
-            //     if ($detail['tahun_gensen'] == toReiwaYear(now()->year)) {
-            //         throw new Exception("Tahun gensen tidak boleh bernilai 8!");
-            //     }
-            // }
             DB::transaction(function () {
                 foreach ($this->tahun_gensen_details as $tahun_gensen) {
-                    if ($tahun_gensen['id']) {
-                        if (!$tahun_gensen['tahun_gensen'] && !$tahun_gensen['nominal_gensen']) {
-                            GensenFormDetailRepository::delete($tahun_gensen['id']);
-                        } else {
-                            GensenFormDetailRepository::update($tahun_gensen['id'], [
-                                'tahun_gensen' => $tahun_gensen['tahun_gensen'],
-                                'nominal_gensen' => $tahun_gensen['nominal_gensen'],
-                            ]);
-                        }
-                    } else {
-                        if ($tahun_gensen['tahun_gensen'] && $tahun_gensen['nominal_gensen']) {
-                            $id = simple_decrypt($this->objId);
-                            if (!$id) {
-                                abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                    if ($tahun_gensen['tahun_gensen'] != toReiwaYear(now()->year)) {
+                        if ($tahun_gensen['id']) {
+                            if (!$tahun_gensen['tahun_gensen'] && !$tahun_gensen['nominal_gensen']) {
+                                GensenFormDetailRepository::delete($tahun_gensen['id']);
+                            } else {
+                                GensenFormDetailRepository::update($tahun_gensen['id'], [
+                                    'tahun_gensen' => $tahun_gensen['tahun_gensen'],
+                                    'nominal_gensen' => $tahun_gensen['nominal_gensen'],
+                                ]);
                             }
-                            GensenFormDetailRepository::create([
-                                'gensen_form_id' => $id,
-                                'tahun_gensen' => $tahun_gensen['tahun_gensen'],
-                                'nominal_gensen' => $tahun_gensen['nominal_gensen'],
-                            ]);
+                        } else {
+                            if ($tahun_gensen['tahun_gensen'] && $tahun_gensen['nominal_gensen']) {
+                                $id = simple_decrypt($this->objId);
+                                if (!$id) {
+                                    abort(404, 'Link tidak valid atau telah dimanipulasi.');
+                                }
+                                GensenFormDetailRepository::create([
+                                    'gensen_form_id' => $id,
+                                    'tahun_gensen' => $tahun_gensen['tahun_gensen'],
+                                    'nominal_gensen' => $tahun_gensen['nominal_gensen'],
+                                ]);
+                            }
                         }
                     }
                 }
