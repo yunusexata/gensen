@@ -195,7 +195,7 @@ class Attachment extends Component
             ->first();
         $matchedDetails = collect($this->tahun_gensen_details)
             ->filter(fn($detail) => $detail['tahun_gensen'] == $targetYear);
-        if (!$hasTargetYear || count($hasTargetYear->gensenFormDetails) > 1) {
+        if (!$hasTargetYear || count($matchedDetails) && count($this->tahun_gensen_details) > 1) {
             $newForm = GensenFormRepository::copy($id);
 
             GensenFormDetailRepository::create([
@@ -210,7 +210,7 @@ class Attachment extends Component
             if (!empty($detail['id']) && ($detail['tahun_gensen'] != $targetYear)) {
                 GensenFormDetailRepository::delete($detail['id']);
             }
-            if (!empty($detail['id']) && (count($hasTargetYear->gensenFormDetails) > 1 || count($this->tahun_gensen_details) > 1)) {
+            if (!empty($detail['id']) && ($detail['tahun_gensen'] == $targetYear && count($this->tahun_gensen_details) > 1)) {
                 GensenFormDetailRepository::delete($detail['id']);
             }
         }
