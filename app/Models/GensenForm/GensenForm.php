@@ -144,6 +144,9 @@ class GensenForm extends Model
         self::STATUS_HONNIN => 'HONNIN',
         self::STATUS_MONDAI => 'MONDAI',
     ];
+    const STATUS_CHOICE_HS2 = [
+        self::STATUS_CANCEL => 'CANCEL',
+    ];
 
     const ATTACHMENT_ORDER_BY = [
         GensenAttachmentType::KERTAS_GENSEN->value,
@@ -171,9 +174,9 @@ class GensenForm extends Model
             self::STATUS_LENGKAP => '#5DEBD7',
             self::STATUS_VERIFIED => '#F9B2D7',
             self::STATUS_DALAM_PENGAJUAN => '#4689e8',
-            self::STATUS_TARIK_DATA => '#66e442',
-            self::STATUS_GENSEN_CAIR => '#E5C95F',
-            self::STATUS_CANCEL => '#FFF6F6',
+            self::STATUS_TARIK_DATA => '#b2dc46',
+            self::STATUS_GENSEN_CAIR => '#2bdf46',
+            self::STATUS_CANCEL => '#f4b989',
             self::STATUS_HONNIN => '#D1855C',
             self::STATUS_MONDAI => '#e80606',
             default => '#ffffff',
@@ -210,6 +213,20 @@ class GensenForm extends Model
             // $model->created_by = rand(7, 9);
         });
         self::updating(function ($model) {
+            if ($model->isDirty('tanggal_cancel') && $model->tanggal_cancel) {
+                AppLog::info(
+                    'Updating Tanggal Cancel',
+                    'models_gensen_form',
+                    [],
+                    [
+                        'id' => $model->id,
+                        'from' => $model->getOriginal('tanggal_cancel'),
+                        'to' => $model->tanggal_cancel,
+                    ],
+                    'gensen_form_status_cancel'
+                );
+                $model->status = self::STATUS_CANCEL;
+            }
             if ($model->isDirty('tanggal_lengkap') && $model->tanggal_lengkap) {
                 AppLog::info(
                     'Updating Tanggal Lengkap',

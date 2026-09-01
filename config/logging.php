@@ -135,6 +135,15 @@ return [
             'permission' => 0664,   // Mencegah error permission denied
         ],
 
+        'gensen_form_status_cancel' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/gensen_form_status_cancel.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'replace_placeholders' => true,
+            'locking' => true,      // Mengamankan penulisan paralel worker
+            'permission' => 0664,   // Mencegah error permission denied
+        ],
+
         'null' => [
             'driver' => 'monolog',
             'handler' => NullHandler::class,

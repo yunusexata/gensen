@@ -60,6 +60,7 @@ class PermissionHelper
     const UPDATE_GENSEN_TANGGAL_VERIFIED = 'update_gensen_tanggal_verified';
     const UPDATE_GENSEN_TANGGAL_PENGAJUAN = 'update_gensen_tanggal_pangajuan';
     const UPDATE_GENSEN_NO_INPUT_JEPANG = 'update_gensen_tanggal_no_input_jepang';
+    const UPDATE_GENSEN_TANGGAL_CANCEL = 'update_gensen_tanggal_cancel';
 
     // BUKU NENKIN
     const ACCESS_BUKU_NENKIN = 'buku_nenkin';
@@ -136,6 +137,7 @@ class PermissionHelper
         self::UPDATE_GENSEN_TANGGAL_VERIFIED => 'Data Gensen - Update Tanggal Verified',
         self::UPDATE_GENSEN_TANGGAL_PENGAJUAN => 'Data Gensen - Update Tanggal Pengajuan',
         self::UPDATE_GENSEN_NO_INPUT_JEPANG => 'Data Gensen - Update No Input Jepang',
+        self::UPDATE_GENSEN_TANGGAL_CANCEL => 'Data Gensen - Update Tanggal Cancel',
 
         // BUKU NENKIN
         self::ACCESS_BUKU_NENKIN => 'Data Pengganti Buku Nenkin',
@@ -189,6 +191,7 @@ class PermissionHelper
         self::UPDATE_GENSEN_TANGGAL_VERIFIED => [self::TYPE_UPDATE],
         self::UPDATE_GENSEN_TANGGAL_PENGAJUAN => [self::TYPE_UPDATE],
         self::UPDATE_GENSEN_NO_INPUT_JEPANG => [self::TYPE_UPDATE],
+        self::UPDATE_GENSEN_TANGGAL_CANCEL => [self::TYPE_UPDATE],
 
         // Export Import
         self::ACCESS_BUKU_NENKIN => self::TYPE_ALL,

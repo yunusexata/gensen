@@ -558,6 +558,15 @@ class Datatable extends Component
                 $validatedData['no_input_jepang'] =
                     $this->editingData['no_input_jepang'];
             }
+            if (
+                auth()->user()->can(PermissionHelper::transform(
+                    PermissionHelper::UPDATE_GENSEN_TANGGAL_CANCEL,
+                    PermissionHelper::TYPE_UPDATE
+                ))
+            ) {
+                $validatedData['tanggal_cancel'] =
+                    $this->editingData['tanggal_cancel'];
+            }
             GensenFormRepository::update($this->editingRowId, $validatedData);
 
             DB::commit();

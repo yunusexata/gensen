@@ -58,6 +58,10 @@ class ExportService
                 'reg.transaction_year'
             );
         return GensenForm::query()
+            ->where(function ($query) {
+                $query->whereNull('gensen_forms.tanggal_cancel')
+                    ->orWhere('gensen_forms.status', '!=', GensenForm::STATUS_CANCEL);
+            })
             ->join('gensen_form_details as gfd', function ($join) {
                 $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id')
                     ->whereNull('gfd.deleted_at');
@@ -187,6 +191,10 @@ class ExportService
             ->join('gensen_form_details as gfd', function ($join) {
                 $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id')
                     ->whereNull('gfd.deleted_at');
+            })
+            ->where(function ($query) {
+                $query->whereNull('gensen_forms.tanggal_cancel')
+                    ->orWhere('gensen_forms.status', '!=', GensenForm::STATUS_CANCEL);
             })
             ->whereRaw($sql, $bindings)
             ->leftJoinSub($remittanceAgg, 'remittances', function ($join) {

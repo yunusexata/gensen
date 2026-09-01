@@ -442,6 +442,32 @@
                                                                     
                                                                 </div>
                                                             </td>
+                                                            @can(PermissionHelper::transform(
+                                                                PermissionHelper::UPDATE_GENSEN_TANGGAL_CANCEL,
+                                                                PermissionHelper::TYPE_UPDATE
+                                                            ))
+                                                                
+                                                            <td>
+                                                                <label for="">Tanggal Cancel</label>
+                                                                <div class="d-flex align-items-center">
+                                                                   <input
+                                                                        type="date"
+                                                                        class="form-control"
+
+                                                                        wire:model.defer="editingData.tanggal_cancel"
+
+                                                                        @cannot(
+                                                                            PermissionHelper::transform(
+                                                                                PermissionHelper::UPDATE_GENSEN_TANGGAL_CANCEL,
+                                                                                PermissionHelper::TYPE_UPDATE
+                                                                            )
+                                                                        )
+                                                                            readonly
+                                                                        @endcannot
+                                                                    > 
+                                                                </div>
+                                                            </td>
+                                                            @endcan
                                                             <td>
                                                                 <label>Nama Lengkap</label>
                                                                 <div class="d-flex align-items-center">
