@@ -585,9 +585,14 @@ class GensenForm extends Model
     {
         return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')
             ->whereIn('type', [
+                GensenAttachmentType::KERTAS_GENSEN,
+                GensenAttachmentType::REKAP_PENGIRIMAN_UANG,
                 GensenAttachmentType::KARTU_KELUARGA,
+                GensenAttachmentType::ZAIRYOU_CARD_FRONT,
+                GensenAttachmentType::ZAIRYOU_CARD_BACK,
                 GensenAttachmentType::MY_NUMBER_FRONT,
                 GensenAttachmentType::MY_NUMBER_BACK,
+                GensenAttachmentType::REKENING_INDONESIA,
             ]);
     }
 

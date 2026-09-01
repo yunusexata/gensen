@@ -169,7 +169,7 @@ class Datatable extends Component
             return;
         }
 
-        $id = AppCrypt::decrypt($this->targetCopyId);
+        $id = simple_decrypt($this->targetCopyId);
         if (!$id) {
             abort(404, 'Link tidak valid atau telah dimanipulasi.');
         }

@@ -153,17 +153,12 @@ class Attachment extends Component
             if (empty($this->tahun_gensen_details)) {
                 throw new Exception("Data Gensen harus di isi!");
             }
+            // foreach ($this->tahun_gensen_details as $detail) {
+            //     if ($detail['tahun_gensen'] == toReiwaYear(now()->year)) {
+            //         throw new Exception("Tahun gensen tidak boleh bernilai 8!");
+            //     }
+            // }
             DB::transaction(function () {
-                foreach ($this->remittance_extraction_groups as $remittance) {
-                    if ($remittance['is_validate'] && !$remittance['receiver_relationship']) {
-                        throw new Exception("Jika Valid, Hubungan harus di isi!");
-                    }
-                    RemittanceExtractionGroupRepository::update($remittance['id'], [
-                        'is_validate' => $remittance['is_validate'],
-                        'receiver_relationship' => $remittance['receiver_relationship'],
-                        'receiver_name' => $remittance['receiver_name'],
-                    ]);
-                }
                 foreach ($this->tahun_gensen_details as $tahun_gensen) {
                     if ($tahun_gensen['id']) {
                         if (!$tahun_gensen['tahun_gensen'] && !$tahun_gensen['nominal_gensen']) {
@@ -188,6 +183,17 @@ class Attachment extends Component
                         }
                     }
                 }
+                foreach ($this->remittance_extraction_groups as $remittance) {
+                    if ($remittance['is_validate'] && !$remittance['receiver_relationship']) {
+                        throw new Exception("Jika Valid, Hubungan harus di isi!");
+                    }
+                    RemittanceExtractionGroupRepository::update($remittance['id'], [
+                        'is_validate' => $remittance['is_validate'],
+                        'receiver_relationship' => $remittance['receiver_relationship'],
+                        'receiver_name' => $remittance['receiver_name'],
+                    ]);
+                }
+
                 $id = simple_decrypt($this->objId);
                 if (!$id) {
                     abort(404, 'Link tidak valid atau telah dimanipulasi.');
