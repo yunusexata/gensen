@@ -1453,9 +1453,12 @@
         </form>
     @endif
 
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loader"></div>
-        <div class="loading-text" id="loadingText">Mengompresi gambar... (15.71 MB)</div>
+    <div class="loading-screen" id="loadingScreen" wire:ignore>
+        <div class="loading-modal-card">
+            <div class="loader"></div>
+            <div class="loading-text" id="loadingText">Memproses dan mengunggah dokumen, mohon tunggu...</div>
+            <div class="loading-subtext">Harap tidak menutup atau memuat ulang halaman ini</div>
+        </div>
     </div>
 
 </div>
@@ -1524,33 +1527,61 @@
         }
     </style>
     <style>
-        /* Loading Screen */
+        /* Loading Screen Modal */
         .loading-screen {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.95);
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
-            display: none;
+            z-index: 999999;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
         }
 
         .loading-screen.show {
-            display: flex;
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
         }
 
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
+        .loading-modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 32px 36px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 90%;
+            width: 360px;
+            text-align: center;
+            transform: scale(0.95);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .loading-screen.show .loading-modal-card {
+            transform: scale(1);
+        }
+
+        .loading-screen .loader {
+            border: 4px solid rgba(59, 130, 246, 0.18);
+            border-top: 4px solid #3b82f6;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
+            width: 48px;
+            height: 48px;
+            animation: spin 0.85s linear infinite;
+            margin-bottom: 18px;
         }
 
         @keyframes spin {
@@ -1563,11 +1594,18 @@
             }
         }
 
-        .loading-text {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #007bff;
+        .loading-screen .loading-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1e293b;
+            line-height: 1.5;
+            margin-bottom: 6px;
+        }
+
+        .loading-screen .loading-subtext {
+            font-size: 12.5px;
+            color: #64748b;
+            line-height: 1.4;
         }
 
         .file-preview.show {
@@ -1658,31 +1696,59 @@
 
         // Show/Hide loading screen with custom text
         function showLoadingScreen(text) {
-            document.getElementById('loadingText').textContent = text;
-            document.getElementById('loadingScreen').classList.add('show');
+            const screen = document.getElementById('loadingScreen');
+            const textEl = document.getElementById('loadingText');
+            if (textEl && text) {
+                textEl.textContent = text;
+            }
+            if (screen) {
+                screen.classList.add('show');
+            }
         }
 
         function hideLoadingScreen() {
-            document.getElementById('loadingScreen').classList.remove('show');
+            const screen = document.getElementById('loadingScreen');
+            if (screen) {
+                screen.classList.remove('show');
+            }
         }
 
         // Disable/Enable all file inputs during processing
-        function setFileInputsDisabled(disabled, excludeId = null) {
+        function setFileInputsDisabled(disabled) {
             document.querySelectorAll('input[type="file"]').forEach(input => {
-                if (input.id !== excludeId) {
-                    input.disabled = disabled;
-                    if (disabled) {
-                        input.style.opacity = '0.5';
-                        input.style.cursor = 'not-allowed';
-                    } else {
-                        input.style.opacity = '1';
-                        input.style.cursor = 'pointer';
-                    }
+                input.disabled = disabled;
+                if (disabled) {
+                    input.style.opacity = '0.5';
+                    input.style.cursor = 'not-allowed';
+                } else {
+                    input.style.opacity = '1';
+                    input.style.cursor = 'pointer';
                 }
             });
             // Also disable/enable buttons during processing
             document.querySelectorAll('.btn').forEach(btn => {
                 btn.disabled = disabled;
+            });
+        }
+
+        // Promise-based Livewire upload helper
+        function uploadFileToLivewire(uploadName, file) {
+            return new Promise((resolve, reject) => {
+                @this.upload(
+                    uploadName,
+                    file,
+                    () => {
+                        console.log('Livewire upload success:', uploadName);
+                        resolve();
+                    },
+                    (error) => {
+                        console.error('Livewire upload error:', uploadName, error);
+                        reject(new Error('Gagal mengunggah file ke server. Silakan coba lagi.'));
+                    },
+                    (progress) => {
+                        console.log('Upload progress for', uploadName, progress.detail.progress);
+                    }
+                );
             });
         }
 
@@ -1793,26 +1859,6 @@
                                     lastModified: Date.now()
                                 }
                             );
-                            let upload_name = uploadMulti ? `${fileKey}.${uploadIndex}` :
-                                `${fileKey}`;
-                            console.log(upload_name);
-                            @this.upload(
-                                upload_name,
-                                // `photo.${uploadIndex}`,
-                                compressedFile,
-
-                                () => {
-                                    console.log('uploaded');
-                                },
-
-                                () => console.log('error'),
-
-                                (progress) => console.log([
-                                    'progress',
-                                    progress.detail.progress
-                                ])
-                            );
-                            // uploadIndex++;
                             resolve({
                                 file: compressedFile,
                                 originalSize: file.size,
@@ -1859,22 +1905,18 @@
                     const excludeUpload = ['rekap_pengiriman_uang'];
                     previewResult = '';
                     uploadIndex = 0;
-                    console.log('fileKey');
-                    console.log(fileKey);
+                    console.log('fileKey:', fileKey);
+
                     if (!excludeUpload.includes(fileKey)) {
                         if (multiUpload.includes(fileKey)) {
                             const files = e.target.files;
                             uploadMulti = true;
-                            await processUploadQueue(files, fileKey, preview);
-                            // if (files.length) {
-                            // }
+                            await processUploadQueue(files, fileKey, preview, input);
                         } else {
                             uploadMulti = false;
                             const file = e.target.files[0];
-                            handleUploadedFile(file, fileKey, preview);
+                            await handleUploadedFile(file, fileKey, preview, input);
                         }
-
-                        // preview.innerHTML = previewResult;
 
                         // ✅ NOW file exists
                         setTimeout(() => {
@@ -1885,241 +1927,185 @@
                 });
             });
         }
-        async function processUploadQueue(files, fileKey, preview) {
-            for (const file of files) {
-                console.log('queue upload:', file.name);
 
-                let processedFile = file;
-                console.log([
-                    'file type =',
-                    file.type
-                ]);
-                /*
-                |--------------------------------------------------------------------------
-                | Compress ONLY images
-                |--------------------------------------------------------------------------
-                */
-                if (isImage(file)) {
-                    await handleUploadedFile(file, fileKey, preview);
-                }
+        async function processUploadQueue(files, fileKey, preview, input = null) {
+            if (!files || !files.length) return;
 
-                /*
-                |--------------------------------------------------------------------------
-                | Skip compression for PDF
-                |--------------------------------------------------------------------------
-                */
-                if (isPDF(file)) {
-                    let upload_name = uploadMulti ? `${fileKey}.${uploadIndex}` : `${fileKey}`;
-                    console.log('upload name oi');
-                    console.log(upload_name);
-                    @this.upload(
-                        upload_name,
-                        // `photo.${uploadIndex}`,
-                        file,
-
-                        () => {
-                            console.log('uploaded pdf');
-                        },
-
-                        () => console.log('error'),
-
-                        (progress) => console.log([
-                            'progress',
-                            progress.detail.progress
-                        ])
-                    );
-                    console.log('uploadIndex ++');
-                    uploadIndex++;
-                    console.log('PDF detected — skip compression');
-                }
-
+            // Block if another file is being processed
+            if (isProcessingFile) {
+                alert('Mohon tunggu proses file sebelumnya selesai.');
+                return;
             }
 
-            console.log('All uploads finished');
+            isProcessingFile = true;
+            setFileInputsDisabled(true);
+            showLoadingScreen('Memproses dan mengunggah dokumen, mohon tunggu...');
+
+            try {
+                let currentFileIdx = 1;
+                const totalFiles = files.length;
+
+                for (const file of files) {
+                    const statusText = totalFiles > 1
+                        ? `Memproses dan mengunggah dokumen (${currentFileIdx}/${totalFiles}), mohon tunggu...`
+                        : 'Memproses dan mengunggah dokumen, mohon tunggu...';
+                    showLoadingScreen(statusText);
+
+                    console.log('queue upload:', file.name);
+
+                    if (isImage(file)) {
+                        await processSingleImageFile(file, fileKey, preview, input);
+                    } else if (isPDF(file)) {
+                        let upload_name = uploadMulti ? `${fileKey}.${uploadIndex}` : `${fileKey}`;
+                        console.log('upload name PDF:', upload_name);
+                        await uploadFileToLivewire(upload_name, file);
+                        uploadIndex++;
+                        console.log('PDF detected & uploaded');
+                    }
+                    currentFileIdx++;
+                }
+
+                console.log('All uploads finished');
+            } catch (error) {
+                console.error('Queue upload error:', error);
+                alert(`Gagal mengunggah file: ${error.message || 'Terjadi kesalahan'}`);
+                if (input) input.value = '';
+                if (preview) preview.classList.remove('show');
+            } finally {
+                isProcessingFile = false;
+                setFileInputsDisabled(false);
+                hideLoadingScreen();
+            }
         }
 
         function isImage(file) {
-
-            return file.type.startsWith('image/');
+            return file && file.type ? file.type.startsWith('image/') : false;
         }
 
         function isPDF(file) {
-            return file.type === 'application/pdf';
+            return file && file.type ? file.type === 'application/pdf' : false;
         }
 
-        async function handleUploadedFile(file, fileKey, preview) {
+        async function handleUploadedFile(file, fileKey, preview, input = null) {
             console.log('handle upload');
-            if (file) {
-                // Block if another file is being processed
-                if (isProcessingFile) {
-                    alert('Mohon tunggu proses file sebelumnya selesai.');
-
-                    return;
-                }
-
-                // Check file size before compression
-                if (file.size > MAX_FILE_SIZE) {
-                    console.log(file);
-                    alert(
-                        `File "${file.name}" terlalu besar! Maksimal 10MB per file.\n\nUkuran file: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
-
-                    preview.classList.remove('show');
-                    return;
-                }
-
-                // Check file type
-                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/heic', 'image/heif'];
-                // Also check file extension for HEIC files (some browsers don't recognize the MIME type)
-                const fileName = file.name.toLowerCase();
-                const isValidExtension = fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') ||
-                    fileName.endsWith('.png') || fileName.endsWith('.heic') ||
-                    fileName.endsWith('.heif');
-
-                if (!validTypes.includes(file.type) && !isValidExtension) {
-                    alert(`File "${file.name}" format tidak didukung!\n\nHanya JPG, PNG, dan HEIC yang diperbolehkan.`);
-                    e.target.value = '';
-                    preview.classList.remove('show');
-                    return;
-                }
-
-                // Set processing flag and disable other inputs
-                isProcessingFile = true;
-                setFileInputsDisabled(true, fileKey);
-
-                // Clear previous preview
-                // preview.innerHTML = '';
-                // preview.classList.add('show');
-
-                // Show processing message
-                const originalSizeMB = (file.size / 1024 / 1024).toFixed(2);
-                const isHeic = fileName.endsWith('.heic') || fileName.endsWith('.heif') ||
-                    file.type === 'image/heic' || file.type === 'image/heif';
-
-                // Show full screen loading
-                const loadingMessage = isHeic ?
-                    `Mengonversi dan mengompresi gambar... (${originalSizeMB} MB)` :
-                    `Mengompresi gambar... (${originalSizeMB} MB)`;
-                showLoadingScreen(loadingMessage);
-
-                previewText = `
-                    <div class="file-info">
-                        <span class="file-name">⏳ ${isHeic ? 'Mengonversi dan mengompresi gambar...' : 'Mengompresi gambar...'} (${originalSizeMB} MB)</span>
-                        <span class="file-size" style="color: #007bff;">Harap tunggu...</span>
-                    </div>
-                `;
-                // preview.innerHTML = previewText;
-                // console.log(previewText);
-
-                try {
-                    // Convert HEIC to JPEG if needed
-                    let processedFile = file;
-                    if (isHeic) {
-                        try {
-                            // Queue HEIC conversions to prevent race conditions in libheif
-                            processedFile = await new Promise((resolve, reject) => {
-                                heicConversionQueue = heicConversionQueue.then(async () => {
-                                    try {
-                                        // Small delay to ensure previous conversion is fully cleaned up
-                                        await new Promise(r => setTimeout(r, 100));
-
-                                        const convertedBlob = await heic2any({
-                                            blob: file,
-                                            toType: 'image/jpeg',
-                                            quality: 0.9
-                                        });
-                                        // Convert blob to file
-                                        const converted = new File(
-                                            [convertedBlob],
-                                            file.name.replace(/\.(heic|heif)$/i, '.jpg'), {
-                                                type: 'image/jpeg',
-                                                lastModified: Date.now()
-                                            }
-                                        );
-                                        resolve(converted);
-                                    } catch (err) {
-                                        reject(err);
-                                    }
-                                }).catch(err => {
-                                    // Ensure queue continues even if one conversion fails
-                                    console.log('reject queue')
-                                    reject(err);
-                                });
-                            });
-                        } catch (conversionError) {
-                            console.error('HEIC conversion error:', conversionError);
-                            let errorMsg = `Gagal mengonversi file HEIC "${file.name}".`;
-
-                            if (conversionError.code === 'ERR_LIBHEIF') {
-                                errorMsg += '\n\nFile HEIC mungkin rusak atau dalam format yang tidak didukung.';
-                            } else {
-                                errorMsg += `\n\nError: ${conversionError.message}`;
-                            }
-
-                            errorMsg +=
-                                '\n\nSilakan coba:\n1. Gunakan file HEIC lain\n2. Konversi ke JPG/PNG terlebih dahulu\n3. Ambil foto ulang jika memungkinkan';
-
-                            alert(errorMsg);
-                            e.target.value = '';
-                            preview.classList.remove('show');
-                            // Re-enable inputs after HEIC conversion error
-                            isProcessingFile = false;
-                            setFileInputsDisabled(false);
-                            hideLoadingScreen();
-                            return;
-                        }
-                    }
-
-                    // Compress the image
-                    const compressionResult = await compressImage(processedFile, fileKey);
-                    const compressedFile = compressionResult.file;
-
-                    // Check if compressed file is still too large
-                    if (compressedFile.size > MAX_UPLOAD_SIZE) {
-                        alert(
-                            `Gagal mengompresi file "${file.name}" ke ukuran yang sesuai.\n\nUkuran asli: ${(file.size / 1024 / 1024).toFixed(2)} MB\nSetelah kompresi: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB\n\nSilakan gunakan gambar dengan ukuran lebih kecil.`);
-                        e.target.value = '';
-                        preview.classList.remove('show');
-                        // Re-enable inputs after compression size error
-                        isProcessingFile = false;
-                        setFileInputsDisabled(false);
-                        hideLoadingScreen();
-                        return;
-                    }
-
-                    // Show compression success
-                    showFilePreviewWithCompression(compressedFile, compressionResult, preview, fileKey);
-                    processedFiles[fileKey] = compressedFile;
-
-                    // Re-enable inputs after successful processing
-                    isProcessingFile = false;
-                    setFileInputsDisabled(false);
-                    hideLoadingScreen();
-
-                } catch (error) {
-                    console.error('Compression error:', error);
-                    alert(
-                        `Gagal mengompresi file "${file.name}".\n\nError: ${error.message}\n\nSilakan coba file lain.`);
-                    e.target.value = '';
-                    preview.classList.remove('show');
-                    // Re-enable inputs after compression error
-                    isProcessingFile = false;
-                    setFileInputsDisabled(false);
-                    hideLoadingScreen();
-                }
-            } else {
-                preview.classList.remove('show');
+            if (!file) {
+                if (preview) preview.classList.remove('show');
                 delete processedFiles[fileKey];
                 // Clean up object URL when file is cleared
-                const previewId = preview.id;
-                if (previewObjectUrls[previewId]) {
+                if (preview && preview.id && previewObjectUrls[preview.id]) {
                     try {
-                        URL.revokeObjectURL(previewObjectUrls[previewId]);
+                        URL.revokeObjectURL(previewObjectUrls[preview.id]);
                     } catch (e) {
                         // Ignore revoke errors
                     }
-                    delete previewObjectUrls[previewId];
+                    delete previewObjectUrls[preview.id];
+                }
+                return;
+            }
+
+            // Block if another file is being processed
+            if (isProcessingFile) {
+                alert('Mohon tunggu proses file sebelumnya selesai.');
+                return;
+            }
+
+            isProcessingFile = true;
+            setFileInputsDisabled(true);
+            showLoadingScreen('Memproses dan mengunggah dokumen, mohon tunggu...');
+
+            try {
+                await processSingleImageFile(file, fileKey, preview, input);
+            } catch (error) {
+                console.error('Upload error:', error);
+                alert(`Gagal memproses file "${file.name}":\n\n${error.message || 'Terjadi kesalahan'}`);
+                if (input) input.value = '';
+                if (preview) preview.classList.remove('show');
+            } finally {
+                isProcessingFile = false;
+                setFileInputsDisabled(false);
+                hideLoadingScreen();
+            }
+        }
+
+        async function processSingleImageFile(file, fileKey, preview, input = null) {
+            // Check file size before compression
+            if (file.size > MAX_FILE_SIZE) {
+                throw new Error(`File "${file.name}" terlalu besar! Maksimal 10MB per file.\n\nUkuran file: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+            }
+
+            // Check file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/heic', 'image/heif'];
+            const fileName = file.name.toLowerCase();
+            const isValidExtension = fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') ||
+                fileName.endsWith('.png') || fileName.endsWith('.heic') ||
+                fileName.endsWith('.heif');
+
+            if (!validTypes.includes(file.type) && !isValidExtension) {
+                throw new Error(`File "${file.name}" format tidak didukung!\n\nHanya JPG, PNG, dan HEIC yang diperbolehkan.`);
+            }
+
+            const isHeic = fileName.endsWith('.heic') || fileName.endsWith('.heif') ||
+                file.type === 'image/heic' || file.type === 'image/heif';
+
+            // Convert HEIC to JPEG if needed
+            let processedFile = file;
+            if (isHeic) {
+                try {
+                    // Queue HEIC conversions to prevent race conditions in libheif
+                    processedFile = await new Promise((resolve, reject) => {
+                        heicConversionQueue = heicConversionQueue.then(async () => {
+                            try {
+                                await new Promise(r => setTimeout(r, 100));
+                                const convertedBlob = await heic2any({
+                                    blob: file,
+                                    toType: 'image/jpeg',
+                                    quality: 0.9
+                                });
+                                const converted = new File(
+                                    [convertedBlob],
+                                    file.name.replace(/\.(heic|heif)$/i, '.jpg'), {
+                                        type: 'image/jpeg',
+                                        lastModified: Date.now()
+                                    }
+                                );
+                                resolve(converted);
+                            } catch (err) {
+                                reject(err);
+                            }
+                        }).catch(err => {
+                            reject(err);
+                        });
+                    });
+                } catch (conversionError) {
+                    console.error('HEIC conversion error:', conversionError);
+                    let errorMsg = `Gagal mengonversi file HEIC "${file.name}".`;
+                    if (conversionError.code === 'ERR_LIBHEIF') {
+                        errorMsg += '\n\nFile HEIC mungkin rusak atau dalam format yang tidak didukung.';
+                    } else {
+                        errorMsg += `\n\nError: ${conversionError.message}`;
+                    }
+                    errorMsg += '\n\nSilakan coba:\n1. Gunakan file HEIC lain\n2. Konversi ke JPG/PNG terlebih dahulu\n3. Ambil foto ulang jika memungkinkan';
+                    throw new Error(errorMsg);
                 }
             }
+
+            // Compress the image
+            const compressionResult = await compressImage(processedFile, fileKey);
+            const compressedFile = compressionResult.file;
+
+            // Check if compressed file is still too large
+            if (compressedFile.size > MAX_UPLOAD_SIZE) {
+                throw new Error(`Gagal mengompresi file "${file.name}" ke ukuran yang sesuai.\n\nUkuran asli: ${(file.size / 1024 / 1024).toFixed(2)} MB\nSetelah kompresi: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB\n\nSilakan gunakan gambar dengan ukuran lebih kecil.`);
+            }
+
+            // Upload to Livewire server
+            let upload_name = uploadMulti ? `${fileKey}.${uploadIndex}` : `${fileKey}`;
+            console.log('Uploading to Livewire:', upload_name);
+            await uploadFileToLivewire(upload_name, compressedFile);
+
+            // Show compression success and set note in Livewire
+            showFilePreviewWithCompression(compressedFile, compressionResult, preview, fileKey);
+            processedFiles[fileKey] = compressedFile;
         }
 
         // Form submit handlers
