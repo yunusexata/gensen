@@ -156,12 +156,12 @@ class Attachment extends Component
             ->filter(fn($detail) => $detail['tahun_gensen'] == $targetYear);
 
         // 2. If we found matches, show the alert and wait for the frontend event
-        if ($matchedDetails->isNotEmpty()) {
+        if ($matchedDetails->isNotEmpty() && count($this->tahun_gensen_details) > 1) {
             Alert::confirmation(
                 $this,
                 Alert::ICON_WARNING,
                 "Terdapat Tahun Gensen " . $targetYear . "/" . now()->year,
-                "Data akan disesuaikan !",
+                "Duplikat data terlebih dahulu !",
                 "on-copy-dialog-confirm", // This event will fire when "Setuju" is clicked
                 "on-copy-dialog-cancel",
                 "Setuju",
@@ -192,22 +192,25 @@ class Attachment extends Component
             ->whereHas('gensenFormDetails', function ($query) use ($targetYear) {
                 $query->where('tahun_gensen', $targetYear);
             })
-            ->exists();
+            ->first();
         $matchedDetails = collect($this->tahun_gensen_details)
             ->filter(fn($detail) => $detail['tahun_gensen'] == $targetYear);
-        if (!$hasTargetYear) {
+        if (!$hasTargetYear || count($hasTargetYear->gensenFormDetails) > 1) {
             $newForm = GensenFormRepository::copy($id);
 
             GensenFormDetailRepository::create([
                 'gensen_form_id' => $newForm->id,
-                'tahun_gensen' => $matchedDetails[0]['tahun_gensen'],
-                'nominal_gensen' => $matchedDetails[0]['nominal_gensen'],
+                'tahun_gensen' => $matchedDetails->first()['tahun_gensen'],
+                'nominal_gensen' => $matchedDetails->first()['nominal_gensen'],
             ]);
         }
 
         // Delete from database
         foreach ($matchedDetails as $detail) {
             if (!empty($detail['id']) && ($detail['tahun_gensen'] != $targetYear)) {
+                GensenFormDetailRepository::delete($detail['id']);
+            }
+            if (!empty($detail['id']) && (count($hasTargetYear->gensenFormDetails) > 1 || count($this->tahun_gensen_details) > 1)) {
                 GensenFormDetailRepository::delete($detail['id']);
             }
         }
