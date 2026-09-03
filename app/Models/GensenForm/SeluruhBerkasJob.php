@@ -4,6 +4,7 @@ namespace App\Models\GensenForm;
 
 use App\Enums\Gensen\JobStatus;
 use App\Jobs\MergeSeluruhBerkas;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -37,5 +38,15 @@ class SeluruhBerkasJob extends Model
         self::created(function ($model) {
             MergeSeluruhBerkas::dispatch($model->id, $model->gensen_form_id)->onQueue('pdf');
         });
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updator()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 }

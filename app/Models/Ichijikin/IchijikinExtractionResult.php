@@ -79,4 +79,9 @@ class IchijikinExtractionResult extends Model
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
+
+    public function updator()
+    {
+        return $this->belongsTo(User::class, 'udpated_by', 'id');
+    }
 }

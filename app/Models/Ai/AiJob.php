@@ -18,6 +18,7 @@ use App\Models\Gensen\Ai\RemittanceExtraction;
 use App\Models\Gensen\Ai\RemittanceExtractionGroup;
 use App\Models\GensenForm\GensenFormAttachment;
 use App\Models\Ichijikin\IchijikinExtractionResult;
+use App\Models\User;
 use App\Repositories\Gensen\Ai\RemittanceExtractionGroupRepository;
 use App\Repositories\Gensen\Ai\RemittanceExtractionRepository;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -120,5 +121,20 @@ class AiJob extends Model
             }
         });
         self::updated(function ($model) {});
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updator()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
+    public function deletor()
+    {
+        return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
 }

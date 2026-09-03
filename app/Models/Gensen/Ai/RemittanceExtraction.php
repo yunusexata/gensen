@@ -70,4 +70,19 @@ class RemittanceExtraction extends Model
             ->where('status', JobStatus::PENDING)
             ->exists();
     }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updator()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
+    public function deletor()
+    {
+        return $this->belongsTo(User::class, 'deleted_by', 'id');
+    }
 }

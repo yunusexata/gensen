@@ -7,6 +7,7 @@ use App\Enums\Gensen\GensenAttachmentRemittanceType;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Models\GensenForm\GensenFormAttachment;
 use App\Models\GensenForm\GensenForm;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -101,5 +102,15 @@ class GensenFormAttachmentHistory extends Model
     public function gensenFormAttachment()
     {
         return $this->belongsTo(GensenFormAttachment::class, 'gensen_form_attachment_id', 'id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updator()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 }

@@ -114,4 +114,9 @@ class GensenFormLink extends Model
     {
         return $this->hasMany(GensenForm::class, 'remarks_id', 'id')->where('remarks_type', self::class);
     }
+
+    public function updator()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
 }

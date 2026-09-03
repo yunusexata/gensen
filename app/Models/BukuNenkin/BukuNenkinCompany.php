@@ -2,6 +2,7 @@
 
 namespace App\Models\BukuNenkin;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,4 +24,9 @@ class BukuNenkinCompany extends Model
     ];
 
     protected $guarded = ['id'];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 }

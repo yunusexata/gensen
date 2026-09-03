@@ -2,6 +2,7 @@
 
 namespace App\Models\Gensen\Ai;
 
+use App\Models\User;
 use App\Traits\Models\UppercaseAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -76,5 +77,20 @@ class RemittanceExtractionGroup extends Model
     public function remittanceExtraction()
     {
         return $this->belongsTo(RemittanceExtraction::class, 'remittance_extraction_id', 'id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updator()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
+    public function deletor()
+    {
+        return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
 }

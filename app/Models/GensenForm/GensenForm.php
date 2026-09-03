@@ -12,6 +12,7 @@ use App\Helpers\PermissionHelper;
 use App\Mail\Admin\ClientNewSubmission;
 use App\Models\Ai\AiJob;
 use App\Models\Gensen\Ai\RemittanceExtraction;
+use App\Models\User;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\GensenForm\PersyaratanGensenJobRepository;
 use App\Repositories\GensenForm\SeluruhBerkasJobRepository;
@@ -669,5 +670,20 @@ class GensenForm extends Model
         return $this->aiJobs()
             ->where('status', JobStatus::PENDING)
             ->exists();
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updator()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
+    public function deletor()
+    {
+        return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
 }

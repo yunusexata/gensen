@@ -4,6 +4,7 @@ namespace App\Models\GensenForm;
 
 use App\Enums\Gensen\JobStatus;
 use App\Jobs\MergePersyaratanPengurusanGensen;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -38,5 +39,15 @@ class PersyaratanGensenJob extends Model
         self::created(function ($model) {
             MergePersyaratanPengurusanGensen::dispatch($model->id, $model->gensen_form_id)->onQueue('pdf');;
         });
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updator()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 }

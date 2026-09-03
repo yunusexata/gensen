@@ -7,6 +7,7 @@ use App\Enums\Gensen\GensenAttachmentRemittanceType;
 use App\Enums\Gensen\GensenAttachmentType;
 use App\Enums\Gensen\JobStatus;
 use App\Models\Ai\AiJob;
+use App\Models\User;
 use App\Repositories\GensenForm\GensenFormAttachmentHistoryRepository;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -206,5 +207,15 @@ class GensenFormAttachment extends Model
     public function deletedByUser()
     {
         return $this->belongsTo(\App\Models\User::class, 'deleted_by', 'id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updator()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 }

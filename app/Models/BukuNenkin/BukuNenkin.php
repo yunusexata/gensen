@@ -2,6 +2,7 @@
 
 namespace App\Models\BukuNenkin;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +14,6 @@ class BukuNenkin extends Model
     use HasFactory, SoftDeletes, HasTrackHistory;
 
     protected $fillable = [
-
         'nama',
         'tanggal_lahir',
         'alamat_jepang',
@@ -25,5 +25,10 @@ class BukuNenkin extends Model
     public function companies()
     {
         return $this->hasMany(BukuNenkinCompany::class, 'buku_nenkin_id', 'id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 }

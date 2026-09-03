@@ -7,6 +7,7 @@ use App\Events\RemittanceExtractionFinished;
 use App\Models\Gensen\Ai\RemittanceExtraction;
 use App\Models\Gensen\Ai\RemittanceExtractionGroup;
 use App\Models\Ichijikin\IchijikinExtractionResult;
+use App\Models\User;
 use App\Repositories\IchijikinExtraction\IchijikinExtractionResultRepository;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Guarded;
@@ -100,5 +101,20 @@ class AiResult extends Model
     public function aiJob()
     {
         return $this->belongsTo(AiJob::class, 'ai_job_id', 'id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updator()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
+    public function deletor()
+    {
+        return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
 }
