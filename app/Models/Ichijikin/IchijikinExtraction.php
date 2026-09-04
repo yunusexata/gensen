@@ -66,4 +66,9 @@ class IchijikinExtraction extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
+
+    public function deletor()
+    {
+        return $this->belongsTo(User::class, 'deleted_by', 'id');
+    }
 }
