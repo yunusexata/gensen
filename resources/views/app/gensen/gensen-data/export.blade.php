@@ -44,6 +44,7 @@
                 <th class="text-center">TGL PULANG</th>
                 <th class="text-center">NOMOR REKENING</th>
                 <th class="text-center">BANK</th>
+                <th class="text-center">HUBUNGAN PENERIMA</th>
                 <th class="text-center">TAHUN GENSEN</th>
                 <th class="text-center">MY NUMBER</th>
                 <th class="text-center">KK LEGAS</th>
@@ -87,6 +88,7 @@
                         <td>{{ $data['tanggal_kepulangan'] ? Carbon\Carbon::parse($data['tanggal_kepulangan'])->format('ymd') : '' }}</td>
                         <td>{{ $data['no_rekening_penerima'] }}</td>
                         <td>{{ $data['nama_bank_penerima'] }}</td>
+                        <td>{{ $data['hubungan_penerima'] }}</td>
                         <td>{{ $data['tahun_gensen_detail'] }}</td>
                         <td>{{ $data['has_my_number'] ? 'O' : 'X' }}</td>
                         <td>{{ $data['has_kartu_keluarga'] ? 'O' : 'X' }}</td>
