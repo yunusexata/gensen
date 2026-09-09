@@ -1,5 +1,38 @@
 
-<div class="position-relative">
+<div class="position-relative"
+    x-data="{
+        previewOpen: false,
+        previewUrl: '',
+        previewTitle: '',
+        previewType: 'image',
+        previewZoom: 1,
+        openPreview(url, title, type) {
+            this.previewUrl = url;
+            this.previewTitle = title || 'Document Preview';
+            this.previewType = type || 'image';
+            this.previewZoom = 1;
+            this.previewOpen = true;
+            document.body.classList.add('preview-modal-open');
+        },
+        closePreview() {
+            this.previewOpen = false;
+            document.body.classList.remove('preview-modal-open');
+            this.previewUrl = '';
+            this.previewTitle = '';
+            this.previewZoom = 1;
+        },
+        zoomIn() {
+            if (this.previewZoom < 3) this.previewZoom = +(this.previewZoom + 0.25).toFixed(2);
+        },
+        zoomOut() {
+            if (this.previewZoom > 0.5) this.previewZoom = +(this.previewZoom - 0.25).toFixed(2);
+        },
+        resetZoom() {
+            this.previewZoom = 1;
+        }
+    }"
+    @keydown.escape.window="closePreview()"
+>
     <div wire:loading wire:target="submitChange, clickFile">
         <div class="position-absolute w-100 h-100 z-[9999999999]">
             <div class="w-100 h-100" style="background-color: grey; opacity:0.2"></div>
@@ -177,12 +210,19 @@
                                         {{-- {!! $kertas_gensen_note[$index] !!} --}}
                                         @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
                                             {{-- IMAGE --}}
-                                            <img wire:key="kertas_gensen_new_{{ $index }}" class="w-full h-full object-cover" data-alt="Professional scan of a tax document on a clean desk background with soft office lighting" 
-                                            src="{{$url}}"/>
+                                            <div wire:key="kertas_gensen_new_{{ $index }}"
+                                                @click.prevent="openPreview('{{ $url }}', '{{ $filename }}', 'image')"
+                                                class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer">
+                                                <img class="w-full h-full object-cover" data-alt="Tax document scan" src="{{$url}}"/>
+                                                <div class="absolute inset-0 bg-black/25 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                                    <span class="material-symbols-outlined text-white text-2xl drop-shadow">visibility</span>
+                                                </div>
+                                            </div>
                                         @elseif(in_array($mimeType, ['application/pdf']))
                                             {{-- IFRAME PDF --}}
-                                            <a wire:key="kertas_gensen_new_{{ $index }}"
-                                                class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb"
+                                            <div wire:key="kertas_gensen_new_{{ $index }}"
+                                                @click.prevent="openPreview('{{ $url }}', '{{ $filename }}', 'pdf')"
+                                                class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer"
                                             >
                                                 <iframe
                                                     src="{{ $url }}"
@@ -191,8 +231,10 @@
                                                     height="200"
                                                     class="pointer-events-none"
                                                 ></iframe>
-
-                                            </a> 
+                                                <div class="absolute inset-0 bg-black/25 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                                    <span class="material-symbols-outlined text-white text-2xl drop-shadow">visibility</span>
+                                                </div>
+                                            </div> 
                                         @else
                                             {{-- <div class="border rounded p-4 text-center bg-light">
                                                 <i class="bi bi-file-earmark fs-1"></i>
@@ -209,16 +251,18 @@
                                         @if($item['isImage'] ?? 0)
                                             <div class="relative group/thumb" wire:key="kertas_gensen_old_{{ $item['id'] }}">
                                                 <!-- Preview -->
-                                                <a
-                                                    data-fslightbox="{{ $item['id'] }}"
-                                                    href="{{ $item['url'] }}"
-                                                    class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
+                                                <div
+                                                    @click.prevent="openPreview('{{ $item['url'] }}', '{{ $item['filename'] ?? 'Kertas Gensen' }}', 'image')"
+                                                    class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden cursor-pointer relative group/img"
                                                 >
                                                     <img
                                                         src="{{ $item['url'] }}"
                                                         class="w-full h-full object-cover"
                                                     >
-                                                </a>
+                                                    <div class="absolute inset-0 bg-black/25 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                                        <span class="material-symbols-outlined text-white text-2xl drop-shadow">visibility</span>
+                                                    </div>
+                                                </div>
 
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
@@ -249,10 +293,15 @@
                                             
                                             <div class="relative group/thumb" wire:key="kertas_gensen_old_{{ $item['id'] }}">
                                                 {{-- IFRAME PDF Preview --}}
-                                                <a data-fslightbox="{{$item['id']}}" data-type="iframe" href="#{{$item['id']}}"
-                                                class="block thumbnail-aspect bg-surface-container rounded-lg overflow-scroll">    
+                                                <div
+                                                    @click.prevent="openPreview('{{ $item['url'] }}', '{{ $item['filename'] ?? 'Kertas Gensen' }}', 'pdf')"
+                                                    class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden cursor-pointer relative group/pdf"
+                                                >    
                                                     <embed src="{{ $item['url'] }}" type="application/pdf" width="100%" style="min-height: 200px;" class="pointer-events-none">
-                                                </a>       
+                                                    <div class="absolute inset-0 bg-black/25 opacity-0 group-hover/pdf:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                                        <span class="material-symbols-outlined text-white text-2xl drop-shadow">visibility</span>
+                                                    </div>
+                                                </div>       
                                                 <!-- Actions -->
                                                 <div class="absolute top-1 right-1 z-10">
                                                     <!-- Tag A (Convert To Image) -->
@@ -283,16 +332,6 @@
                                                     >
                                                     PDF
                                                     </button>
-                                                </div>
-                                                {{-- Iframe Full Preview --}}
-                                                <div style="position:absolute; left:-9999px; top:-9999px;">
-                                                    <iframe
-                                                        src="{{$item['url']}}"
-                                                        id="{{$item['id']}}"
-                                                        width="1920"
-                                                        height="1080"
-                                                        frameborder="0"
-                                                    ></iframe>
                                                 </div>
                                             </div>
                                         @else
@@ -382,11 +421,18 @@
                                                         @endphp
                                                         @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
                                                             {{-- IMAGE --}}
-                                                            <img wire:key="rekap_pengiriman_new_{{ $file_index }}" class="w-full h-full object-cover" data-alt="Professional scan of a tax document on a clean desk background with soft office lighting" 
-                                                            src="{{$url}}"/>
+                                                            <div wire:key="rekap_pengiriman_new_{{ $file_index }}"
+                                                                @click.prevent="openPreview('{{ $url }}', '{{ $filename }}', 'image')"
+                                                                class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer">
+                                                                <img class="w-full h-full object-cover" data-alt="Rekap pengiriman scan" src="{{$url}}"/>
+                                                                <div class="absolute inset-0 bg-black/25 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                                                    <span class="material-symbols-outlined text-white text-2xl drop-shadow">visibility</span>
+                                                                </div>
+                                                            </div>
                                                         @elseif(in_array($mimeType, ['application/pdf']))
-                                                            <a wire:key="rekap_pengiriman_new_{{ $filename }}"
-                                                                class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb"
+                                                            <div wire:key="rekap_pengiriman_new_{{ $filename }}"
+                                                                @click.prevent="openPreview('{{ $url }}', '{{ $filename }}', 'pdf')"
+                                                                class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer"
                                                             >
                                                                 <iframe
                                                                     src="{{ $url }}"
@@ -395,8 +441,10 @@
                                                                     height="200"
                                                                     class="pointer-events-none"
                                                                 ></iframe>
-
-                                                            </a> 
+                                                                <div class="absolute inset-0 bg-black/25 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                                                    <span class="material-symbols-outlined text-white text-2xl drop-shadow">visibility</span>
+                                                                </div>
+                                                            </div> 
                                                         @endif
                                                     @endforeach
                                                 </div>
@@ -418,18 +466,20 @@
                                             @if (!empty($group['files']))
                                             @foreach ($group['files'] as $rekap_index => $item)
                                                 @if($item['isImage'] ?? 0)
-                                                    <div class="relative group/thumb"  wire:key="kartu_keluarga_old_{{ $item['id'] }}">
+                                                    <div class="relative group/thumb" wire:key="rekap_pengiriman_old_img_{{ $item['id'] }}">
                                                         <!-- Preview -->
-                                                        <a
-                                                            data-fslightbox="kartu_keluarga_old_{{ $item['id'] }}"
-                                                            href="{{ $item['url'] }}"
-                                                            class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
+                                                        <div
+                                                            @click.prevent="openPreview('{{ $item['url'] }}', '{{ $item['filename'] ?? 'Rekap Pengiriman' }}', 'image')"
+                                                            class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden cursor-pointer relative group/img"
                                                         >
                                                             <img
                                                                 src="{{ $item['url'] }}"
                                                                 class="w-full h-full object-cover"
                                                             >
-                                                        </a>
+                                                            <div class="absolute inset-0 bg-black/25 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                                                <span class="material-symbols-outlined text-white text-2xl drop-shadow">visibility</span>
+                                                            </div>
+                                                        </div>
 
                                                         <!-- Actions -->
                                                         <div class="absolute top-1 right-1 z-10">
@@ -456,13 +506,17 @@
 
                                                     </div>
                                                 @elseif($item['isPdf'])
-                                                    <div class="relative group/thumb" wire:key="rekap_pengirian_old_{{ $item['id'] }}" 
-                                                        x-init="if(window.refreshFsLightbox) refreshFsLightbox()">
+                                                    <div class="relative group/thumb" wire:key="rekap_pengiriman_old_pdf_{{ $item['id'] }}">
                                                         {{-- IFRAME PDF Preview --}}
-                                                        <a data-fslightbox="rekap_pengiriman_{{$item['id']}}" data-type="iframe" href="#{{$item['id']}}"
-                                                        class="block thumbnail-aspect bg-surface-container rounded-lg overflow-scroll">    
+                                                        <div
+                                                            @click.prevent="openPreview('{{ $item['url'] }}', '{{ $item['filename'] ?? 'Rekap Pengiriman' }}', 'pdf')"
+                                                            class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden cursor-pointer relative group/pdf"
+                                                        >    
                                                             <embed src="{{ $item['url'] }}" type="application/pdf" width="100%" style="min-height: 200px;" class="pointer-events-none">
-                                                        </a>       
+                                                            <div class="absolute inset-0 bg-black/25 opacity-0 group-hover/pdf:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                                                <span class="material-symbols-outlined text-white text-2xl drop-shadow">visibility</span>
+                                                            </div>
+                                                        </div>       
                                                         <!-- Actions -->
                                                         <div class="absolute top-1 right-1 z-10">
                                                             <!-- Tag A (Download) -->
@@ -477,17 +531,13 @@
                                                             >
                                                                 <span class="material-symbols-outlined text-xl">delete</span>
                                                             </button>
-                                                            @endif
-                                                        </div>
-                                                        {{-- Iframe Full Preview --}}
-                                                        <div style="position:absolute; left:-9999px; top:-9999px;">
-                                                            <iframe
-                                                                src="{{$item['url']}}"
-                                                                id="{{$item['id']}}"
-                                                                width="1920"
-                                                                height="1080"
-                                                                frameborder="0"
-                                                            ></iframe>
+                                                        @endif
+                                                            <button 
+                                                                type="button"
+                                                                class="inline-flex items-center justify-center p-1 bg-white hover:bg-primary/10 text-primary rounded h-8 w-8 transition-colors"
+                                                            >
+                                                            PDF
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 @else
@@ -585,23 +635,17 @@
                                         @if(in_array($mimeType,['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
                                             {{-- IMAGE --}}
                                             <!-- Preview -->
-                                            <div class="relative group/thumb" wire:key="kartu_keluarga_new_{{ $filename }}">
-                                                <a
-                                                    data-fslightbox="kartu_keluarga_{{ rand() }}"
-                                                    href="{{ $url }}"
-                                                    class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
-                                                >
+                                            <div class="relative group/thumb cursor-pointer" wire:key="kartu_keluarga_new_{{ $filename }}" @click.prevent="openPreview('{{ $url }}', '{{ addslashes($filename) }}', 'image')">
+                                                <div class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden">
                                                     <img
                                                         src="{{ $url }}"
                                                         class="w-full h-full object-cover"
                                                     >
-                                                </a>
+                                                </div>
                                             </div>
                                         @elseif(in_array($mimeType, ['application/pdf']))
                                             {{-- IFRAME PDF --}}
-                                            <a  wire:key="kartu_keluarga_new_{{ $filename }}"
-                                                class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb"
-                                            >
+                                            <div class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer" wire:key="kartu_keluarga_new_{{ $filename }}" @click.prevent="openPreview('{{ $url }}', '{{ addslashes($filename) }}', 'pdf')">
                                                 <iframe
                                                     src="{{ $url }}"
                                                     type="application/pdf"
@@ -609,8 +653,7 @@
                                                     height="200"
                                                     class="pointer-events-none"
                                                 ></iframe>
-
-                                            </a> 
+                                            </div> 
                                         @else
                                             {{-- <div class="border rounded p-4 text-center bg-light">
                                                 <i class="bi bi-file-earmark fs-1"></i>
@@ -625,21 +668,17 @@
                                     @foreach ($kartu_keluarga_old['groups'][0]['files'] as $index => $item)
                                         {{-- {!! $kartu_keluarga_old_note[$index] !!} --}}
                                         @if($item['isImage'] ?? 0)
-                                            <div class="relative group/thumb"  wire:key="kartu_keluarga_old_{{ $item['id'] }}">
+                                            <div class="relative group/thumb cursor-pointer"  wire:key="kartu_keluarga_old_{{ $item['id'] }}" @click.prevent="openPreview('{{ $item['url'] }}', 'Kartu Keluarga {{ $item['id'] }}', 'image')">
                                                 <!-- Preview -->
-                                                <a
-                                                    data-fslightbox="kartu_keluarga_old_{{ $item['id'] }}"
-                                                    href="{{ $item['url'] }}"
-                                                    class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden"
-                                                >
+                                                <div class="block thumbnail-aspect bg-surface-container rounded-lg overflow-hidden">
                                                     <img
                                                         src="{{ $item['url'] }}"
                                                         class="w-full h-full object-cover"
                                                     >
-                                                </a>
+                                                </div>
 
                                                 <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
+                                                <div class="absolute top-1 right-1 z-10" @click.stop>
                                                     <!-- Tag A (Download) -->
                                                    
 
@@ -664,14 +703,13 @@
                                             </div>
                                         @elseif($item['isPdf'])
                                             
-                                            <div class="relative group/thumb"  wire:key="kartu_keluarga_old_{{ $item['id'] }}">
+                                            <div class="relative group/thumb cursor-pointer"  wire:key="kartu_keluarga_old_{{ $item['id'] }}" @click.prevent="openPreview('{{ $item['url'] }}', 'Kartu Keluarga {{ $item['id'] }}', 'pdf')">
                                                 {{-- IFRAME PDF Preview --}}
-                                                <a data-fslightbox="kartu_keluarga_old_{{$item['id']}}" data-type="iframe" href="#{{$item['id']}}"
-                                                class="block thumbnail-aspect bg-surface-container rounded-lg overflow-scroll">    
+                                                <div class="block thumbnail-aspect bg-surface-container rounded-lg overflow-scroll">    
                                                     <embed src="{{ $item['url'] }}" type="application/pdf" width="100%" style="min-height: 200px;" class="pointer-events-none">
-                                                </a>       
+                                                </div>       
                                                 <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
+                                                <div class="absolute top-1 right-1 z-10" @click.stop>
                                                     
                                                 @if ($isCanDelete)
                                                    <!-- Tag A (Convert To Image) -->
@@ -702,16 +740,6 @@
                                                     PDF
                                                     </button>
                                                 </div>
-                                                {{-- Iframe Full Preview --}}
-                                                <div style="position:absolute; left:-9999px; top:-9999px;">
-                                                    <iframe
-                                                        src="{{$item['url']}}"
-                                                        id="{{$item['id']}}"
-                                                        width="1920"
-                                                        height="1080"
-                                                        frameborder="0"
-                                                    ></iframe>
-                                                </div>
                                             </div>
                                         @else
                                             <div class="border rounded p-4 text-center bg-light" wire:key="kartu_keluarga_old_{{ $item['id'] }}">
@@ -738,9 +766,9 @@
                                     <span class="text-label-caps text-[10px] text-secondary">FRONT SIDE</span>
                                     @if ($zairyou_card_front_old['id'])
                                         @if($zairyou_card_front_old['isImage'])
-                                            <div wire:key="zairyou_card_front_{{ $zairyou_card_front_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">
+                                            <div wire:key="zairyou_card_front_{{ $zairyou_card_front_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer" @click.prevent="openPreview('{{ $zairyou_card_front_old['url'] }}', 'Zairyou Card (Front)', 'image')">
                                                 <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
+                                                <div class="absolute top-1 right-1 z-10" @click.stop>
                                                    <!-- Tag A (Download) -->
                                                   
                                                 
@@ -766,7 +794,7 @@
                                             
                                                 // $url = route('preview.temp.image', $zairyou_card_front->getFileName());
                                                 $filename = $zairyou_card_front->getClientOriginalName();
-                                            }elseif(in_array($mimeType, ['pdf'])){
+                                            }elseif(in_array($mimeType, ['application/pdf', 'pdf'])){
                                                 $url = route('preview.temp.pdf', $zairyou_card_front->getFileName());
                                                 $filename = $zairyou_card_front->getClientOriginalName();
                                             }else{
@@ -775,8 +803,12 @@
                                             $mimeType = strtolower($mimeType);
                                         @endphp
                                         @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
-                                            <div wire:key="zairyou_card_front_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
+                                            <div wire:key="zairyou_card_front_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer" @click.prevent="openPreview('{{ $url }}', 'Zairyou Card (Front)', 'image')">    
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
+                                            </div>
+                                        @elseif(in_array($mimeType, ['application/pdf', 'pdf']))
+                                            <div wire:key="zairyou_card_front_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer" @click.prevent="openPreview('{{ $url }}', 'Zairyou Card (Front)', 'pdf')">    
+                                                <iframe src="{{ $url }}" type="application/pdf" width="100%" height="100%" class="pointer-events-none"></iframe>
                                             </div>
                                         @endif
                                     @else
@@ -827,9 +859,9 @@
                                     <span class="text-label-caps text-[10px] text-secondary">BACK SIDE</span>
                                     @if ($zairyou_card_back_old['id'])
                                         @if($zairyou_card_back_old['isImage'])
-                                            <div wire:key="zairyou_card_back_{{ $zairyou_card_back_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">
+                                            <div wire:key="zairyou_card_back_{{ $zairyou_card_back_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer" @click.prevent="openPreview('{{ $zairyou_card_back_old['url'] }}', 'Zairyou Card (Back)', 'image')">
                                                 <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
+                                                <div class="absolute top-1 right-1 z-10" @click.stop>
                                                     <!-- Tag A (Download) -->
                                                  
 
@@ -856,7 +888,7 @@
                                             
                                                 // $url = route('preview.temp.image', $zairyou_card_back->getFileName());
                                                 $filename = $zairyou_card_back->getClientOriginalName();
-                                            }elseif(in_array($mimeType, ['pdf'])){
+                                            }elseif(in_array($mimeType, ['application/pdf', 'pdf'])){
                                                 $url = route('preview.temp.pdf', $zairyou_card_back->getFileName());
                                                 $filename = $zairyou_card_back->getClientOriginalName();
                                             }else{
@@ -865,8 +897,12 @@
                                             $mimeType = strtolower($mimeType);
                                         @endphp
                                         @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
-                                            <div wire:key="zairyou_card_back_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
+                                            <div wire:key="zairyou_card_back_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer" @click.prevent="openPreview('{{ $url }}', 'Zairyou Card (Back)', 'image')">    
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
+                                            </div>
+                                        @elseif(in_array($mimeType, ['application/pdf', 'pdf']))
+                                            <div wire:key="zairyou_card_back_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer" @click.prevent="openPreview('{{ $url }}', 'Zairyou Card (Back)', 'pdf')">    
+                                                <iframe src="{{ $url }}" type="application/pdf" width="100%" height="100%" class="pointer-events-none"></iframe>
                                             </div>
                                         @endif
                                     @else
@@ -926,9 +962,9 @@
                                     <span class="text-label-caps text-[10px] text-secondary">FRONT SIDE</span>
                                     @if ($my_number_front_old['id'])
                                         @if($my_number_front_old['isImage'])
-                                            <div wire:key="my_number_front_{{ $my_number_front_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">
+                                            <div wire:key="my_number_front_{{ $my_number_front_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer" @click.prevent="openPreview('{{ $my_number_front_old['url'] }}', 'My Number (Front)', 'image')">
                                                 <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
+                                                <div class="absolute top-1 right-1 z-10" @click.stop>
                                                     <!-- Tag A (Download) -->
                                                   
 
@@ -954,7 +990,7 @@
                                             
                                                 // $url = route('preview.temp.image', $my_number_front->getFileName());
                                                 $filename = $my_number_front->getClientOriginalName();
-                                            }elseif(in_array($mimeType, ['pdf'])){
+                                            }elseif(in_array($mimeType, ['application/pdf', 'pdf'])){
                                                 $url = route('preview.temp.pdf', $my_number_front->getFileName());
                                                 $filename = $my_number_front->getClientOriginalName();
                                             }else{
@@ -963,8 +999,12 @@
                                             $mimeType = strtolower($mimeType);
                                         @endphp
                                         @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
-                                            <div wire:key="my_number_front_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
+                                            <div wire:key="my_number_front_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer" @click.prevent="openPreview('{{ $url }}', 'My Number (Front)', 'image')">    
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
+                                            </div>
+                                        @elseif(in_array($mimeType, ['application/pdf', 'pdf']))
+                                            <div wire:key="my_number_front_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer" @click.prevent="openPreview('{{ $url }}', 'My Number (Front)', 'pdf')">    
+                                                <iframe src="{{ $url }}" type="application/pdf" width="100%" height="100%" class="pointer-events-none"></iframe>
                                             </div>
                                         @endif
                                     @else
@@ -1014,9 +1054,9 @@
                                     <span class="text-label-caps text-[10px] text-secondary">BACK SIDE</span>
                                     @if ($my_number_back_old['id'])
                                         @if($my_number_back_old['isImage'])
-                                            <div wire:key="my_number_back_{{ $my_number_back_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">
+                                            <div wire:key="my_number_back_{{ $my_number_back_old['id'] }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer" @click.prevent="openPreview('{{ $my_number_back_old['url'] }}', 'My Number (Back)', 'image')">
                                                 <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
+                                                <div class="absolute top-1 right-1 z-10" @click.stop>
                                                     <!-- Tag A (Download) -->
                                                  
 
@@ -1043,7 +1083,7 @@
                                             
                                                 // $url = route('preview.temp.image', $my_number_back->getFileName());
                                                 $filename = $my_number_back->getClientOriginalName();
-                                            }elseif(in_array($mimeType, ['pdf'])){
+                                            }elseif(in_array($mimeType, ['application/pdf', 'pdf'])){
                                                 $url = route('preview.temp.pdf', $my_number_back->getFileName());
                                                 $filename = $my_number_back->getClientOriginalName();
                                             }else{
@@ -1052,8 +1092,12 @@
                                             $mimeType = strtolower($mimeType);
                                         @endphp
                                         @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
-                                            <div wire:key="my_number_back_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
+                                            <div wire:key="my_number_back_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer" @click.prevent="openPreview('{{ $url }}', 'My Number (Back)', 'image')">    
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
+                                            </div>
+                                        @elseif(in_array($mimeType, ['application/pdf', 'pdf']))
+                                            <div wire:key="my_number_back_{{ $filename }}" class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb cursor-pointer" @click.prevent="openPreview('{{ $url }}', 'My Number (Back)', 'pdf')">    
+                                                <iframe src="{{ $url }}" type="application/pdf" width="100%" height="100%" class="pointer-events-none"></iframe>
                                             </div>
                                         @endif
                                     @else
@@ -1111,9 +1155,9 @@
                             
                                     @if ($rekening_indonesia_old['id'])
                                         @if($rekening_indonesia_old['isImage'])
-                                            <div wire:key="rekening_indonesia_{{ $rekening_indonesia_old['id'] }}" class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb max-w-[160px] mx-auto">
+                                            <div wire:key="rekening_indonesia_{{ $rekening_indonesia_old['id'] }}" class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb max-w-[160px] mx-auto cursor-pointer" @click.prevent="openPreview('{{ $rekening_indonesia_old['url'] }}', 'Rekening Indonesia', 'image')">
                                                 <!-- Actions -->
-                                                <div class="absolute top-1 right-1 z-10">
+                                                <div class="absolute top-1 right-1 z-10" @click.stop>
                                                     <!-- Tag A (Download) -->
                                                    
                                                 @if ($isCanDelete)
@@ -1138,7 +1182,7 @@
                                             
                                                 // $url = route('preview.temp.image', $rekening_indonesia->getFileName());
                                                 $filename = $rekening_indonesia->getClientOriginalName();
-                                            }elseif(in_array($mimeType, ['pdf'])){
+                                            }elseif(in_array($mimeType, ['application/pdf', 'pdf'])){
                                                 $url = route('preview.temp.pdf', $rekening_indonesia->getFileName());
                                                 $filename = $rekening_indonesia->getClientOriginalName();
                                             }else{
@@ -1147,15 +1191,13 @@
                                             $mimeType = strtolower($mimeType);
                                         @endphp
                                         @if(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']))
-                                        {{-- <div class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb max-w-[160px] mx-auto">
-                                            <div class="relative aspect-video bg-surface-container rounded-lg overflow-hidden group/thumb">    
+                                            <div wire:key="rekening_indonesia_{{ $filename }}" class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb max-w-[160px] mx-auto cursor-pointer" @click.prevent="openPreview('{{ $url }}', 'Rekening Indonesia', 'image')">
                                                 <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
                                             </div>
-                                        </div> --}}
-                                        <div wire:key="rekening_indonesia_{{ $filename }}" class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb max-w-[160px] mx-auto">
-                                            <img class="w-full h-full object-cover" data-alt="" src="{{$url}}"/>
-                                            
-                                        </div>
+                                        @elseif(in_array($mimeType, ['application/pdf', 'pdf']))
+                                            <div wire:key="rekening_indonesia_{{ $filename }}" class="relative thumbnail-aspect bg-surface-container rounded-lg overflow-hidden group/thumb max-w-[160px] mx-auto cursor-pointer" @click.prevent="openPreview('{{ $url }}', 'Rekening Indonesia', 'pdf')">
+                                                <iframe src="{{ $url }}" type="application/pdf" width="100%" height="100%" class="pointer-events-none"></iframe>
+                                            </div>
                                         @endif
                                     @else
                                     
@@ -2131,11 +2173,306 @@
             </svg>
         </span>
     </div>
+
+    <!-- Unified Document & Image Preview Modal (Client-side Alpine.js, Teleported to Body for true 100vw/100vh and top-most z-index) -->
+    <template x-teleport="body">
+        <div
+            id="gensen-preview-modal"
+            x-show="previewOpen"
+            x-cloak
+            :style="!previewOpen ? 'display: none !important;' : 'display: flex !important;'"
+            role="dialog"
+            aria-modal="true"
+        >
+            <!-- Top Header Bar (Full 100vw width, sleek solid dark styling) -->
+            <div class="gensen-modal-header">
+                <!-- Left: Badge & Title -->
+                <div class="flex items-center gap-3 min-w-0">
+                    <span x-show="previewType === 'pdf'" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider text-rose-300 border border-rose-500/30 shadow-sm" style="background-color: rgba(244, 63, 94, 0.2); border-color: rgba(244, 63, 94, 0.4);">
+                        <span class="material-symbols-outlined text-base">picture_as_pdf</span>
+                        <span>PDF</span>
+                    </span>
+                    <span x-show="previewType === 'image'" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider text-indigo-300 border border-indigo-500/30 shadow-sm" style="background-color: rgba(99, 102, 241, 0.2); border-color: rgba(99, 102, 241, 0.4);">
+                        <span class="material-symbols-outlined text-base">image</span>
+                        <span>IMAGE</span>
+                    </span>
+                    <h2
+                        x-text="previewTitle"
+                        class="text-sm sm:text-base font-semibold text-white truncate max-w-[40vw] sm:max-w-[65vw]"
+                        :title="previewTitle"
+                        style="color: #ffffff !important; margin: 0 !important;"
+                    ></h2>
+                </div>
+
+                <!-- Right: Action Controls -->
+                <div class="flex items-center gap-2 shrink-0">
+                    <!-- Image Zoom Controls (only shown for images) -->
+                    <div
+                        x-show="previewType === 'image'"
+                        :style="previewType === 'image' ? 'display: flex !important;' : 'display: none !important;'"
+                        class="gensen-zoom-controls"
+                    >
+                        <button
+                            type="button"
+                            @click="zoomOut()"
+                            :disabled="previewZoom <= 0.5"
+                            class="w-8 h-8 inline-flex items-center justify-center rounded-md hover:bg-white/15 disabled:opacity-30 disabled:hover:bg-transparent transition-all text-white border-0 bg-transparent"
+                            title="Perkecil (-)"
+                        >
+                            <span class="material-symbols-outlined text-base">zoom_out</span>
+                        </button>
+                        <span
+                            x-text="Math.round(previewZoom * 100) + '%'"
+                            @click="resetZoom()"
+                            class="px-2 text-xs font-mono font-medium cursor-pointer text-white hover:text-indigo-300"
+                            title="Reset Zoom (100%)"
+                        ></span>
+                        <button
+                            type="button"
+                            @click="zoomIn()"
+                            :disabled="previewZoom >= 3"
+                            class="w-8 h-8 inline-flex items-center justify-center rounded-md hover:bg-white/15 disabled:opacity-30 disabled:hover:bg-transparent transition-all text-white border-0 bg-transparent"
+                            title="Perbesar (+)"
+                        >
+                            <span class="material-symbols-outlined text-base">zoom_in</span>
+                        </button>
+                    </div>
+
+                    <!-- Open in New Tab -->
+                    <a
+                        :href="previewUrl"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 px-3.5 text-xs font-semibold rounded-lg transition-all border shadow-sm"
+                        style="background-color: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.2); color: #ffffff !important; text-decoration: none;"
+                        title="Buka dokumen di tab baru"
+                    >
+                        <span class="material-symbols-outlined text-base">open_in_new</span>
+                        <span class="hidden md:inline">Buka Tab Baru</span>
+                    </a>
+
+                    <!-- Close Button -->
+                    <button
+                        type="button"
+                        @click="closePreview()"
+                        class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-white transition-all border shadow-sm hover:bg-rose-600"
+                        style="background-color: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.2); color: #ffffff !important;"
+                        title="Tutup (Esc)"
+                    >
+                        <span class="material-symbols-outlined text-xl">close</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Content Body (Full 100vw x remaining 100vh height) -->
+            <div class="gensen-modal-body">
+                <!-- Image Viewer with Zoom & Pan -->
+                <div
+                    x-show="previewType === 'image'"
+                    :style="previewType === 'image' ? 'display: flex !important;' : 'display: none !important;'"
+                    class="gensen-image-stage"
+                >
+                    <img
+                        x-show="previewType === 'image'"
+                        :src="previewType === 'image' ? previewUrl : ''"
+                        :alt="previewTitle"
+                        class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transition-transform duration-150 ease-out select-none"
+                        :style="'transform: scale(' + previewZoom + '); transform-origin: center center; max-height: calc(100vh - 7rem); max-width: calc(100vw - 3rem);'"
+                    />
+                    <!-- Floating Hint -->
+                    <div class="gensen-floating-hint">
+                        <span class="gensen-dot-pulse"></span>
+                        <span x-text="previewTitle" class="max-w-[200px] sm:max-w-[400px] truncate"></span>
+                        <span style="opacity: 0.3;">|</span>
+                        <span class="hidden sm:inline">Gunakan zoom atau tekan <kbd class="gensen-kbd">ESC</kbd> untuk menutup</span>
+                        <span class="sm:hidden">Tekan ESC untuk tutup</span>
+                    </div>
+                </div>
+
+                <!-- PDF Viewer (100% full height & width native iframe) -->
+                <div
+                    x-show="previewType === 'pdf'"
+                    :style="previewType === 'pdf' ? 'display: flex !important;' : 'display: none !important;'"
+                    class="gensen-pdf-stage"
+                >
+                    <iframe
+                        :src="previewType === 'pdf' ? previewUrl : ''"
+                        class="w-full h-full border-0 bg-white"
+                        style="width: 100% !important; height: 100% !important; min-height: 100% !important; border: none !important;"
+                        title="PDF Viewer"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+    </template>
 </div>
 
 @push('css')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css" rel="stylesheet">
     <style>
+        body.preview-modal-open {
+            overflow: hidden !important;
+        }
+        body.preview-modal-open #kt_app_header,
+        body.preview-modal-open #kt_app_sidebar,
+        body.preview-modal-open .app-header,
+        body.preview-modal-open .app-sidebar,
+        body.preview-modal-open #kt_app_wrapper {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            z-index: -1 !important;
+            display: none !important;
+        }
+        #gensen-preview-modal {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: 100vw !important;
+            max-height: 100vh !important;
+            z-index: 2147483647 !important;
+            background-color: #020617 !important;
+            color: #ffffff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            box-sizing: border-box !important;
+        }
+        #gensen-preview-modal[style*="display: none"] {
+            display: none !important;
+        }
+        #gensen-preview-modal:not([style*="display: none"]) {
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        #gensen-preview-modal .gensen-modal-header {
+            height: 56px !important;
+            min-height: 56px !important;
+            max-height: 56px !important;
+            background-color: #0f172a !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 0 1.5rem !important;
+            width: 100vw !important;
+            box-sizing: border-box !important;
+            flex-shrink: 0 !important;
+            z-index: 30 !important;
+        }
+        #gensen-preview-modal .gensen-modal-body {
+            flex: 1 1 0% !important;
+            width: 100vw !important;
+            height: calc(100vh - 56px) !important;
+            max-height: calc(100vh - 56px) !important;
+            background-color: #020617 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            overflow: hidden !important;
+            position: relative !important;
+            box-sizing: border-box !important;
+        }
+        #gensen-preview-modal .gensen-zoom-controls {
+            align-items: center !important;
+            gap: 0.25rem !important;
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            border-radius: 0.5rem !important;
+            padding: 0.125rem !important;
+        }
+        #gensen-preview-modal .gensen-zoom-controls[style*="display: none"] {
+            display: none !important;
+        }
+        #gensen-preview-modal .gensen-zoom-controls:not([style*="display: none"]) {
+            display: flex !important;
+        }
+        @media (max-width: 640px) {
+            #gensen-preview-modal .gensen-zoom-controls {
+                display: none !important;
+            }
+        }
+        #gensen-preview-modal .gensen-image-stage {
+            width: 100% !important;
+            height: 100% !important;
+            align-items: center !important;
+            justify-content: center !important;
+            overflow: auto !important;
+            padding: 1.5rem !important;
+            box-sizing: border-box !important;
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%) !important;
+            position: relative !important;
+        }
+        #gensen-preview-modal .gensen-image-stage[style*="display: none"] {
+            display: none !important;
+        }
+        #gensen-preview-modal .gensen-image-stage:not([style*="display: none"]) {
+            display: flex !important;
+        }
+        #gensen-preview-modal .gensen-pdf-stage {
+            width: 100% !important;
+            height: 100% !important;
+            background-color: #0f172a !important;
+            flex-direction: column !important;
+            box-sizing: border-box !important;
+        }
+        #gensen-preview-modal .gensen-pdf-stage[style*="display: none"] {
+            display: none !important;
+        }
+        #gensen-preview-modal .gensen-pdf-stage:not([style*="display: none"]) {
+            display: flex !important;
+        }
+        #gensen-preview-modal .gensen-pdf-stage iframe {
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 100% !important;
+            border: none !important;
+            background-color: #ffffff !important;
+        }
+        #gensen-preview-modal .gensen-floating-hint {
+            position: absolute !important;
+            bottom: 1.25rem !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            padding: 0.375rem 1rem !important;
+            border-radius: 9999px !important;
+            font-size: 0.75rem !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.025em !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.625rem !important;
+            pointer-events: none !important;
+            user-select: none !important;
+            background-color: rgba(15, 23, 42, 0.9) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            color: #cbd5e1 !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+        }
+        #gensen-preview-modal .gensen-dot-pulse {
+            width: 8px !important;
+            height: 8px !important;
+            border-radius: 50% !important;
+            background-color: #34d399 !important;
+            display: inline-block !important;
+            animation: pulse-dot 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
+        }
+        #gensen-preview-modal .gensen-kbd {
+            padding: 0.125rem 0.375rem !important;
+            border-radius: 0.25rem !important;
+            font-size: 10px !important;
+            font-family: monospace !important;
+            color: #ffffff !important;
+            background-color: rgba(255, 255, 255, 0.15) !important;
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
 
         @keyframes pulse-wand {
             0%   { transform: scale(1);   opacity: 1; }
@@ -2213,7 +2550,6 @@
 @endpush
 
 @push('js')
-<script src="https://cdn.jsdelivr.net/npm/fslightbox/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
     
     <script>
@@ -2264,9 +2600,6 @@
                         // updateSubstepDescription();
                         // showUploadedFilesSummary();
                         initializeFileInputs();
-                        if (typeof refreshFsLightbox !== 'undefined') {
-                            refreshFsLightbox();
-                        }
                     }, 200); 
                 });
                 $wire.$set('onload', true);
