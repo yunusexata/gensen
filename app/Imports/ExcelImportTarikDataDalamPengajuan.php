@@ -15,27 +15,26 @@ class ExcelImportTarikDataDalamPengajuan implements ToCollection, WithHeadingRow
 
     public function collection(Collection $rows)
     {
-        foreach ($rows as $key => $value) {
+        // 1. Langsung proses collection tanpa foreach
+        $mappedData = $rows->map(function ($row) {
+            return [
+                'no_input_jepang' => trim($row['no_input_jepang']),
+                'nama_lengkap'    => trim($row['nama_lengkap']),
+                'tahun_gensen'    => trim($row['tahun_gensen']),
+            ];
+        })
+            ->filter(fn($row) => filled($row['no_input_jepang']))
+            ->values()
+            ->toArray();
 
-            $this->rows = $rows
-                ->map(function ($row) {
-
-                    return [
-                        'no_input_jepang' => trim($row['no_input_jepang']),
-                        'nama_lengkap' => trim($row['nama_lengkap']),
-                        'tahun_gensen' => trim($row['tahun_gensen']),
-                    ];
-                })
-
-                ->filter(
-                    fn($row) =>
-                    filled($row['no_input_jepang'])
-                )
-
-                ->values()
-
-                ->toArray();
+        // 2. Gabungkan data baru dengan data sebelumnya (Penting untuk ChunkReading!)
+        if (is_null($this->rows)) {
+            $this->rows = $mappedData;
+        } else {
+            $this->rows = array_merge($this->rows, $mappedData);
         }
+
+        logger('Import chunk diproses, jumlah data saat ini: ' . count($this->rows));
     }
 
     public function chunkSize(): int
