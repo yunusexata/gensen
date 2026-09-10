@@ -291,7 +291,11 @@ class GensenFormRepository extends MasterDataRepository
                 ''
             )
             || ' - ' ||
-            COALESCE(gfd.label, ''),
+            COALESCE(gfd.label, '')
+            || '|' ||
+            COALESCE(gfd.status, '')
+            || '-' ||
+            COALESCE(gfd.keterangan, ''),
             ';'
             ORDER BY gfd.tahun_gensen DESC
         ) AS tarik_data_details,

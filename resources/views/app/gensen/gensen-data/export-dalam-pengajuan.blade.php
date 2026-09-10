@@ -74,6 +74,8 @@
                 <th class="text-center">NOMINAL CAIR</th>
                 <th class="text-center">TANGGAL TARIK DATA</th>
                 <th class="text-center">LABEL</th>
+                <th class="text-center">STATUS REIWA</th>
+                <th class="text-center">KETERANGAN</th>
             </tr>
         </thead>
         <tbody>
@@ -146,6 +148,8 @@
                         </td>
                         <td>{{ $data['tanggal_tarik_data_detail'] }}</td>
                         <td>{{ $data['label_detail'] }}</td>
+                        <td>{{ $data['status_detail'] }}</td>
+                        <td>{{ $data['keterangan_detail'] }}</td>
                     </tr>
                 @endforeach
             @endif

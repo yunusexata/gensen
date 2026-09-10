@@ -3,6 +3,7 @@
 namespace App\Livewire\Gensen\ExportImport;
 
 use App\Enums\Gensen\ExportImportJobKey;
+use App\Enums\Gensen\GensenFormDetailStatus;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\Alert;
 use App\Helpers\ExportHelper;
@@ -49,6 +50,8 @@ class ExportDalamPengajuanModal extends Component
                 'nama_lengkap' => 'required|exists:gensen_forms,nama_lengkap',
                 'tanggal_tarik_data' => 'required',
                 'label' => 'required',
+                'status' => 'nullable|in:valid,rollback,cancel',
+                'keterangan' => 'nullable',
             ], [
                 'no_input_jepang.required' => 'No Input Jepang harus di isi',
                 'no_input_jepang.exists' => 'No Input Jepang tidak terdaftar',
@@ -56,6 +59,7 @@ class ExportDalamPengajuanModal extends Component
                 'nama_lengkap.exists' => 'Nama lengkap tidak terdaftar',
                 'tanggal_tarik_data.required' => 'Tanggal Tarik Data harus di isi',
                 'label.required' => 'Label harus di isi',
+                'status.in' => 'Status tidak valid, harus berisi: valid, rollback, cancel atau kosong', // <--- Added custom message
             ]);
 
             $this->previewBulkStatusRows[] = [
@@ -80,6 +84,8 @@ class ExportDalamPengajuanModal extends Component
                     $updated = GensenFormDetailRepository::update($value['data']['gensen_form_detail_id'], [
                         'tanggal_tarik_data' => $value['data']['tanggal_tarik_data'],
                         'label' => $value['data']['label'],
+                        'status' => trim($value['data']['status']) ?? GensenFormDetailStatus::VALID->value,
+                        'keterangan' => $value['data']['keterangan']
                     ]);
                     $gensen_form = GensenFormRepository::findBy([
                         ['id_customer', $value['data']['id_customer']]

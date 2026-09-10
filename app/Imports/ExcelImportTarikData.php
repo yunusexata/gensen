@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Enums\Gensen\GensenFormDetailStatus;
 use App\Models\GensenForm\GensenForm;
 use App\Repositories\GensenForm\GensenFormRepository;
 use Illuminate\Support\Collection;
@@ -25,6 +26,11 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
                 ->where('nama_lengkap', $value['nama_lengkap'])
                 ->join('gensen_form_details as gfd', function ($j) use ($value) {
                     $j->on('gfd.gensen_form_id', '=', 'gensen_forms.id')
+                        ->whereNull('gfd.deleted_at')
+                        ->where(function ($query) {
+                            $query->whereNull('gfd.status')
+                                ->orWhere('gfd.status', '=', GensenFormDetailStatus::VALID);
+                        })
                         ->where('gfd.tahun_gensen', trim($value['tahun_gensen']));
                 })
                 ->first();
@@ -37,6 +43,8 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
                 'no_input_jepang' => $value['no_input_jepang'],
                 'tanggal_tarik_data' => $value['tanggal_tarik_data'],
                 'label' => $value['label'],
+                'status' => $value['status'],
+                'keterangan' => $value['keterangan'],
             ];
             if ($data) {
                 $validateData = array_merge([

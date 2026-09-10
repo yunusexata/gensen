@@ -41,6 +41,8 @@
                                                     <th>tahun Gensen</th>
                                                     <th>Tanggal Tarik Data</th>
                                                     <th>Label</th>
+                                                    <th>Status</th>
+                                                    <th>Keterangan</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -59,6 +61,8 @@
                                                                     @fromReiwaToYear($row['data']['tahun_gensen'])</td>
                                                             <td>{{ $row['data']['tanggal_tarik_data'] }}</td>
                                                             <td>{{ $row['data']['label'] }}</td>
+                                                            <td>{{ $row['data']['status'] }}</td>
+                                                            <td>{{ $row['data']['keterangan'] }}</td>
                                                         </tr>
                                                     @endif
                                                 @endforeach
@@ -97,6 +101,8 @@
                                                                     @fromReiwaToYear($row['data']['tahun_gensen'])</td>
                                                             <td>{{ $row['data']['tanggal_tarik_data'] }}</td>
                                                             <td>{{ $row['data']['label'] }}</td>
+                                                            <td>{{ $row['data']['status'] }}</td>
+                                                            <td>{{ $row['data']['keterangan'] }}</td>
                                                             <td>
                                                                 @foreach($row['error'] as $field => $msg)
                                                                     <div>{{ json_encode($msg) }}</div>

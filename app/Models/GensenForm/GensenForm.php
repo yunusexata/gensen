@@ -209,8 +209,8 @@ class GensenForm extends Model
     protected static function onBoot()
     {
         self::creating(function ($model) {
-            $model->id_customer = NumberGenerator::generate(self::class);
-            $model->status = self::STATUS_BELUM_LENGKAP;
+            $model->id_customer = $model->id_customer ?? NumberGenerator::generate(self::class);
+            $model->status = $model->status ?? self::STATUS_BELUM_LENGKAP;
             // $model->created_by = rand(7, 9);
         });
         self::updating(function ($model) {
@@ -611,6 +611,22 @@ class GensenForm extends Model
                 GensenAttachmentType::MY_NUMBER_FRONT,
                 GensenAttachmentType::MY_NUMBER_BACK,
                 GensenAttachmentType::REKENING_INDONESIA,
+            ]);
+    }
+    public function attachmentsRollback()
+    {
+        return $this->hasMany(GensenFormAttachment::class, 'gensen_form_id', 'id')
+            ->whereIn('type', [
+                GensenAttachmentType::KERTAS_GENSEN,
+                GensenAttachmentType::REKAP_PENGIRIMAN_UANG,
+                GensenAttachmentType::KARTU_KELUARGA,
+                GensenAttachmentType::ZAIRYOU_CARD_FRONT,
+                GensenAttachmentType::ZAIRYOU_CARD_BACK,
+                GensenAttachmentType::MY_NUMBER_FRONT,
+                GensenAttachmentType::MY_NUMBER_BACK,
+                GensenAttachmentType::REKENING_INDONESIA,
+                GensenAttachmentType::PERSYARATAN_PENGURUSAN_GENSEN,
+                GensenAttachmentType::SELURUH_BERKAS,
             ]);
     }
 

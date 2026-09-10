@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\GensenAttachmentType;
+use App\Enums\Gensen\GensenFormDetailStatus;
 use App\Models\GensenForm\GensenForm;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -64,6 +65,10 @@ class ExportService
             })
             ->join('gensen_form_details as gfd', function ($join) {
                 $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id')
+                    ->where(function ($query) {
+                        $query->whereNull('gfd.status')
+                            ->orWhere('gfd.status', '=', GensenFormDetailStatus::VALID);
+                    })
                     ->whereNull('gfd.deleted_at');
             })
 
@@ -211,6 +216,8 @@ class ExportService
                 'gfd.nominal_gensen as nominal_gensen_detail',
                 'gfd.tanggal_tarik_data as tanggal_tarik_data_detail',
                 'gfd.label as label_detail',
+                'gfd.status as status_detail',
+                'gfd.keterangan as keterangan_detail',
                 'remittances.remittance_total_amounts',
                 'remittances.remittance_receiver_names',
             ])
@@ -294,13 +301,13 @@ class ExportService
     {
         return $this->query($filters)
             ->when(isset($filters['tanggal_input']) && $filters['tanggal_input'], function ($query) use ($filters) {
-                $query->whereBetween('gensen_forms.created_at', $filters['tanggal_input']);
+                $query->whereBetween('gfd.tanggal_tarik_data', $filters['tanggal_input']);
             })
             ->where('gensen_forms.status', GensenForm::STATUS_TARIK_DATA)
             ->whereNotNull('gensen_forms.tanggal_lengkap')
             ->whereNotNull('gensen_forms.tanggal_verified')
             ->whereNotNull('gensen_forms.no_input_jepang')
-            ->whereNotNull('gensen_forms.tanggal_pengajuan')
+            // ->whereNotNull('gensen_forms.tanggal_pengajuan')
             ->where(function ($q) {
                 $q->whereNull('gfd.nominal_cair')
                     ->orWhere('gfd.nominal_cair', 0);

@@ -3,6 +3,8 @@
 namespace App\Models\GensenForm;
 
 use App\Enums\Gensen\GensenFormDetailStatus;
+use App\Enums\Gensen\JobStatus;
+use App\Jobs\GensenFormDetailStatusJob;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,32 +12,44 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Muhammadyunus1072\TrackHistory\HasTrackHistory;
 
-class GensenFormDetail extends Model
+class GensenFormDetailLog extends Model
 {
     use HasFactory, SoftDeletes, HasTrackHistory;
 
     protected $fillable = [
-        'gensen_form_id',
-        'tahun_gensen',
-        'nominal_gensen',
 
-        // Step 4 - Acc Exata
-        'tanggal_tarik_data',  // Tanggal Tarik Data
-        'label',  // Label Tarik Data
+        // polymorphic relation
+        'subject_id',
+        'subject_type',
 
-        // Step 5 - HS2
-        'nominal_cair',
-        'tanggal_cair',
-
+        // recipient
         'status',
         'keterangan',
+
+        // lifecycle
+        'job_status',
+
+        // monitoring
+        'attempts',
+        'error_message',
+
+        // timing
+        'started_at',
+        'finished_at',
     ];
 
     protected $guarded = ['id'];
 
     protected $casts = [
-        'status' => GensenFormDetailStatus::class,
+        'job_status' => JobStatus::class,
     ];
+
+    protected static function onBoot()
+    {
+        self::created(function ($model) {
+            GensenFormDetailStatusJob::dispatch($model)->onQueue('default');
+        });
+    }
 
     public function isDeletable()
     {
@@ -46,9 +60,10 @@ class GensenFormDetail extends Model
     {
         return true;
     }
-    public function gensenForm()
+
+    public function subject()
     {
-        return $this->belongsTo(GensenForm::class, 'gensen_form_id', 'id');
+        return $this->morphTo();
     }
 
     public function creator()
