@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('keterangan')->nullable();
         });
         Schema::table('_history_gensen_form_details', function (Blueprint $table) {
-            $table->string('status')->default(GensenFormDetailStatus::PROCESSING)->nullable();
+            $table->string('status')->default(null)->nullable();
             $table->text('keterangan')->nullable();
         });
     }
