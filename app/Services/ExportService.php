@@ -67,6 +67,7 @@ class ExportService
                 $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id')
                     ->where(function ($query) {
                         $query->whereNull('gfd.status')
+                            ->orWhere('gfd.status', '=', '')
                             ->orWhere('gfd.status', '=', GensenFormDetailStatus::VALID);
                     })
                     ->whereNull('gfd.deleted_at');
@@ -195,6 +196,12 @@ class ExportService
         return GensenForm::query()
             ->join('gensen_form_details as gfd', function ($join) {
                 $join->on('gfd.gensen_form_id', '=', 'gensen_forms.id')
+                    ->where(function ($q) {
+                        $q->where('gfd.status', '=', '')
+                            ->orWhereNull('gfd.status')
+                            ->orWhere('gfd.status', '=', GensenFormDetailStatus::PROCESS)
+                            ->orWhere('gfd.status', '=', GensenFormDetailStatus::VALID);
+                    })
                     ->whereNull('gfd.deleted_at');
             })
             ->where(function ($query) {
@@ -304,9 +311,15 @@ class ExportService
                 $query->whereBetween('gfd.tanggal_tarik_data', $filters['tanggal_input']);
             })
             ->where('gensen_forms.status', GensenForm::STATUS_TARIK_DATA)
-            ->whereNotNull('gensen_forms.tanggal_lengkap')
-            ->whereNotNull('gensen_forms.tanggal_verified')
-            ->whereNotNull('gensen_forms.no_input_jepang')
+            ->where(function ($q) {
+                $q->where('gfd.status', '=', '')
+                    ->orWhereNull('gfd.status')
+                    ->orWhere('gfd.status', '=', GensenFormDetailStatus::PROCESS)
+                    ->orWhere('gfd.status', '=', GensenFormDetailStatus::VALID);
+            })
+            // ->whereNotNull('gensen_forms.tanggal_lengkap')
+            // ->whereNotNull('gensen_forms.tanggal_verified')
+            // ->whereNotNull('gensen_forms.no_input_jepang')
             // ->whereNotNull('gensen_forms.tanggal_pengajuan')
             ->where(function ($q) {
                 $q->whereNull('gfd.nominal_cair')

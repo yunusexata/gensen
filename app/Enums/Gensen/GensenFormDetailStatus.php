@@ -4,6 +4,7 @@ namespace App\Enums\Gensen;
 
 enum GensenFormDetailStatus: string
 {
+    case PROCESS = '';
     case VALID = 'valid';
     case SUCCESS = 'success';
     case CANCEL = 'cancel';

@@ -5,6 +5,7 @@ namespace App\Models\GensenForm;
 use App\Enums\Gensen\EmailLogStatus;
 use App\Enums\Gensen\GensenAttachmenStatus;
 use App\Enums\Gensen\GensenAttachmentType;
+use App\Enums\Gensen\GensenFormDetailStatus;
 use App\Enums\Gensen\JobStatus;
 use App\Helpers\AppLog;
 use App\Helpers\NumberGenerator;
@@ -337,13 +338,13 @@ class GensenForm extends Model
 
     public function onSubmitted()
     {
-        if ($this->allGensenDetailsCair()) {
-            logger('status cair');
-            $this->status = self::STATUS_GENSEN_CAIR;
-        }
         if ($this->allGensenDetailsTarikData()) {
             logger('status tarik data');
             $this->status = self::STATUS_TARIK_DATA;
+        }
+        if ($this->allGensenDetailsCair()) {
+            logger('status cair');
+            $this->status = self::STATUS_GENSEN_CAIR;
         }
         $this->is_should_filled = $this->isShouldFilled();
 
@@ -353,10 +354,18 @@ class GensenForm extends Model
     public function allGensenDetailsCair(): bool
     {
         return !$this->gensenFormDetails()
-            ->whereNull('deleted_at')->whereNull('tanggal_cair')
-            ->where(function ($q) {
-                $q->whereNull('nominal_cair')
-                    ->orWhere('nominal_cair', 0);
+            ->whereNull('deleted_at')
+            ->where(function ($query) {
+                // A detail is considered incomplete/un-updated if:
+                $query->where(function ($q) {
+                    $q->where('status', GensenFormDetailStatus::PROCESS) // Still in process
+                        ->orWhereNull('status')                              // FIX: Added actual NULL check for status
+                        ->orWhere('status', '')                              // Status is empty string
+                        ->orWhere('status', GensenFormDetailStatus::VALID);   // (See Note 2 below about VALID)
+                })
+                    ->whereNull('tanggal_cair')                      // OR missing date
+                    ->whereNull('nominal_cair')                      // OR missing nominal
+                    ->where('nominal_cair', '<=', 0);                // OR nominal is 0
             })->exists() &&
             $this->gensenFormDetails()
             ->whereNull('deleted_at')->count() > 0;
@@ -364,15 +373,30 @@ class GensenForm extends Model
 
     public function allGensenDetailsTarikData(): bool
     {
-
         return !$this->gensenFormDetails()
-            ->whereNull('deleted_at')->whereNull('tanggal_tarik_data')
-            ->where(function ($q) {
-                $q->whereNull('label')
-                    ->orWhere('label', '=', '');
+            ->whereNull('deleted_at') // (See Note 1 below)
+            ->where(function ($query) {
+                $query
+                    ->where(function ($q) {
+                        $q->where('status', GensenFormDetailStatus::PROCESS) // Still in process
+                            ->orWhereNull('status')                              // FIX: Added actual NULL check for status
+                            ->orWhere('status', '')                              // Status is empty string
+                            ->orWhere('status', GensenFormDetailStatus::VALID);   // (See Note 2 below about VALID)
+                    })
+                    ->whereNull('tanggal_tarik_data')                  // Missing date
+                    ->whereNull('label');                               // Missing label
             })->exists() &&
             $this->gensenFormDetails()
-            ->whereNull('deleted_at')->count() > 0;
+            ->whereNull('deleted_at') // (See Note 1 below)
+            ->where(function ($query) {
+                $query
+                    ->where(function ($q) {
+                        $q->where('status', GensenFormDetailStatus::PROCESS) // Still in process
+                            ->orWhereNull('status')                              // FIX: Added actual NULL check for status
+                            ->orWhere('status', '')                              // Status is empty string
+                            ->orWhere('status', GensenFormDetailStatus::VALID);   // (See Note 2 below about VALID)
+                    });
+            })->count() > 0;
     }
 
     public function isAttachmentReady($requiredTypes = false): bool

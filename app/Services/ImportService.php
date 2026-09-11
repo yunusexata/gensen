@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Enums\Gensen\ExportImportJobKey;
 use App\Enums\Gensen\GensenAttachmentType;
+use App\Enums\Gensen\GensenFormDetailStatus;
 use App\Imports\ExcelImportBulkStatusGensen;
 use App\Models\GensenForm\GensenForm;
+use App\Models\GensenForm\GensenFormDetail;
 use App\Models\User;
 use App\Repositories\GensenForm\GensenFormDetailRepository;
 use App\Repositories\GensenForm\GensenFormRepository;
@@ -157,31 +159,41 @@ class ImportService
     private function validateListDataGensenCair(array $row)
     {
         return Validator::make($row, [
-            'no_input_jepang' => 'required|exists:gensen_forms,no_input_jepang',
+            'no_input_jepang' => 'required',
             'nama_lengkap' => [
                 'required',
-
                 Rule::exists('gensen_forms')
                     ->where(function ($query) use ($row) {
+                        $query->where('no_input_jepang', '=', $row['no_input_jepang'])
+                            ->where('id_customer', '=', $row['id_customer'])
+                            ->where('nama_lengkap', '=', strtoupper(trim($row['nama_lengkap'])))
 
-                        $query
-                            ->where(
-                                'id_customer',
-                                $row['id_customer']
-                            )
-                            ->where('nama_lengkap', 'ILIKE', trim($row['nama_lengkap']));
+                            // Check the relation has status null or 'valid'
+                            ->whereExists(function ($subQuery) use ($row) {
+                                $subQuery->select(DB::raw(1))
+                                    ->from('gensen_form_details')
+                                    // IMPORTANT: Make sure 'gensen_form_id' is your actual foreign key
+                                    ->whereColumn('gensen_form_details.gensen_form_id', 'gensen_forms.id')
+                                    ->where('gensen_form_details.tahun_gensen', trim($row['tahun_gensen']))
+                                    ->where(function ($q) {
+                                        $q->whereNull('gensen_form_details.status')
+                                            ->orWhere('gensen_form_details.status', '=', '')
+                                            ->orWhere('gensen_form_details.status', GensenFormDetailStatus::PROCESS)
+                                            ->orWhere('gensen_form_details.status', GensenFormDetailStatus::VALID);
+                                    });
+                            });
                     }),
             ],
-            'tanggal_pengajuan' => 'required',
+            // 'tanggal_pengajuan' => 'required',
             'tahun_gensen' => 'required',
             'tanggal_cair' => 'required',
             'nominal_cair' => 'required',
         ], [
             'no_input_jepang.required' => 'No Input Jepang harus di isi',
-            'no_input_jepang.exists' => 'No Input Jepang tidak terdaftar',
+            // 'no_input_jepang.exists' => 'No Input Jepang tidak terdaftar',
             'nama_lengkap.required' => 'Nama Lengkap harus di isi',
-            'nama_lengkap.exists' => 'Nama Lengkap tidak terdaftar',
-            'tanggal_pengajuan.required' => 'Tanggal Pengajuan harus di isi',
+            'nama_lengkap.exists' => 'Data tidak terdaftar',
+            // 'tanggal_pengajuan.required' => 'Tanggal Pengajuan harus di isi',
             'tahun_gensen.required' => 'Tahun Gensen harus di isi',
             'tanggal_cair.required' => 'Tanggal Cair harus di isi',
             'nominal_cair.required' => 'Nominal Cair harus di isi',
@@ -393,36 +405,56 @@ class ImportService
             }
             $validatedData = [];
 
-            $gensenForm = GensenFormRepository::findBy([
-                ['no_input_jepang', $row['no_input_jepang']],
-            ]);
-            preg_match('/^\d+/', trim($row['tahun_gensen']), $tahun_reiwa);
+            // $gensenForm = GensenFormRepository::findBy([
+            //     ['id_customer', $row['id_customer']],
+            //     ['no_input_jepang', $row['no_input_jepang']],
+            //     ['nama_lengkap', strtoupper(trim($row['nama_lengkap']))],
+            // ]);
+
+            $arr = $row->toArray();
+            preg_match('/^\d+/', trim($arr['tahun_gensen']), $tahun_reiwa);
+            $gensen_detail = GensenFormDetail::where('tahun_gensen', '=', $tahun_reiwa[0])
+                ->where(function ($query) {
+                    $query->whereNull('status')
+                        ->orWhere('status', '=', '')
+                        ->orWhere('status', '=', GensenFormDetailStatus::PROCESS)
+                        ->orWhere('status', '=', GensenFormDetailStatus::VALID);
+                })
+                ->whereHas('gensenForm', function ($q) use ($arr) {
+                    $q->where('id_customer', '=', $arr['id_customer'])
+                        ->where('no_input_jepang', '=', $arr['no_input_jepang'])
+                        ->where('nama_lengkap', '=', strtoupper(trim($arr['nama_lengkap'])));
+                })
+                ->first();
+            // $gensenForm = GensenForm::where('id_customer', '=', $row['id_customer'])
+            //     ->where('no_input_jepang', '=', $row['no_input_jepang'])
+            //     ->where('nama_lengkap', '=', strtoupper(trim($row['nama_lengkap'])))
+            //     ->whereHas('gensen_form_details', function ($query) use ($tahun_reiwa) {
+            //         $query->where('tahun_gensen', $tahun_reiwa[0])
+            //             ->whereNull('status')
+            //             ->orWhere('status', 'valid');
+            //     })
+            //     ->first();
+            if (!$gensen_detail) {
+
+                $errorRows[] = [
+                    'row' => $index + 1,
+                    'errors' => 'Data tahun gensen tidak ditemukan',
+                ];
+
+                continue;
+            }
             $validatedData = [
                 'tanggal_cair' => $row['tanggal_cair'],
                 'nominal_cair' => $row['nominal_cair'],
                 'keterangan' => $row['keterangan'],
             ];
+            $updated = GensenFormDetailRepository::update($gensen_detail->id, $validatedData);
 
-            $data = GensenFormDetailRepository::findBy([
-                ['gensen_form_id', $gensenForm->id],
-                ['tahun_gensen', $tahun_reiwa[0]],
-            ]);
-
-            $updated = GensenFormDetailRepository::updateBy([
-                ['gensen_form_id', $gensenForm->id],
-                ['tahun_gensen', $tahun_reiwa[0]],
-            ], $validatedData);
-
-            $query_belum_cair = $gensenForm->gensenFormDetails()
-                ->whereNull('tanggal_cair')
-                ->where(function ($q) {
-                    $q->whereNull('nominal_cair')
-                        ->orWhere('nominal_cair', 0);
-                });
-            if (!$query_belum_cair->exists() && $gensenForm->gensenFormDetails()->count() > 0) {
-                $gensenForm->update([
-                    'status' => GensenForm::STATUS_GENSEN_CAIR
-                ]);
+            // 1. Only proceed if the detail was actually updated successfully
+            if ($updated) {
+                $gensenForm = GensenFormRepository::find($gensen_detail->gensen_form_id);
+                $gensenForm->onSubmitted();
             }
 
             if ($updated > 0) {

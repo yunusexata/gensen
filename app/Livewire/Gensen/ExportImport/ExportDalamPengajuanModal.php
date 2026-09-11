@@ -9,6 +9,7 @@ use App\Helpers\Alert;
 use App\Helpers\ExportHelper;
 use App\Imports\ExcelImportBulkStatusGensen;
 use App\Imports\ExcelImportTarikData;
+use App\Models\GensenForm\GensenForm;
 use App\Repositories\Gensen\GensenExportImportHistoryRepository;
 use App\Repositories\GensenForm\GensenFormDetailRepository;
 use App\Repositories\GensenForm\GensenFormRepository;
@@ -84,14 +85,15 @@ class ExportDalamPengajuanModal extends Component
                     $updated = GensenFormDetailRepository::update($value['data']['gensen_form_detail_id'], [
                         'tanggal_tarik_data' => $value['data']['tanggal_tarik_data'],
                         'label' => $value['data']['label'],
-                        'status' => trim($value['data']['status']) ?? GensenFormDetailStatus::VALID->value,
+                        'status' => blank($value['data']['status']) ? GensenFormDetailStatus::PROCESS : GensenFormDetailStatus::tryFrom($value['data']['status']),
                         'keterangan' => $value['data']['keterangan']
                     ]);
-                    $gensen_form = GensenFormRepository::findBy([
-                        ['id_customer', $value['data']['id_customer']]
-                    ]);
 
-                    $gensen_form->onSubmitted();
+                    $gensen_form = GensenFormRepository::find($value['data']['id']);
+
+                    if ($gensen_form) {
+                        $gensen_form->onSubmitted();
+                    }
 
                     if ($updated > 0) {
                         $successCount++;

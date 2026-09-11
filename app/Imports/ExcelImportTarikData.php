@@ -29,6 +29,7 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
                         ->whereNull('gfd.deleted_at')
                         ->where(function ($query) {
                             $query->whereNull('gfd.status')
+                                ->orWhere('gfd.status', '=', '')
                                 ->orWhere('gfd.status', '=', GensenFormDetailStatus::VALID);
                         })
                         ->where('gfd.tahun_gensen', trim($value['tahun_gensen']));
@@ -51,6 +52,7 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
                     // From DB Query
 
                     'gensen_form_detail_id' => $data['gensen_form_detail_id'],
+                    'id' => $data['id'],
                     'id_customer' => $data['id_customer'],
                     'nomor_whatsapp' => $data['nomor_whatsapp'],
                     'nomor_whatsapp_darurat' => $data['nomor_whatsapp_darurat'],
@@ -62,6 +64,7 @@ class ExcelImportTarikData implements ToCollection, WithHeadingRow, WithChunkRea
                     // From DB Query
 
                     'gensen_form_detail_id' => '',
+                    'id' => '',
                     'id_customer' => '',
                     'nomor_whatsapp' => '',
                     'nomor_whatsapp_darurat' => '',

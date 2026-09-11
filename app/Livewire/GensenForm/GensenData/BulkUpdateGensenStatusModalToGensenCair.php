@@ -66,7 +66,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                                 ->where('no_input_jepang', $d['no_input_jepang']);
                         }),
                 ],
-                'tanggal_pengajuan' => 'required',
+                // 'tanggal_pengajuan' => 'required',
                 'tahun_gensen' => 'required',
                 'tanggal_cair' => 'required',
                 'nominal_cair' => 'required',
@@ -75,7 +75,7 @@ class BulkUpdateGensenStatusModalToGensenCair extends Component
                 'no_input_jepang.exists' => 'No Input Jepang tidak terdaftar',
                 'nama_lengkap.required' => 'Nama lengkap harus di isi',
                 'nama_lengkap.exists' => 'Nama lengkap tidak terdaftar',
-                'tanggal_pengajuan.required' => 'Tanggal Pengajuan harus di isi',
+                // 'tanggal_pengajuan.required' => 'Tanggal Pengajuan harus di isi',
                 'tahun_gensen.required' => 'Tahun Gensen harus di isi',
                 'tanggal_cair.required' => 'Tanggal cair harus di isi',
                 'nominal_cair.required' => 'Nominal cair harus di isi',
