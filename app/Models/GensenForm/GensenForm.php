@@ -364,11 +364,22 @@ class GensenForm extends Model
                         ->orWhere('status', GensenFormDetailStatus::VALID);   // (See Note 2 below about VALID)
                 })
                     ->whereNull('tanggal_cair')                      // OR missing date
-                    ->whereNull('nominal_cair')                      // OR missing nominal
-                    ->where('nominal_cair', '<=', 0);                // OR nominal is 0
+                    ->where(function ($query) {
+                        $query->whereNull('nominal_cair')                      // OR missing nominal
+                            ->orWhere('nominal_cair', '<=', 0);                // OR nominal is 0
+                    });
             })->exists() &&
             $this->gensenFormDetails()
-            ->whereNull('deleted_at')->count() > 0;
+            ->whereNull('deleted_at')
+            ->where(function ($query) {
+                $query
+                    ->where(function ($q) {
+                        $q->where('status', GensenFormDetailStatus::PROCESS) // Still in process
+                            ->orWhereNull('status')                              // FIX: Added actual NULL check for status
+                            ->orWhere('status', '')                              // Status is empty string
+                            ->orWhere('status', GensenFormDetailStatus::VALID);   // (See Note 2 below about VALID)
+                    });
+            })->count() > 0;
     }
 
     public function allGensenDetailsTarikData(): bool
