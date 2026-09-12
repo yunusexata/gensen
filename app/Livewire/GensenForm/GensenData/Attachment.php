@@ -227,7 +227,7 @@ class Attachment extends Component
             }
             DB::transaction(function () {
                 foreach ($this->tahun_gensen_details as $tahun_gensen) {
-                    if ($tahun_gensen['tahun_gensen'] != toReiwaYear(now()->year)) {
+                    if ($tahun_gensen['tahun_gensen'] != toReiwaYear(now()->year) || count($this->tahun_gensen_details) === 1) {
                         if ($tahun_gensen['id']) {
                             if (!$tahun_gensen['tahun_gensen'] && !$tahun_gensen['nominal_gensen']) {
                                 GensenFormDetailRepository::delete($tahun_gensen['id']);
